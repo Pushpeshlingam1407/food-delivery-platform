@@ -140,12 +140,10 @@ export async function addToCart(req, res) {
   const { menuId, quantity = 1, customizationNotes } = req.body;
 
   if (!menuId || quantity <= 0) {
-    return res
-      .status(400)
-      .json({
-        status: "error",
-        message: "Valid menu ID and quantity are required",
-      });
+    return res.status(400).json({
+      status: "error",
+      message: "Valid menu ID and quantity are required",
+    });
   }
 
   try {
@@ -164,12 +162,10 @@ export async function addToCart(req, res) {
 
     const menuItem = menus[0];
     if (!menuItem.is_available) {
-      return res
-        .status(400)
-        .json({
-          status: "error",
-          message: "Menu item is currently unavailable",
-        });
+      return res.status(400).json({
+        status: "error",
+        message: "Menu item is currently unavailable",
+      });
     }
 
     const [cartRows] = await pool.query(

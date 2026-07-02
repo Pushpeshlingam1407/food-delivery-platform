@@ -25,25 +25,21 @@ export async function toggleFavorite(req, res) {
         "DELETE FROM favorites WHERE user_id = ? AND menu_id = ?",
         [req.user.userId, menuId],
       );
-      return res
-        .status(200)
-        .json({
-          status: "success",
-          message: "Removed from favorites",
-          isFavorite: false,
-        });
+      return res.status(200).json({
+        status: "success",
+        message: "Removed from favorites",
+        isFavorite: false,
+      });
     } else {
       await pool.query(
         "INSERT INTO favorites (user_id, menu_id) VALUES (?, ?)",
         [req.user.userId, menuId],
       );
-      return res
-        .status(200)
-        .json({
-          status: "success",
-          message: "Added to favorites",
-          isFavorite: true,
-        });
+      return res.status(200).json({
+        status: "success",
+        message: "Added to favorites",
+        isFavorite: true,
+      });
     }
   } catch (error) {
     console.error("Toggle favorite error:", error);

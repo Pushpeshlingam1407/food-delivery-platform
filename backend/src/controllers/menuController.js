@@ -20,12 +20,10 @@ export async function createMenuCategory(req, res) {
   const { restaurant_id, name, sort_order = 0 } = req.body;
 
   if (!restaurant_id || !name) {
-    return res
-      .status(400)
-      .json({
-        status: "error",
-        message: "Restaurant ID and category name are required",
-      });
+    return res.status(400).json({
+      status: "error",
+      message: "Restaurant ID and category name are required",
+    });
   }
 
   try {
@@ -126,12 +124,10 @@ export async function updateMenuCategory(req, res) {
       params,
     );
 
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Menu category updated successfully",
-      });
+    return res.status(200).json({
+      status: "success",
+      message: "Menu category updated successfully",
+    });
   } catch (error) {
     console.error("Update menu category error:", error);
     return res
@@ -173,12 +169,10 @@ export async function deleteMenuCategory(req, res) {
       "UPDATE menu_categories SET deleted_at = NOW() WHERE id = ?",
       [id],
     );
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Menu category soft-deleted successfully",
-      });
+    return res.status(200).json({
+      status: "success",
+      message: "Menu category soft-deleted successfully",
+    });
   } catch (error) {
     console.error("Delete menu category error:", error);
     return res
@@ -421,12 +415,10 @@ export async function deleteMenuItem(req, res) {
     }
 
     await pool.query("UPDATE menus SET deleted_at = NOW() WHERE id = ?", [id]);
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Menu item soft-deleted successfully",
-      });
+    return res.status(200).json({
+      status: "success",
+      message: "Menu item soft-deleted successfully",
+    });
   } catch (error) {
     console.error("Delete menu item error:", error);
     return res

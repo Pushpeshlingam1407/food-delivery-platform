@@ -217,12 +217,10 @@ export async function updateRestaurant(req, res) {
       restaurants[0].owner_id !== req.user.userId &&
       req.user.role !== "admin"
     ) {
-      return res
-        .status(403)
-        .json({
-          status: "error",
-          message: "Forbidden: You do not own this restaurant",
-        });
+      return res.status(403).json({
+        status: "error",
+        message: "Forbidden: You do not own this restaurant",
+      });
     }
 
     const updateFields = [];
@@ -307,12 +305,10 @@ export async function deleteRestaurant(req, res) {
     await pool.query("UPDATE restaurants SET deleted_at = NOW() WHERE id = ?", [
       id,
     ]);
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Restaurant soft-deleted successfully",
-      });
+    return res.status(200).json({
+      status: "success",
+      message: "Restaurant soft-deleted successfully",
+    });
   } catch (error) {
     console.error("Delete restaurant error:", error);
     return res
