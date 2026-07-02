@@ -1,25 +1,38 @@
-import bcrypt from 'bcryptjs';
-import crypto from 'crypto';
-import pool from '../config/db.js';
-import { generateAccessToken, generateRefreshToken } from '../utils/jwt.js';
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import pool from "../config/db.js";
+import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
 
 async function getRoleIdByName(name) {
-  const [rows] = await pool.query("SELECT id FROM roles WHERE name = ?", [name]);
+  const [rows] = await pool.query("SELECT id FROM roles WHERE name = ?", [
+    name,
+  ]);
   const roles = rows;
   return roles.length > 0 ? roles[0].id : null;
 }
 
 export async function register(req, res) {
-  const { first_name, last_name, email, phone, password, role = "customer" } = req.body;
+  const {
+    first_name,
+    last_name,
+    email,
+    phone,
+    password,
+    role = "customer",
+  } = req.body;
 
   if (!first_name || !last_name || !email || !phone || !password) {
-    return res.status(400).json({ status: "error", message: "All fields are required" });
+    return res
+      .status(400)
+      .json({ status: "error", message: "All fields are required" });
   }
 
   try {
     const roleId = await getRoleIdByName(role);
     if (!roleId) {
-      return res.status(400).json({ status: "error", message: `Invalid role specified: ${role}` });
+      return res
+        .status(400)
+        .json({ status: "error", message: `Invalid role specified: ${role}` });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -31,27 +44,27 @@ export async function register(req, res) {
 
       const [existingUsers] = await connection.query(
         "SELECT id FROM users WHERE email = ? OR phone = ?",
-        [email, phone]
+        [email, phone],
       );
       if (existingUsers.length > 0) {
         connection.release();
         return res.status(409).json({
           status: "error",
-          message: "User with this email or phone number already exists"
+          message: "User with this email or phone number already exists",
         });
       }
 
       await connection.query(
         `INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, is_verified) 
          VALUES (?, ?, ?, ?, ?, ?, ?, TRUE)`,
-        [userId, roleId, first_name, last_name, email, phone, hashedPassword]
+        [userId, roleId, first_name, last_name, email, phone, hashedPassword],
       );
 
       if (role === "customer" || role === "delivery_partner") {
         const walletId = crypto.randomUUID();
         await connection.query(
           'INSERT INTO wallets (id, user_id, balance, currency) VALUES (?, ?, 0.00, "INR")',
-          [walletId, userId]
+          [walletId, userId],
         );
       }
 
@@ -59,7 +72,7 @@ export async function register(req, res) {
         await connection.query(
           `INSERT INTO delivery_partners (id, vehicle_number, vehicle_type, license_number, is_online, status) 
            VALUES (?, 'PENDING', 'bike', 'PENDING', FALSE, 'idle')`,
-          [userId]
+          [userId],
         );
       }
 
@@ -74,11 +87,13 @@ export async function register(req, res) {
     return res.status(201).json({
       status: "success",
       message: "User registered successfully",
-      data: { userId, first_name, last_name, email, phone, role }
+      data: { userId, first_name, last_name, email, phone, role },
     });
   } catch (error) {
     console.error("Registration error:", error);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
   }
 }
 
@@ -86,7 +101,9 @@ export async function login(req, res) {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return res.status(400).json({ status: "error", message: "Email and password are required" });
+    return res
+      .status(400)
+      .json({ status: "error", message: "Email and password are required" });
   }
 
   try {
@@ -94,26 +111,36 @@ export async function login(req, res) {
       `SELECT u.*, r.name as role_name FROM users u 
        JOIN roles r ON u.role_id = r.id 
        WHERE u.email = ? AND u.deleted_at IS NULL`,
-      [email]
+      [email],
     );
 
     const users = rows;
     if (users.length === 0) {
-      return res.status(401).json({ status: "error", message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid credentials" });
     }
 
     const user = users[0];
 
     if (user.status !== "active") {
-      return res.status(403).json({ status: "error", message: `Your account is ${user.status}` });
+      return res
+        .status(403)
+        .json({ status: "error", message: `Your account is ${user.status}` });
     }
 
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
     if (!passwordMatch) {
-      return res.status(401).json({ status: "error", message: "Invalid credentials" });
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid credentials" });
     }
 
-    const payload = { userId: user.id, role: user.role_name, email: user.email };
+    const payload = {
+      userId: user.id,
+      role: user.role_name,
+      email: user.email,
+    };
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
@@ -121,7 +148,7 @@ export async function login(req, res) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     await pool.query(
       "INSERT INTO refresh_tokens (id, user_id, token, expires_at) VALUES (?, ?, ?, ?)",
-      [tokenId, user.id, refreshToken, expiresAt]
+      [tokenId, user.id, refreshToken, expiresAt],
     );
 
     return res.status(200).json({
@@ -136,13 +163,15 @@ export async function login(req, res) {
           last_name: user.last_name,
           email: user.email,
           phone: user.phone,
-          role: user.role_name
-        }
-      }
+          role: user.role_name,
+        },
+      },
     });
   } catch (error) {
     console.error("Login error:", error);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
   }
 }
 
@@ -150,7 +179,9 @@ export async function sendOTP(req, res) {
   const { phone, purpose = "login" } = req.body;
 
   if (!phone) {
-    return res.status(400).json({ status: "error", message: "Phone number is required" });
+    return res
+      .status(400)
+      .json({ status: "error", message: "Phone number is required" });
   }
 
   try {
@@ -159,19 +190,23 @@ export async function sendOTP(req, res) {
 
     await pool.query(
       "INSERT INTO otp_verifications (phone, otp_code, purpose, expires_at) VALUES (?, ?, ?, ?)",
-      [phone, code, purpose, expiresAt]
+      [phone, code, purpose, expiresAt],
     );
 
-    console.log(`[SMS Gateway Mock] Dispatched OTP ${code} to ${phone} for purpose: ${purpose}`);
+    console.log(
+      `[SMS Gateway Mock] Dispatched OTP ${code} to ${phone} for purpose: ${purpose}`,
+    );
 
     return res.status(200).json({
       status: "success",
       message: "OTP sent successfully (Simulated)",
-      code: process.env.NODE_ENV === "development" ? code : undefined
+      code: process.env.NODE_ENV === "development" ? code : undefined,
     });
   } catch (error) {
     console.error("Send OTP error:", error);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
   }
 }
 
@@ -179,7 +214,9 @@ export async function verifyOTP(req, res) {
   const { phone, code } = req.body;
 
   if (!phone || !code) {
-    return res.status(400).json({ status: "error", message: "Phone and OTP code are required" });
+    return res
+      .status(400)
+      .json({ status: "error", message: "Phone and OTP code are required" });
   }
 
   try {
@@ -187,23 +224,28 @@ export async function verifyOTP(req, res) {
       `SELECT * FROM otp_verifications 
        WHERE phone = ? AND otp_code = ? AND is_used = FALSE AND expires_at > NOW()
        ORDER BY created_at DESC LIMIT 1`,
-      [phone, code]
+      [phone, code],
     );
 
     const otps = rows;
     if (otps.length === 0) {
-      return res.status(400).json({ status: "error", message: "Invalid or expired OTP" });
+      return res
+        .status(400)
+        .json({ status: "error", message: "Invalid or expired OTP" });
     }
 
     const otpRecord = otps[0];
 
-    await pool.query("UPDATE otp_verifications SET is_used = TRUE WHERE id = ?", [otpRecord.id]);
+    await pool.query(
+      "UPDATE otp_verifications SET is_used = TRUE WHERE id = ?",
+      [otpRecord.id],
+    );
 
     const [userRows] = await pool.query(
       `SELECT u.*, r.name as role_name FROM users u 
        JOIN roles r ON u.role_id = r.id 
        WHERE u.phone = ? AND u.deleted_at IS NULL`,
-      [phone]
+      [phone],
     );
 
     const users = userRows;
@@ -220,13 +262,13 @@ export async function verifyOTP(req, res) {
         await connection.query(
           `INSERT INTO users (id, role_id, first_name, last_name, email, phone, is_verified) 
            VALUES (?, ?, 'OTP', 'User', ?, ?, TRUE)`,
-          [userId, roleId, `otp_${phone}@temporary.com`, phone]
+          [userId, roleId, `otp_${phone}@temporary.com`, phone],
         );
 
         const walletId = crypto.randomUUID();
         await connection.query(
           'INSERT INTO wallets (id, user_id, balance, currency) VALUES (?, ?, 0.00, "INR")',
-          [walletId, userId]
+          [walletId, userId],
         );
 
         await connection.commit();
@@ -241,7 +283,7 @@ export async function verifyOTP(req, res) {
         `SELECT u.*, r.name as role_name FROM users u 
          JOIN roles r ON u.role_id = r.id 
          WHERE u.id = ?`,
-        [userId]
+        [userId],
       );
       user = newUserRows[0];
     } else {
@@ -249,10 +291,16 @@ export async function verifyOTP(req, res) {
     }
 
     if (user.status !== "active") {
-      return res.status(403).json({ status: "error", message: `Your account is ${user.status}` });
+      return res
+        .status(403)
+        .json({ status: "error", message: `Your account is ${user.status}` });
     }
 
-    const payload = { userId: user.id, role: user.role_name, email: user.email };
+    const payload = {
+      userId: user.id,
+      role: user.role_name,
+      email: user.email,
+    };
     const accessToken = generateAccessToken(payload);
     const refreshToken = generateRefreshToken(payload);
 
@@ -260,7 +308,7 @@ export async function verifyOTP(req, res) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     await pool.query(
       "INSERT INTO refresh_tokens (id, user_id, token, expires_at) VALUES (?, ?, ?, ?)",
-      [tokenId, user.id, refreshToken, expiresAt]
+      [tokenId, user.id, refreshToken, expiresAt],
     );
 
     return res.status(200).json({
@@ -275,13 +323,15 @@ export async function verifyOTP(req, res) {
           last_name: user.last_name,
           email: user.email,
           phone: user.phone,
-          role: user.role_name
-        }
-      }
+          role: user.role_name,
+        },
+      },
     });
   } catch (error) {
     console.error("Verify OTP error:", error);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
   }
 }
 
@@ -289,7 +339,9 @@ export async function refreshToken(req, res) {
   const { token } = req.body;
 
   if (!token) {
-    return res.status(400).json({ status: "error", message: "Refresh token is required" });
+    return res
+      .status(400)
+      .json({ status: "error", message: "Refresh token is required" });
   }
 
   try {
@@ -298,26 +350,34 @@ export async function refreshToken(req, res) {
        JOIN users u ON rt.user_id = u.id
        JOIN roles r ON u.role_id = r.id
        WHERE rt.token = ? AND rt.is_revoked = FALSE AND rt.expires_at > NOW()`,
-      [token]
+      [token],
     );
 
     const tokens = rows;
     if (tokens.length === 0) {
-      return res.status(403).json({ status: "error", message: "Invalid or expired refresh token" });
+      return res
+        .status(403)
+        .json({ status: "error", message: "Invalid or expired refresh token" });
     }
 
     const dbToken = tokens[0];
-    const payload = { userId: dbToken.user_id, role: dbToken.role_name, email: dbToken.email };
+    const payload = {
+      userId: dbToken.user_id,
+      role: dbToken.role_name,
+      email: dbToken.email,
+    };
     const accessToken = generateAccessToken(payload);
 
     return res.status(200).json({
       status: "success",
       message: "Token refreshed successfully",
-      data: { accessToken }
+      data: { accessToken },
     });
   } catch (error) {
     console.error("Refresh token error:", error);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
   }
 }
 
@@ -325,15 +385,24 @@ export async function logout(req, res) {
   const { token } = req.body;
 
   if (!token) {
-    return res.status(400).json({ status: "error", message: "Token is required" });
+    return res
+      .status(400)
+      .json({ status: "error", message: "Token is required" });
   }
 
   try {
-    await pool.query("UPDATE refresh_tokens SET is_revoked = TRUE WHERE token = ?", [token]);
-    return res.status(200).json({ status: "success", message: "Logged out successfully" });
+    await pool.query(
+      "UPDATE refresh_tokens SET is_revoked = TRUE WHERE token = ?",
+      [token],
+    );
+    return res
+      .status(200)
+      .json({ status: "success", message: "Logged out successfully" });
   } catch (error) {
     console.error("Logout error:", error);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
   }
 }
 
@@ -346,23 +415,27 @@ export async function getMe(req, res) {
     const [rows] = await pool.query(
       `SELECT id, first_name, last_name, email, phone, status, is_verified, created_at 
        FROM users WHERE id = ?`,
-      [req.user.userId]
+      [req.user.userId],
     );
 
     const users = rows;
     if (users.length === 0) {
-      return res.status(404).json({ status: "error", message: "User not found" });
+      return res
+        .status(404)
+        .json({ status: "error", message: "User not found" });
     }
 
     return res.status(200).json({
       status: "success",
       data: {
         ...users[0],
-        role: req.user.role
-      }
+        role: req.user.role,
+      },
     });
   } catch (error) {
     console.error("Get profile error:", error);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
   }
 }
