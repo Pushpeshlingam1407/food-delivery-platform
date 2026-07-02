@@ -512,7 +512,7 @@ CREATE INDEX idx_otp_verifications_lookup ON otp_verifications(phone, otp_code, 
 CREATE TABLE refresh_tokens (
     id VARCHAR(36) PRIMARY KEY,
     user_id VARCHAR(36) NOT NULL,
-    token VARCHAR(255) NOT NULL UNIQUE,
+    token VARCHAR(512) NOT NULL UNIQUE,
     expires_at TIMESTAMP NOT NULL,
     is_revoked BOOLEAN DEFAULT FALSE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -526,7 +526,7 @@ CREATE TABLE device_tokens (
     id VARCHAR(36) PRIMARY KEY,
     user_id VARCHAR(36) NOT NULL,
     device_type ENUM('android', 'ios', 'web') NOT NULL,
-    token VARCHAR(255) NOT NULL UNIQUE,
+    token VARCHAR(512) NOT NULL UNIQUE,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
