@@ -1,0 +1,465 @@
+import { Request, Response } from "express";
+import bcrypt from "bcryptjs";
+import crypto from "crypto";
+import pool from "../config/db.js";
+import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
+
+// Helper to query roles
+async function getRoleIdByName(name: string): Promise<number | null> {
+  const [rows] = await pool.query("SELECT id FROM roles WHERE name = ?", [
+    name,
+  ]);
+  const roles = rows as any[];
+  return roles.length > 0 ? roles[0].id : null;
+}
+
+export async function register(req: Request, res: Response) {
+  const {
+    first_name,
+    last_name,
+    email,
+    phone,
+    password,
+    role = "customer",
+  } = req.body;
+
+  if (!first_name || !last_name || !email || !phone || !password) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "All fields are required" });
+  }
+
+  try {
+    // 1. Get role_id
+    const roleId = await getRoleIdByName(role);
+    if (!roleId) {
+      return res
+        .status(400)
+        .json({ status: "error", message: `Invalid role specified: ${role}` });
+    }
+
+    // 2. Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const userId = crypto.randomUUID();
+
+    // 3. Insert user inside transaction
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+
+      // Check if user already exists
+      const [existingUsers] = await connection.query(
+        "SELECT id FROM users WHERE email = ? OR phone = ?",
+        [email, phone],
+      );
+      if ((existingUsers as any[]).length > 0) {
+        connection.release();
+        return res.status(409).json({
+          status: "error",
+          message: "User with this email or phone number already exists",
+        });
+      }
+
+      await connection.query(
+        `INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, is_verified) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, TRUE)`,
+        [userId, roleId, first_name, last_name, email, phone, hashedPassword],
+      );
+
+      // Create wallet for customers and delivery partners
+      if (role === "customer" || role === "delivery_partner") {
+        const walletId = crypto.randomUUID();
+        await connection.query(
+          'INSERT INTO wallets (id, user_id, balance, currency) VALUES (?, ?, 0.00, "INR")',
+          [walletId, userId],
+        );
+      }
+
+      // If delivery partner, create delivery_partner profile
+      if (role === "delivery_partner") {
+        await connection.query(
+          `INSERT INTO delivery_partners (id, vehicle_number, vehicle_type, license_number, is_online, status) 
+           VALUES (?, 'PENDING', 'bike', 'PENDING', FALSE, 'idle')`,
+          [userId],
+        );
+      }
+
+      await connection.commit();
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
+
+    return res.status(201).json({
+      status: "success",
+      message: "User registered successfully",
+      data: { userId, first_name, last_name, email, phone, role },
+    });
+  } catch (error: any) {
+    console.error("Registration error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function login(req: Request, res: Response) {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Email and password are required" });
+  }
+
+  try {
+    // Get user with role name
+    const [rows] = await pool.query(
+      `SELECT u.*, r.name as role_name FROM users u 
+       JOIN roles r ON u.role_id = r.id 
+       WHERE u.email = ? AND u.deleted_at IS NULL`,
+      [email],
+    );
+
+    const users = rows as any[];
+    if (users.length === 0) {
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid credentials" });
+    }
+
+    const user = users[0];
+
+    if (user.status !== "active") {
+      return res
+        .status(403)
+        .json({ status: "error", message: `Your account is ${user.status}` });
+    }
+
+    // Verify Password
+    const passwordMatch = await bcrypt.compare(password, user.password_hash);
+    if (!passwordMatch) {
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid credentials" });
+    }
+
+    // Generate tokens
+    const payload = {
+      userId: user.id,
+      role: user.role_name,
+      email: user.email,
+    };
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
+    // Save refresh token to DB
+    const tokenId = crypto.randomUUID();
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    await pool.query(
+      "INSERT INTO refresh_tokens (id, user_id, token, expires_at) VALUES (?, ?, ?, ?)",
+      [tokenId, user.id, refreshToken, expiresAt],
+    );
+
+    return res.status(200).json({
+      status: "success",
+      message: "Login successful",
+      data: {
+        accessToken,
+        refreshToken,
+        user: {
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          phone: user.phone,
+          role: user.role_name,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Login error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function sendOTP(req: Request, res: Response) {
+  const { phone, purpose = "login" } = req.body;
+
+  if (!phone) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Phone number is required" });
+  }
+
+  try {
+    // Generate a 6-digit code
+    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const expiresAt = new Date(Date.now() + 5 * 60 * 1000); // 5 mins expiry
+
+    // Save OTP to DB
+    await pool.query(
+      "INSERT INTO otp_verifications (phone, otp_code, purpose, expires_at) VALUES (?, ?, ?, ?)",
+      [phone, code, purpose, expiresAt],
+    );
+
+    // Simulated SMS dispatch
+    console.log(
+      `[SMS Gateway Mock] Dispatched OTP ${code} to ${phone} for purpose: ${purpose}`,
+    );
+
+    return res.status(200).json({
+      status: "success",
+      message: "OTP sent successfully (Simulated)",
+      // Return code in development for testing convenience
+      code: process.env.NODE_ENV === "development" ? code : undefined,
+    });
+  } catch (error) {
+    console.error("Send OTP error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function verifyOTP(req: Request, res: Response) {
+  const { phone, code } = req.body;
+
+  if (!phone || !code) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Phone and OTP code are required" });
+  }
+
+  try {
+    // Check code in DB
+    const [rows] = await pool.query(
+      `SELECT * FROM otp_verifications 
+       WHERE phone = ? AND otp_code = ? AND is_used = FALSE AND expires_at > NOW()
+       ORDER BY created_at DESC LIMIT 1`,
+      [phone, code],
+    );
+
+    const otps = rows as any[];
+    if (otps.length === 0) {
+      return res
+        .status(400)
+        .json({ status: "error", message: "Invalid or expired OTP" });
+    }
+
+    const otpRecord = otps[0];
+
+    // Mark OTP as used
+    await pool.query(
+      "UPDATE otp_verifications SET is_used = TRUE WHERE id = ?",
+      [otpRecord.id],
+    );
+
+    // Check if user exists
+    const [userRows] = await pool.query(
+      `SELECT u.*, r.name as role_name FROM users u 
+       JOIN roles r ON u.role_id = r.id 
+       WHERE u.phone = ? AND u.deleted_at IS NULL`,
+      [phone],
+    );
+
+    const users = userRows as any[];
+    let user;
+
+    if (users.length === 0) {
+      // Auto-signup as customer if user doesn't exist
+      const userId = crypto.randomUUID();
+      const roleId = await getRoleIdByName("customer");
+
+      const connection = await pool.getConnection();
+      try {
+        await connection.beginTransaction();
+
+        await connection.query(
+          `INSERT INTO users (id, role_id, first_name, last_name, email, phone, is_verified) 
+           VALUES (?, ?, 'OTP', 'User', ?, ?, TRUE)`,
+          [userId, roleId, `otp_${phone}@temporary.com`, phone],
+        );
+
+        const walletId = crypto.randomUUID();
+        await connection.query(
+          'INSERT INTO wallets (id, user_id, balance, currency) VALUES (?, ?, 0.00, "INR")',
+          [walletId, userId],
+        );
+
+        await connection.commit();
+      } catch (err) {
+        await connection.rollback();
+        throw err;
+      } finally {
+        connection.release();
+      }
+
+      // Fetch newly created user
+      const [newUserRows] = await pool.query(
+        `SELECT u.*, r.name as role_name FROM users u 
+         JOIN roles r ON u.role_id = r.id 
+         WHERE u.id = ?`,
+        [userId],
+      );
+      user = (newUserRows as any[])[0];
+    } else {
+      user = users[0];
+    }
+
+    if (user.status !== "active") {
+      return res
+        .status(403)
+        .json({ status: "error", message: `Your account is ${user.status}` });
+    }
+
+    // Generate tokens
+    const payload = {
+      userId: user.id,
+      role: user.role_name,
+      email: user.email,
+    };
+    const accessToken = generateAccessToken(payload);
+    const refreshToken = generateRefreshToken(payload);
+
+    // Save refresh token
+    const tokenId = crypto.randomUUID();
+    const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+    await pool.query(
+      "INSERT INTO refresh_tokens (id, user_id, token, expires_at) VALUES (?, ?, ?, ?)",
+      [tokenId, user.id, refreshToken, expiresAt],
+    );
+
+    return res.status(200).json({
+      status: "success",
+      message: "OTP verified successfully",
+      data: {
+        accessToken,
+        refreshToken,
+        user: {
+          id: user.id,
+          first_name: user.first_name,
+          last_name: user.last_name,
+          email: user.email,
+          phone: user.phone,
+          role: user.role_name,
+        },
+      },
+    });
+  } catch (error) {
+    console.error("Verify OTP error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function refreshToken(req: Request, res: Response) {
+  const { token } = req.body;
+
+  if (!token) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Refresh token is required" });
+  }
+
+  try {
+    const [rows] = await pool.query(
+      `SELECT rt.*, u.email, r.name as role_name FROM refresh_tokens rt
+       JOIN users u ON rt.user_id = u.id
+       JOIN roles r ON u.role_id = r.id
+       WHERE rt.token = ? AND rt.is_revoked = FALSE AND rt.expires_at > NOW()`,
+      [token],
+    );
+
+    const tokens = rows as any[];
+    if (tokens.length === 0) {
+      return res
+        .status(403)
+        .json({ status: "error", message: "Invalid or expired refresh token" });
+    }
+
+    const dbToken = tokens[0];
+
+    const payload = {
+      userId: dbToken.user_id,
+      role: dbToken.role_name,
+      email: dbToken.email,
+    };
+    const accessToken = generateAccessToken(payload);
+
+    return res.status(200).json({
+      status: "success",
+      message: "Token refreshed successfully",
+      data: { accessToken },
+    });
+  } catch (error) {
+    console.error("Refresh token error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function logout(req: Request, res: Response) {
+  const { token } = req.body;
+
+  if (!token) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Token is required" });
+  }
+
+  try {
+    await pool.query(
+      "UPDATE refresh_tokens SET is_revoked = TRUE WHERE token = ?",
+      [token],
+    );
+    return res
+      .status(200)
+      .json({ status: "success", message: "Logged out successfully" });
+  } catch (error) {
+    console.error("Logout error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function getMe(req: Request, res: Response) {
+  if (!req.user) {
+    return res.status(401).json({ status: "error", message: "Unauthorized" });
+  }
+
+  try {
+    const [rows] = await pool.query(
+      `SELECT id, first_name, last_name, email, phone, status, is_verified, created_at 
+       FROM users WHERE id = ?`,
+      [req.user.userId],
+    );
+
+    const users = rows as any[];
+    if (users.length === 0) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "User not found" });
+    }
+
+    return res.status(200).json({
+      status: "success",
+      data: {
+        ...users[0],
+        role: req.user.role,
+      },
+    });
+  } catch (error) {
+    console.error("Get profile error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
