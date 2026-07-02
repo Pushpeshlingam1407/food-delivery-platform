@@ -2,6 +2,8 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import authRoutes from "./routes/authRoutes.js";
+import restaurantRoutes from "./routes/restaurantRoutes.js";
+import favoriteRoutes from "./routes/favoriteRoutes.js";
 
 const app = express();
 
@@ -13,6 +15,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes Mount
 app.use("/api/auth", authRoutes);
+app.use("/api/restaurants", restaurantRoutes);
+app.use("/api/favorites", favoriteRoutes);
 
 // Health Check API
 app.get("/health", (req, res) => {
