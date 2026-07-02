@@ -7,6 +7,10 @@ import favoriteRoutes from "./routes/favoriteRoutes.js";
 import cartRoutes from "./routes/cartRoutes.js";
 import orderRoutes from "./routes/orderRoutes.js";
 import paymentRoutes from "./routes/paymentRoutes.js";
+import adminRoutes from "./routes/adminRoutes.js";
+import walletRoutes from "./routes/walletRoutes.js";
+import reportRoutes from "./routes/reportRoutes.js";
+import ratingRoutes from "./routes/ratingRoutes.js";
 
 const app = express();
 
@@ -21,6 +25,10 @@ app.use("/api/favorites", favoriteRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/payments", paymentRoutes);
+app.use("/api/admin", adminRoutes);
+app.use("/api/wallets", walletRoutes);
+app.use("/api/reports", reportRoutes);
+app.use("/api/ratings", ratingRoutes);
 
 app.get("/health", (req, res) => {
   res.status(200).json({
