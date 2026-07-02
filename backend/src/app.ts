@@ -4,6 +4,7 @@ import helmet from "helmet";
 import authRoutes from "./routes/authRoutes.js";
 import restaurantRoutes from "./routes/restaurantRoutes.js";
 import favoriteRoutes from "./routes/favoriteRoutes.js";
+import cartRoutes from "./routes/cartRoutes.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/api/auth", authRoutes);
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/favorites", favoriteRoutes);
+app.use("/api/cart", cartRoutes);
 
 // Health Check API
 app.get("/health", (req, res) => {
