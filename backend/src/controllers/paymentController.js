@@ -13,7 +13,6 @@ export async function verifyPayment(req, res) {
   }
 
   try {
-    // 1. Fetch payment record
     const [rows] = await pool.query(
       "SELECT * FROM payments WHERE order_id = ?",
       [orderId],
@@ -31,13 +30,11 @@ export async function verifyPayment(req, res) {
     try {
       await connection.beginTransaction();
 
-      // 2. Update payment status to completed
       await connection.query(
         'UPDATE payments SET payment_status = "completed" WHERE id = ?',
         [payment.id],
       );
 
-      // 3. Create payment transaction entry
       const txId = crypto.randomUUID();
       await connection.query(
         `INSERT INTO payment_transactions (id, payment_id, gateway_transaction_id, gateway_response, status) 
@@ -58,7 +55,6 @@ export async function verifyPayment(req, res) {
       connection.release();
     }
 
-    // Trigger websocket notify
     notifyOrderStatus(orderId, "accepted");
 
     return res.status(200).json({

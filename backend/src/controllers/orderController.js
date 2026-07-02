@@ -17,7 +17,6 @@ export async function placeOrder(req, res) {
   }
 
   try {
-    // 1. Fetch Cart Items & Totals (similar to getCart controller)
     const [cartRows] = await pool.query(
       "SELECT id, restaurant_id FROM carts WHERE user_id = ?",
       [req.user.userId],
@@ -55,7 +54,6 @@ export async function placeOrder(req, res) {
       itemTotal += item.price * item.quantity;
     }
 
-    // Load checkout system settings
     const [settingsRows] = await pool.query(
       "SELECT key_name, value FROM system_settings",
     );
@@ -101,7 +99,6 @@ export async function placeOrder(req, res) {
       (itemTotal + deliveryCharges + taxAmount - discountAmount).toFixed(2),
     );
 
-    // 2. Perform Order transaction checks
     const orderId = crypto.randomUUID();
     const paymentId = crypto.randomUUID();
 
@@ -109,7 +106,6 @@ export async function placeOrder(req, res) {
     try {
       await connection.beginTransaction();
 
-      // Verify stock level first
       for (const item of items) {
         const [invRows] = await connection.query(
           "SELECT available_quantity, unlimited FROM inventory WHERE menu_id = ? FOR UPDATE",
@@ -128,7 +124,7 @@ export async function placeOrder(req, res) {
             message: `Item stock exhausted. Not enough quantity available for order.`,
           });
         }
-        // Decrement stock
+
         if (!inv.unlimited) {
           await connection.query(
             "UPDATE inventory SET available_quantity = available_quantity - ? WHERE menu_id = ?",
@@ -137,7 +133,6 @@ export async function placeOrder(req, res) {
         }
       }
 
-      // Check wallet balance if paymentMethod is wallet
       if (paymentMethod === "wallet") {
         const [walletRows] = await connection.query(
           "SELECT id, balance FROM wallets WHERE user_id = ? FOR UPDATE",
@@ -153,12 +148,12 @@ export async function placeOrder(req, res) {
             message: "Insufficient wallet balance for this purchase",
           });
         }
-        // Deduct balance
+
         await connection.query(
           "UPDATE wallets SET balance = balance - ? WHERE user_id = ?",
           [totalPayable, req.user.userId],
         );
-        // Log wallet transaction
+
         const txId = crypto.randomUUID();
         await connection.query(
           `INSERT INTO wallet_transactions (id, wallet_id, amount, type, description, reference_type, reference_id) 
@@ -167,7 +162,6 @@ export async function placeOrder(req, res) {
         );
       }
 
-      // 3. Save Order details
       await connection.query(
         `INSERT INTO orders (id, user_id, restaurant_id, delivery_address_id, status, item_total, delivery_charges, tax_amount, discount_amount, total_payable, coupon_code, notes) 
          VALUES (?, ?, ?, ?, 'placed', ?, ?, ?, ?, ?, ?, ?)`,
@@ -186,7 +180,6 @@ export async function placeOrder(req, res) {
         ],
       );
 
-      // 4. Move items to order_items
       for (const item of items) {
         const orderItemId = crypto.randomUUID();
         await connection.query(
@@ -204,7 +197,6 @@ export async function placeOrder(req, res) {
         );
       }
 
-      // 5. Create Payment record
       const paymentStatus =
         paymentMethod === "wallet" ? "completed" : "pending";
       await connection.query(
@@ -212,7 +204,6 @@ export async function placeOrder(req, res) {
         [paymentId, orderId, paymentMethod, paymentStatus, totalPayable],
       );
 
-      // 6. Clear shopping cart
       await connection.query("DELETE FROM cart_items WHERE cart_id = ?", [
         cart.id,
       ]);
@@ -283,7 +274,6 @@ export async function getOrders(req, res) {
       `;
       params.push(req.user.userId);
     } else {
-      // Admin
       query = `
         SELECT o.*, r.name as restaurant_name 
         FROM orders o
@@ -328,7 +318,6 @@ export async function getOrderById(req, res) {
 
     const order = orders[0];
 
-    // Fetch items
     const [itemRows] = await pool.query(
       `SELECT oi.*, m.name as item_name 
        FROM order_items oi
@@ -358,7 +347,7 @@ export async function updateOrderStatus(req, res) {
   }
 
   const { id } = req.params;
-  const { status, driverId } = req.body; // status: ENUM
+  const { status, driverId } = req.body;
 
   if (!status) {
     return res
@@ -367,7 +356,6 @@ export async function updateOrderStatus(req, res) {
   }
 
   try {
-    // 1. Fetch current order state
     const [rows] = await pool.query(
       `SELECT o.*, r.owner_id, r.commission_rate 
        FROM orders o 
@@ -384,7 +372,6 @@ export async function updateOrderStatus(req, res) {
 
     const order = orders[0];
 
-    // Ownership and validation updates depending on status values
     let acceptedAt = order.accepted_at;
     let deliveredAt = order.delivered_at;
     let assignedDriverId = order.delivery_partner_id;
@@ -410,9 +397,8 @@ export async function updateOrderStatus(req, res) {
           .json({ status: "error", message: "Forbidden: Access denied" });
       }
     } else if (status === "out_for_delivery") {
-      // Driver accepts / starts transit
       assignedDriverId = req.user.userId;
-      // Mark driver status in delivery_partners
+
       await pool.query(
         'UPDATE delivery_partners SET status = "delivering" WHERE id = ?',
         [req.user.userId],
@@ -428,7 +414,7 @@ export async function updateOrderStatus(req, res) {
         });
       }
       deliveredAt = new Date();
-      // Free driver status
+
       await pool.query(
         'UPDATE delivery_partners SET status = "idle" WHERE id = ?',
         [req.user.userId],
@@ -439,7 +425,6 @@ export async function updateOrderStatus(req, res) {
     try {
       await connection.beginTransaction();
 
-      // Update order status
       await connection.query(
         `UPDATE orders 
          SET status = ?, accepted_at = ?, delivered_at = ?, delivery_partner_id = ? 
@@ -447,9 +432,7 @@ export async function updateOrderStatus(req, res) {
         [status, acceptedAt, deliveredAt, assignedDriverId, id],
       );
 
-      // On delivery success, compute restaurant and driver payouts
       if (status === "delivered") {
-        // Calculate restaurant earnings
         const commRate = parseFloat(order.commission_rate);
         const commAmt = parseFloat(
           (parseFloat(order.item_total) * (commRate / 100)).toFixed(2),
@@ -472,7 +455,6 @@ export async function updateOrderStatus(req, res) {
           ],
         );
 
-        // Calculate delivery earnings
         if (assignedDriverId) {
           const devEarningId = crypto.randomUUID();
           const deliveryFee = parseFloat(order.delivery_charges);
@@ -482,7 +464,6 @@ export async function updateOrderStatus(req, res) {
             [devEarningId, assignedDriverId, id, deliveryFee, deliveryFee],
           );
 
-          // Credit driver wallet balance
           await connection.query(
             "UPDATE wallets SET balance = balance + ? WHERE user_id = ?",
             [deliveryFee, assignedDriverId],
@@ -511,7 +492,6 @@ export async function updateOrderStatus(req, res) {
       connection.release();
     }
 
-    // Emit live WebSocket notification
     notifyOrderStatus(id, status);
 
     return res.status(200).json({

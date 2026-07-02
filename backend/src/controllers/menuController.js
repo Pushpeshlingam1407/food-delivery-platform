@@ -10,8 +10,6 @@ async function verifyRestaurantOwner(userId, restaurantId) {
   return restaurants.length > 0 && restaurants[0].owner_id === userId;
 }
 
-// ==================== MENU CATEGORIES ====================
-
 export async function createMenuCategory(req, res) {
   if (!req.user) {
     return res.status(401).json({ status: "error", message: "Unauthorized" });
@@ -180,8 +178,6 @@ export async function deleteMenuCategory(req, res) {
       .json({ status: "error", message: "Internal server error" });
   }
 }
-
-// ==================== MENU ITEMS ====================
 
 export async function createMenuItem(req, res) {
   if (!req.user) {

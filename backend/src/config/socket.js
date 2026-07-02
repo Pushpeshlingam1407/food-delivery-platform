@@ -13,17 +13,14 @@ export function initSocket(server) {
   io.on("connection", (socket) => {
     console.log(`Socket Client connected: ${socket.id}`);
 
-    // Join order room for live tracking updates
     socket.on("join_order", (orderId) => {
       socket.join(`order_${orderId}`);
       console.log(`Socket ${socket.id} joined tracking room: order_${orderId}`);
     });
 
-    // Real-time driver location stream
     socket.on(
       "driver_location",
       ({ driverId, orderId, latitude, longitude, bearing }) => {
-        // Broadcast location change to all tracking listeners in the order room
         io.to(`order_${orderId}`).emit("location_update", {
           driverId,
           latitude,
@@ -46,7 +43,6 @@ export function getIO() {
   return io;
 }
 
-// Helper to notify status changes to customers
 export function notifyOrderStatus(orderId, status) {
   if (io) {
     io.to(`order_${orderId}`).emit("status_update", {
