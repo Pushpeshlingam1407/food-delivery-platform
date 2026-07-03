@@ -1,6 +1,6 @@
-import React from 'react';
-import { Toaster } from 'sonner';
-import { AppRoutes } from './routes/AppRoutes';
+import React from "react";
+import { Toaster } from "sonner";
+import { AppRoutes } from "./routes/AppRoutes";
 
 const App: React.FC = () => {
   return (
