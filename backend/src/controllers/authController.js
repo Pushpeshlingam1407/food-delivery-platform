@@ -462,12 +462,10 @@ export async function registerDeviceToken(req, res) {
       [id, req.user.userId, device_type, token, req.user.userId, device_type],
     );
 
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Device token registered successfully",
-      });
+    return res.status(200).json({
+      status: "success",
+      message: "Device token registered successfully",
+    });
   } catch (error) {
     console.error("Register device token error:", error);
     return res
