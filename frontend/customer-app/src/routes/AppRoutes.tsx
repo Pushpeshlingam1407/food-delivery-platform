@@ -21,12 +21,14 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await api.get(`/restaurants?search=${encodeURIComponent(searchQuery)}`);
-        if (response.data.status === 'success') {
+        const response = await api.get(
+          `/restaurants?search=${encodeURIComponent(searchQuery)}`,
+        );
+        if (response.data.status === "success") {
           setRestaurants(response.data.data);
         }
       } catch (err) {
-        console.error('Fetch restaurants error:', err);
+        console.error("Fetch restaurants error:", err);
       }
     };
     fetchRestaurants();
@@ -132,6 +134,7 @@ export const AppRoutes: React.FC = () => {
     [itemId: string]: { name: string; price: number; qty: number };
   }>({});
   const [cartOpen, setCartOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     setUserEmail(localStorage.getItem("userEmail"));
@@ -277,9 +280,11 @@ export const AppRoutes: React.FC = () => {
         userEmail={userEmail}
         onLogout={handleLogout}
         onCartClick={() => setCartOpen(true)}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home searchQuery={searchQuery} />} />
         <Route
           path="/restaurant/:id"
           element={

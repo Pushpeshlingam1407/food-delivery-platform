@@ -15,7 +15,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   userEmail = null,
   onLogout,
   onCartClick,
-  searchQuery = '',
+  searchQuery = "",
   onSearchChange,
 }) => {
   return (
@@ -96,11 +96,11 @@ export const Navbar: React.FC<NavbarProps> = ({
           value={searchQuery}
           onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
           style={{
-            border: 'none',
-            outline: 'none',
-            width: '100%',
-            fontFamily: 'var(--font-apple)',
-            fontSize: '0.9rem',
+            border: "none",
+            outline: "none",
+            width: "100%",
+            fontFamily: "var(--font-apple)",
+            fontSize: "0.9rem",
           }}
         />
       </div>
