@@ -180,6 +180,21 @@ export async function placeOrder(req, res) {
         ],
       );
 
+      if (couponCode && discountAmount > 0 && couponRows.length > 0) {
+        const couponUsageId = crypto.randomUUID();
+        await connection.query(
+          `INSERT INTO coupon_usage (id, coupon_id, user_id, order_id, discount_applied) 
+           VALUES (?, ?, ?, ?, ?)`,
+          [
+            couponUsageId,
+            couponRows[0].id,
+            req.user.userId,
+            orderId,
+            discountAmount,
+          ],
+        );
+      }
+
       for (const item of items) {
         const orderItemId = crypto.randomUUID();
         await connection.query(
