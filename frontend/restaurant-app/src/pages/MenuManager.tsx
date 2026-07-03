@@ -36,18 +36,22 @@ export const MenuManager: React.FC = () => {
   useEffect(() => {
     const fetchMenuAndCategories = async () => {
       try {
+        const userId = localStorage.getItem("userId");
         const res = await api.get("/restaurants");
-        const restaurants = res.data.data;
-        if (restaurants.length > 0) {
-          const r = restaurants[0];
-          setRestaurantId(r.id);
+        const allRestaurants = res.data.data;
+        const myRestaurant = allRestaurants.find(
+          (r: any) => r.owner_id === userId,
+        );
 
-          const catRes = await api.get(`/restaurants/${r.id}`);
+        if (myRestaurant) {
+          setRestaurantId(myRestaurant.id);
+
+          const catRes = await api.get(`/restaurants/${myRestaurant.id}`);
           if (catRes.data.status === "success") {
             setCategories(catRes.data.data.categories || []);
           }
 
-          const menuRes = await api.get(`/menus/restaurant/${r.id}`);
+          const menuRes = await api.get(`/menus/restaurant/${myRestaurant.id}`);
           if (menuRes.data.status === "success") {
             setMenuItems(menuRes.data.data);
           }

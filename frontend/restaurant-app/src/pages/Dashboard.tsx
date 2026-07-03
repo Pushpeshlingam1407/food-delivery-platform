@@ -28,20 +28,25 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchRestaurantAndOrders = async () => {
       try {
-        // Fetch owner's restaurant profile
+        const userId = localStorage.getItem("userId");
+        // Fetch all restaurants and find the one owned by this user
         const res = await api.get("/restaurants");
-        // Let's search for owner restaurant
-        const restaurants = res.data.data;
-        if (restaurants.length > 0) {
-          const r = restaurants[0]; // Choose first owned
-          setRestaurantId(r.id);
-          setRestaurantStatus(r.status);
+        const allRestaurants = res.data.data;
+        const myRestaurant = allRestaurants.find(
+          (r: any) => r.owner_id === userId,
+        );
 
-          // Fetch orders
+        if (myRestaurant) {
+          setRestaurantId(myRestaurant.id);
+          setRestaurantStatus(myRestaurant.status);
+
+          // Fetch orders for this restaurant
           const ordersRes = await api.get(`/orders`);
           if (ordersRes.data.status === "success") {
             setOrders(
-              ordersRes.data.data.filter((o: any) => o.restaurant_id === r.id),
+              ordersRes.data.data.filter(
+                (o: any) => o.restaurant_id === myRestaurant.id,
+              ),
             );
           }
         }
