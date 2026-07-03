@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 
@@ -170,9 +170,23 @@ export const Login: React.FC = () => {
           </button>
         </form>
 
-        <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-          Don't have an account?{' '}
-          <Link to="/register" style={{ color: 'var(--accent-orange)', fontWeight: 600, textDecoration: 'none' }}>
+        <div
+          style={{
+            marginTop: "24px",
+            textAlign: "center",
+            fontSize: "0.9rem",
+            color: "var(--text-muted)",
+          }}
+        >
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            style={{
+              color: "var(--accent-orange)",
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
             Create one
           </Link>
         </div>

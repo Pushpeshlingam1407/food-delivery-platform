@@ -76,3 +76,15 @@ h3 {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(255, 90, 31, 0.35);
 }
+
+@keyframes shimmerPulse {
+  0% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0.6;
+  }
+}
