@@ -439,3 +439,39 @@ export async function getMe(req, res) {
       .json({ status: "error", message: "Internal server error" });
   }
 }
+
+export async function registerDeviceToken(req, res) {
+  if (!req.user) {
+    return res.status(401).json({ status: "error", message: "Unauthorized" });
+  }
+
+  const { device_type, token } = req.body;
+
+  if (!device_type || !token) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Device type and token are required" });
+  }
+
+  try {
+    const id = crypto.randomUUID();
+    await pool.query(
+      `INSERT INTO device_tokens (id, user_id, device_type, token) 
+       VALUES (?, ?, ?, ?) 
+       ON DUPLICATE KEY UPDATE user_id = ?, device_type = ?`,
+      [id, req.user.userId, device_type, token, req.user.userId, device_type],
+    );
+
+    return res
+      .status(200)
+      .json({
+        status: "success",
+        message: "Device token registered successfully",
+      });
+  } catch (error) {
+    console.error("Register device token error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
