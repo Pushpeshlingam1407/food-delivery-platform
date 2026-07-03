@@ -87,6 +87,7 @@ This document outlines all backend REST endpoints and Socket.IO real-time events
 
 - **POST `/api/auth/login`**: Login using driver credentials.
 - **GET `/api/auth/me`**: Fetches driver details.
+- **PUT `/api/delivery/status`**: Toggle online/offline state and update vehicle details.
 
 ### Delivery Job Management
 
@@ -94,7 +95,35 @@ This document outlines all backend REST endpoints and Socket.IO real-time events
 - **PUT `/api/orders/:id/status`**: Transition assigned order status.
   - **Payload `status: "out_for_delivery"`**: Picks up order from restaurant. Sets driver state to busy.
   - **Payload `status: "delivered"`**: Delivers order to customer. Triggers driver payout and credit transactions.
+- **POST `/api/delivery/location`**: Logs a GPS coordinate snapshot into the tracking database.
 
 ### Realtime Location Emitters (Socket.IO)
 
 - **Emit `driver_location` (Payload: `{ driverId, orderId, latitude, longitude, bearing }`)**: Emits coordinate streams, which the backend broadcasts to the customer's map.
+
+---
+
+## 4. Shared & Admin Endpoints
+
+### Address Management (Customer)
+
+- **GET `/api/addresses`**: Retrieve all saved delivery addresses.
+- **POST `/api/addresses`**: Create a new delivery address.
+- **PUT `/api/addresses/:id`**: Update address details or toggle active default state.
+- **DELETE `/api/addresses/:id`**: Soft-delete a saved address.
+
+### Notifications Feed (All Users)
+
+- **GET `/api/notifications`**: Retrieve user alert feed logs.
+- **PUT `/api/notifications/:id/read`**: Mark specific notification as read.
+
+### CMS Pages (Public & Admin)
+
+- **GET `/api/cms/page/:slug`**: Public route to retrieve policy contents by slug name.
+- **POST `/api/cms`**: Admin route to create new CMS pages.
+- **PUT `/api/cms/:id`**: Admin route to update page details.
+- **DELETE `/api/cms/:id`**: Admin route to delete a page.
+
+### Admin Refunds
+
+- **POST `/api/admin/refunds`**: Cancel order and automatically credit the refunded payment amount back to the customer's wallet ledger.
