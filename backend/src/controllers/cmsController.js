@@ -63,13 +63,11 @@ export async function createCmsPage(req, res) {
       ],
     );
 
-    return res
-      .status(201)
-      .json({
-        status: "success",
-        message: "CMS page created successfully",
-        data: { id, slug },
-      });
+    return res.status(201).json({
+      status: "success",
+      message: "CMS page created successfully",
+      data: { id, slug },
+    });
   } catch (error) {
     console.error("Create CMS page error:", error);
     return res

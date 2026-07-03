@@ -11,6 +11,11 @@ import adminRoutes from "./routes/adminRoutes.js";
 import walletRoutes from "./routes/walletRoutes.js";
 import reportRoutes from "./routes/reportRoutes.js";
 import ratingRoutes from "./routes/ratingRoutes.js";
+import addressRoutes from "./routes/addressRoutes.js";
+import notificationRoutes from "./routes/notificationRoutes.js";
+import deliveryRoutes from "./routes/deliveryRoutes.js";
+import cmsRoutes from "./routes/cmsRoutes.js";
+import refundRoutes from "./routes/refundRoutes.js";
 
 const app = express();
 
@@ -29,6 +34,11 @@ app.use("/api/admin", adminRoutes);
 app.use("/api/wallets", walletRoutes);
 app.use("/api/reports", reportRoutes);
 app.use("/api/ratings", ratingRoutes);
+app.use("/api/addresses", addressRoutes);
+app.use("/api/notifications", notificationRoutes);
+app.use("/api/delivery", deliveryRoutes);
+app.use("/api/cms", cmsRoutes);
+app.use("/api/admin/refunds", refundRoutes);
 
 app.get("/health", (req, res) => {
   res.status(200).json({

@@ -2,12 +2,10 @@ import pool from "../config/db.js";
 
 export async function toggleDriverStatus(req, res) {
   if (!req.user || req.user.role !== "delivery_partner") {
-    return res
-      .status(403)
-      .json({
-        status: "error",
-        message: "Forbidden: Delivery partner access required",
-      });
+    return res.status(403).json({
+      status: "error",
+      message: "Forbidden: Delivery partner access required",
+    });
   }
 
   const { is_online, vehicle_number, vehicle_type, license_number } = req.body;
@@ -50,13 +48,11 @@ export async function toggleDriverStatus(req, res) {
     if (driver.length === 0) {
       // Driver profile entry missing, let's create it
       if (!vehicle_number || !vehicle_type || !license_number) {
-        return res
-          .status(400)
-          .json({
-            status: "error",
-            message:
-              "Vehicle and license details are required to initialize profile",
-          });
+        return res.status(400).json({
+          status: "error",
+          message:
+            "Vehicle and license details are required to initialize profile",
+        });
       }
       await pool.query(
         `INSERT INTO delivery_partners (id, vehicle_number, vehicle_type, license_number, is_online, status) 
@@ -76,12 +72,10 @@ export async function toggleDriverStatus(req, res) {
       );
     }
 
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Delivery status updated successfully",
-      });
+    return res.status(200).json({
+      status: "success",
+      message: "Delivery status updated successfully",
+    });
   } catch (error) {
     console.error("Toggle driver status error:", error);
     return res
@@ -92,12 +86,10 @@ export async function toggleDriverStatus(req, res) {
 
 export async function logDriverLocation(req, res) {
   if (!req.user || req.user.role !== "delivery_partner") {
-    return res
-      .status(403)
-      .json({
-        status: "error",
-        message: "Forbidden: Delivery partner access required",
-      });
+    return res.status(403).json({
+      status: "error",
+      message: "Forbidden: Delivery partner access required",
+    });
   }
 
   const { latitude, longitude, bearing } = req.body;
@@ -115,12 +107,10 @@ export async function logDriverLocation(req, res) {
       [req.user.userId, latitude, longitude, bearing || null],
     );
 
-    return res
-      .status(201)
-      .json({
-        status: "success",
-        message: "Location coordinate logged successfully",
-      });
+    return res.status(201).json({
+      status: "success",
+      message: "Location coordinate logged successfully",
+    });
   } catch (error) {
     console.error("Log driver location error:", error);
     return res

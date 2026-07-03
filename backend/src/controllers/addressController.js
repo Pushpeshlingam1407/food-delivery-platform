@@ -91,13 +91,11 @@ export async function createAddress(req, res) {
       connection.release();
     }
 
-    return res
-      .status(201)
-      .json({
-        status: "success",
-        message: "Address created successfully",
-        data: { id: addressId },
-      });
+    return res.status(201).json({
+      status: "success",
+      message: "Address created successfully",
+      data: { id: addressId },
+    });
   } catch (error) {
     console.error("Create address error:", error);
     return res
