@@ -1,8 +1,8 @@
-import axios from "axios";
+import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
-const api = axios.create({
+const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     "Content-Type": "application/json",
@@ -11,9 +11,9 @@ const api = axios.create({
 
 // Interceptor to attach access token to requests
 api.interceptors.request.use(
-  (config) => {
+  (config: InternalAxiosRequestConfig) => {
     const token = localStorage.getItem("accessToken");
-    if (token) {
+    if (token && config.headers) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
@@ -44,12 +44,14 @@ api.interceptors.response.use(
           if (res.data.status === "success") {
             const { accessToken } = res.data.data;
             localStorage.setItem("accessToken", accessToken);
-            originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            if (originalRequest.headers) {
+              originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+            }
             return api(originalRequest);
           }
         } catch (refreshError) {
           console.error("Refresh token validation failed:", refreshError);
-          // Revoke credentials and force login redirect
+          // Clear active session and redirect
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
           window.location.href = "/login";
