@@ -11,12 +11,10 @@ export async function processRefund(req, res) {
   const { orderId, reason } = req.body;
 
   if (!orderId || !reason) {
-    return res
-      .status(400)
-      .json({
-        status: "error",
-        message: "Order ID and refund reason are required",
-      });
+    return res.status(400).json({
+      status: "error",
+      message: "Order ID and refund reason are required",
+    });
   }
 
   try {
@@ -38,22 +36,18 @@ export async function processRefund(req, res) {
       [orderId],
     );
     if (paymentRows.length === 0) {
-      return res
-        .status(404)
-        .json({
-          status: "error",
-          message: "Payment record not found for this order",
-        });
+      return res.status(404).json({
+        status: "error",
+        message: "Payment record not found for this order",
+      });
     }
 
     const payment = paymentRows[0];
     if (payment.payment_status !== "completed") {
-      return res
-        .status(400)
-        .json({
-          status: "error",
-          message: "Only fully completed payments can be refunded",
-        });
+      return res.status(400).json({
+        status: "error",
+        message: "Only fully completed payments can be refunded",
+      });
     }
 
     // 2. Perform Refund transaction
