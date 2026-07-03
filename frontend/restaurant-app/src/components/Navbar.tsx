@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { User, LogOut } from "lucide-react";
 
 interface NavbarProps {
@@ -55,8 +56,8 @@ export const Navbar: React.FC<NavbarProps> = ({
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-        <a
-          href="/"
+        <Link
+          to="/"
           style={{
             textDecoration: "none",
             color: "var(--text-slate)",
@@ -66,9 +67,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           }}
         >
           Orders Dashboard
-        </a>
-        <a
-          href="/menu"
+        </Link>
+        <Link
+          to="/menu"
           style={{
             textDecoration: "none",
             color: "var(--text-slate)",
@@ -78,7 +79,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           }}
         >
           Menu Manager
-        </a>
+        </Link>
 
         {onLogout && (
           <button

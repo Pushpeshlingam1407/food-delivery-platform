@@ -16,7 +16,9 @@ body {
 }
 
 /* Custom inputs, selection selectors, and layout elements */
-input, select, textarea {
+input,
+select,
+textarea {
   font-family: var(--font-apple);
 }
 

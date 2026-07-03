@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { ShoppingBag, User, Search, MapPin } from "lucide-react";
 
 interface NavbarProps {
@@ -165,8 +166,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
         ) : (
-          <a
-            href="/login"
+          <Link
+            to="/login"
             className="btn-premium"
             style={{
               textDecoration: "none",
@@ -175,7 +176,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
           >
             Sign In
-          </a>
+          </Link>
         )}
       </div>
     </nav>
