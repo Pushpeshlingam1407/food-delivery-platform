@@ -40,7 +40,7 @@ export const Login: React.FC = () => {
         );
 
         toast.success(`Welcome back, ${user.first_name}!`);
-        navigate("/");
+        window.location.href = "/";
       }
     } catch (error: any) {
       console.error(error);
