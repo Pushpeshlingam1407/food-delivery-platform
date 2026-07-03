@@ -5,12 +5,14 @@ interface NavbarProps {
   cartCount?: number;
   userEmail?: string | null;
   onLogout?: () => void;
+  onCartClick?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
   cartCount = 0,
   userEmail = null,
   onLogout,
+  onCartClick,
 }) => {
   return (
     <nav
@@ -99,7 +101,10 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Action items */}
       <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
-        <div style={{ position: "relative", cursor: "pointer" }}>
+        <div
+          style={{ position: "relative", cursor: "pointer" }}
+          onClick={onCartClick}
+        >
           <ShoppingBag size={20} color="var(--text-slate)" />
           {cartCount > 0 && (
             <span
