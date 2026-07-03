@@ -112,12 +112,10 @@ export async function requestPayout(req, res) {
   const { amount } = req.body;
 
   if (!amount || amount <= 0) {
-    return res
-      .status(400)
-      .json({
-        status: "error",
-        message: "Valid withdrawal amount is required",
-      });
+    return res.status(400).json({
+      status: "error",
+      message: "Valid withdrawal amount is required",
+    });
   }
 
   try {
@@ -134,12 +132,10 @@ export async function requestPayout(req, res) {
 
     const wallet = wallets[0];
     if (parseFloat(wallet.balance) < amount) {
-      return res
-        .status(400)
-        .json({
-          status: "error",
-          message: "Insufficient balance for withdrawal request",
-        });
+      return res.status(400).json({
+        status: "error",
+        message: "Insufficient balance for withdrawal request",
+      });
     }
 
     const txId = crypto.randomUUID();
@@ -166,12 +162,10 @@ export async function requestPayout(req, res) {
       connection.release();
     }
 
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Payout withdrawal completed successfully",
-      });
+    return res.status(200).json({
+      status: "success",
+      message: "Payout withdrawal completed successfully",
+    });
   } catch (error) {
     console.error("Request payout error:", error);
     return res

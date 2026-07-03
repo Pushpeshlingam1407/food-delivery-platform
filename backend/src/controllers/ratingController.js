@@ -34,21 +34,17 @@ export async function submitRating(req, res) {
     }
 
     if (orders[0].user_id !== req.user.userId) {
-      return res
-        .status(403)
-        .json({
-          status: "error",
-          message: "Forbidden: You did not place this order",
-        });
+      return res.status(403).json({
+        status: "error",
+        message: "Forbidden: You did not place this order",
+      });
     }
 
     if (orders[0].status !== "delivered") {
-      return res
-        .status(400)
-        .json({
-          status: "error",
-          message: "You can only rate completed deliveries",
-        });
+      return res.status(400).json({
+        status: "error",
+        message: "You can only rate completed deliveries",
+      });
     }
 
     const ratingId = crypto.randomUUID();
@@ -65,12 +61,10 @@ export async function submitRating(req, res) {
       );
       if (existing.length > 0) {
         connection.release();
-        return res
-          .status(409)
-          .json({
-            status: "error",
-            message: "You have already rated this order",
-          });
+        return res.status(409).json({
+          status: "error",
+          message: "You have already rated this order",
+        });
       }
 
       await connection.query(

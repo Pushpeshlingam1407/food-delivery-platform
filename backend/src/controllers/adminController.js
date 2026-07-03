@@ -22,12 +22,10 @@ export async function verifyRestaurant(req, res) {
       is_verified,
       id,
     ]);
-    return res
-      .status(200)
-      .json({
-        status: "success",
-        message: "Restaurant verification status updated",
-      });
+    return res.status(200).json({
+      status: "success",
+      message: "Restaurant verification status updated",
+    });
   } catch (error) {
     console.error("Verify restaurant error:", error);
     return res
@@ -122,13 +120,11 @@ export async function createCoupon(req, res) {
       ],
     );
 
-    return res
-      .status(201)
-      .json({
-        status: "success",
-        message: "Coupon created successfully",
-        data: { id, code },
-      });
+    return res.status(201).json({
+      status: "success",
+      message: "Coupon created successfully",
+      data: { id, code },
+    });
   } catch (error) {
     console.error("Create coupon error:", error);
     return res
