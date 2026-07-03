@@ -8,6 +8,7 @@ import { RestaurantDetails } from "../pages/RestaurantDetails";
 import { CartDrawer } from "../components/CartDrawer";
 import { Checkout } from "../pages/Checkout";
 import { OrderTracking } from "../pages/OrderTracking";
+import { ShimmerList } from "../components/Shimmer";
 import api from "../../../shared/services/api";
 
 interface HomeProps {
@@ -17,9 +18,11 @@ interface HomeProps {
 // Landing Page Dashboard
 const Home: React.FC<HomeProps> = ({ searchQuery }) => {
   const [restaurants, setRestaurants] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchRestaurants = async () => {
+      setLoading(true);
       try {
         const response = await api.get(
           `/restaurants?search=${encodeURIComponent(searchQuery)}`,
@@ -29,6 +32,8 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
         }
       } catch (err) {
         console.error("Fetch restaurants error:", err);
+      } finally {
+        setLoading(false);
       }
     };
     fetchRestaurants();
@@ -45,85 +50,90 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
       >
         Discover Restaurants
       </h1>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          gap: "32px",
-        }}
-      >
-        {restaurants.map((r) => (
-          <Link
-            to={`/restaurant/${r.id}`}
-            key={r.id}
-            style={{
-              textDecoration: "none",
-              color: "inherit",
-              background: "var(--glass-bg)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-squircle)",
-              padding: "24px",
-              boxShadow: "var(--glass-shadow)",
-              backdropFilter: "var(--glass-blur)",
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "between",
-              transition: "transform 0.2s ease",
-            }}
-            onMouseEnter={(e) =>
-              (e.currentTarget.style.transform = "translateY(-4px)")
-            }
-            onMouseLeave={(e) => (e.currentTarget.style.transform = "none")}
-          >
-            <h3
+
+      {loading ? (
+        <ShimmerList />
+      ) : (
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "32px",
+          }}
+        >
+          {restaurants.map((r) => (
+            <Link
+              to={`/restaurant/${r.id}`}
+              key={r.id}
               style={{
-                fontFamily: "var(--font-cohere)",
-                fontSize: "1.2rem",
-                marginBottom: "8px",
-              }}
-            >
-              {r.name}
-            </h3>
-            <p
-              style={{
-                color: "var(--text-muted)",
-                fontSize: "0.9rem",
-                marginBottom: "20px",
-                flexGrow: 1,
-              }}
-            >
-              {r.description || "No description available"}
-            </p>
-            <div
-              style={{
+                textDecoration: "none",
+                color: "inherit",
+                background: "var(--glass-bg)",
+                border: "1px solid var(--glass-border)",
+                borderRadius: "var(--radius-squircle)",
+                padding: "24px",
+                boxShadow: "var(--glass-shadow)",
+                backdropFilter: "var(--glass-blur)",
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                flexDirection: "column",
+                justifyContent: "between",
+                transition: "transform 0.2s ease",
               }}
+              onMouseEnter={(e) =>
+                (e.currentTarget.style.transform = "translateY(-4px)")
+              }
+              onMouseLeave={(e) => (e.currentTarget.style.transform = "none")}
             >
-              <span style={{ fontSize: "0.85rem", fontWeight: 600 }}>
-                {r.average_delivery_time} mins
-              </span>
-              <span
+              <h3
                 style={{
-                  background:
-                    r.status === "open"
-                      ? "rgba(76, 175, 80, 0.1)"
-                      : "rgba(244, 67, 54, 0.1)",
-                  color: r.status === "open" ? "#4CAF50" : "#F44336",
-                  padding: "4px 12px",
-                  borderRadius: "100px",
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
+                  fontFamily: "var(--font-cohere)",
+                  fontSize: "1.2rem",
+                  marginBottom: "8px",
                 }}
               >
-                {r.status}
-              </span>
-            </div>
-          </Link>
-        ))}
-      </div>
+                {r.name}
+              </h3>
+              <p
+                style={{
+                  color: "var(--text-muted)",
+                  fontSize: "0.9rem",
+                  marginBottom: "20px",
+                  flexGrow: 1,
+                }}
+              >
+                {r.description || "No description available"}
+              </p>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <span style={{ fontSize: "0.85rem", fontWeight: 600 }}>
+                  {r.average_delivery_time} mins
+                </span>
+                <span
+                  style={{
+                    background:
+                      r.status === "open"
+                        ? "rgba(76, 175, 80, 0.1)"
+                        : "rgba(244, 67, 54, 0.1)",
+                    color: r.status === "open" ? "#4CAF50" : "#F44336",
+                    padding: "4px 12px",
+                    borderRadius: "100px",
+                    fontSize: "0.8rem",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                  }}
+                >
+                  {r.status}
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
