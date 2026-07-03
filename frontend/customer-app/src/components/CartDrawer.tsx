@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { X, ShoppingCart, Percent, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
@@ -25,6 +26,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   updateQty,
   clearCart,
 }) => {
+  const navigate = useNavigate();
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [appliedCouponId, setAppliedCouponId] = useState<string | null>(null);
@@ -67,51 +69,19 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     }
   };
 
-  const handleCheckout = async () => {
+  const handleCheckout = () => {
     if (cartItems.length === 0) {
       toast.error("Your cart is empty.");
       return;
     }
-
-    setCheckoutLoading(true);
-    try {
-      // Fetch default address
-      const addrRes = await api.get("/addresses");
-      const addresses = addrRes.data.data;
-      if (addresses.length === 0) {
-        toast.error("Please add a delivery address to complete your order.");
-        setCheckoutLoading(false);
-        return;
-      }
-      const addressId = addresses[0].id; // Choose default
-
-      // Place order
-      const orderRes = await api.post("/orders", {
-        restaurant_id: "any_restaurant_id", // Resolved in backend
-        address_id: addressId,
-        payment_method: "cod",
-        coupon_id: appliedCouponId,
-        items: cartItems.map((item) => ({
-          menu_item_id: item.id,
-          quantity: item.qty,
-        })),
-      });
-
-      if (orderRes.data.status === "success") {
-        toast.success("Order placed successfully!", {
-          description: "Order joined routing streams.",
-        });
-        clearCart();
-        onClose();
-      }
-    } catch (error: any) {
-      console.error(error);
-      toast.error(
-        error.response?.data?.message || "Checkout failed. Please try again.",
-      );
-    } finally {
-      setCheckoutLoading(false);
-    }
+    onClose();
+    navigate("/checkout", {
+      state: {
+        cartItems,
+        subtotal,
+        couponId: appliedCouponId,
+      },
+    });
   };
 
   if (!isOpen) return null;

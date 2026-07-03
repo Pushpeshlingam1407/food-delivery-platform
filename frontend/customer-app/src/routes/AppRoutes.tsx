@@ -6,25 +6,31 @@ import { Register } from "../pages/Register";
 import { OtpLogin } from "../pages/OtpLogin";
 import { RestaurantDetails } from "../pages/RestaurantDetails";
 import { CartDrawer } from "../components/CartDrawer";
+import { Checkout } from "../pages/Checkout";
+import { OrderTracking } from "../pages/OrderTracking";
 import api from "../../../shared/services/api";
 
+interface HomeProps {
+  searchQuery: string;
+}
+
 // Landing Page Dashboard
-const Home: React.FC = () => {
+const Home: React.FC<HomeProps> = ({ searchQuery }) => {
   const [restaurants, setRestaurants] = useState<any[]>([]);
 
   useEffect(() => {
     const fetchRestaurants = async () => {
       try {
-        const response = await api.get("/restaurants");
-        if (response.data.status === "success") {
+        const response = await api.get(`/restaurants?search=${encodeURIComponent(searchQuery)}`);
+        if (response.data.status === 'success') {
           setRestaurants(response.data.data);
         }
       } catch (err) {
-        console.error("Fetch restaurants error:", err);
+        console.error('Fetch restaurants error:', err);
       }
     };
     fetchRestaurants();
-  }, []);
+  }, [searchQuery]);
 
   return (
     <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
@@ -129,7 +135,30 @@ export const AppRoutes: React.FC = () => {
 
   useEffect(() => {
     setUserEmail(localStorage.getItem("userEmail"));
+    if (localStorage.getItem("accessToken")) {
+      fetchCartFromBackend();
+    }
   }, []);
+
+  const fetchCartFromBackend = async () => {
+    try {
+      const res = await api.get("/cart");
+      if (res.data.status === "success") {
+        const backendItems = res.data.data.items || [];
+        const newCart: any = {};
+        backendItems.forEach((item: any) => {
+          newCart[item.menu_id] = {
+            name: item.name,
+            price: parseFloat(item.price),
+            qty: item.quantity,
+          };
+        });
+        setCart(newCart);
+      }
+    } catch (err) {
+      console.error("Fetch backend cart failed:", err);
+    }
+  };
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -139,24 +168,33 @@ export const AppRoutes: React.FC = () => {
     window.location.reload();
   };
 
-  const addToCart = (item: any) => {
-    setCart((prev) => {
-      const existing = prev[item.id];
-      return {
-        ...prev,
-        [item.id]: {
-          name: item.name,
-          price: parseFloat(item.price.toString()),
-          qty: existing ? existing.qty + 1 : 1,
-        },
-      };
-    });
+  const addToCart = async (item: any) => {
+    const existing = cart[item.id];
+    const newQty = existing ? existing.qty + 1 : 1;
+
+    setCart((prev) => ({
+      ...prev,
+      [item.id]: {
+        name: item.name,
+        price: parseFloat(item.price.toString()),
+        qty: newQty,
+      },
+    }));
+
+    try {
+      if (localStorage.getItem("accessToken")) {
+        await api.post("/cart/items", { menuId: item.id, quantity: 1 });
+      }
+    } catch (err) {
+      console.error("Sync add to cart failed:", err);
+    }
   };
 
-  const removeFromCart = (itemId: string) => {
+  const removeFromCart = async (itemId: string) => {
+    const existing = cart[itemId];
+    if (!existing) return;
+
     setCart((prev) => {
-      const existing = prev[itemId];
-      if (!existing) return prev;
       const updated = { ...prev };
       if (existing.qty <= 1) {
         delete updated[itemId];
@@ -165,9 +203,24 @@ export const AppRoutes: React.FC = () => {
       }
       return updated;
     });
+
+    try {
+      if (localStorage.getItem("accessToken")) {
+        if (existing.qty <= 1) {
+          // Find item ID or delete directly
+          await api.delete(`/cart/items/${itemId}`);
+        } else {
+          await api.put(`/cart/items/${itemId}`, {
+            quantity: existing.qty - 1,
+          });
+        }
+      }
+    } catch (err) {
+      console.error("Sync remove from cart failed:", err);
+    }
   };
 
-  const updateQty = (itemId: string, newQty: number) => {
+  const updateQty = async (itemId: string, newQty: number) => {
     setCart((prev) => {
       const updated = { ...prev };
       if (newQty <= 0) {
@@ -177,9 +230,30 @@ export const AppRoutes: React.FC = () => {
       }
       return updated;
     });
+
+    try {
+      if (localStorage.getItem("accessToken")) {
+        if (newQty <= 0) {
+          await api.delete(`/cart/items/${itemId}`);
+        } else {
+          await api.put(`/cart/items/${itemId}`, { quantity: newQty });
+        }
+      }
+    } catch (err) {
+      console.error("Sync update qty failed:", err);
+    }
   };
 
-  const clearCart = () => setCart({});
+  const clearCart = async () => {
+    setCart({});
+    try {
+      if (localStorage.getItem("accessToken")) {
+        await api.delete("/cart");
+      }
+    } catch (err) {
+      console.error("Sync clear cart failed:", err);
+    }
+  };
 
   const cartList = Object.entries(cart).map(([id, val]) => ({
     id,
@@ -228,6 +302,8 @@ export const AppRoutes: React.FC = () => {
           path="/otp-login"
           element={!userEmail ? <OtpLogin /> : <Navigate to="/" />}
         />
+        <Route path="/checkout" element={<Checkout />} />
+        <Route path="/track/:orderId" element={<OrderTracking />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <CartDrawer

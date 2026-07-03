@@ -6,6 +6,8 @@ interface NavbarProps {
   userEmail?: string | null;
   onLogout?: () => void;
   onCartClick?: () => void;
+  searchQuery?: string;
+  onSearchChange?: (val: string) => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -13,6 +15,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   userEmail = null,
   onLogout,
   onCartClick,
+  searchQuery = '',
+  onSearchChange,
 }) => {
   return (
     <nav
@@ -89,12 +93,14 @@ export const Navbar: React.FC<NavbarProps> = ({
         <input
           type="text"
           placeholder="Search restaurants, cuisines..."
+          value={searchQuery}
+          onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
           style={{
-            border: "none",
-            outline: "none",
-            width: "100%",
-            fontFamily: "var(--font-apple)",
-            fontSize: "0.9rem",
+            border: 'none',
+            outline: 'none',
+            width: '100%',
+            fontFamily: 'var(--font-apple)',
+            fontSize: '0.9rem',
           }}
         />
       </div>
