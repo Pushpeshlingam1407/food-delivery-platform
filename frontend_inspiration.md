@@ -11,7 +11,7 @@ To ensure our Customer, Restaurant, and Delivery Partner applications have a pre
 | **Apple**        | Ultra-Premium Glassmorphism | Crisp structural alignment, frosted-glass (`backdrop-filter: blur`), light border strokes, and soft drop shadows to create layering and depth. |
 | **Anthropic**    | Clean Editorial Minimalist  | Warm cream/beige background tones (`#FBF9F6`), soft dark slate text, elegant margins, and spacious layouts that prevent visual clutter.        |
 | **Samsung**      | Vibrant Neon Tech Accent    | Vibrant color gradients (e.g. sunset oranges, energetic purples), squircle card patterns (`border-radius: 20px`), and active status glows.     |
-| **Google Fonts** | Modern Typography           | Custom imports of **Outfit** (for headings/brand logos) and **Inter** (for high-readability UI micro-copy).                                    |
+| **Typography** | Premium Font Stack | Clean integration of **Cohere** (geometric sans for branding), **Anthropic** (editorial serifs/modern sans-serifs for headings), and **Apple** system UI fonts (SF Pro, -apple-system, BlinkMacSystemFont for clean readability). |
 
 ---
 
