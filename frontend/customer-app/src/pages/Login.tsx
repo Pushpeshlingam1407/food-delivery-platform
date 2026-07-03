@@ -1,38 +1,40 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { toast } from 'sonner';
-import api from '../../../shared/services/api';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { toast } from "sonner";
+import api from "../../../shared/services/api";
 
 export const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      toast.error('Please enter both email and password.');
+      toast.error("Please enter both email and password.");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await api.post('/auth/login', { email, password });
-      if (response.data.status === 'success') {
+      const response = await api.post("/auth/login", { email, password });
+      if (response.data.status === "success") {
         const { accessToken, refreshToken, user } = response.data.data;
-        localStorage.setItem('accessToken', accessToken);
-        localStorage.setItem('refreshToken', refreshToken);
-        localStorage.setItem('userEmail', user.email);
-        
-        toast.success('Welcome back!', {
+        localStorage.setItem("accessToken", accessToken);
+        localStorage.setItem("refreshToken", refreshToken);
+        localStorage.setItem("userEmail", user.email);
+
+        toast.success("Welcome back!", {
           description: `Logged in successfully as ${user.first_name}.`,
         });
-        navigate('/');
+        navigate("/");
       }
     } catch (error: any) {
       console.error(error);
-      const errMsg = error.response?.data?.message || 'Invalid credentials. Please try again.';
+      const errMsg =
+        error.response?.data?.message ||
+        "Invalid credentials. Please try again.";
       toast.error(errMsg);
     } finally {
       setLoading(false);
@@ -42,43 +44,60 @@ export const Login: React.FC = () => {
   return (
     <div
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: 'calc(100vh - 80px)',
-        padding: '20px',
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        minHeight: "calc(100vh - 80px)",
+        padding: "20px",
       }}
     >
       <div
         style={{
-          background: 'var(--glass-bg)',
-          border: '1px solid var(--glass-border)',
-          borderRadius: 'var(--radius-squircle)',
-          padding: '48px',
-          width: '100%',
-          maxWidth: '440px',
-          boxShadow: 'var(--glass-shadow)',
-          backdropFilter: 'var(--glass-blur)',
+          background: "var(--glass-bg)",
+          border: "1px solid var(--glass-border)",
+          borderRadius: "var(--radius-squircle)",
+          padding: "48px",
+          width: "100%",
+          maxWidth: "440px",
+          boxShadow: "var(--glass-shadow)",
+          backdropFilter: "var(--glass-blur)",
         }}
       >
         <h2
           style={{
-            fontFamily: 'var(--font-anthropic)',
-            fontSize: '2rem',
-            color: 'var(--text-slate)',
-            marginBottom: '8px',
+            fontFamily: "var(--font-anthropic)",
+            fontSize: "2rem",
+            color: "var(--text-slate)",
+            marginBottom: "8px",
             fontWeight: 600,
           }}
         >
           Sign In
         </h2>
-        <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem', marginBottom: '32px' }}>
+        <p
+          style={{
+            color: "var(--text-muted)",
+            fontSize: "0.95rem",
+            marginBottom: "32px",
+          }}
+        >
           Enter your details below to access your account
         </p>
 
-        <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-slate)' }}>Email Address</label>
+        <form
+          onSubmit={handleLogin}
+          style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+        >
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <label
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                color: "var(--text-slate)",
+              }}
+            >
+              Email Address
+            </label>
             <input
               type="email"
               value={email}
@@ -86,19 +105,33 @@ export const Login: React.FC = () => {
               placeholder="name@domain.com"
               required
               style={{
-                padding: '12px 16px',
-                borderRadius: 'var(--radius-standard)',
-                border: '1px solid var(--glass-border)',
-                fontFamily: 'var(--font-apple)',
-                fontSize: '0.95rem',
-                outline: 'none',
+                padding: "12px 16px",
+                borderRadius: "var(--radius-standard)",
+                border: "1px solid var(--glass-border)",
+                fontFamily: "var(--font-apple)",
+                fontSize: "0.95rem",
+                outline: "none",
               }}
             />
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            <div style={{ display: 'flex', justifyContent: 'between', alignItems: 'center' }}>
-              <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-slate)' }}>Password</label>
+          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "between",
+                alignItems: "center",
+              }}
+            >
+              <label
+                style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                  color: "var(--text-slate)",
+                }}
+              >
+                Password
+              </label>
             </div>
             <input
               type="password"
@@ -107,12 +140,12 @@ export const Login: React.FC = () => {
               placeholder="••••••••"
               required
               style={{
-                padding: '12px 16px',
-                borderRadius: 'var(--radius-standard)',
-                border: '1px solid var(--glass-border)',
-                fontFamily: 'var(--font-apple)',
-                fontSize: '0.95rem',
-                outline: 'none',
+                padding: "12px 16px",
+                borderRadius: "var(--radius-standard)",
+                border: "1px solid var(--glass-border)",
+                fontFamily: "var(--font-apple)",
+                fontSize: "0.95rem",
+                outline: "none",
               }}
             />
           </div>
@@ -122,20 +155,34 @@ export const Login: React.FC = () => {
             disabled={loading}
             className="btn-premium"
             style={{
-              padding: '14px',
-              fontSize: '1rem',
-              marginTop: '12px',
+              padding: "14px",
+              fontSize: "1rem",
+              marginTop: "12px",
               opacity: loading ? 0.7 : 1,
-              cursor: loading ? 'not-allowed' : 'pointer',
+              cursor: loading ? "not-allowed" : "pointer",
             }}
           >
-            {loading ? 'Authenticating...' : 'Sign In'}
+            {loading ? "Authenticating..." : "Sign In"}
           </button>
         </form>
 
-        <div style={{ marginTop: '24px', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
-          Don't have an account?{' '}
-          <Link to="/register" style={{ color: 'var(--accent-orange)', fontWeight: 600, textDecoration: 'none' }}>
+        <div
+          style={{
+            marginTop: "24px",
+            textAlign: "center",
+            fontSize: "0.9rem",
+            color: "var(--text-muted)",
+          }}
+        >
+          Don't have an account?{" "}
+          <Link
+            to="/register"
+            style={{
+              color: "var(--accent-orange)",
+              fontWeight: 600,
+              textDecoration: "none",
+            }}
+          >
             Create one
           </Link>
         </div>
