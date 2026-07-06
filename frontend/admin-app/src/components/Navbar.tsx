@@ -7,7 +7,10 @@ interface NavbarProps {
   onLogout?: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ adminName = "System Admin", onLogout }) => {
+export const Navbar: React.FC<NavbarProps> = ({
+  adminName = "System Admin",
+  onLogout,
+}) => {
   return (
     <nav
       style={{
@@ -56,16 +59,52 @@ export const Navbar: React.FC<NavbarProps> = ({ adminName = "System Admin", onLo
       </div>
 
       <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-        <Link to="/" style={{ textDecoration: "none", color: "var(--text-slate)", fontWeight: 600, fontSize: "0.95rem", fontFamily: "var(--font-cohere)" }}>
+        <Link
+          to="/"
+          style={{
+            textDecoration: "none",
+            color: "var(--text-slate)",
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            fontFamily: "var(--font-cohere)",
+          }}
+        >
           Console
         </Link>
-        <Link to="/refunds" style={{ textDecoration: "none", color: "var(--text-slate)", fontWeight: 600, fontSize: "0.95rem", fontFamily: "var(--font-cohere)" }}>
+        <Link
+          to="/refunds"
+          style={{
+            textDecoration: "none",
+            color: "var(--text-slate)",
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            fontFamily: "var(--font-cohere)",
+          }}
+        >
           Refunds Control
         </Link>
-        <Link to="/settings" style={{ textDecoration: "none", color: "var(--text-slate)", fontWeight: 600, fontSize: "0.95rem", fontFamily: "var(--font-cohere)" }}>
+        <Link
+          to="/settings"
+          style={{
+            textDecoration: "none",
+            color: "var(--text-slate)",
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            fontFamily: "var(--font-cohere)",
+          }}
+        >
           System Configuration
         </Link>
-        <Link to="/cms" style={{ textDecoration: "none", color: "var(--text-slate)", fontWeight: 600, fontSize: "0.95rem", fontFamily: "var(--font-cohere)" }}>
+        <Link
+          to="/cms"
+          style={{
+            textDecoration: "none",
+            color: "var(--text-slate)",
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            fontFamily: "var(--font-cohere)",
+          }}
+        >
           CMS Pages
         </Link>
 

@@ -8,8 +8,12 @@ import { Settings } from "../pages/Settings";
 import { CMS } from "../pages/CMS";
 
 export const AppRoutes: React.FC = () => {
-  const [userEmail, setUserEmail] = useState<string | null>(() => localStorage.getItem("userEmail"));
-  const [adminName, setAdminName] = useState<string | null>(() => localStorage.getItem("userName"));
+  const [userEmail, setUserEmail] = useState<string | null>(() =>
+    localStorage.getItem("userEmail"),
+  );
+  const [adminName, setAdminName] = useState<string | null>(() =>
+    localStorage.getItem("userName"),
+  );
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -25,11 +29,26 @@ export const AppRoutes: React.FC = () => {
     <BrowserRouter>
       {userEmail && <Navbar adminName={adminName} onLogout={handleLogout} />}
       <Routes>
-        <Route path="/" element={userEmail ? <Dashboard /> : <Navigate to="/login" />} />
-        <Route path="/refunds" element={userEmail ? <Refunds /> : <Navigate to="/login" />} />
-        <Route path="/settings" element={userEmail ? <Settings /> : <Navigate to="/login" />} />
-        <Route path="/cms" element={userEmail ? <CMS /> : <Navigate to="/login" />} />
-        <Route path="/login" element={!userEmail ? <Login /> : <Navigate to="/" />} />
+        <Route
+          path="/"
+          element={userEmail ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/refunds"
+          element={userEmail ? <Refunds /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/settings"
+          element={userEmail ? <Settings /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/cms"
+          element={userEmail ? <CMS /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/login"
+          element={!userEmail ? <Login /> : <Navigate to="/" />}
+        />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
     </BrowserRouter>

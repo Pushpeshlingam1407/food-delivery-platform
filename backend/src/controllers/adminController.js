@@ -222,3 +222,48 @@ export async function deleteCoupon(req, res) {
       .json({ status: "error", message: "Internal server error" });
   }
 }
+
+export async function getSystemSettings(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden: Access denied" });
+  }
+  try {
+    const [rows] = await pool.query("SELECT * FROM system_settings");
+    return res.status(200).json({ status: "success", data: rows });
+  } catch (error) {
+    console.error("Get settings error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function updateSystemSettings(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden: Access denied" });
+  }
+  const { settings } = req.body;
+  if (!Array.isArray(settings)) {
+    return res.status(400).json({ status: "error", message: "Invalid settings format" });
+  }
+  try {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+      for (const item of settings) {
+        await connection.query(
+          "UPDATE system_settings SET value = ? WHERE key_name = ?",
+          [item.value, item.key_name]
+        );
+      }
+      await connection.commit();
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
+    return res.status(200).json({ status: "success", message: "Settings updated successfully" });
+  } catch (error) {
+    console.error("Update settings error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}

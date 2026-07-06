@@ -24,7 +24,9 @@ export const Login: React.FC = () => {
 
         // Strict role validation
         if (user.role !== "admin") {
-          toast.error("Access Denied: Only system administrators can sign in here.");
+          toast.error(
+            "Access Denied: Only system administrators can sign in here.",
+          );
           setLoading(false);
           return;
         }
@@ -33,14 +35,19 @@ export const Login: React.FC = () => {
         localStorage.setItem("refreshToken", refreshToken);
         localStorage.setItem("userEmail", user.email);
         localStorage.setItem("userId", user.id);
-        localStorage.setItem("userName", `${user.first_name} ${user.last_name}`);
+        localStorage.setItem(
+          "userName",
+          `${user.first_name} ${user.last_name}`,
+        );
 
         toast.success(`Welcome back, Administrator ${user.first_name}!`);
         window.location.href = "/";
       }
     } catch (error: any) {
       console.error(error);
-      const errMsg = error.response?.data?.message || "Invalid credentials. Please try again.";
+      const errMsg =
+        error.response?.data?.message ||
+        "Invalid credentials. Please try again.";
       toast.error(errMsg);
     } finally {
       setLoading(false);
@@ -48,7 +55,14 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "90vh" }}>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "90vh",
+      }}
+    >
       <div
         style={{
           width: "100%",
@@ -75,12 +89,25 @@ export const Login: React.FC = () => {
           >
             bites.
           </div>
-          <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>System Admin Portal</p>
+          <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
+            System Admin Portal
+          </p>
         </div>
 
-        <form onSubmit={handleLogin} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <form
+          onSubmit={handleLogin}
+          style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+        >
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-slate)" }}>EMAIL ADDRESS</label>
+            <label
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                color: "var(--text-slate)",
+              }}
+            >
+              EMAIL ADDRESS
+            </label>
             <input
               type="email"
               value={email}
@@ -99,7 +126,15 @@ export const Login: React.FC = () => {
           </div>
 
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <label style={{ fontSize: "0.8rem", fontWeight: 700, color: "var(--text-slate)" }}>PASSWORD</label>
+            <label
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: 700,
+                color: "var(--text-slate)",
+              }}
+            >
+              PASSWORD
+            </label>
             <input
               type="password"
               value={password}
@@ -117,7 +152,12 @@ export const Login: React.FC = () => {
             />
           </div>
 
-          <button type="submit" disabled={loading} className="btn-premium" style={{ width: "100%", padding: "14px", marginTop: "10px" }}>
+          <button
+            type="submit"
+            disabled={loading}
+            className="btn-premium"
+            style={{ width: "100%", padding: "14px", marginTop: "10px" }}
+          >
             {loading ? "Verifying..." : "Access Console"}
           </button>
         </form>
