@@ -5,12 +5,12 @@ async function main() {
     // Let's check the delivery partner update query behavior in deliveryController
     // We can simulate req.user = { userId: '7f8035b1-888f-46ba-a755-cb6655d7b3a1', role: 'delivery_partner' }
     // body: { is_online: true }
-    const userId = '7f8035b1-888f-46ba-a755-cb6655d7b3a1';
+    const userId = "7f8035b1-888f-46ba-a755-cb6655d7b3a1";
     const is_online = true;
 
     const [rows] = await pool.query(
       "SELECT * FROM delivery_partners WHERE id = ?",
-      [userId]
+      [userId],
     );
     console.log("Driver details from DB:", rows);
 
@@ -25,7 +25,6 @@ async function main() {
 
     const [result] = await pool.query(query, params);
     console.log("Update result:", result);
-
   } catch (err) {
     console.error("SQL Error during toggle simulation:", err);
   } finally {

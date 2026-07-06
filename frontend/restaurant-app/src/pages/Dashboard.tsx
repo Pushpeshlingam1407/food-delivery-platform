@@ -48,12 +48,8 @@ export const Dashboard: React.FC = () => {
   const fetchRestaurantAndOrders = async () => {
     setLoading(true);
     try {
-      const userId = localStorage.getItem("userId");
-      const res = await api.get("/restaurants");
-      const allRestaurants = res.data.data;
-      const myRestaurant = allRestaurants.find(
-        (r: any) => r.owner_id === userId,
-      );
+      const meRes = await api.get('/auth/me');
+      const myRestaurant = meRes.data.data?.restaurant;
 
       if (myRestaurant) {
         setRestaurantId(myRestaurant.id);
@@ -61,16 +57,12 @@ export const Dashboard: React.FC = () => {
 
         // Fetch orders for this restaurant
         const ordersRes = await api.get(`/orders`);
-        if (ordersRes.data.status === "success") {
-          setOrders(
-            ordersRes.data.data.filter(
-              (o: any) => o.restaurant_id === myRestaurant.id,
-            ),
-          );
+        if (ordersRes.data.status === 'success') {
+          setOrders(ordersRes.data.data.filter((o: any) => o.restaurant_id === myRestaurant.id));
         }
       }
     } catch (err) {
-      console.error("Fetch dashboard data failed:", err);
+      console.error('Fetch dashboard data failed:', err);
     } finally {
       setLoading(false);
     }

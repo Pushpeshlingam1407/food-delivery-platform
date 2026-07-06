@@ -2,7 +2,9 @@ import pool from "./backend/src/config/db.js";
 
 async function main() {
   try {
-    const [users] = await pool.query("SELECT id, first_name, last_name, email, role_id FROM users");
+    const [users] = await pool.query(
+      "SELECT id, first_name, last_name, email, role_id FROM users",
+    );
     console.log("=== USERS ===");
     console.log(users);
 

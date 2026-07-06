@@ -17,7 +17,7 @@ export function authenticateJWT(req, res, next) {
     req.user = decoded;
     next();
   } catch (error) {
-    return res.status(403).json({
+    return res.status(401).json({
       status: "error",
       message: "Access token is expired or corrupted",
     });

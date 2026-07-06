@@ -427,19 +427,20 @@ export async function getMe(req, res) {
 
     const userData = { ...users[0], role: req.user.role };
 
-    if (req.user.role === 'delivery_partner') {
+    if (req.user.role === "delivery_partner") {
       const [partnerRows] = await pool.query(
         "SELECT is_online, vehicle_number, vehicle_type, license_number, status FROM delivery_partners WHERE id = ?",
-        [req.user.userId]
+        [req.user.userId],
       );
       if (partnerRows.length > 0) {
-        userData.is_online = partnerRows[0].is_online === 1 || partnerRows[0].is_online === true;
+        userData.is_online =
+          partnerRows[0].is_online === 1 || partnerRows[0].is_online === true;
         userData.delivery_partner = partnerRows[0];
       }
-    } else if (req.user.role === 'restaurant_owner') {
+    } else if (req.user.role === "restaurant_owner") {
       const [restaurantRows] = await pool.query(
         "SELECT id, name, status, is_active FROM restaurants WHERE owner_id = ? AND deleted_at IS NULL",
-        [req.user.userId]
+        [req.user.userId],
       );
       if (restaurantRows.length > 0) {
         userData.restaurant = restaurantRows[0];
