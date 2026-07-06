@@ -218,7 +218,7 @@ export const Dashboard: React.FC = () => {
       <div
         style={{
           display: "grid",
-          gridTemplateColumns: "1fr 340px",
+          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
           gap: "32px",
           marginBottom: "40px",
         }}

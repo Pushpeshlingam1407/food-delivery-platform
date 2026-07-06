@@ -91,7 +91,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: activeOrders.length > 0 ? "1fr 340px" : "1fr",
+            gridTemplateColumns: activeOrders.length > 0 ? "repeat(auto-fit, minmax(280px, 1fr))" : "1fr",
             gap: "32px",
             marginBottom: "48px",
           }}
