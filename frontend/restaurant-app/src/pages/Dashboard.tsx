@@ -48,7 +48,7 @@ export const Dashboard: React.FC = () => {
   const fetchRestaurantAndOrders = async () => {
     setLoading(true);
     try {
-      const meRes = await api.get('/auth/me');
+      const meRes = await api.get("/auth/me");
       const myRestaurant = meRes.data.data?.restaurant;
 
       if (myRestaurant) {
@@ -57,12 +57,16 @@ export const Dashboard: React.FC = () => {
 
         // Fetch orders for this restaurant
         const ordersRes = await api.get(`/orders`);
-        if (ordersRes.data.status === 'success') {
-          setOrders(ordersRes.data.data.filter((o: any) => o.restaurant_id === myRestaurant.id));
+        if (ordersRes.data.status === "success") {
+          setOrders(
+            ordersRes.data.data.filter(
+              (o: any) => o.restaurant_id === myRestaurant.id,
+            ),
+          );
         }
       }
     } catch (err) {
-      console.error('Fetch dashboard data failed:', err);
+      console.error("Fetch dashboard data failed:", err);
     } finally {
       setLoading(false);
     }

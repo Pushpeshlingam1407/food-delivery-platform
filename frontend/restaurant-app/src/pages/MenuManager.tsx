@@ -36,12 +36,8 @@ export const MenuManager: React.FC = () => {
   useEffect(() => {
     const fetchMenuAndCategories = async () => {
       try {
-        const userId = localStorage.getItem("userId");
-        const res = await api.get("/restaurants");
-        const allRestaurants = res.data.data;
-        const myRestaurant = allRestaurants.find(
-          (r: any) => r.owner_id === userId,
-        );
+        const meRes = await api.get("/auth/me");
+        const myRestaurant = meRes.data.data?.restaurant;
 
         if (myRestaurant) {
           setRestaurantId(myRestaurant.id);
