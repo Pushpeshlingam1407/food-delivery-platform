@@ -80,6 +80,18 @@ export const Navbar: React.FC<NavbarProps> = ({
         >
           Menu Manager
         </Link>
+        <Link
+          to="/earnings"
+          style={{
+            textDecoration: "none",
+            color: "var(--text-slate)",
+            fontWeight: 600,
+            fontSize: "0.95rem",
+            fontFamily: "var(--font-cohere)",
+          }}
+        >
+          Earnings & Payouts
+        </Link>
 
         {onLogout && (
           <button

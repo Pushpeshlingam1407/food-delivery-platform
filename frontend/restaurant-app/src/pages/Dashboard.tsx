@@ -21,7 +21,7 @@ interface Order {
     | "out_for_delivery"
     | "delivered"
     | "cancelled";
-  total_amount: number;
+  item_total: number;
   created_at: string;
   customer_first_name: string;
   customer_last_name: string;
@@ -90,7 +90,7 @@ export const Dashboard: React.FC = () => {
     socket.on("newOrderReceived", (newOrder: Order) => {
       setOrders((prev) => [newOrder, ...prev]);
       toast.success("Incoming Order Received!", {
-        description: `Order #${newOrder.order_number} for $${newOrder.total_amount} placed.`,
+        description: `Order #${newOrder.order_number} for $${newOrder.item_total} placed.`,
         duration: 10000,
       });
     });
@@ -102,7 +102,7 @@ export const Dashboard: React.FC = () => {
 
   const handleUpdateStatus = async (orderId: string, newStatus: string) => {
     try {
-      const response = await api.put(`/orders/${orderId}`, {
+      const response = await api.put(`/orders/${orderId}/status`, {
         status: newStatus,
       });
       if (response.data.status === "success") {
@@ -595,7 +595,7 @@ export const Dashboard: React.FC = () => {
                 marginBottom: "24px",
               }}
             >
-              ${parseFloat(o.total_amount.toString()).toFixed(2)}
+              ${parseFloat((o.item_total ?? 0).toString()).toFixed(2)}
             </div>
 
             {/* Action buttons */}

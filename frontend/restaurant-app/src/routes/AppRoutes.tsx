@@ -5,6 +5,7 @@ import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Dashboard } from "../pages/Dashboard";
 import { MenuManager } from "../pages/MenuManager";
+import { Earnings } from "../pages/Earnings";
 
 export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
@@ -36,6 +37,10 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="/menu"
           element={userEmail ? <MenuManager /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/earnings"
+          element={userEmail ? <Earnings /> : <Navigate to="/login" />}
         />
         <Route
           path="/login"

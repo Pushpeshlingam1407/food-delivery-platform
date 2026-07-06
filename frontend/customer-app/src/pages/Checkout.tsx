@@ -63,7 +63,7 @@ export const Checkout: React.FC = () => {
           }
         }
 
-        const walletRes = await api.get("/wallet/balance");
+        const walletRes = await api.get("/wallets");
         if (walletRes.data.status === "success") {
           setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
         }
