@@ -17,7 +17,7 @@ interface Order {
   status:
     | "placed"
     | "preparing"
-    | "ready"
+    | "ready_for_pickup"
     | "out_for_delivery"
     | "delivered"
     | "cancelled";
@@ -620,7 +620,7 @@ export const Dashboard: React.FC = () => {
 
               {o.status === "preparing" && (
                 <button
-                  onClick={() => handleUpdateStatus(o.id, "ready")}
+                  onClick={() => handleUpdateStatus(o.id, "ready_for_pickup")}
                   className="btn-premium"
                   style={{
                     flex: 1,
@@ -637,7 +637,7 @@ export const Dashboard: React.FC = () => {
                 </button>
               )}
 
-              {o.status === "ready" && (
+              {o.status === "ready_for_pickup" && (
                 <div
                   style={{
                     display: "flex",

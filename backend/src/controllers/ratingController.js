@@ -110,3 +110,35 @@ export async function submitRating(req, res) {
       .json({ status: "error", message: "Internal server error" });
   }
 }
+
+export async function getRestaurantRatings(req, res) {
+  const { restaurantId } = req.params;
+  try {
+    const [rows] = await pool.query(
+      `SELECT r.restaurant_rating, r.delivery_rating, rev.restaurant_review, rev.delivery_review, r.created_at, u.first_name, u.last_name
+       FROM ratings r
+       JOIN orders o ON r.order_id = o.id
+       LEFT JOIN reviews rev ON rev.rating_id = r.id
+       JOIN users u ON r.user_id = u.id
+       WHERE o.restaurant_id = ?
+       ORDER BY r.created_at DESC`,
+      [restaurantId]
+    );
+
+    const ratingsCount = rows.filter(item => item.restaurant_rating !== null).length;
+    const ratingsSum = rows.reduce((sum, item) => sum + (parseFloat(item.restaurant_rating) || 0), 0);
+    const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
+
+    return res.status(200).json({
+      status: "success",
+      data: {
+        reviews: rows,
+        average_rating: averageRating,
+        total_reviews: rows.length
+      }
+    });
+  } catch (error) {
+    console.error("Get restaurant ratings error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}

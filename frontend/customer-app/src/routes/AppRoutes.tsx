@@ -8,6 +8,7 @@ import { RestaurantDetails } from "../pages/RestaurantDetails";
 import { CartDrawer } from "../components/CartDrawer";
 import { Checkout } from "../pages/Checkout";
 import { OrderTracking } from "../pages/OrderTracking";
+import { CmsPage } from "../pages/CmsPage";
 import { ShimmerList } from "../components/Shimmer";
 import api from "../../../shared/services/api";
 
@@ -139,7 +140,9 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
 };
 
 export const AppRoutes: React.FC = () => {
-  const [userEmail, setUserEmail] = useState<string | null>(null);
+  const [userEmail, setUserEmail] = useState<string | null>(() =>
+    localStorage.getItem("userEmail"),
+  );
   const [cart, setCart] = useState<{
     [itemId: string]: { name: string; price: number; qty: number };
   }>({});
@@ -147,7 +150,6 @@ export const AppRoutes: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
-    setUserEmail(localStorage.getItem("userEmail"));
     if (localStorage.getItem("accessToken")) {
       fetchCartFromBackend();
     }
@@ -319,6 +321,7 @@ export const AppRoutes: React.FC = () => {
         />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/track/:orderId" element={<OrderTracking />} />
+        <Route path="/page/:slug" element={<CmsPage />} />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <CartDrawer

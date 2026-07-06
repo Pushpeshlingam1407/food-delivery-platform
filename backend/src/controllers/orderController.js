@@ -391,7 +391,7 @@ export async function updateOrderStatus(req, res) {
     let deliveredAt = order.delivered_at;
     let assignedDriverId = order.delivery_partner_id;
 
-    if (status === "accepted") {
+    if (status === "preparing") {
       if (
         req.user.role !== "restaurant_owner" ||
         order.owner_id !== req.user.userId

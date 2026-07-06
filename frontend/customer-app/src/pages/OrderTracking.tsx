@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
+import { FeedbackModal } from "../components/FeedbackModal";
 
 interface DriverLocation {
   latitude: number;
@@ -25,6 +26,7 @@ export const OrderTracking: React.FC = () => {
   const [driverLoc, setDriverLoc] = useState<DriverLocation | null>(null);
   const [driverName, setDriverName] = useState<string | null>(null);
   const [driverPhone, setDriverPhone] = useState<string | null>(null);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
 
   useEffect(() => {
     // 1. Fetch current database state initially
@@ -34,6 +36,9 @@ export const OrderTracking: React.FC = () => {
         if (response.data.status === "success") {
           const order = response.data.data;
           setStatus(order.status);
+          if (order.status === "delivered") {
+            setFeedbackOpen(true);
+          }
           if (order.driver_first_name) {
             setDriverName(
               `${order.driver_first_name} ${order.driver_last_name || ""}`,
@@ -59,6 +64,9 @@ export const OrderTracking: React.FC = () => {
       "orderStatusUpdated",
       (data: { status: typeof status; driver?: any }) => {
         setStatus(data.status);
+        if (data.status === "delivered") {
+          setFeedbackOpen(true);
+        }
         if (data.driver) {
           setDriverName(
             `${data.driver.first_name} ${data.driver.last_name || ""}`,
@@ -362,18 +370,40 @@ export const OrderTracking: React.FC = () => {
         )}
       </div>
 
+      {status === "delivered" && (
+        <button
+          onClick={() => setFeedbackOpen(true)}
+          className="btn-premium"
+          style={{
+            width: "100%",
+            marginTop: "24px",
+            padding: "14px",
+            textAlign: "center",
+            background: "var(--accent-orange)",
+          }}
+        >
+          🌟 Rate Your Experience
+        </button>
+      )}
+
       <button
         onClick={() => navigate("/")}
         className="btn-premium"
         style={{
           width: "100%",
-          marginTop: "32px",
+          marginTop: "16px",
           padding: "14px",
           textAlign: "center",
         }}
       >
         Back to Dashboard
       </button>
+
+      <FeedbackModal
+        isOpen={feedbackOpen}
+        onClose={() => setFeedbackOpen(false)}
+        orderId={orderId!}
+      />
     </div>
   );
 };

@@ -41,6 +41,8 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [isFavorite, setIsFavorite] = useState(false);
   const [vegOnly, setVegOnly] = useState(false);
+  const [reviews, setReviews] = useState<any[]>([]);
+  const [avgRating, setAvgRating] = useState<number>(0);
 
   useEffect(() => {
     const fetchRestaurantDetails = async () => {
@@ -66,6 +68,12 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
             (f: any) => f.restaurant_id === id,
           );
           setIsFavorite(isFav);
+        }
+
+        const ratingsRes = await api.get(`/ratings/restaurant/${id}`);
+        if (ratingsRes.data.status === "success") {
+          setReviews(ratingsRes.data.data.reviews || []);
+          setAvgRating(ratingsRes.data.data.average_rating || 0);
         }
       } catch (err) {
         console.error("Fetch restaurant details error:", err);
@@ -170,6 +178,7 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
             }}
           >
             <span>⏱️ {restaurant.average_delivery_time} mins</span>
+            <span>⭐ {avgRating > 0 ? `${avgRating} / 5` : "No ratings yet"}</span>
             <span
               style={{
                 color: restaurant.status === "open" ? "#4CAF50" : "#F44336",
@@ -424,6 +433,68 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
               </div>
             )}
           </div>
+        </div>
+      </div>
+
+      {/* Reviews Ledger Block */}
+      <div
+        style={{
+          marginTop: "60px",
+          background: "#FFF",
+          border: "1px solid var(--glass-border)",
+          borderRadius: "var(--radius-standard)",
+          padding: "32px",
+          boxShadow: "var(--glass-shadow)",
+        }}
+      >
+        <h3
+          style={{
+            fontSize: "1.4rem",
+            marginBottom: "24px",
+            fontFamily: "var(--font-anthropic)",
+          }}
+        >
+          Customer Reviews ({reviews.length})
+        </h3>
+        
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          {reviews.map((r, index) => (
+            <div
+              key={index}
+              style={{
+                borderBottom: "1px solid var(--glass-border)",
+                paddingBottom: "20px",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+                <strong>
+                  {r.first_name} {r.last_name ? r.last_name[0] + "." : ""}
+                </strong>
+                <span style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}>
+                  {new Date(r.created_at).toLocaleDateString()}
+                </span>
+              </div>
+              <div style={{ display: "flex", gap: "16px", marginBottom: "10px", fontSize: "0.85rem", fontWeight: 700 }}>
+                {r.restaurant_rating && (
+                  <span style={{ color: "var(--accent-orange)" }}>Food: ★ {r.restaurant_rating}</span>
+                )}
+                {r.delivery_rating && (
+                  <span style={{ color: "var(--accent-violet)" }}>Delivery: ★ {r.delivery_rating}</span>
+                )}
+              </div>
+              {r.restaurant_review && (
+                <p style={{ color: "var(--text-slate)", fontSize: "0.95rem" }}>
+                  "{r.restaurant_review}"
+                </p>
+              )}
+            </div>
+          ))}
+
+          {reviews.length === 0 && (
+            <p style={{ color: "var(--text-muted)", textAlign: "center", padding: "20px" }}>
+              No reviews for this restaurant yet.
+            </p>
+          )}
         </div>
       </div>
     </div>

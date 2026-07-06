@@ -19,7 +19,7 @@ interface Order {
   status:
     | "placed"
     | "preparing"
-    | "ready"
+    | "ready_for_pickup"
     | "out_for_delivery"
     | "delivered"
     | "cancelled";
