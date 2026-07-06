@@ -9,6 +9,7 @@ import { CartDrawer } from "../components/CartDrawer";
 import { Checkout } from "../pages/Checkout";
 import { OrderTracking } from "../pages/OrderTracking";
 import { CmsPage } from "../pages/CmsPage";
+import { Orders } from "../pages/Orders";
 import { ShimmerList } from "../components/Shimmer";
 import api from "../../../shared/services/api";
 
@@ -322,6 +323,10 @@ export const AppRoutes: React.FC = () => {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/track/:orderId" element={<OrderTracking />} />
         <Route path="/page/:slug" element={<CmsPage />} />
+        <Route
+          path="/orders"
+          element={userEmail ? <Orders /> : <Navigate to="/login" />}
+        />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <CartDrawer

@@ -60,7 +60,7 @@ export const Dashboard: React.FC = () => {
           const allOrders = ordersRes.data.data;
 
           // Filter jobs ready for pickup
-          setJobs(allOrders.filter((o: any) => o.status === "ready"));
+          setJobs(allOrders.filter((o: any) => o.status === "ready_for_pickup"));
 
           // Find if there is an active delivery job currently assigned to this driver
           const active = allOrders.find(
@@ -105,7 +105,7 @@ export const Dashboard: React.FC = () => {
 
   const handleAcceptJob = async (orderId: string) => {
     try {
-      const response = await api.put(`/orders/${orderId}`, {
+      const response = await api.put(`/orders/${orderId}/status`, {
         status: "out_for_delivery",
       });
       if (response.data.status === "success") {
@@ -132,7 +132,7 @@ export const Dashboard: React.FC = () => {
 
   const handleDeliverJob = async (orderId: string) => {
     try {
-      const response = await api.put(`/orders/${orderId}`, {
+      const response = await api.put(`/orders/${orderId}/status`, {
         status: "delivered",
       });
       if (response.data.status === "success") {

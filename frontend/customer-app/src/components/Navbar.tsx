@@ -137,7 +137,19 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {userEmail ? (
-          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+            <Link
+              to="/orders"
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontSize: "0.9rem",
+                fontWeight: 600,
+                fontFamily: "var(--font-cohere)",
+              }}
+            >
+              My Orders
+            </Link>
             <div
               style={{
                 display: "flex",
