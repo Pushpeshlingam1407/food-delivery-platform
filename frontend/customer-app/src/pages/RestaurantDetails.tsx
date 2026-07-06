@@ -48,10 +48,14 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
         const res = await api.get(`/restaurants/${id}`);
         if (res.data.status === "success") {
           setRestaurant(res.data.data);
-          setCategories(res.data.data.categories || []);
         }
 
-        const menuRes = await api.get(`/menus/restaurant/${id}`);
+        const catRes = await api.get(`/restaurants/${id}/categories`);
+        if (catRes.data.status === "success") {
+          setCategories(catRes.data.data || []);
+        }
+
+        const menuRes = await api.get(`/restaurants/${id}/items`);
         if (menuRes.data.status === "success") {
           setMenuItems(menuRes.data.data);
         }

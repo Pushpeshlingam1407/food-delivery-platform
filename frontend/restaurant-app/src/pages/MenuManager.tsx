@@ -42,18 +42,22 @@ export const MenuManager: React.FC = () => {
         if (myRestaurant) {
           setRestaurantId(myRestaurant.id);
 
-          const catRes = await api.get(`/restaurants/${myRestaurant.id}/categories`);
-          if (catRes.data.status === 'success') {
+          const catRes = await api.get(
+            `/restaurants/${myRestaurant.id}/categories`,
+          );
+          if (catRes.data.status === "success") {
             setCategories(catRes.data.data || []);
           }
 
-          const menuRes = await api.get(`/restaurants/${myRestaurant.id}/items`);
-          if (menuRes.data.status === 'success') {
+          const menuRes = await api.get(
+            `/restaurants/${myRestaurant.id}/items`,
+          );
+          if (menuRes.data.status === "success") {
             setMenuItems(menuRes.data.data);
           }
         }
       } catch (err) {
-        console.error('Fetch menu list failed:', err);
+        console.error("Fetch menu list failed:", err);
       }
     };
 
@@ -65,31 +69,31 @@ export const MenuManager: React.FC = () => {
     if (!newCatName || !restaurantId) return;
 
     try {
-      const response = await api.post('/restaurants/categories', {
+      const response = await api.post("/restaurants/categories", {
         restaurant_id: restaurantId,
         name: newCatName,
       });
 
-      if (response.data.status === 'success') {
+      if (response.data.status === "success") {
         const newCat = response.data.data;
         setCategories((prev) => [...prev, newCat]);
-        setNewCatName('');
-        toast.success('Category added successfully!');
+        setNewCatName("");
+        toast.success("Category added successfully!");
       }
     } catch (err) {
-      toast.error('Failed to create category.');
+      toast.error("Failed to create category.");
     }
   };
 
   const handleAddMenuItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newItemName || !newItemPrice || !newItemCategoryId || !restaurantId) {
-      toast.error('All fields are required.');
+      toast.error("All fields are required.");
       return;
     }
 
     try {
-      const response = await api.post('/restaurants/items', {
+      const response = await api.post("/restaurants/items", {
         restaurant_id: restaurantId,
         category_id: newItemCategoryId,
         name: newItemName,
@@ -98,35 +102,40 @@ export const MenuManager: React.FC = () => {
         is_veg: newItemIsVeg,
       });
 
-      if (response.data.status === 'success') {
+      if (response.data.status === "success") {
         const newItem = response.data.data;
         setMenuItems((prev) => [...prev, newItem]);
 
         // Reset states
-        setNewItemName('');
-        setNewItemDesc('');
-        setNewItemPrice('');
-        setNewItemCategoryId('');
-        toast.success('Menu item added successfully!');
+        setNewItemName("");
+        setNewItemDesc("");
+        setNewItemPrice("");
+        setNewItemCategoryId("");
+        toast.success("Menu item added successfully!");
       }
     } catch (err) {
-      toast.error('Failed to create menu item.');
+      toast.error("Failed to create menu item.");
     }
   };
 
-  const toggleItemAvailability = async (itemId: string, currentVal: boolean) => {
+  const toggleItemAvailability = async (
+    itemId: string,
+    currentVal: boolean,
+  ) => {
     try {
       const response = await api.put(`/restaurants/items/${itemId}`, {
         is_available: !currentVal,
       });
-      if (response.data.status === 'success') {
+      if (response.data.status === "success") {
         setMenuItems((prev) =>
-          prev.map((item) => (item.id === itemId ? { ...item, is_available: !currentVal } : item))
+          prev.map((item) =>
+            item.id === itemId ? { ...item, is_available: !currentVal } : item,
+          ),
         );
-        toast.success('Disponibility status updated.');
+        toast.success("Disponibility status updated.");
       }
     } catch (err) {
-      toast.error('Failed to toggle availability.');
+      toast.error("Failed to toggle availability.");
     }
   };
 

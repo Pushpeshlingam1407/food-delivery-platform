@@ -7,13 +7,12 @@ import { Dashboard } from "../pages/Dashboard";
 import { MenuManager } from "../pages/MenuManager";
 
 export const AppRoutes: React.FC = () => {
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [restaurantName, setRestaurantName] = useState<string | null>(null);
-
-  useEffect(() => {
-    setUserEmail(localStorage.getItem("userEmail"));
-    setRestaurantName(localStorage.getItem("userName"));
-  }, []);
+  const [userEmail, setUserEmail] = useState<string | null>(() =>
+    localStorage.getItem("userEmail"),
+  );
+  const [restaurantName, setRestaurantName] = useState<string | null>(() =>
+    localStorage.getItem("userName"),
+  );
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");

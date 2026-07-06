@@ -114,11 +114,11 @@ export const Checkout: React.FC = () => {
     setLoading(true);
     try {
       const response = await api.post("/orders", {
-        address_id: selectedAddressId,
-        payment_method: paymentMethod,
-        coupon_id: stateData.couponId,
+        addressId: selectedAddressId,
+        paymentMethod: paymentMethod,
+        couponId: stateData.couponId,
         items: stateData.cartItems.map((item) => ({
-          menu_item_id: item.id,
+          menuItemId: item.id,
           quantity: item.qty,
         })),
       });
@@ -455,6 +455,66 @@ export const Checkout: React.FC = () => {
             >
               Order Review
             </h3>
+
+            {/* Selected Address Preview */}
+            <div
+              style={{
+                marginBottom: "20px",
+                padding: "16px",
+                background: "rgba(25, 25, 25, 0.02)",
+                borderRadius: "var(--radius-standard)",
+                border: "1px solid var(--glass-border)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "var(--text-muted)",
+                  marginBottom: "6px",
+                  textTransform: "uppercase",
+                }}
+              >
+                <MapPin size={14} /> Deliver To
+              </div>
+              {selectedAddressId ? (
+                (() => {
+                  const selectedAddr = addresses.find(
+                    (a) => a.id === selectedAddressId,
+                  );
+                  return selectedAddr ? (
+                    <div style={{ fontSize: "0.9rem" }}>
+                      <strong>{selectedAddr.street_address}</strong>
+                      <div
+                        style={{
+                          color: "var(--text-muted)",
+                          fontSize: "0.85rem",
+                          marginTop: "2px",
+                        }}
+                      >
+                        {selectedAddr.landmark
+                          ? `${selectedAddr.landmark}, `
+                          : ""}
+                        {selectedAddr.city} - {selectedAddr.postal_code}
+                      </div>
+                    </div>
+                  ) : (
+                    <span
+                      style={{ fontSize: "0.9rem", color: "var(--text-muted)" }}
+                    >
+                      Finding address...
+                    </span>
+                  );
+                })()
+              ) : (
+                <span style={{ fontSize: "0.9rem", color: "red" }}>
+                  No address selected
+                </span>
+              )}
+            </div>
 
             <div
               style={{

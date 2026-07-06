@@ -6,13 +6,12 @@ import { Register } from "../pages/Register";
 import { Dashboard } from "../pages/Dashboard";
 
 export const AppRoutes: React.FC = () => {
-  const [userEmail, setUserEmail] = useState<string | null>(null);
-  const [driverName, setDriverName] = useState<string | null>(null);
-
-  useEffect(() => {
-    setUserEmail(localStorage.getItem("userEmail"));
-    setDriverName(localStorage.getItem("userName"));
-  }, []);
+  const [userEmail, setUserEmail] = useState<string | null>(() =>
+    localStorage.getItem("userEmail"),
+  );
+  const [driverName, setDriverName] = useState<string | null>(() =>
+    localStorage.getItem("userName"),
+  );
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
