@@ -425,12 +425,30 @@ export async function getMe(req, res) {
         .json({ status: "error", message: "User not found" });
     }
 
+    const userData = { ...users[0], role: req.user.role };
+
+    if (req.user.role === 'delivery_partner') {
+      const [partnerRows] = await pool.query(
+        "SELECT is_online, vehicle_number, vehicle_type, license_number, status FROM delivery_partners WHERE id = ?",
+        [req.user.userId]
+      );
+      if (partnerRows.length > 0) {
+        userData.is_online = partnerRows[0].is_online === 1 || partnerRows[0].is_online === true;
+        userData.delivery_partner = partnerRows[0];
+      }
+    } else if (req.user.role === 'restaurant_owner') {
+      const [restaurantRows] = await pool.query(
+        "SELECT id, name, status, is_active FROM restaurants WHERE owner_id = ? AND deleted_at IS NULL",
+        [req.user.userId]
+      );
+      if (restaurantRows.length > 0) {
+        userData.restaurant = restaurantRows[0];
+      }
+    }
+
     return res.status(200).json({
       status: "success",
-      data: {
-        ...users[0],
-        role: req.user.role,
-      },
+      data: userData,
     });
   } catch (error) {
     console.error("Get profile error:", error);
