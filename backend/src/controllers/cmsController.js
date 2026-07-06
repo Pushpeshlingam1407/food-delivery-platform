@@ -160,3 +160,16 @@ export async function deleteCmsPage(req, res) {
       .json({ status: "error", message: "Internal server error" });
   }
 }
+
+export async function getAllCmsPages(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden: Access denied" });
+  }
+  try {
+    const [rows] = await pool.query("SELECT * FROM cms_pages");
+    return res.status(200).json({ status: "success", data: rows });
+  } catch (error) {
+    console.error("Get all CMS pages error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}
