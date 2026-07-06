@@ -101,14 +101,30 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
         >
           Rate Your Experience
         </h3>
-        <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: "24px" }}>
+        <p
+          style={{
+            color: "var(--text-muted)",
+            fontSize: "0.9rem",
+            marginBottom: "24px",
+          }}
+        >
           Tell us how your food was and how the rider did!
         </p>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+        <form
+          onSubmit={handleSubmit}
+          style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+        >
           {/* Restaurant Rating */}
           <div>
-            <label style={{ fontSize: "0.85rem", fontWeight: 700, display: "block", marginBottom: "8px" }}>
+            <label
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                display: "block",
+                marginBottom: "8px",
+              }}
+            >
               RATE THE FOOD & RESTAURANT
             </label>
             <div style={{ display: "flex", gap: "6px", marginBottom: "12px" }}>
@@ -117,12 +133,21 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
                   type="button"
                   key={star}
                   onClick={() => setRestRating(star)}
-                  style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                  }}
                 >
                   <Star
                     size={28}
                     fill={star <= restRating ? "var(--accent-orange)" : "none"}
-                    color={star <= restRating ? "var(--accent-orange)" : "var(--text-muted)"}
+                    color={
+                      star <= restRating
+                        ? "var(--accent-orange)"
+                        : "var(--text-muted)"
+                    }
                   />
                 </button>
               ))}
@@ -145,7 +170,14 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
 
           {/* Delivery Rating */}
           <div>
-            <label style={{ fontSize: "0.85rem", fontWeight: 700, display: "block", marginBottom: "8px" }}>
+            <label
+              style={{
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                display: "block",
+                marginBottom: "8px",
+              }}
+            >
               RATE THE RIDER & DELIVERY
             </label>
             <div style={{ display: "flex", gap: "6px", marginBottom: "12px" }}>
@@ -154,12 +186,21 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
                   type="button"
                   key={star}
                   onClick={() => setDelivRating(star)}
-                  style={{ background: "none", border: "none", cursor: "pointer", padding: 0 }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: 0,
+                  }}
                 >
                   <Star
                     size={28}
                     fill={star <= delivRating ? "var(--accent-violet)" : "none"}
-                    color={star <= delivRating ? "var(--accent-violet)" : "var(--text-muted)"}
+                    color={
+                      star <= delivRating
+                        ? "var(--accent-violet)"
+                        : "var(--text-muted)"
+                    }
                   />
                 </button>
               ))}

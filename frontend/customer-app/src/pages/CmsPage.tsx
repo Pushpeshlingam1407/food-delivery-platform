@@ -29,7 +29,14 @@ export const CmsPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "60vh" }}>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "60vh",
+        }}
+      >
         <p style={{ color: "var(--text-muted)" }}>Loading page...</p>
       </div>
     );
@@ -37,10 +44,21 @@ export const CmsPage: React.FC = () => {
 
   if (!page) {
     return (
-      <div style={{ padding: "40px", maxWidth: "600px", margin: "0 auto", textAlign: "center" }}>
+      <div
+        style={{
+          padding: "40px",
+          maxWidth: "600px",
+          margin: "0 auto",
+          textAlign: "center",
+        }}
+      >
         <h2>Page Not Found</h2>
-        <p style={{ color: "var(--text-muted)", margin: "16px 0" }}>The requested page does not exist or has been unpublished.</p>
-        <button onClick={() => navigate("/")} className="btn-premium">Back to Home</button>
+        <p style={{ color: "var(--text-muted)", margin: "16px 0" }}>
+          The requested page does not exist or has been unpublished.
+        </p>
+        <button onClick={() => navigate("/")} className="btn-premium">
+          Back to Home
+        </button>
       </div>
     );
   }
@@ -64,11 +82,24 @@ export const CmsPage: React.FC = () => {
         <ArrowLeft size={16} /> Back
       </button>
 
-      <h1 style={{ fontSize: "2.5rem", marginBottom: "8px", fontFamily: "var(--font-anthropic)" }}>
+      <h1
+        style={{
+          fontSize: "2.5rem",
+          marginBottom: "8px",
+          fontFamily: "var(--font-anthropic)",
+        }}
+      >
         {page.title}
       </h1>
-      <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginBottom: "32px" }}>
-        Last updated: {new Date(page.updated_at || page.created_at).toLocaleDateString()}
+      <div
+        style={{
+          fontSize: "0.85rem",
+          color: "var(--text-muted)",
+          marginBottom: "32px",
+        }}
+      >
+        Last updated:{" "}
+        {new Date(page.updated_at || page.created_at).toLocaleDateString()}
       </div>
 
       <div

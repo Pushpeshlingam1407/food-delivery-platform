@@ -60,7 +60,9 @@ export const Dashboard: React.FC = () => {
           const allOrders = ordersRes.data.data;
 
           // Filter jobs ready for pickup
-          setJobs(allOrders.filter((o: any) => o.status === "ready_for_pickup"));
+          setJobs(
+            allOrders.filter((o: any) => o.status === "ready_for_pickup"),
+          );
 
           // Find if there is an active delivery job currently assigned to this driver
           const active = allOrders.find(

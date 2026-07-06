@@ -122,23 +122,31 @@ export async function getRestaurantRatings(req, res) {
        JOIN users u ON r.user_id = u.id
        WHERE o.restaurant_id = ?
        ORDER BY r.created_at DESC`,
-      [restaurantId]
+      [restaurantId],
     );
 
-    const ratingsCount = rows.filter(item => item.restaurant_rating !== null).length;
-    const ratingsSum = rows.reduce((sum, item) => sum + (parseFloat(item.restaurant_rating) || 0), 0);
-    const averageRating = ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
+    const ratingsCount = rows.filter(
+      (item) => item.restaurant_rating !== null,
+    ).length;
+    const ratingsSum = rows.reduce(
+      (sum, item) => sum + (parseFloat(item.restaurant_rating) || 0),
+      0,
+    );
+    const averageRating =
+      ratingsCount > 0 ? parseFloat((ratingsSum / ratingsCount).toFixed(1)) : 0;
 
     return res.status(200).json({
       status: "success",
       data: {
         reviews: rows,
         average_rating: averageRating,
-        total_reviews: rows.length
-      }
+        total_reviews: rows.length,
+      },
     });
   } catch (error) {
     console.error("Get restaurant ratings error:", error);
-    return res.status(500).json({ status: "error", message: "Internal server error" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
   }
 }

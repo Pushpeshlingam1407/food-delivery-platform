@@ -10,6 +10,7 @@ import { Checkout } from "../pages/Checkout";
 import { OrderTracking } from "../pages/OrderTracking";
 import { CmsPage } from "../pages/CmsPage";
 import { Orders } from "../pages/Orders";
+import { AddressManager } from "../pages/AddressManager";
 import { ShimmerList } from "../components/Shimmer";
 import api from "../../../shared/services/api";
 import { DollarSign, Truck, ArrowRight } from "lucide-react";
@@ -41,7 +42,12 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
         if (ordersRes.data.status === "success") {
           const allOrders = ordersRes.data.data || [];
           const active = allOrders.filter((o: any) =>
-            ["placed", "preparing", "ready_for_pickup", "out_for_delivery"].includes(o.status)
+            [
+              "placed",
+              "preparing",
+              "ready_for_pickup",
+              "out_for_delivery",
+            ].includes(o.status),
           );
           setActiveOrders(active);
         }
@@ -71,7 +77,10 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
       return;
     }
     try {
-      const res = await api.post("/wallets/deposit", { amount, description: "Wallet Top-up" });
+      const res = await api.post("/wallets/deposit", {
+        amount,
+        description: "Wallet Top-up",
+      });
       if (res.data.status === "success") {
         toast.success("Wallet funds added successfully!");
         const walletRes = await api.get("/wallets");
@@ -91,7 +100,10 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: activeOrders.length > 0 ? "repeat(auto-fit, minmax(280px, 1fr))" : "1fr",
+            gridTemplateColumns:
+              activeOrders.length > 0
+                ? "repeat(auto-fit, minmax(280px, 1fr))"
+                : "1fr",
             gap: "32px",
             marginBottom: "48px",
           }}
@@ -123,7 +135,13 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                 >
                   <Truck size={20} /> Active Deliveries ({activeOrders.length})
                 </h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px",
+                  }}
+                >
                   {activeOrders.map((o) => (
                     <div
                       key={o.id}
@@ -138,8 +156,16 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                       }}
                     >
                       <div>
-                        <strong style={{ fontSize: "0.95rem" }}>{o.restaurant_name}</strong>
-                        <div style={{ fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                        <strong style={{ fontSize: "0.95rem" }}>
+                          {o.restaurant_name}
+                        </strong>
+                        <div
+                          style={{
+                            fontSize: "0.8rem",
+                            color: "var(--text-muted)",
+                            marginTop: "2px",
+                          }}
+                        >
                           Status: {o.status.replace(/_/g, " ").toUpperCase()}
                         </div>
                       </div>
@@ -190,7 +216,14 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                 >
                   WALLET BALANCE
                 </div>
-                <div style={{ fontSize: "2rem", fontWeight: 800, display: "flex", alignItems: "center" }}>
+                <div
+                  style={{
+                    fontSize: "2rem",
+                    fontWeight: 800,
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
                   <DollarSign size={24} color="var(--accent-orange)" />
                   {walletBalance.toFixed(2)}
                 </div>

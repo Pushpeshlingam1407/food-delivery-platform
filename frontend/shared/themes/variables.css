@@ -111,5 +111,5 @@ h3 {
 
 .input-premium:focus {
   border-color: var(--accent-orange);
-  background: #FFF;
+  background: #fff;
 }
