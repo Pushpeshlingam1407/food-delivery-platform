@@ -7,7 +7,7 @@ import {
   updateCoupon,
   deleteCoupon,
   getSystemSettings,
-  updateSystemSettings
+  updateSystemSettings,
 } from "../controllers/adminController.js";
 import { authenticateJWT } from "../middlewares/auth.js";
 
