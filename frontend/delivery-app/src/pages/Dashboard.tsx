@@ -30,6 +30,11 @@ export const Dashboard: React.FC = () => {
   useEffect(() => {
     const fetchDriverStats = async () => {
       try {
+        const meRes = await api.get("/auth/me");
+        if (meRes.data.status === "success" && meRes.data.data) {
+          setIsOnline(!!meRes.data.data.is_online);
+        }
+
         const walletRes = await api.get("/wallet/balance");
         if (walletRes.data.status === "success") {
           setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
