@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
+import { PremiumCard } from "../../../shared/components/PremiumCard";
+import { PremiumInput } from "../../../shared/components/PremiumInput";
+import { PremiumButton } from "../../../shared/components/PremiumButton";
 
 export const Login: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -23,19 +26,17 @@ export const Login: React.FC = () => {
         const { accessToken, refreshToken, user } = response.data.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("userEmail", user.email);
+        localStorage.setItem(
+          "userEmail",
+          `${user.first_name} ${user.last_name || ""}`,
+        );
 
-        toast.success("Welcome back!", {
-          description: `Logged in successfully as ${user.first_name}.`,
-        });
-        navigate("/");
+        toast.success(`Welcome back, ${user.first_name}!`);
+        window.location.href = "/";
       }
-    } catch (error: any) {
-      console.error(error);
-      const errMsg =
-        error.response?.data?.message ||
-        "Invalid credentials. Please try again.";
-      toast.error(errMsg);
+    } catch (err: any) {
+      console.error(err);
+      toast.error(err.response?.data?.message || "Invalid credentials.");
     } finally {
       setLoading(false);
     }
@@ -51,14 +52,7 @@ export const Login: React.FC = () => {
         padding: "20px",
       }}
     >
-      <div
-        className="card-premium"
-        style={{
-          width: "100%",
-          maxWidth: "440px",
-          padding: "48px",
-        }}
-      >
+      <PremiumCard style={{ width: "100%", maxWidth: "440px", padding: "48px" }}>
         <h2
           style={{
             fontFamily: "var(--font-anthropic)",
@@ -84,68 +78,32 @@ export const Login: React.FC = () => {
           onSubmit={handleLogin}
           style={{ display: "flex", flexDirection: "column", gap: "20px" }}
         >
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <label
-              style={{
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Email Address
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="name@domain.com"
-              required
-              className="input-premium"
-            />
-          </div>
+          <PremiumInput
+            type="email"
+            label="Email Address"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="name@domain.com"
+            required
+          />
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "between",
-                alignItems: "center",
-              }}
-            >
-              <label
-                style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "var(--text-slate)",
-                }}
-              >
-                Password
-              </label>
-            </div>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
-              required
-              className="input-premium"
-            />
-          </div>
+          <PremiumInput
+            type="password"
+            label="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="••••••••"
+            required
+          />
 
-          <button
+          <PremiumButton
             type="submit"
-            disabled={loading}
-            className="btn-premium"
-            style={{
-              padding: "14px",
-              fontSize: "1rem",
-              marginTop: "12px",
-              opacity: loading ? 0.7 : 1,
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
+            loading={loading}
+            loadingText="Authenticating..."
+            style={{ width: "100%", padding: "14px", marginTop: "12px", fontSize: "1rem" }}
           >
-            {loading ? "Authenticating..." : "Sign In"}
-          </button>
+            Sign In
+          </PremiumButton>
         </form>
 
         <div
@@ -168,7 +126,7 @@ export const Login: React.FC = () => {
             Create one
           </Link>
         </div>
-      </div>
+      </PremiumCard>
     </div>
   );
 };
