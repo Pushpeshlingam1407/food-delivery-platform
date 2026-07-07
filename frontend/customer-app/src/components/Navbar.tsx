@@ -20,21 +20,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSearchChange,
 }) => {
   return (
-    <nav
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        background: "var(--glass-bg)",
-        borderBottom: "1px solid var(--glass-border)",
-        backdropFilter: "var(--glass-blur)",
-        padding: "16px 40px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        boxShadow: "var(--glass-shadow)",
-      }}
-    >
+    <nav className="navbar-container">
       {/* Brand logo (Cohere style) */}
       <div
         style={{
