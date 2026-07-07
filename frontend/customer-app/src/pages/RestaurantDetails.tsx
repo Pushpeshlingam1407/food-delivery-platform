@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Heart, Plus, Minus, ArrowLeft } from "lucide-react";
+import { Heart, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 import { MenuCard } from "../../../shared/components/MenuCard";
@@ -118,7 +118,11 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   return (
     <div className="page-container restaurant-details-page">
       {/* Back link */}
-      <button type="button" onClick={() => navigate("/")} className="back-button">
+      <button
+        type="button"
+        onClick={() => navigate("/")}
+        className="back-button"
+      >
         <ArrowLeft size={16} /> Back to restaurants
       </button>
 
@@ -129,14 +133,26 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
           <p className="restaurant-description">{restaurant.description}</p>
           <div className="restaurant-stats">
             <span>⏱️ {restaurant.average_delivery_time} mins</span>
-            <span>⭐ {avgRating > 0 ? `${avgRating} / 5` : "No ratings yet"}</span>
-            <span className={restaurant.status === "open" ? "restaurant-status--open" : "restaurant-status--closed"}>
+            <span>
+              ⭐ {avgRating > 0 ? `${avgRating} / 5` : "No ratings yet"}
+            </span>
+            <span
+              className={
+                restaurant.status === "open"
+                  ? "restaurant-status--open"
+                  : "restaurant-status--closed"
+              }
+            >
               ● {restaurant.status === "open" ? "Open Now" : "Closed"}
             </span>
           </div>
         </div>
 
-        <button type="button" onClick={toggleFavorite} className="favorite-button">
+        <button
+          type="button"
+          onClick={toggleFavorite}
+          className="favorite-button"
+        >
           <Heart
             size={20}
             fill={isFavorite ? "var(--accent-orange)" : "none"}
@@ -228,12 +244,16 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
                   </span>
                 )}
               </div>
-              {r.restaurant_review && <p className="review-text">"{r.restaurant_review}"</p>}
+              {r.restaurant_review && (
+                <p className="review-text">"{r.restaurant_review}"</p>
+              )}
             </div>
           ))}
 
           {reviews.length === 0 && (
-            <p className="empty-state-text">No reviews for this restaurant yet.</p>
+            <p className="empty-state-text">
+              No reviews for this restaurant yet.
+            </p>
           )}
         </div>
       </div>

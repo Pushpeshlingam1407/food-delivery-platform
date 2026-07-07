@@ -337,7 +337,9 @@ h3 {
   font-weight: 500;
   cursor: pointer;
   font-family: var(--font-apple);
-  transition: background 0.2s ease, color 0.2s ease;
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 .category-button.active,
@@ -510,7 +512,9 @@ h3 {
   padding: 20px;
   box-shadow: var(--glass-shadow);
   backdrop-filter: var(--glass-blur);
-  transition: transform 0.18s ease, box-shadow 0.18s ease;
+  transition:
+    transform 0.18s ease,
+    box-shadow 0.18s ease;
   overflow: hidden;
 }
 
@@ -664,7 +668,9 @@ h3 {
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.2s ease;
+  transition:
+    transform 0.15s ease,
+    background 0.2s ease;
 }
 
 .menu-card-add-button:hover {
