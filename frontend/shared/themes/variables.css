@@ -208,3 +208,20 @@ h3 {
     gap: 16px;
   }
 }
+
+.mobile-menu-toggle {
+  display: none !important;
+}
+
+.navbar-desktop-only {
+  display: flex !important;
+}
+
+@media (max-width: 820px) {
+  .mobile-menu-toggle {
+    display: block !important;
+  }
+  .navbar-desktop-only {
+    display: none !important;
+  }
+}

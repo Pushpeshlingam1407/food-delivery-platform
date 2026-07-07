@@ -56,6 +56,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Address Selector (Apple-style pill) */}
       <div
+        className="navbar-desktop-only"
         style={{
           display: "flex",
           alignItems: "center",
@@ -83,6 +84,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Search Input Bar */}
       <div
+        className="navbar-desktop-only"
         style={{
           display: "flex",
           alignItems: "center",
@@ -141,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {userEmail ? (
-          <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          <div className="navbar-desktop-only" style={{ alignItems: "center", gap: "20px" }}>
             <Link
               to="/orders"
               style={{
@@ -194,17 +196,19 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           </div>
         ) : (
-          <Link
-            to="/login"
-            className="btn-premium"
-            style={{
-              textDecoration: "none",
-              padding: "8px 20px",
-              fontSize: "0.9rem",
-            }}
-          >
-            Sign In
-          </Link>
+          <div className="navbar-desktop-only">
+            <Link
+              to="/login"
+              className="btn-premium"
+              style={{
+                textDecoration: "none",
+                padding: "8px 20px",
+                fontSize: "0.9rem",
+              }}
+            >
+              Sign In
+            </Link>
+          </div>
         )}
       </div>
     </nav>
