@@ -468,20 +468,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
       {/* Header Panel */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "40px",
-          background: "var(--glass-bg)",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-squircle)",
-          padding: "32px",
-          boxShadow: "var(--glass-shadow)",
-          backdropFilter: "var(--glass-blur)",
-        }}
-      >
+      <div className="header-panel-premium">
         <div>
           <h1 style={{ fontSize: "2.2rem", marginBottom: "8px" }}>
             Active Orders

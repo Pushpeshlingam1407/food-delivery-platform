@@ -226,19 +226,7 @@ export const Dashboard: React.FC = () => {
         }}
       >
         {/* Toggle block */}
-        <div
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "var(--radius-squircle)",
-            padding: "32px",
-            boxShadow: "var(--glass-shadow)",
-            backdropFilter: "var(--glass-blur)",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
+        <div className="header-panel-premium" style={{ marginBottom: 0, width: "100%" }}>
           <div>
             <h1 style={{ fontSize: "2.2rem", marginBottom: "8px" }}>
               Logistics Panel

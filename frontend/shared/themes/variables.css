@@ -145,3 +145,28 @@ h3 {
     transform: rotate(360deg);
   }
 }
+
+.header-panel-premium {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 40px;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-squircle);
+  padding: 32px;
+  box-shadow: var(--glass-shadow);
+  backdrop-filter: var(--glass-blur);
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+@media (max-width: 768px) {
+  .header-panel-premium {
+    flex-direction: column;
+    align-items: stretch;
+    text-align: center;
+    padding: 24px;
+    gap: 16px;
+  }
+}
