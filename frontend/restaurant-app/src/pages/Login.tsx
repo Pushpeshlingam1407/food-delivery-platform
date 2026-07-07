@@ -65,15 +65,11 @@ export const Login: React.FC = () => {
       }}
     >
       <div
+        className="card-premium"
         style={{
-          background: "var(--glass-bg)",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-squircle)",
-          padding: "48px",
           width: "100%",
           maxWidth: "440px",
-          boxShadow: "var(--glass-shadow)",
-          backdropFilter: "var(--glass-blur)",
+          padding: "48px",
         }}
       >
         <h2
@@ -117,14 +113,7 @@ export const Login: React.FC = () => {
               onChange={(e) => setEmail(e.target.value)}
               placeholder="owner@restaurant.com"
               required
-              style={{
-                padding: "12px 16px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.95rem",
-                outline: "none",
-              }}
+              className="input-premium"
             />
           </div>
 
@@ -144,14 +133,7 @@ export const Login: React.FC = () => {
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              style={{
-                padding: "12px 16px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.95rem",
-                outline: "none",
-              }}
+              className="input-premium"
             />
           </div>
 
