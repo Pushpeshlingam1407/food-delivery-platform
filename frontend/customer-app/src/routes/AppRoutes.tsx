@@ -192,51 +192,17 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
 
           {/* Quick Wallet Card */}
           {walletBalance !== null && (
-            <div
-              style={{
-                background: "var(--glass-bg)",
-                border: "1px solid var(--glass-border)",
-                borderRadius: "var(--radius-squircle)",
-                padding: "24px 32px",
-                boxShadow: "var(--glass-shadow)",
-                backdropFilter: "var(--glass-blur)",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
-              }}
-            >
+            <div className="wallet-card">
               <div>
-                <div
-                  style={{
-                    fontSize: "0.8rem",
-                    fontWeight: 700,
-                    color: "var(--text-muted)",
-                    marginBottom: "4px",
-                  }}
-                >
-                  WALLET BALANCE
-                </div>
-                <div
-                  style={{
-                    fontSize: "2rem",
-                    fontWeight: 800,
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
+                <div className="wallet-card-label">WALLET BALANCE</div>
+                <div className="wallet-card-value">
                   <DollarSign size={24} color="var(--accent-orange)" />
                   {walletBalance.toFixed(2)}
                 </div>
               </div>
               <button
                 onClick={handleDeposit}
-                className="btn-premium"
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  fontSize: "0.85rem",
-                  marginTop: "16px",
-                }}
+                className="btn-premium wallet-card-button"
               >
                 + Deposit Money
               </button>
@@ -259,78 +225,25 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
       {loading ? (
         <ShimmerList />
       ) : (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-            gap: "32px",
-          }}
-        >
+        <div className="restaurant-grid">
           {restaurants.map((r) => (
             <Link
               to={`/restaurant/${r.id}`}
               key={r.id}
-              style={{
-                textDecoration: "none",
-                color: "inherit",
-                background: "var(--glass-bg)",
-                border: "1px solid var(--glass-border)",
-                borderRadius: "var(--radius-squircle)",
-                padding: "24px",
-                boxShadow: "var(--glass-shadow)",
-                backdropFilter: "var(--glass-blur)",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "between",
-                transition: "transform 0.2s ease",
-              }}
-              onMouseEnter={(e) =>
-                (e.currentTarget.style.transform = "translateY(-4px)")
-              }
-              onMouseLeave={(e) => (e.currentTarget.style.transform = "none")}
+              className="restaurant-card"
             >
-              <h3
-                style={{
-                  fontFamily: "var(--font-cohere)",
-                  fontSize: "1.2rem",
-                  marginBottom: "8px",
-                }}
-              >
-                {r.name}
-              </h3>
-              <p
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.9rem",
-                  marginBottom: "20px",
-                  flexGrow: 1,
-                }}
-              >
+              <h3 className="restaurant-card-title">{r.name}</h3>
+              <p className="restaurant-card-description">
                 {r.description || "No description available"}
               </p>
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <span style={{ fontSize: "0.85rem", fontWeight: 600 }}>
+              <div className="restaurant-card-meta">
+                <span className="restaurant-card-time">
                   {r.average_delivery_time} mins
                 </span>
                 <span
-                  style={{
-                    background:
-                      r.status === "open"
-                        ? "rgba(76, 175, 80, 0.1)"
-                        : "rgba(244, 67, 54, 0.1)",
-                    color: r.status === "open" ? "#4CAF50" : "#F44336",
-                    padding: "4px 12px",
-                    borderRadius: "100px",
-                    fontSize: "0.8rem",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                  }}
+                  className={`restaurant-card-status restaurant-card-status--${
+                    r.status === "open" ? "open" : "closed"
+                  }`}
                 >
                   {r.status}
                 </span>
