@@ -102,13 +102,7 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
 
   if (!restaurant) {
     return (
-      <div
-        style={{
-          padding: "60px",
-          textAlign: "center",
-          fontFamily: "var(--font-cohere)",
-        }}
-      >
+      <div className="page-container" style={{ textAlign: "center" }}>
         Loading restaurant details...
       </div>
     );
@@ -122,91 +116,27 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
   });
 
   return (
-    <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div className="page-container restaurant-details-page">
       {/* Back link */}
-      <button
-        onClick={() => navigate("/")}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: "8px",
-          background: "none",
-          border: "none",
-          color: "var(--text-slate)",
-          fontWeight: 600,
-          cursor: "pointer",
-          marginBottom: "24px",
-          fontFamily: "var(--font-cohere)",
-        }}
-      >
+      <button type="button" onClick={() => navigate("/")} className="back-button">
         <ArrowLeft size={16} /> Back to restaurants
       </button>
 
       {/* Header card (Apple-style frosted glass) */}
-      <div
-        style={{
-          background: "var(--glass-bg)",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-squircle)",
-          padding: "40px",
-          boxShadow: "var(--glass-shadow)",
-          backdropFilter: "var(--glass-blur)",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "start",
-          marginBottom: "40px",
-        }}
-      >
+      <div className="header-panel-premium restaurant-header-card">
         <div>
-          <h1 style={{ fontSize: "2.5rem", marginBottom: "12px" }}>
-            {restaurant.name}
-          </h1>
-          <p
-            style={{
-              color: "var(--text-muted)",
-              marginBottom: "16px",
-              fontSize: "1.1rem",
-            }}
-          >
-            {restaurant.description}
-          </p>
-          <div
-            style={{
-              display: "flex",
-              gap: "24px",
-              fontSize: "0.95rem",
-              fontWeight: 600,
-            }}
-          >
+          <h1>{restaurant.name}</h1>
+          <p className="restaurant-description">{restaurant.description}</p>
+          <div className="restaurant-stats">
             <span>⏱️ {restaurant.average_delivery_time} mins</span>
-            <span>
-              ⭐ {avgRating > 0 ? `${avgRating} / 5` : "No ratings yet"}
-            </span>
-            <span
-              style={{
-                color: restaurant.status === "open" ? "#4CAF50" : "#F44336",
-              }}
-            >
+            <span>⭐ {avgRating > 0 ? `${avgRating} / 5` : "No ratings yet"}</span>
+            <span className={restaurant.status === "open" ? "restaurant-status--open" : "restaurant-status--closed"}>
               ● {restaurant.status === "open" ? "Open Now" : "Closed"}
             </span>
           </div>
         </div>
 
-        <button
-          onClick={toggleFavorite}
-          style={{
-            background: "rgba(25, 25, 25, 0.04)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "50%",
-            width: "48px",
-            height: "48px",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            transition: "all 0.2s ease",
-          }}
-        >
+        <button type="button" onClick={toggleFavorite} className="favorite-button">
           <Heart
             size={20}
             fill={isFavorite ? "var(--accent-orange)" : "none"}
@@ -215,95 +145,43 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
         </button>
       </div>
 
-      <div className="responsive-split">
-        {/* Sidebar categories */}
-        <div style={{ width: "240px", shrink: 0 }}>
-          <h3
-            style={{
-              fontFamily: "var(--font-cohere)",
-              fontSize: "1.2rem",
-              marginBottom: "16px",
-            }}
-          >
-            Categories
-          </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+      <div className="restaurant-content-grid">
+        <aside className="restaurant-sidebar">
+          <h3>Categories</h3>
+          <div className="category-list">
             <button
+              type="button"
+              className={`category-button ${selectedCategory === "all" ? "active" : ""}`}
               onClick={() => setSelectedCategory("all")}
-              style={{
-                textAlign: "left",
-                padding: "12px 16px",
-                borderRadius: "var(--radius-standard)",
-                border: "none",
-                background:
-                  selectedCategory === "all"
-                    ? "rgba(25, 25, 25, 0.08)"
-                    : "transparent",
-                fontWeight: selectedCategory === "all" ? 700 : 500,
-                cursor: "pointer",
-                fontFamily: "var(--font-apple)",
-              }}
             >
               All Items
             </button>
             {categories.map((c) => (
               <button
+                type="button"
                 key={c.id}
+                className={`category-button ${selectedCategory === c.id ? "active" : ""}`}
                 onClick={() => setSelectedCategory(c.id)}
-                style={{
-                  textAlign: "left",
-                  padding: "12px 16px",
-                  borderRadius: "var(--radius-standard)",
-                  border: "none",
-                  background:
-                    selectedCategory === c.id
-                      ? "rgba(25, 25, 25, 0.08)"
-                      : "transparent",
-                  fontWeight: selectedCategory === c.id ? 700 : 500,
-                  cursor: "pointer",
-                  fontFamily: "var(--font-apple)",
-                }}
               >
                 {c.name}
               </button>
             ))}
           </div>
 
-          {/* Veg Switch */}
-          <div
-            style={{
-              marginTop: "32px",
-              display: "flex",
-              alignItems: "center",
-              gap: "12px",
-            }}
-          >
+          <div className="veg-filter">
             <input
               type="checkbox"
               id="veg-switch"
               checked={vegOnly}
               onChange={(e) => setVegOnly(e.target.checked)}
-              style={{ width: "18px", height: "18px", cursor: "pointer" }}
             />
-            <label
-              htmlFor="veg-switch"
-              style={{
-                fontWeight: 600,
-                cursor: "pointer",
-                fontSize: "0.95rem",
-              }}
-            >
-              Veg Only 🌱
-            </label>
+            <label htmlFor="veg-switch">Veg Only 🌱</label>
           </div>
-        </div>
+        </aside>
 
-        {/* Menu list */}
-        <div style={{ flexGrow: 1 }}>
-          <h2 style={{ fontSize: "1.8rem", marginBottom: "24px" }}>Menu</h2>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-          >
+        <section className="restaurant-menu-column">
+          <h2>Menu</h2>
+          <div className="menu-list">
             {filteredMenuItems.map((item) => {
               const qty = cartItems[item.id] || 0;
               return (
@@ -318,104 +196,44 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
             })}
 
             {filteredMenuItems.length === 0 && (
-              <div
-                style={{
-                  padding: "40px",
-                  textAlign: "center",
-                  color: "var(--text-muted)",
-                }}
-              >
+              <div className="empty-state-card">
                 No dishes found matching selection.
               </div>
             )}
           </div>
-        </div>
+        </section>
       </div>
 
-      {/* Reviews Ledger Block */}
-      <div
-        style={{
-          marginTop: "60px",
-          background: "#FFF",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-standard)",
-          padding: "32px",
-          boxShadow: "var(--glass-shadow)",
-        }}
-      >
-        <h3
-          style={{
-            fontSize: "1.4rem",
-            marginBottom: "24px",
-            fontFamily: "var(--font-anthropic)",
-          }}
-        >
-          Customer Reviews ({reviews.length})
-        </h3>
+      <div className="restaurant-review-block">
+        <h3>Customer Reviews ({reviews.length})</h3>
 
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+        <div className="review-list">
           {reviews.map((r, index) => (
-            <div
-              key={index}
-              style={{
-                borderBottom: "1px solid var(--glass-border)",
-                paddingBottom: "20px",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  marginBottom: "8px",
-                }}
-              >
+            <div key={index} className="review-item">
+              <div className="review-meta">
                 <strong>
                   {r.first_name} {r.last_name ? r.last_name[0] + "." : ""}
                 </strong>
-                <span
-                  style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}
-                >
-                  {new Date(r.created_at).toLocaleDateString()}
-                </span>
+                <span>{new Date(r.created_at).toLocaleDateString()}</span>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  gap: "16px",
-                  marginBottom: "10px",
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                }}
-              >
+              <div className="review-tags">
                 {r.restaurant_rating && (
-                  <span style={{ color: "var(--accent-orange)" }}>
+                  <span className="review-tag review-tag--orange">
                     Food: ★ {r.restaurant_rating}
                   </span>
                 )}
                 {r.delivery_rating && (
-                  <span style={{ color: "var(--accent-violet)" }}>
+                  <span className="review-tag review-tag--violet">
                     Delivery: ★ {r.delivery_rating}
                   </span>
                 )}
               </div>
-              {r.restaurant_review && (
-                <p style={{ color: "var(--text-slate)", fontSize: "0.95rem" }}>
-                  "{r.restaurant_review}"
-                </p>
-              )}
+              {r.restaurant_review && <p className="review-text">"{r.restaurant_review}"</p>}
             </div>
           ))}
 
           {reviews.length === 0 && (
-            <p
-              style={{
-                color: "var(--text-muted)",
-                textAlign: "center",
-                padding: "20px",
-              }}
-            >
-              No reviews for this restaurant yet.
-            </p>
+            <p className="empty-state-text">No reviews for this restaurant yet.</p>
           )}
         </div>
       </div>

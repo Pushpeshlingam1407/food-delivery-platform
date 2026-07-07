@@ -1,5 +1,5 @@
 import React from "react";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, Star } from "lucide-react";
 
 interface MenuItem {
   id: string;
@@ -7,6 +7,9 @@ interface MenuItem {
   description?: string;
   price: number;
   is_veg: boolean | number;
+  image_url?: string;
+  rating?: number;
+  review_count?: number;
 }
 
 interface MenuCardProps {
@@ -23,129 +26,73 @@ export const MenuCard: React.FC<MenuCardProps> = ({
   onRemove,
 }) => {
   const isVeg = !!item.is_veg;
+  const formattedPrice = `$${parseFloat(item.price.toString()).toFixed(2)}`;
 
   return (
-    <div
-      className="card-premium"
-      style={{
-        padding: "24px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        width: "100%",
-        gap: "20px",
-      }}
-    >
-      <div style={{ flexGrow: 1, textAlign: "left" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            marginBottom: "8px",
-          }}
-        >
+    <div className="restaurant-menu-card">
+      <div className="menu-card-image">
+        {item.image_url ? (
+          <img src={item.image_url} alt={item.name} />
+        ) : (
+          <div className="menu-card-image-placeholder">No Image</div>
+        )}
+      </div>
+
+      <div className="menu-card-body">
+        <div className="menu-card-topline">
           <span
-            style={{
-              border: `1px solid ${isVeg ? "#4CAF50" : "#F44336"}`,
-              padding: "2px 6px",
-              fontSize: "0.65rem",
-              fontWeight: 800,
-              color: isVeg ? "#4CAF50" : "#F44336",
-              borderRadius: "4px",
-            }}
+            className={`menu-card-badge ${
+              isVeg ? "menu-card-badge--veg" : "menu-card-badge--nonveg"
+            }`}
           >
             {isVeg ? "VEG 🌱" : "NON-VEG 🍖"}
           </span>
-          <h4
-            style={{
-              fontFamily: "var(--font-cohere)",
-              fontSize: "1.15rem",
-              margin: 0,
-            }}
-          >
-            {item.name}
-          </h4>
-        </div>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            fontSize: "0.9rem",
-            marginBottom: "12px",
-          }}
-        >
-          {item.description || "No description available"}
-        </p>
-        <strong style={{ fontSize: "1.1rem", color: "var(--text-slate)" }}>
-          ${parseFloat(item.price.toString()).toFixed(2)}
-        </strong>
-      </div>
 
-      <div style={{ flexShrink: 0 }}>
-        {qty > 0 ? (
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "16px",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "100px",
-              padding: "6px 16px",
-              background: "rgba(25, 25, 25, 0.02)",
-            }}
-          >
+          {item.rating !== undefined && (
+            <span className="menu-card-rating">
+              <Star size={14} /> {item.rating.toFixed(1)}
+              {item.review_count ? ` (${item.review_count})` : ""}
+            </span>
+          )}
+        </div>
+
+        <h4 className="menu-card-title">{item.name}</h4>
+
+        <p className="menu-card-description">
+          {item.description || "No description available."}
+        </p>
+
+        <div className="menu-card-footer">
+          <strong className="menu-card-price">{formattedPrice}</strong>
+
+          {qty > 0 ? (
+            <div className="menu-card-qty-control">
+              <button
+                type="button"
+                onClick={() => onRemove(item.id)}
+                aria-label={`Remove one ${item.name}`}
+              >
+                <Minus size={16} />
+              </button>
+              <span>{qty}</span>
+              <button
+                type="button"
+                onClick={() => onAdd(item)}
+                aria-label={`Add one ${item.name}`}
+              >
+                <Plus size={16} />
+              </button>
+            </div>
+          ) : (
             <button
-              onClick={() => onRemove(item.id)}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: 0,
-                display: "flex",
-                alignItems: "center",
-              }}
-            >
-              <Minus size={16} />
-            </button>
-            <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>{qty}</span>
-            <button
+              type="button"
+              className="menu-card-add-button"
               onClick={() => onAdd(item)}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: 0,
-                display: "flex",
-                alignItems: "center",
-              }}
             >
-              <Plus size={16} />
+              ADD
             </button>
-          </div>
-        ) : (
-          <button
-            onClick={() => onAdd(item)}
-            style={{
-              background: "var(--text-slate)",
-              color: "var(--text-sand)",
-              border: "none",
-              borderRadius: "100px",
-              padding: "8px 24px",
-              fontWeight: 700,
-              fontSize: "0.85rem",
-              cursor: "pointer",
-              transition: "transform 0.15s ease",
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.transform = "scale(1.05)";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.transform = "none";
-            }}
-          >
-            ADD
-          </button>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );
