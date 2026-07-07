@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { Heart, Plus, Minus, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
+import { MenuCard } from "../../../shared/components/MenuCard";
 
 interface MenuItem {
   id: string;
@@ -214,7 +215,7 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
         </button>
       </div>
 
-      <div style={{ display: "flex", gap: "40px" }}>
+      <div className="responsive-split">
         {/* Sidebar categories */}
         <div style={{ width: "240px", shrink: 0 }}>
           <h3

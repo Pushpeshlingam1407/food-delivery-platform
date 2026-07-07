@@ -225,3 +225,18 @@ h3 {
     display: none !important;
   }
 }
+
+.responsive-split {
+  display: flex;
+  gap: 40px;
+}
+
+@media (max-width: 768px) {
+  .responsive-split {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .responsive-split > div {
+    width: 100% !important;
+  }
+}

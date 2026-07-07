@@ -75,7 +75,7 @@ export async function getCart(req, res) {
     if (coupon && itemTotal > 0) {
       const [couponRows] = await pool.query(
         `SELECT * FROM coupons 
-         WHERE code = ? AND is_active = TRUE AND NOW() BETWEEN start_date AND end_date`,
+         WHERE code = ? AND is_active = TRUE AND CURDATE() BETWEEN DATE(start_date) AND DATE(end_date)`,
         [coupon],
       );
       const coupons = couponRows;

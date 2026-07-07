@@ -73,7 +73,7 @@ export async function placeOrder(req, res) {
     if (couponCode) {
       const [couponRows] = await pool.query(
         `SELECT * FROM coupons 
-         WHERE code = ? AND is_active = TRUE AND NOW() BETWEEN start_date AND end_date`,
+         WHERE code = ? AND is_active = TRUE AND CURDATE() BETWEEN DATE(start_date) AND DATE(end_date)`,
         [couponCode],
       );
       if (couponRows.length > 0) {
