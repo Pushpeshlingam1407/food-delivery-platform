@@ -40,6 +40,7 @@ export const Dashboard: React.FC = () => {
   const [analytics, setAnalytics] = useState<Analytics | null>(null);
   const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
   const [coupons, setCoupons] = useState<Coupon[]>([]);
+  const [health, setHealth] = useState<any>(null);
 
   // New coupon form states
   const [code, setCode] = useState("");

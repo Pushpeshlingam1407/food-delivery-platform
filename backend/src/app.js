@@ -16,6 +16,7 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import deliveryRoutes from "./routes/deliveryRoutes.js";
 import cmsRoutes from "./routes/cmsRoutes.js";
 import refundRoutes from "./routes/refundRoutes.js";
+import pool from "./config/db.js";
 
 const app = express();
 
@@ -40,12 +41,23 @@ app.use("/api/delivery", deliveryRoutes);
 app.use("/api/cms", cmsRoutes);
 app.use("/api/admin/refunds", refundRoutes);
 
-app.get("/health", (req, res) => {
+app.get("/health", async (req, res) => {
+  let dbStatus = "disconnected";
+  try {
+    const connection = await pool.getConnection();
+    dbStatus = "connected";
+    connection.release();
+  } catch (error) {
+    dbStatus = "failed";
+  }
+
   res.status(200).json({
     status: "success",
-    message: "Food Delivery Platform Server is healthy",
-    timestamp: new Date().toISOString(),
+    server_port: process.env.PORT || 5000,
+    database: dbStatus,
+    database_port: 3306,
     uptime: process.uptime(),
+    timestamp: new Date().toISOString(),
   });
 });
 

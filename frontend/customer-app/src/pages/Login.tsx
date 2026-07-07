@@ -52,7 +52,9 @@ export const Login: React.FC = () => {
         padding: "20px",
       }}
     >
-      <PremiumCard style={{ width: "100%", maxWidth: "440px", padding: "48px" }}>
+      <PremiumCard
+        style={{ width: "100%", maxWidth: "440px", padding: "48px" }}
+      >
         <h2
           style={{
             fontFamily: "var(--font-anthropic)",
@@ -100,7 +102,12 @@ export const Login: React.FC = () => {
             type="submit"
             loading={loading}
             loadingText="Authenticating..."
-            style={{ width: "100%", padding: "14px", marginTop: "12px", fontSize: "1rem" }}
+            style={{
+              width: "100%",
+              padding: "14px",
+              marginTop: "12px",
+              fontSize: "1rem",
+            }}
           >
             Sign In
           </PremiumButton>

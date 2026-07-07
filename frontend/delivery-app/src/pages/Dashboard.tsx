@@ -226,7 +226,10 @@ export const Dashboard: React.FC = () => {
         }}
       >
         {/* Toggle block */}
-        <div className="header-panel-premium" style={{ marginBottom: 0, width: "100%" }}>
+        <div
+          className="header-panel-premium"
+          style={{ marginBottom: 0, width: "100%" }}
+        >
           <div>
             <h1 style={{ fontSize: "2.2rem", marginBottom: "8px" }}>
               Logistics Panel
