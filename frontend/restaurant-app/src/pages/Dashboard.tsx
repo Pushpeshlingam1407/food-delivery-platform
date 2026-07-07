@@ -195,17 +195,8 @@ export const Dashboard: React.FC = () => {
   // Onboarding UI if no restaurant profile found
   if (!restaurantId) {
     return (
-      <div style={{ padding: "40px", maxWidth: "600px", margin: "0 auto" }}>
-        <div
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "var(--radius-squircle)",
-            padding: "40px",
-            boxShadow: "var(--glass-shadow)",
-            backdropFilter: "var(--glass-blur)",
-          }}
-        >
+      <div className="page-container">
+        <div className="panel-card">
           <div style={{ textAlign: "center", marginBottom: "24px" }}>
             <Store
               size={48}
@@ -227,69 +218,39 @@ export const Dashboard: React.FC = () => {
             </p>
           </div>
 
-          <form
-            onSubmit={handleCreateRestaurant}
-            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-          >
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-            >
-              <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                Restaurant Name *
-              </label>
+          <form onSubmit={handleCreateRestaurant} className="form-grid">
+            <div className="form-field">
+              <label>Restaurant Name *</label>
               <input
                 type="text"
                 value={restName}
                 onChange={(e) => setRestName(e.target.value)}
                 placeholder="The Curry House"
                 required
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--glass-border)",
-                  outline: "none",
-                }}
+                className="input-premium"
               />
             </div>
 
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-            >
-              <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                Description
-              </label>
+            <div className="form-field">
+              <label>Description</label>
               <textarea
                 value={restDesc}
                 onChange={(e) => setRestDesc(e.target.value)}
                 placeholder="Delicious home-style Indian cuisine..."
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--glass-border)",
-                  minHeight: "60px",
-                  outline: "none",
-                }}
+                className="input-premium"
+                style={{ minHeight: "60px" }}
               />
             </div>
 
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-            >
-              <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                Street Address *
-              </label>
+            <div className="form-field">
+              <label>Street Address *</label>
               <input
                 type="text"
                 value={restAddress}
                 onChange={(e) => setRestAddress(e.target.value)}
                 placeholder="123 Main St, Indiranagar"
                 required
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--glass-border)",
-                  outline: "none",
-                }}
+                className="input-premium"
               />
             </div>
 
@@ -453,7 +414,7 @@ export const Dashboard: React.FC = () => {
               type="submit"
               disabled={createLoading}
               className="btn-premium"
-              style={{ padding: "12px", fontSize: "0.95rem", marginTop: "8px" }}
+              style={{ fontSize: "0.95rem", marginTop: "8px" }}
             >
               {createLoading
                 ? "Creating Profile..."
@@ -466,7 +427,7 @@ export const Dashboard: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div className="page-container">
       {/* Header Panel */}
       <div className="header-panel-premium">
         <div>
@@ -509,35 +470,11 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Grid list of orders */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(360px, 1fr))",
-          gap: "32px",
-        }}
-      >
+      <div className="panel-grid">
         {orders.map((o) => (
-          <div
-            key={o.id}
-            style={{
-              background: "#FFF",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-standard)",
-              padding: "24px",
-              boxShadow: "var(--glass-shadow)",
-              display: "flex",
-              flexDirection: "column",
-            }}
-          >
+          <div key={o.id} className="panel-card panel-card-stacked">
             {/* Order Card Head */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "16px",
-              }}
-            >
+            <div className="panel-row" style={{ marginBottom: "16px" }}>
               <div>
                 <strong style={{ fontSize: "1.1rem" }}>
                   Order #{o.order_number}
@@ -546,27 +483,15 @@ export const Dashboard: React.FC = () => {
                   {new Date(o.created_at).toLocaleTimeString()}
                 </div>
               </div>
-              <span
-                style={{
-                  background: "rgba(25, 25, 25, 0.04)",
-                  padding: "4px 12px",
-                  borderRadius: "100px",
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                }}
-              >
+              <span className="status-pill warning">
                 {o.status.toUpperCase()}
               </span>
             </div>
 
             {/* Customer Details */}
             <div
-              style={{
-                fontSize: "0.95rem",
-                color: "var(--text-slate)",
-                marginBottom: "20px",
-                flexGrow: 1,
-              }}
+              className="text-small"
+              style={{ marginBottom: "20px", flexGrow: 1 }}
             >
               Customer:{" "}
               <strong>

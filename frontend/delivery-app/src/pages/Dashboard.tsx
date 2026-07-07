@@ -217,7 +217,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="app-shell">
       {/* Header Info */}
-      <div className="dashboard-grid" style={{ marginBottom: "40px" }}>
+      <div className="dashboard-grid section-spacing">
         {/* Toggle block */}
         <div
           className="header-panel-premium"
@@ -252,26 +252,8 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Wallet block */}
-        <div
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "var(--radius-squircle)",
-            padding: "24px 32px",
-            boxShadow: "var(--glass-shadow)",
-            backdropFilter: "var(--glass-blur)",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifycontent: "space-between",
-              alignItems: "center",
-            }}
-          >
+        <div className="panel-card panel-card-stacked">
+          <div className="panel-row">
             <div>
               <div
                 style={{
@@ -300,7 +282,8 @@ export const Dashboard: React.FC = () => {
           {/* Cash payout Form */}
           <form
             onSubmit={handleRequestPayout}
-            style={{ display: "flex", gap: "8px", marginTop: "16px" }}
+            className="form-inline"
+            style={{ marginTop: "16px" }}
           >
             <input
               type="number"
@@ -309,24 +292,14 @@ export const Dashboard: React.FC = () => {
               onChange={(e) => setPayoutAmount(e.target.value)}
               placeholder="Amount"
               required
-              style={{
-                padding: "8px 12px",
-                width: "100px",
-                borderRadius: "6px",
-                border: "1px solid var(--glass-border)",
-                fontSize: "0.85rem",
-                outline: "none",
-              }}
+              className="input-premium"
+              style={{ width: "100px" }}
             />
             <button
               type="submit"
               disabled={payoutLoading}
-              className="btn-premium"
-              style={{
-                padding: "8px 14px",
-                fontSize: "0.8rem",
-                flexGrow: 1,
-              }}
+              className="btn-premium btn-sm"
+              style={{ flexGrow: 1 }}
             >
               {payoutLoading ? "Processing..." : "Cash Out"}
             </button>
@@ -337,13 +310,8 @@ export const Dashboard: React.FC = () => {
       {/* Active delivery job card */}
       {activeJob && (
         <div
-          style={{
-            background: "rgba(138, 43, 226, 0.04)",
-            border: "2px solid var(--accent-violet)",
-            borderRadius: "var(--radius-squircle)",
-            padding: "32px",
-            marginBottom: "40px",
-          }}
+          className="panel-card accent-panel"
+          style={{ marginBottom: "40px" }}
         >
           <h2
             style={{
@@ -401,33 +369,12 @@ export const Dashboard: React.FC = () => {
         Logistics Dispatch Feed
       </h2>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
-          gap: "24px",
-          marginBottom: "40px",
-        }}
-      >
+      <div className="panel-grid section-spacing">
         {jobs.map((job) => (
-          <div
-            key={job.id}
-            style={{
-              background: "#FFF",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-standard)",
-              padding: "24px",
-              boxShadow: "var(--glass-shadow)",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
-            }}
-          >
-            <div style={{ display: "flex", justifycontent: "space-between" }}>
+          <div key={job.id} className="panel-card panel-card-stacked">
+            <div className="panel-row">
               <strong>Order #{job.order_number}</strong>
-              <span style={{ color: "var(--accent-orange)", fontWeight: 700 }}>
-                Pending Pickup
-              </span>
+              <span className="status-pill warning">Pending Pickup</span>
             </div>
 
             <div
@@ -479,15 +426,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Transaction History Ledger */}
-      <div
-        style={{
-          background: "#FFF",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-standard)",
-          padding: "32px",
-          boxShadow: "var(--glass-shadow)",
-        }}
-      >
+      <div className="panel-card">
         <h3
           style={{
             fontSize: "1.2rem",
@@ -502,14 +441,8 @@ export const Dashboard: React.FC = () => {
           Log
         </h3>
 
-        <div style={{ overflowX: "auto" }}>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              textAlign: "left",
-            }}
-          >
+        <div className="table-responsive">
+          <table className="table-panel">
             <thead>
               <tr
                 style={{
@@ -539,18 +472,10 @@ export const Dashboard: React.FC = () => {
                   </td>
                   <td style={{ padding: "16px" }}>
                     <span
-                      style={{
-                        padding: "3px 8px",
-                        borderRadius: "100px",
-                        fontSize: "0.8rem",
-                        fontWeight: 700,
-                        background:
-                          tx.type === "credit"
-                            ? "rgba(76, 175, 80, 0.08)"
-                            : "rgba(244, 67, 54, 0.08)",
-                        color: tx.type === "credit" ? "#4CAF50" : "#F44336",
-                        textTransform: "uppercase",
-                      }}
+                      className={
+                        "status-pill " +
+                        (tx.type === "credit" ? "success" : "danger")
+                      }
                     >
                       {tx.type}
                     </span>

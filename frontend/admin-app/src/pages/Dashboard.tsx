@@ -163,7 +163,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="app-shell">
       {/* Page Title */}
-      <div style={{ marginBottom: "40px" }}>
+      <div className="section-spacing">
         <h1
           style={{
             fontSize: "2.2rem",
@@ -173,54 +173,24 @@ export const Dashboard: React.FC = () => {
         >
           Administrator Console
         </h1>
-        <p style={{ color: "var(--text-muted)" }}>
+        <p className="text-muted">
           Overview of platform analytics, restaurant audits, and system
           configuration.
         </p>
       </div>
 
       {/* Analytics Grid */}
-      <div className="dashboard-grid" style={{ marginBottom: "40px" }}>
-        {/* System Health Card */}
-        <div
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "var(--radius-squircle)",
-            padding: "24px",
-            backdropFilter: "var(--glass-blur)",
-          }}
-        >
-          <div
-            style={{
-              color: "var(--text-muted)",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              marginBottom: "8px",
-            }}
-          >
-            SYSTEM PORTS & DB STATUS
-          </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                fontSize: "0.85rem",
-              }}
-            >
+      <div className="dashboard-grid section-spacing">
+        <div className="panel-card">
+          <div className="card-banner">SYSTEM PORTS & DB STATUS</div>
+          <div className="card-stack">
+            <div className="panel-row">
               <span>🔌 Backend Port:</span>
               <strong style={{ color: "#4CAF50" }}>
                 {health?.server_port || 5000} (ONLINE)
               </strong>
             </div>
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                fontSize: "0.85rem",
-              }}
-            >
+            <div className="panel-row">
               <span>🗄️ MySQL Port:</span>
               <strong
                 style={{
@@ -235,25 +205,8 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "var(--radius-squircle)",
-            padding: "24px",
-            backdropFilter: "var(--glass-blur)",
-          }}
-        >
-          <div
-            style={{
-              color: "var(--text-muted)",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              marginBottom: "8px",
-            }}
-          >
-            CAPTURED REVENUE
-          </div>
+        <div className="panel-card">
+          <div className="card-banner">CAPTURED REVENUE</div>
           <div
             style={{
               fontSize: "1.8rem",
@@ -269,25 +222,8 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "var(--radius-squircle)",
-            padding: "24px",
-            backdropFilter: "var(--glass-blur)",
-          }}
-        >
-          <div
-            style={{
-              color: "var(--text-muted)",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              marginBottom: "8px",
-            }}
-          >
-            COMPLETED ORDERS
-          </div>
+        <div className="panel-card">
+          <div className="card-banner">COMPLETED ORDERS</div>
           <div
             style={{
               fontSize: "1.8rem",
@@ -302,25 +238,8 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "var(--radius-squircle)",
-            padding: "24px",
-            backdropFilter: "var(--glass-blur)",
-          }}
-        >
-          <div
-            style={{
-              color: "var(--text-muted)",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              marginBottom: "8px",
-            }}
-          >
-            ACTIVE RESTAURANTS
-          </div>
+        <div className="panel-card">
+          <div className="card-banner">ACTIVE RESTAURANTS</div>
           <div
             style={{
               fontSize: "1.8rem",
@@ -335,25 +254,8 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        <div
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "var(--radius-squircle)",
-            padding: "24px",
-            backdropFilter: "var(--glass-blur)",
-          }}
-        >
-          <div
-            style={{
-              color: "var(--text-muted)",
-              fontSize: "0.8rem",
-              fontWeight: 700,
-              marginBottom: "8px",
-            }}
-          >
-            PLATFORM USERS
-          </div>
+        <div className="panel-card">
+          <div className="card-banner">PLATFORM USERS</div>
           <div
             style={{
               fontSize: "1.8rem",
@@ -369,23 +271,9 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 400px",
-          gap: "40px",
-        }}
-      >
+      <div className="two-column-layout">
         {/* Left Side - Restaurant Auditing */}
-        <div
-          style={{
-            background: "#FFF",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "var(--radius-standard)",
-            padding: "32px",
-            boxShadow: "var(--glass-shadow)",
-          }}
-        >
+        <div className="panel-card">
           <h3
             style={{
               fontSize: "1.2rem",
@@ -400,18 +288,13 @@ export const Dashboard: React.FC = () => {
             Auditing Board
           </h3>
 
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-          >
+          <div className="card-stack">
             {restaurants.map((r) => (
               <div
                 key={r.id}
+                className="panel-row"
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
                   padding: "16px",
-                  border: "1px solid var(--glass-border)",
                   borderRadius: "8px",
                   background: r.is_verified
                     ? "rgba(76, 175, 80, 0.02)"
@@ -428,23 +311,12 @@ export const Dashboard: React.FC = () => {
                 </div>
 
                 {r.is_verified ? (
-                  <span
-                    style={{
-                      fontSize: "0.8rem",
-                      fontWeight: 700,
-                      color: "#4CAF50",
-                      padding: "4px 10px",
-                      background: "rgba(76, 175, 80, 0.08)",
-                      borderRadius: "100px",
-                    }}
-                  >
-                    VERIFIED
-                  </span>
+                  <span className="status-pill success">VERIFIED</span>
                 ) : (
                   <button
                     onClick={() => handleVerifyRestaurant(r.id)}
-                    className="btn-premium"
-                    style={{ padding: "6px 14px", fontSize: "0.8rem" }}
+                    className="btn-premium btn-sm"
+                    style={{ minWidth: "140px" }}
                   >
                     Verify Store
                   </button>
@@ -467,17 +339,9 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Right Side - Coupon Manager */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        <div className="card-stack">
           {/* Create Coupon */}
-          <div
-            style={{
-              background: "var(--glass-bg)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-squircle)",
-              padding: "32px",
-              boxShadow: "var(--glass-shadow)",
-            }}
-          >
+          <div className="panel-card">
             <h3
               style={{
                 fontSize: "1.2rem",
@@ -491,33 +355,20 @@ export const Dashboard: React.FC = () => {
               <Tag size={18} color="var(--accent-violet)" /> Add Promo Coupon
             </h3>
 
-            <form
-              onSubmit={handleAddCoupon}
-              style={{ display: "flex", flexDirection: "column", gap: "12px" }}
-            >
+            <form onSubmit={handleAddCoupon} className="form-grid">
               <input
                 type="text"
                 placeholder="Coupon Code (e.g. WELCOME50)"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
                 required
-                style={{
-                  padding: "10px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--glass-border)",
-                  outline: "none",
-                }}
+                className="input-premium"
               />
 
               <select
                 value={discountType}
                 onChange={(e: any) => setDiscountType(e.target.value)}
-                style={{
-                  padding: "10px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--glass-border)",
-                  outline: "none",
-                }}
+                className="input-premium"
               >
                 <option value="percentage">Percentage (%)</option>
                 <option value="fixed">Fixed Amount ($)</option>
@@ -529,12 +380,7 @@ export const Dashboard: React.FC = () => {
                 value={discountValue}
                 onChange={(e) => setDiscountValue(e.target.value)}
                 required
-                style={{
-                  padding: "10px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--glass-border)",
-                  outline: "none",
-                }}
+                className="input-premium"
               />
 
               <input
@@ -542,12 +388,7 @@ export const Dashboard: React.FC = () => {
                 placeholder="Minimum Order Value ($)"
                 value={minOrder}
                 onChange={(e) => setMinOrder(e.target.value)}
-                style={{
-                  padding: "10px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--glass-border)",
-                  outline: "none",
-                }}
+                className="input-premium"
               />
 
               <button
@@ -562,15 +403,7 @@ export const Dashboard: React.FC = () => {
           </div>
 
           {/* Active Coupons List */}
-          <div
-            style={{
-              background: "#FFF",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-standard)",
-              padding: "24px",
-              boxShadow: "var(--glass-shadow)",
-            }}
-          >
+          <div className="panel-card compact">
             <h4
               style={{
                 fontSize: "1rem",
