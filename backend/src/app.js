@@ -68,7 +68,7 @@ app.get("/health", async (req, res) => {
     status: "success",
     server_port: process.env.PORT || 5000,
     database: dbStatus,
-    database_port: 3306,
+    database_port: parseInt(process.env.DB_PORT || "3306", 10),
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
