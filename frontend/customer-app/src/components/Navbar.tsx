@@ -150,6 +150,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               My Orders
             </Link>
+            <Link
+              to="/addresses"
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontSize: "0.9rem",
+                fontWeight: 600,
+                fontFamily: "var(--font-cohere)",
+              }}
+            >
+              Addresses
+            </Link>
             <div
               style={{
                 display: "flex",

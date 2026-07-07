@@ -530,6 +530,10 @@ export const AppRoutes: React.FC = () => {
           path="/orders"
           element={userEmail ? <Orders /> : <Navigate to="/login" />}
         />
+        <Route
+          path="/addresses"
+          element={userEmail ? <AddressManager /> : <Navigate to="/login" />}
+        />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
       <CartDrawer
