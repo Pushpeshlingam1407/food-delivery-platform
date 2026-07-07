@@ -18,16 +18,10 @@ import { toast } from "sonner";
 
 interface HomeProps {
   searchQuery: string;
-  walletBalance: number | null;
-  onDeposit: () => void;
 }
 
 // Landing Page Dashboard
-const Home: React.FC<HomeProps> = ({
-  searchQuery,
-  walletBalance,
-  onDeposit,
-}) => {
+const Home: React.FC<HomeProps> = ({ searchQuery }) => {
   const [restaurants, setRestaurants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeOrders, setActiveOrders] = useState<any[]>([]);
@@ -72,67 +66,37 @@ const Home: React.FC<HomeProps> = ({
   return (
     <div className="app-shell">
       {/* Dashboard Section */}
-      {localStorage.getItem("accessToken") && (
+      {localStorage.getItem("accessToken") && activeOrders.length > 0 && (
         <div className="dashboard-grid section-spacing">
           {/* Active Orders Box */}
-          {activeOrders.length > 0 && (
-            <div className="panel-card accent-panel panel-card-stacked">
-              <div className="card-banner">
-                <Truck size={20} /> Active Deliveries ({activeOrders.length})
-              </div>
-              <div className="card-stack">
-                {activeOrders.map((o) => (
-                  <div
-                    key={o.id}
-                    className="panel-card compact panel-card-stacked"
-                  >
-                    <div className="panel-row">
-                      <div>
-                        <div className="card-heading">{o.restaurant_name}</div>
-                        <div className="card-subtitle">
-                          Status: {o.status.replace(/_/g, " ").toUpperCase()}
-                        </div>
-                      </div>
-                      <Link
-                        to={`/track/${o.id}`}
-                        className="btn-premium btn-sm button-flex"
-                      >
-                        Track <ArrowRight size={14} />
-                      </Link>
-                    </div>
-                  </div>
-                ))}
-              </div>
+          <div className="panel-card accent-panel panel-card-stacked">
+            <div className="card-banner">
+              <Truck size={20} /> Active Deliveries ({activeOrders.length})
             </div>
-          )}
-
-          {/* Quick Wallet Card */}
-          {walletBalance !== null && (
-            <div className="panel-card panel-card-stacked">
-              <div className="panel-row mb-16">
-                <div>
-                  <div className="card-banner">Wallet Balance</div>
-                  <div className="wallet-card-value">
-                    <DollarSign size={24} color="var(--accent-orange)" />
-                    {walletBalance.toFixed(2)}
+            <div className="card-stack">
+              {activeOrders.map((o) => (
+                <div
+                  key={o.id}
+                  className="panel-card compact panel-card-stacked"
+                >
+                  <div className="panel-row">
+                    <div>
+                      <div className="card-heading">{o.restaurant_name}</div>
+                      <div className="card-subtitle">
+                        Status: {o.status.replace(/_/g, " ").toUpperCase()}
+                      </div>
+                    </div>
+                    <Link
+                      to={`/track/${o.id}`}
+                      className="btn-premium btn-sm button-flex"
+                    >
+                      Track <ArrowRight size={14} />
+                    </Link>
                   </div>
                 </div>
-              </div>
-              <button
-                onClick={onDeposit}
-                className="btn-premium btn-sm"
-                style={{
-                  width: "max-content",
-                  padding: "6px 12px",
-                  fontSize: "0.85rem",
-                  marginTop: "8px",
-                  alignSelf: "flex-start",
-                }}
-              >
-                + Deposit Money
-              </button>
+              ))}
             </div>
-          )}
+          </div>
         </div>
       )}
 
@@ -379,16 +343,7 @@ export const AppRoutes: React.FC = () => {
         onDepositClick={handleDeposit}
       />
       <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              searchQuery={searchQuery}
-              walletBalance={walletBalance}
-              onDeposit={handleDeposit}
-            />
-          }
-        />
+        <Route path="/" element={<Home searchQuery={searchQuery} />} />
         <Route
           path="/restaurant/:id"
           element={

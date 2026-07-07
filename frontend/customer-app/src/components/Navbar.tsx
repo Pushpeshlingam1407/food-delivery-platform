@@ -32,6 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onDepositClick,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [walletDropdownOpen, setWalletDropdownOpen] = useState(false);
 
   return (
     <>
@@ -129,26 +130,99 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Action items */}
         <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
           {walletBalance !== null && (
-            <div
-              onClick={onDepositClick}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "6px",
-                background: "rgba(235, 94, 40, 0.08)",
-                border: "1px solid rgba(235, 94, 40, 0.2)",
-                padding: "6px 12px",
-                borderRadius: "20px",
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                color: "var(--accent-orange)",
-                cursor: "pointer",
-                transition: "all 0.2s ease",
-              }}
-              title="Deposit Money"
-            >
-              <Wallet size={16} />
-              <span>${walletBalance.toFixed(2)}</span>
+            <div style={{ position: "relative" }}>
+              <div
+                onClick={() => setWalletDropdownOpen(!walletDropdownOpen)}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  background: "rgba(235, 94, 40, 0.08)",
+                  border: "1px solid rgba(235, 94, 40, 0.2)",
+                  padding: "6px 12px",
+                  borderRadius: "20px",
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                  color: "var(--accent-orange)",
+                  cursor: "pointer",
+                  transition: "all 0.2s ease",
+                }}
+                title="View Wallet Details"
+              >
+                <Wallet size={16} />
+                <span>${walletBalance.toFixed(2)}</span>
+              </div>
+
+              {walletDropdownOpen && (
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "36px",
+                    right: 0,
+                    width: "240px",
+                    background: "#FFFFFF",
+                    border: "1px solid var(--glass-border)",
+                    borderRadius: "var(--radius-standard)",
+                    boxShadow: "var(--glass-shadow)",
+                    padding: "16px",
+                    zIndex: 100,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontWeight: 700,
+                      fontSize: "0.9rem",
+                      color: "var(--text-slate)",
+                    }}
+                  >
+                    Bites Wallet
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "0.85rem",
+                        color: "var(--text-muted)",
+                      }}
+                    >
+                      Balance:
+                    </span>
+                    <span
+                      style={{
+                        fontWeight: 800,
+                        fontSize: "1.1rem",
+                        color: "var(--accent-orange)",
+                      }}
+                    >
+                      ${walletBalance.toFixed(2)}
+                    </span>
+                  </div>
+                  <button
+                    onClick={() => {
+                      setWalletDropdownOpen(false);
+                      onDepositClick && onDepositClick();
+                    }}
+                    className="btn-premium btn-sm"
+                    style={{
+                      width: "100%",
+                      padding: "8px",
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                    }}
+                  >
+                    + Add Money
+                  </button>
+                </div>
+              )}
             </div>
           )}
           <div
