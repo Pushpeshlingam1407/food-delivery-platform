@@ -307,120 +307,13 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
             {filteredMenuItems.map((item) => {
               const qty = cartItems[item.id] || 0;
               return (
-                <div
+                <MenuCard
                   key={item.id}
-                  style={{
-                    background: "#FFF",
-                    border: "1px solid var(--glass-border)",
-                    borderRadius: "var(--radius-standard)",
-                    padding: "24px",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    boxShadow: "var(--glass-shadow)",
-                  }}
-                >
-                  <div style={{ flexGrow: 1, paddingRight: "20px" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "12px",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      <span
-                        style={{
-                          border: `1px solid ${item.is_veg ? "#4CAF50" : "#F44336"}`,
-                          padding: "2px 6px",
-                          fontSize: "0.65rem",
-                          fontWeight: 800,
-                          color: item.is_veg ? "#4CAF50" : "#F44336",
-                        }}
-                      >
-                        {item.is_veg ? "VEG 🌱" : "NON-VEG 🍖"}
-                      </span>
-                      <h4
-                        style={{
-                          fontFamily: "var(--font-cohere)",
-                          fontSize: "1.15rem",
-                        }}
-                      >
-                        {item.name}
-                      </h4>
-                    </div>
-                    <p
-                      style={{
-                        color: "var(--text-muted)",
-                        fontSize: "0.9rem",
-                        marginBottom: "12px",
-                      }}
-                    >
-                      {item.description}
-                    </p>
-                    <strong
-                      style={{ fontSize: "1.1rem", color: "var(--text-slate)" }}
-                    >
-                      ${parseFloat(item.price.toString()).toFixed(2)}
-                    </strong>
-                  </div>
-
-                  <div style={{ shrink: 0 }}>
-                    {qty > 0 ? (
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "16px",
-                          border: "1px solid var(--glass-border)",
-                          borderRadius: "100px",
-                          padding: "6px 16px",
-                          background: "rgba(25, 25, 25, 0.02)",
-                        }}
-                      >
-                        <button
-                          onClick={() => removeFromCart(item.id)}
-                          style={{
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <Minus size={16} />
-                        </button>
-                        <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>
-                          {qty}
-                        </span>
-                        <button
-                          onClick={() => addToCart(item)}
-                          style={{
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <Plus size={16} />
-                        </button>
-                      </div>
-                    ) : (
-                      <button
-                        onClick={() => addToCart(item)}
-                        style={{
-                          background: "var(--text-slate)",
-                          color: "var(--text-sand)",
-                          border: "none",
-                          borderRadius: "100px",
-                          padding: "8px 24px",
-                          fontWeight: 700,
-                          fontSize: "0.85rem",
-                          cursor: "pointer",
-                        }}
-                      >
-                        ADD
-                      </button>
-                    )}
-                  </div>
-                </div>
+                  item={item}
+                  qty={qty}
+                  onAdd={addToCart}
+                  onRemove={removeFromCart}
+                />
               );
             })}
 

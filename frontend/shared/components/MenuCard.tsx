@@ -107,9 +107,7 @@ export const MenuCard: React.FC<MenuCardProps> = ({
             >
               <Minus size={16} />
             </button>
-            <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>
-              {qty}
-            </span>
+            <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>{qty}</span>
             <button
               onClick={() => onAdd(item)}
               style={{
