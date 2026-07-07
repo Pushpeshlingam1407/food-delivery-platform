@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, Menu, X } from "lucide-react";
 
 interface NavbarProps {
   restaurantName?: string | null;
@@ -11,108 +11,240 @@ export const Navbar: React.FC<NavbarProps> = ({
   restaurantName = "Merchant Portal",
   onLogout,
 }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <nav
-      style={{
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-        background: "var(--glass-bg)",
-        borderBottom: "1px solid var(--glass-border)",
-        backdropFilter: "var(--glass-blur)",
-        padding: "16px 40px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        boxShadow: "var(--glass-shadow)",
-      }}
-    >
-      <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-        <div
-          style={{
-            fontFamily: "var(--font-cohere)",
-            fontWeight: 800,
-            fontSize: "1.6rem",
-            background: "var(--primary-gradient)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-          }}
-        >
-          bites.
-        </div>
-        <span
-          style={{
-            fontSize: "0.85rem",
-            fontWeight: 700,
-            textTransform: "uppercase",
-            letterSpacing: "1px",
-            color: "var(--accent-orange)",
-            borderLeft: "1px solid var(--glass-border)",
-            paddingLeft: "16px",
-          }}
-        >
-          {restaurantName || "Merchant Portal"}
-        </span>
-      </div>
-
-      <div style={{ display: "flex", alignItems: "center", gap: "32px" }}>
-        <Link
-          to="/"
-          style={{
-            textDecoration: "none",
-            color: "var(--text-slate)",
-            fontWeight: 600,
-            fontSize: "0.95rem",
-            fontFamily: "var(--font-cohere)",
-          }}
-        >
-          Orders Dashboard
-        </Link>
-        <Link
-          to="/menu"
-          style={{
-            textDecoration: "none",
-            color: "var(--text-slate)",
-            fontWeight: 600,
-            fontSize: "0.95rem",
-            fontFamily: "var(--font-cohere)",
-          }}
-        >
-          Menu Manager
-        </Link>
-        <Link
-          to="/earnings"
-          style={{
-            textDecoration: "none",
-            color: "var(--text-slate)",
-            fontWeight: 600,
-            fontSize: "0.95rem",
-            fontFamily: "var(--font-cohere)",
-          }}
-        >
-          Earnings & Payouts
-        </Link>
-
-        {onLogout && (
+    <>
+      <nav className="navbar-container">
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          {/* Hamburger toggle */}
           <button
-            onClick={onLogout}
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="mobile-menu-toggle"
             style={{
-              background: "transparent",
+              background: "none",
               border: "none",
+              cursor: "pointer",
               color: "var(--text-slate)",
-              display: "flex",
-              alignItems: "center",
-              gap: "6px",
-              fontWeight: 600,
-              fontSize: "0.95rem",
+              padding: "4px",
+            }}
+          >
+            <Menu size={24} />
+          </button>
+
+          <Link
+            to="/"
+            style={{
+              fontFamily: "var(--font-cohere)",
+              fontWeight: 800,
+              fontSize: "1.6rem",
+              background: "var(--primary-gradient)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              textDecoration: "none",
               cursor: "pointer",
             }}
           >
-            <LogOut size={16} />
-            Sign Out
-          </button>
-        )}
-      </div>
-    </nav>
+            bites.
+          </Link>
+          <span
+            className="navbar-desktop-only"
+            style={{
+              fontSize: "0.85rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              color: "var(--accent-orange)",
+              borderLeft: "1px solid var(--glass-border)",
+              paddingLeft: "16px",
+            }}
+          >
+            {restaurantName || "Merchant Portal"}
+          </span>
+        </div>
+
+        <div
+          className="navbar-desktop-only"
+          style={{ alignItems: "center", gap: "32px" }}
+        >
+          <Link
+            to="/"
+            style={{
+              textDecoration: "none",
+              color: "var(--text-slate)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              fontFamily: "var(--font-cohere)",
+            }}
+          >
+            Orders Dashboard
+          </Link>
+          <Link
+            to="/menu"
+            style={{
+              textDecoration: "none",
+              color: "var(--text-slate)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              fontFamily: "var(--font-cohere)",
+            }}
+          >
+            Menu Manager
+          </Link>
+          <Link
+            to="/earnings"
+            style={{
+              textDecoration: "none",
+              color: "var(--text-slate)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              fontFamily: "var(--font-cohere)",
+            }}
+          >
+            Earnings & Payouts
+          </Link>
+
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              style={{
+                background: "transparent",
+                border: "none",
+                color: "var(--text-slate)",
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                fontWeight: 600,
+                fontSize: "0.95rem",
+                cursor: "pointer",
+              }}
+            >
+              <LogOut size={16} />
+              Sign Out
+            </button>
+          )}
+        </div>
+      </nav>
+
+      {/* Mobile Drawer (3-lines Sidebar) */}
+      {menuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "280px",
+            height: "100vh",
+            background: "#FFF",
+            boxShadow: "var(--glass-shadow)",
+            zIndex: 1000,
+            padding: "32px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "var(--font-cohere)",
+                fontWeight: 800,
+                fontSize: "1.4rem",
+              }}
+            >
+              bites.
+            </span>
+            <button
+              onClick={() => setMenuOpen(false)}
+              style={{ background: "none", border: "none", cursor: "pointer" }}
+            >
+              <X size={20} />
+            </button>
+          </div>
+
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "20px",
+              marginTop: "20px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                borderBottom: "1px solid var(--glass-border)",
+                paddingBottom: "16px",
+              }}
+            >
+              <User size={18} />
+              <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>
+                {restaurantName || "Merchant Portal"}
+              </span>
+            </div>
+            <Link
+              to="/"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontWeight: 600,
+              }}
+            >
+              Orders Dashboard
+            </Link>
+            <Link
+              to="/menu"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontWeight: 600,
+              }}
+            >
+              Menu Manager
+            </Link>
+            <Link
+              to="/earnings"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontWeight: 600,
+              }}
+            >
+              Earnings & Payouts
+            </Link>
+            {onLogout && (
+              <button
+                onClick={() => {
+                  onLogout();
+                  setMenuOpen(false);
+                }}
+                style={{
+                  background: "none",
+                  border: "none",
+                  color: "var(--accent-orange)",
+                  textAlign: "left",
+                  fontWeight: 600,
+                  padding: 0,
+                  cursor: "pointer",
+                }}
+              >
+                Sign Out
+              </button>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
