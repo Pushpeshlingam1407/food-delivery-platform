@@ -1,6 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingBag, User, Search, MapPin } from "lucide-react";
+import { ShoppingBag, User, Search, MapPin, Menu, X } from "lucide-react";
 
 interface NavbarProps {
   cartCount?: number;
@@ -19,10 +19,28 @@ export const Navbar: React.FC<NavbarProps> = ({
   searchQuery = "",
   onSearchChange,
 }) => {
+  const [menuOpen, setMenuOpen] = useState(false);
+
   return (
-    <nav className="navbar-container">
-      {/* Brand logo (Cohere style) */}
-      <div
+    <>
+      <nav className="navbar-container">
+        {/* Mobile Hamburger Menu Toggle */}
+        <button
+          onClick={() => setMenuOpen(!menuOpen)}
+          className="mobile-menu-toggle"
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "var(--text-slate)",
+            padding: "4px",
+          }}
+        >
+          <Menu size={24} />
+        </button>
+
+        {/* Brand logo (Cohere style) */}
+        <div
         style={{
           fontFamily: "var(--font-cohere)",
           fontWeight: 800,
@@ -190,5 +208,49 @@ export const Navbar: React.FC<NavbarProps> = ({
         )}
       </div>
     </nav>
+
+      {/* Mobile Drawer (3-lines Sidebar) */}
+      {menuOpen && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "280px",
+            height: "100vh",
+            background: "#FFF",
+            boxShadow: "var(--glass-shadow)",
+            zIndex: 1000,
+            padding: "32px",
+            display: "flex",
+            flexDirection: "column",
+            gap: "24px"
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <span style={{ fontFamily: "var(--font-cohere)", fontWeight: 800, fontSize: "1.4rem" }}>bites.</span>
+            <button onClick={() => setMenuOpen(false)} style={{ background: "none", border: "none", cursor: "pointer" }}>
+              <X size={20} />
+            </button>
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "20px", marginTop: "20px" }}>
+            {userEmail ? (
+              <>
+                <div style={{ display: "flex", alignItems: "center", gap: "8px", borderBottom: "1px solid var(--glass-border)", paddingBottom: "16px" }}>
+                  <User size={18} />
+                  <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>{userEmail}</span>
+                </div>
+                <Link to="/orders" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", color: "var(--text-slate)", fontWeight: 600 }}>My Orders</Link>
+                <Link to="/addresses" onClick={() => setMenuOpen(false)} style={{ textDecoration: "none", color: "var(--text-slate)", fontWeight: 600 }}>Addresses</Link>
+                <button onClick={() => { onLogout?.(); setMenuOpen(false); }} style={{ background: "none", border: "none", color: "var(--accent-orange)", textAlign: "left", fontWeight: 600, padding: 0, cursor: "pointer" }}>Sign Out</button>
+              </>
+            ) : (
+              <Link to="/login" onClick={() => setMenuOpen(false)} className="btn-premium" style={{ textDecoration: "none", textAlign: "center" }}>Sign In</Link>
+            )}
+          </div>
+        </div>
+      )}
+    </>
   );
 };

@@ -209,16 +209,34 @@ export const Dashboard: React.FC = () => {
             SYSTEM PORTS & DB STATUS
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                fontSize: "0.85rem",
+              }}
+            >
               <span>🔌 Backend Port:</span>
               <strong style={{ color: "#4CAF50" }}>
                 {health?.server_port || 5000} (ONLINE)
               </strong>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                fontSize: "0.85rem",
+              }}
+            >
               <span>🗄️ MySQL Port:</span>
-              <strong style={{ color: health?.database === "connected" ? "#4CAF50" : "#F44336" }}>
-                {health?.database_port || 3306} ({health?.database?.toUpperCase() || "CONNECTED"})
+              <strong
+                style={{
+                  color:
+                    health?.database === "connected" ? "#4CAF50" : "#F44336",
+                }}
+              >
+                {health?.database_port || 3306} (
+                {health?.database?.toUpperCase() || "CONNECTED"})
               </strong>
             </div>
           </div>
