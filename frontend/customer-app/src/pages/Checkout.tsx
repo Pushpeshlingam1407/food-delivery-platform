@@ -28,10 +28,12 @@ export const Checkout: React.FC = () => {
     cartItems: CartItem[];
     subtotal: number;
     couponId: string | null;
+    couponCode: string | null;
   }) || {
     cartItems: [],
     subtotal: 0,
     couponId: null,
+    couponCode: null,
   };
 
   const [addresses, setAddresses] = useState<Address[]>([]);
@@ -116,7 +118,7 @@ export const Checkout: React.FC = () => {
       const response = await api.post("/orders", {
         addressId: selectedAddressId,
         paymentMethod: paymentMethod,
-        couponId: stateData.couponId,
+        couponCode: stateData.couponCode,
         items: stateData.cartItems.map((item) => ({
           menuItemId: item.id,
           quantity: item.qty,

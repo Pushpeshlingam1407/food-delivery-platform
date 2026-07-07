@@ -52,12 +52,51 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         );
 
         if (coupon) {
-          const discountAmt =
-            (subtotal * parseFloat(coupon.discount_percent.toString())) / 100;
+          const now = new Date();
+          const startDate = new Date(coupon.start_date);
+          const endDate = new Date(coupon.end_date);
+          if (now < startDate || now > endDate) {
+            toast.error("This coupon has expired or is not active yet.");
+            return;
+          }
+
+          if (subtotal < parseFloat(coupon.min_order_amount.toString())) {
+            toast.error(
+              `Minimum order amount of $${parseFloat(
+                coupon.min_order_amount.toString(),
+              ).toFixed(2)} required for this coupon.`,
+            );
+            return;
+          }
+
+          let discountAmt = 0;
+          if (coupon.discount_type === "percentage") {
+            discountAmt =
+              (subtotal * parseFloat(coupon.discount_value.toString())) / 100;
+            if (coupon.max_discount_amount) {
+              discountAmt = Math.min(
+                discountAmt,
+                parseFloat(coupon.max_discount_amount.toString()),
+              );
+            }
+          } else {
+            discountAmt = parseFloat(coupon.discount_value.toString());
+          }
+          discountAmt = Math.min(discountAmt, subtotal);
+          discountAmt = parseFloat(discountAmt.toFixed(2));
+
           setDiscount(discountAmt);
           setAppliedCouponId(coupon.id);
+
+          const discountMsg =
+            coupon.discount_type === "percentage"
+              ? `${coupon.discount_value}% discount applied.`
+              : `$${parseFloat(coupon.discount_value.toString()).toFixed(
+                  2,
+                )} discount applied.`;
+
           toast.success("Coupon applied successfully!", {
-            description: `${coupon.discount_percent}% discount applied.`,
+            description: discountMsg,
           });
         } else {
           toast.error("Invalid or expired coupon code.");
@@ -74,12 +113,14 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       toast.error("Your cart is empty.");
       return;
     }
+    const appliedCoupon = appliedCouponId ? couponCode : null;
     onClose();
     navigate("/checkout", {
       state: {
         cartItems,
         subtotal,
         couponId: appliedCouponId,
+        couponCode: appliedCoupon,
       },
     });
   };

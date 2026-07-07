@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { ShoppingBag, User, Search, MapPin, Menu, X } from "lucide-react";
+import {
+  ShoppingBag,
+  User,
+  Search,
+  MapPin,
+  Menu,
+  X,
+  Wallet,
+} from "lucide-react";
 
 interface NavbarProps {
   cartCount?: number;
@@ -9,6 +17,8 @@ interface NavbarProps {
   onCartClick?: () => void;
   searchQuery?: string;
   onSearchChange?: (val: string) => void;
+  walletBalance?: number | null;
+  onDepositClick?: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -18,6 +28,8 @@ export const Navbar: React.FC<NavbarProps> = ({
   onCartClick,
   searchQuery = "",
   onSearchChange,
+  walletBalance = null,
+  onDepositClick,
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -116,6 +128,29 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Action items */}
         <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
+          {walletBalance !== null && (
+            <div
+              onClick={onDepositClick}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "6px",
+                background: "rgba(235, 94, 40, 0.08)",
+                border: "1px solid rgba(235, 94, 40, 0.2)",
+                padding: "6px 12px",
+                borderRadius: "20px",
+                fontSize: "0.85rem",
+                fontWeight: 600,
+                color: "var(--accent-orange)",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+              title="Deposit Money"
+            >
+              <Wallet size={16} />
+              <span>${walletBalance.toFixed(2)}</span>
+            </div>
+          )}
           <div
             style={{ position: "relative", cursor: "pointer" }}
             onClick={onCartClick}

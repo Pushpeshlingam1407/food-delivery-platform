@@ -18,14 +18,19 @@ import { toast } from "sonner";
 
 interface HomeProps {
   searchQuery: string;
+  walletBalance: number | null;
+  onDeposit: () => void;
 }
 
 // Landing Page Dashboard
-const Home: React.FC<HomeProps> = ({ searchQuery }) => {
+const Home: React.FC<HomeProps> = ({
+  searchQuery,
+  walletBalance,
+  onDeposit,
+}) => {
   const [restaurants, setRestaurants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeOrders, setActiveOrders] = useState<any[]>([]);
-  const [walletBalance, setWalletBalance] = useState<number | null>(null);
 
   const fetchDashboardData = async () => {
     try {
@@ -37,7 +42,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
         setRestaurants(response.data.data);
       }
 
-      // If user is authenticated, fetch orders and wallet balance
+      // If user is authenticated, fetch orders
       if (localStorage.getItem("accessToken")) {
         const ordersRes = await api.get("/orders");
         if (ordersRes.data.status === "success") {
@@ -52,11 +57,6 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
           );
           setActiveOrders(active);
         }
-
-        const walletRes = await api.get("/wallets");
-        if (walletRes.data.status === "success") {
-          setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
-        }
       }
     } catch (err) {
       console.error("Fetch dashboard data error:", err);
@@ -68,31 +68,6 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
   useEffect(() => {
     fetchDashboardData();
   }, [searchQuery]);
-
-  const handleDeposit = async () => {
-    const amountStr = prompt("Enter deposit amount ($):");
-    if (!amountStr) return;
-    const amount = parseFloat(amountStr);
-    if (isNaN(amount) || amount <= 0) {
-      toast.error("Please enter a valid deposit amount.");
-      return;
-    }
-    try {
-      const res = await api.post("/wallets/deposit", {
-        amount,
-        description: "Wallet Top-up",
-      });
-      if (res.data.status === "success") {
-        toast.success("Wallet funds added successfully!");
-        const walletRes = await api.get("/wallets");
-        if (walletRes.data.status === "success") {
-          setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
-        }
-      }
-    } catch (err) {
-      toast.error("Failed to deposit funds.");
-    }
-  };
 
   return (
     <div className="app-shell">
@@ -107,7 +82,10 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
               </div>
               <div className="card-stack">
                 {activeOrders.map((o) => (
-                  <div key={o.id} className="panel-card compact panel-card-stacked">
+                  <div
+                    key={o.id}
+                    className="panel-card compact panel-card-stacked"
+                  >
                     <div className="panel-row">
                       <div>
                         <div className="card-heading">{o.restaurant_name}</div>
@@ -141,8 +119,15 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                 </div>
               </div>
               <button
-                onClick={handleDeposit}
-                className="btn-premium btn-sm button-block"
+                onClick={onDeposit}
+                className="btn-premium btn-sm"
+                style={{
+                  width: "max-content",
+                  padding: "6px 12px",
+                  fontSize: "0.85rem",
+                  marginTop: "8px",
+                  alignSelf: "flex-start",
+                }}
               >
                 + Deposit Money
               </button>
@@ -179,7 +164,9 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                 {r.description || "No description available"}
               </p>
               <div className="panel-row mt-16">
-                <span className="text-small">{r.average_delivery_time} mins</span>
+                <span className="text-small">
+                  {r.average_delivery_time} mins
+                </span>
                 <span
                   className={`status-pill ${
                     r.status === "open" ? "success" : "danger"
@@ -205,10 +192,47 @@ export const AppRoutes: React.FC = () => {
   }>({});
   const [cartOpen, setCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+
+  const fetchWallet = async () => {
+    if (localStorage.getItem("accessToken")) {
+      try {
+        const walletRes = await api.get("/wallets");
+        if (walletRes.data.status === "success") {
+          setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
+        }
+      } catch (err) {
+        console.error("Fetch wallet error:", err);
+      }
+    }
+  };
+
+  const handleDeposit = async () => {
+    const amountStr = prompt("Enter deposit amount ($):");
+    if (!amountStr) return;
+    const amount = parseFloat(amountStr);
+    if (isNaN(amount) || amount <= 0) {
+      toast.error("Please enter a valid deposit amount.");
+      return;
+    }
+    try {
+      const res = await api.post("/wallets/deposit", {
+        amount,
+        description: "Wallet Top-up",
+      });
+      if (res.data.status === "success") {
+        toast.success("Wallet funds added successfully!");
+        fetchWallet();
+      }
+    } catch (err) {
+      toast.error("Failed to deposit funds.");
+    }
+  };
 
   useEffect(() => {
     if (localStorage.getItem("accessToken")) {
       fetchCartFromBackend();
+      fetchWallet();
     }
   }, []);
 
@@ -351,9 +375,20 @@ export const AppRoutes: React.FC = () => {
         onCartClick={() => setCartOpen(true)}
         searchQuery={searchQuery}
         onSearchChange={setSearchQuery}
+        walletBalance={walletBalance}
+        onDepositClick={handleDeposit}
       />
       <Routes>
-        <Route path="/" element={<Home searchQuery={searchQuery} />} />
+        <Route
+          path="/"
+          element={
+            <Home
+              searchQuery={searchQuery}
+              walletBalance={walletBalance}
+              onDeposit={handleDeposit}
+            />
+          }
+        />
         <Route
           path="/restaurant/:id"
           element={

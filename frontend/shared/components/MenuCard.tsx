@@ -10,6 +10,8 @@ interface MenuItem {
   image_url?: string;
   rating?: number;
   review_count?: number;
+  available_quantity?: number;
+  unlimited?: boolean | number;
 }
 
 interface MenuCardProps {
@@ -27,14 +29,23 @@ export const MenuCard: React.FC<MenuCardProps> = ({
 }) => {
   const isVeg = !!item.is_veg;
   const formattedPrice = `$${parseFloat(item.price.toString()).toFixed(2)}`;
+  const isOutOfStock =
+    !item.unlimited &&
+    item.available_quantity !== undefined &&
+    item.available_quantity <= 0;
 
   return (
-    <div className="restaurant-menu-card">
+    <div
+      className={`restaurant-menu-card ${isOutOfStock ? "out-of-stock" : ""}`}
+    >
       <div className="menu-card-image">
         {item.image_url ? (
           <img src={item.image_url} alt={item.name} />
         ) : (
           <div className="menu-card-image-placeholder">No Image</div>
+        )}
+        {isOutOfStock && (
+          <div className="out-of-stock-overlay">Out of stock</div>
         )}
       </div>
 
@@ -65,7 +76,15 @@ export const MenuCard: React.FC<MenuCardProps> = ({
         <div className="menu-card-footer">
           <strong className="menu-card-price">{formattedPrice}</strong>
 
-          {qty > 0 ? (
+          {isOutOfStock ? (
+            <button
+              type="button"
+              className="menu-card-add-button out-of-stock-btn"
+              disabled
+            >
+              Out of stock
+            </button>
+          ) : qty > 0 ? (
             <div className="menu-card-qty-control">
               <button
                 type="button"
