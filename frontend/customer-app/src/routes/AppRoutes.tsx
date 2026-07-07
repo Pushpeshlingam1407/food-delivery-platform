@@ -14,6 +14,7 @@ import { AddressManager } from "../pages/AddressManager";
 import { ShimmerList } from "../components/Shimmer";
 import api from "../../../shared/services/api";
 import { DollarSign, Truck, ArrowRight } from "lucide-react";
+import { toast } from "sonner";
 
 interface HomeProps {
   searchQuery: string;
@@ -97,78 +98,51 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
     <div className="app-shell">
       {/* Dashboard Section */}
       {localStorage.getItem("accessToken") && (
-        <div className="dashboard-grid" style={{ marginBottom: "48px" }}>
+        <div className="dashboard-grid section-spacing">
           {/* Active Orders Box */}
           {activeOrders.length > 0 && (
-            <div
-              className="surface-card compact"
-              style={{
-                borderColor: "var(--accent-orange)",
-                borderWidth: 2,
-                borderStyle: "solid",
-                background: "rgba(255, 90, 31, 0.08)",
-              }}
-            >
-              <div>
-                <h3
-                  style={{
-                    fontSize: "1.2rem",
-                    fontWeight: 700,
-                    color: "var(--accent-orange)",
-                    marginBottom: "12px",
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                  }}
-                >
-                  <Truck size={20} /> Active Deliveries ({activeOrders.length})
-                </h3>
-                <div className="card-stack">
-                  {activeOrders.map((o) => (
-                    <div
-                      key={o.id}
-                      className="surface-card compact order-list-item"
-                    >
+            <div className="panel-card accent-panel panel-card-stacked">
+              <div className="card-banner">
+                <Truck size={20} /> Active Deliveries ({activeOrders.length})
+              </div>
+              <div className="card-stack">
+                {activeOrders.map((o) => (
+                  <div key={o.id} className="panel-card compact panel-card-stacked">
+                    <div className="panel-row">
                       <div>
-                        <strong style={{ fontSize: "0.95rem" }}>
-                          {o.restaurant_name}
-                        </strong>
-                        <div
-                          style={{
-                            fontSize: "0.8rem",
-                            color: "var(--text-muted)",
-                            marginTop: "2px",
-                          }}
-                        >
+                        <div className="card-heading">{o.restaurant_name}</div>
+                        <div className="card-subtitle">
                           Status: {o.status.replace(/_/g, " ").toUpperCase()}
                         </div>
                       </div>
                       <Link
                         to={`/track/${o.id}`}
-                        className="btn-premium btn-sm"
+                        className="btn-premium btn-sm button-flex"
                       >
                         Track <ArrowRight size={14} />
                       </Link>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
           )}
 
           {/* Quick Wallet Card */}
           {walletBalance !== null && (
-            <div className="wallet-card">
-              <div>
-                <div className="wallet-card-label">WALLET BALANCE</div>
-                <div className="wallet-card-value">
-                  <DollarSign size={24} color="var(--accent-orange)" />
-                  {walletBalance.toFixed(2)}
+            <div className="panel-card panel-card-stacked">
+              <div className="panel-row mb-16">
+                <div>
+                  <div className="card-banner">Wallet Balance</div>
+                  <div className="wallet-card-value">
+                    <DollarSign size={24} color="var(--accent-orange)" />
+                    {walletBalance.toFixed(2)}
+                  </div>
                 </div>
               </div>
               <button
                 onClick={handleDeposit}
-                className="btn-premium wallet-card-button"
+                className="btn-premium btn-sm button-block"
               >
                 + Deposit Money
               </button>
@@ -178,31 +152,37 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
       )}
 
       {/* Discover Feed */}
-      <h1 className="section-heading section-heading-lg">
-        Discover Restaurants
-      </h1>
+      <div className="header-panel-premium section-spacing">
+        <div>
+          <h1 className="section-heading section-heading-lg">
+            Discover Restaurants
+          </h1>
+          <p className="panel-note">
+            Browse nearby restaurants and manage your active orders and wallet
+            from one unified dashboard.
+          </p>
+        </div>
+      </div>
 
       {loading ? (
         <ShimmerList />
       ) : (
-        <div className="restaurant-grid">
+        <div className="panel-grid">
           {restaurants.map((r) => (
             <Link
               to={`/restaurant/${r.id}`}
               key={r.id}
-              className="restaurant-card"
+              className="panel-card panel-card-stacked"
             >
-              <h3 className="restaurant-card-title">{r.name}</h3>
-              <p className="restaurant-card-description">
+              <div className="card-heading">{r.name}</div>
+              <p className="card-subtitle">
                 {r.description || "No description available"}
               </p>
-              <div className="restaurant-card-meta">
-                <span className="restaurant-card-time">
-                  {r.average_delivery_time} mins
-                </span>
+              <div className="panel-row mt-16">
+                <span className="text-small">{r.average_delivery_time} mins</span>
                 <span
-                  className={`restaurant-card-status restaurant-card-status--${
-                    r.status === "open" ? "open" : "closed"
+                  className={`status-pill ${
+                    r.status === "open" ? "success" : "danger"
                   }`}
                 >
                   {r.status}

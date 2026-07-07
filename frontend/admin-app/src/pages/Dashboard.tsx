@@ -145,17 +145,8 @@ export const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "80vh",
-        }}
-      >
-        <p style={{ color: "var(--text-muted)" }}>
-          Loading system dashboard...
-        </p>
+      <div className="screen-center">
+        <p className="text-muted">Loading system dashboard...</p>
       </div>
     );
   }
@@ -164,13 +155,7 @@ export const Dashboard: React.FC = () => {
     <div className="app-shell">
       {/* Page Title */}
       <div className="section-spacing">
-        <h1
-          style={{
-            fontSize: "2.2rem",
-            marginBottom: "8px",
-            fontFamily: "var(--font-anthropic)",
-          }}
-        >
+        <h1 className="section-heading section-heading-lg">
           Administrator Console
         </h1>
         <p className="text-muted">
@@ -186,17 +171,18 @@ export const Dashboard: React.FC = () => {
           <div className="card-stack">
             <div className="panel-row">
               <span>🔌 Backend Port:</span>
-              <strong style={{ color: "#4CAF50" }}>
+              <strong className="text-success">
                 {health?.server_port || 5000} (ONLINE)
               </strong>
             </div>
             <div className="panel-row">
               <span>🗄️ MySQL Port:</span>
               <strong
-                style={{
-                  color:
-                    health?.database === "connected" ? "#4CAF50" : "#F44336",
-                }}
+                className={
+                  health?.database === "connected"
+                    ? "text-success"
+                    : "text-danger"
+                }
               >
                 {health?.database_port || 3306} (
                 {health?.database?.toUpperCase() || "CONNECTED"})
@@ -207,16 +193,7 @@ export const Dashboard: React.FC = () => {
 
         <div className="panel-card">
           <div className="card-banner">CAPTURED REVENUE</div>
-          <div
-            style={{
-              fontSize: "1.8rem",
-              fontWeight: 800,
-              display: "flex",
-              alignItems: "center",
-              gap: "4px",
-              color: "#4CAF50",
-            }}
-          >
+          <div className="stat-value text-success">
             <DollarSign size={24} />
             {analytics?.total_payments_captured.toFixed(2)}
           </div>
@@ -224,15 +201,7 @@ export const Dashboard: React.FC = () => {
 
         <div className="panel-card">
           <div className="card-banner">COMPLETED ORDERS</div>
-          <div
-            style={{
-              fontSize: "1.8rem",
-              fontWeight: 800,
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
+          <div className="stat-value">
             <Award size={24} color="var(--accent-orange)" />
             {analytics?.total_orders}
           </div>
@@ -240,15 +209,7 @@ export const Dashboard: React.FC = () => {
 
         <div className="panel-card">
           <div className="card-banner">ACTIVE RESTAURANTS</div>
-          <div
-            style={{
-              fontSize: "1.8rem",
-              fontWeight: 800,
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
+          <div className="stat-value">
             <Store size={24} color="var(--accent-violet)" />
             {analytics?.total_restaurants}
           </div>
@@ -256,15 +217,7 @@ export const Dashboard: React.FC = () => {
 
         <div className="panel-card">
           <div className="card-banner">PLATFORM USERS</div>
-          <div
-            style={{
-              fontSize: "1.8rem",
-              fontWeight: 800,
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
+          <div className="stat-value">
             <Users size={24} color="var(--accent-orange)" />
             {analytics?.total_users}
           </div>
@@ -274,40 +227,22 @@ export const Dashboard: React.FC = () => {
       <div className="two-column-layout">
         {/* Left Side - Restaurant Auditing */}
         <div className="panel-card">
-          <h3
-            style={{
-              fontSize: "1.2rem",
-              fontWeight: 700,
-              marginBottom: "24px",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
+          <div className="panel-heading">
             <ShieldAlert size={18} color="var(--accent-orange)" /> Restaurant
             Auditing Board
-          </h3>
+          </div>
 
           <div className="card-stack">
             {restaurants.map((r) => (
               <div
                 key={r.id}
-                className="panel-row"
-                style={{
-                  padding: "16px",
-                  borderRadius: "8px",
-                  background: r.is_verified
-                    ? "rgba(76, 175, 80, 0.02)"
-                    : "rgba(255, 90, 31, 0.02)",
-                }}
+                className={`card-row-compact audit-row ${
+                  r.is_verified ? "verified" : "pending"
+                }`}
               >
                 <div>
                   <strong>{r.name}</strong>
-                  <div
-                    style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}
-                  >
-                    {r.description}
-                  </div>
+                  <div className="text-muted text-small">{r.description}</div>
                 </div>
 
                 {r.is_verified ? (
@@ -315,8 +250,7 @@ export const Dashboard: React.FC = () => {
                 ) : (
                   <button
                     onClick={() => handleVerifyRestaurant(r.id)}
-                    className="btn-premium btn-sm"
-                    style={{ minWidth: "140px" }}
+                    className="btn-premium btn-sm button-stretch"
                   >
                     Verify Store
                   </button>
@@ -325,13 +259,7 @@ export const Dashboard: React.FC = () => {
             ))}
 
             {restaurants.length === 0 && (
-              <div
-                style={{
-                  textAlign: "center",
-                  padding: "40px",
-                  color: "var(--text-muted)",
-                }}
-              >
+              <div className="empty-state">
                 No restaurants found in database.
               </div>
             )}
@@ -342,18 +270,9 @@ export const Dashboard: React.FC = () => {
         <div className="card-stack">
           {/* Create Coupon */}
           <div className="panel-card">
-            <h3
-              style={{
-                fontSize: "1.2rem",
-                fontWeight: 700,
-                marginBottom: "20px",
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-              }}
-            >
+            <div className="panel-heading">
               <Tag size={18} color="var(--accent-violet)" /> Add Promo Coupon
-            </h3>
+            </div>
 
             <form onSubmit={handleAddCoupon} className="form-grid">
               <input
@@ -394,8 +313,7 @@ export const Dashboard: React.FC = () => {
               <button
                 type="submit"
                 disabled={couponLoading}
-                className="btn-premium"
-                style={{ padding: "10px", fontSize: "0.9rem" }}
+                className="btn-premium btn-sm button-stretch"
               >
                 {couponLoading ? "Creating..." : "Save Coupon"}
               </button>
@@ -404,35 +322,13 @@ export const Dashboard: React.FC = () => {
 
           {/* Active Coupons List */}
           <div className="panel-card compact">
-            <h4
-              style={{
-                fontSize: "1rem",
-                fontWeight: 700,
-                marginBottom: "16px",
-              }}
-            >
-              Active Coupons
-            </h4>
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "10px" }}
-            >
+            <div className="card-heading-small">Active Coupons</div>
+            <div className="card-stack">
               {coupons.map((c) => (
-                <div
-                  key={c.id}
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    padding: "12px",
-                    border: "1px solid var(--glass-border)",
-                    borderRadius: "6px",
-                  }}
-                >
+                <div key={c.id} className="card-row-compact">
                   <div>
-                    <strong style={{ fontSize: "0.95rem" }}>{c.code}</strong>
-                    <div
-                      style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
-                    >
+                    <strong className="text-small">{c.code}</strong>
+                    <div className="text-muted" style={{ fontSize: "0.8rem" }}>
                       {c.discount_value}
                       {c.discount_type === "percentage" ? "%" : "$"} off (Min: $
                       {c.min_order_amount})
@@ -440,12 +336,7 @@ export const Dashboard: React.FC = () => {
                   </div>
                   <button
                     onClick={() => handleDeleteCoupon(c.id)}
-                    style={{
-                      background: "none",
-                      border: "none",
-                      cursor: "pointer",
-                      color: "#F44336",
-                    }}
+                    className="icon-button-danger"
                   >
                     <Trash2 size={16} />
                   </button>
@@ -453,14 +344,7 @@ export const Dashboard: React.FC = () => {
               ))}
 
               {coupons.length === 0 && (
-                <div
-                  style={{
-                    fontSize: "0.85rem",
-                    color: "var(--text-muted)",
-                    textAlign: "center",
-                    padding: "12px",
-                  }}
-                >
+                <div className="empty-state text-small">
                   No active promo codes.
                 </div>
               )}

@@ -177,17 +177,8 @@ export const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "80vh",
-        }}
-      >
-        <p style={{ color: "var(--text-muted)" }}>
-          Loading restaurant dashboard...
-        </p>
+      <div className="flex-center" style={{ minHeight: "80vh" }}>
+        <p className="text-muted">Loading restaurant dashboard...</p>
       </div>
     );
   }
@@ -197,22 +188,12 @@ export const Dashboard: React.FC = () => {
     return (
       <div className="page-container">
         <div className="panel-card">
-          <div style={{ textAlign: "center", marginBottom: "24px" }}>
-            <Store
-              size={48}
-              color="var(--accent-orange)"
-              style={{ marginBottom: "16px" }}
-            />
-            <h1
-              style={{
-                fontSize: "1.8rem",
-                marginBottom: "8px",
-                fontFamily: "var(--font-anthropic)",
-              }}
-            >
+          <div className="text-center" style={{ marginBottom: "24px" }}>
+            <Store size={48} color="var(--accent-orange)" className="mb-16" />
+            <h1 className="section-heading section-heading-md">
               Setup Your Restaurant
             </h1>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
+            <p className="text-muted text-small">
               Create your business profile to begin managing menus and receiving
               orders.
             </p>
@@ -237,8 +218,7 @@ export const Dashboard: React.FC = () => {
                 value={restDesc}
                 onChange={(e) => setRestDesc(e.target.value)}
                 placeholder="Delicious home-style Indian cuisine..."
-                className="input-premium"
-                style={{ minHeight: "60px" }}
+                className="input-premium textarea-large"
               />
             </div>
 
@@ -254,158 +234,74 @@ export const Dashboard: React.FC = () => {
               />
             </div>
 
-            <div style={{ display: "flex", gap: "16px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                  flex: 1,
-                }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Landmark
-                </label>
+            <div className="form-row">
+              <div className="form-field">
+                <label>Landmark</label>
                 <input
                   type="text"
                   value={restLandmark}
                   onChange={(e) => setRestLandmark(e.target.value)}
                   placeholder="Near Metro Station"
-                  style={{
-                    padding: "10px 14px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                    outline: "none",
-                  }}
+                  className="input-premium"
                 />
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                  flex: 1,
-                }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  City *
-                </label>
+              <div className="form-field">
+                <label>City *</label>
                 <input
                   type="text"
                   value={restCity}
                   onChange={(e) => setRestCity(e.target.value)}
                   placeholder="Bengaluru"
                   required
-                  style={{
-                    padding: "10px 14px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                    outline: "none",
-                  }}
+                  className="input-premium"
                 />
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: "16px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                  flex: 1,
-                }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  State *
-                </label>
+            <div className="form-row">
+              <div className="form-field">
+                <label>State *</label>
                 <input
                   type="text"
                   value={restState}
                   onChange={(e) => setRestState(e.target.value)}
                   placeholder="Karnataka"
                   required
-                  style={{
-                    padding: "10px 14px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                    outline: "none",
-                  }}
+                  className="input-premium"
                 />
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                  flex: 1,
-                }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Postal Code *
-                </label>
+              <div className="form-field">
+                <label>Postal Code *</label>
                 <input
                   type="text"
                   value={restPostalCode}
                   onChange={(e) => setRestPostalCode(e.target.value)}
                   placeholder="560038"
                   required
-                  style={{
-                    padding: "10px 14px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                    outline: "none",
-                  }}
+                  className="input-premium"
                 />
               </div>
             </div>
 
-            <div style={{ display: "flex", gap: "16px" }}>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                  flex: 1,
-                }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Opening Time
-                </label>
+            <div className="form-row">
+              <div className="form-field">
+                <label>Opening Time</label>
                 <input
                   type="text"
                   value={restOpenTime}
                   onChange={(e) => setRestOpenTime(e.target.value)}
                   placeholder="11:00:00"
-                  style={{
-                    padding: "10px 14px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                    outline: "none",
-                  }}
+                  className="input-premium"
                 />
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                  flex: 1,
-                }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Closing Time
-                </label>
+              <div className="form-field">
+                <label>Closing Time</label>
                 <input
                   type="text"
                   value={restCloseTime}
                   onChange={(e) => setRestCloseTime(e.target.value)}
                   placeholder="23:00:00"
-                  style={{
-                    padding: "10px 14px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                    outline: "none",
-                  }}
+                  className="input-premium"
                 />
               </div>
             </div>
@@ -413,8 +309,7 @@ export const Dashboard: React.FC = () => {
             <button
               type="submit"
               disabled={createLoading}
-              className="btn-premium"
-              style={{ fontSize: "0.95rem", marginTop: "8px" }}
+              className="btn-premium btn-sm button-stretch"
             >
               {createLoading
                 ? "Creating Profile..."
