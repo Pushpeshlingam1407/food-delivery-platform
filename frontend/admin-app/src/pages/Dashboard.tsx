@@ -161,7 +161,7 @@ export const Dashboard: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div className="app-shell">
       {/* Page Title */}
       <div style={{ marginBottom: "40px" }}>
         <h1
@@ -180,14 +180,7 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Analytics Grid */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-          gap: "24px",
-          marginBottom: "40px",
-        }}
-      >
+      <div className="dashboard-grid" style={{ marginBottom: "40px" }}>
         {/* System Health Card */}
         <div
           style={{

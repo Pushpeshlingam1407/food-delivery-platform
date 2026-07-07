@@ -94,31 +94,19 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div className="app-shell">
       {/* Dashboard Section */}
       {localStorage.getItem("accessToken") && (
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns:
-              activeOrders.length > 0
-                ? "repeat(auto-fit, minmax(280px, 1fr))"
-                : "1fr",
-            gap: "32px",
-            marginBottom: "48px",
-          }}
-        >
+        <div className="dashboard-grid" style={{ marginBottom: "48px" }}>
           {/* Active Orders Box */}
           {activeOrders.length > 0 && (
             <div
+              className="surface-card compact"
               style={{
-                background: "rgba(255, 90, 31, 0.04)",
-                border: "2px solid var(--accent-orange)",
-                borderRadius: "var(--radius-squircle)",
-                padding: "24px 32px",
-                display: "flex",
-                flexDirection: "column",
-                justifyContent: "space-between",
+                borderColor: "var(--accent-orange)",
+                borderWidth: 2,
+                borderStyle: "solid",
+                background: "rgba(255, 90, 31, 0.08)",
               }}
             >
               <div>
@@ -135,25 +123,11 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                 >
                   <Truck size={20} /> Active Deliveries ({activeOrders.length})
                 </h3>
-                <div
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: "12px",
-                  }}
-                >
+                <div className="card-stack">
                   {activeOrders.map((o) => (
                     <div
                       key={o.id}
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        padding: "12px 16px",
-                        background: "#FFF",
-                        border: "1px solid var(--glass-border)",
-                        borderRadius: "8px",
-                      }}
+                      className="surface-card compact order-list-item"
                     >
                       <div>
                         <strong style={{ fontSize: "0.95rem" }}>
@@ -171,15 +145,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
                       </div>
                       <Link
                         to={`/track/${o.id}`}
-                        className="btn-premium"
-                        style={{
-                          padding: "6px 16px",
-                          fontSize: "0.8rem",
-                          textDecoration: "none",
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "4px",
-                        }}
+                        className="btn-premium btn-sm"
                       >
                         Track <ArrowRight size={14} />
                       </Link>
@@ -212,13 +178,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
       )}
 
       {/* Discover Feed */}
-      <h1
-        style={{
-          fontFamily: "var(--font-anthropic)",
-          fontSize: "2.5rem",
-          marginBottom: "24px",
-        }}
-      >
+      <h1 className="section-heading section-heading-lg">
         Discover Restaurants
       </h1>
 

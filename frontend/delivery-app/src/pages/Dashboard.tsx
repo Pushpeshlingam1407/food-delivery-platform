@@ -215,16 +215,9 @@ export const Dashboard: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "1000px", margin: "0 auto" }}>
+    <div className="app-shell">
       {/* Header Info */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-          gap: "32px",
-          marginBottom: "40px",
-        }}
-      >
+      <div className="dashboard-grid" style={{ marginBottom: "40px" }}>
         {/* Toggle block */}
         <div
           className="header-panel-premium"
