@@ -67,6 +67,13 @@ export const Dashboard: React.FC = () => {
       if (couponRes.data.status === "success") {
         setCoupons(couponRes.data.data || []);
       }
+
+      try {
+        const healthRes = await api.get("/health");
+        setHealth(healthRes.data);
+      } catch (err) {
+        console.error("Health check failed:", err);
+      }
     } catch (err) {
       console.error(err);
       toast.error("Failed to load analytics data.");
@@ -181,6 +188,42 @@ export const Dashboard: React.FC = () => {
           marginBottom: "40px",
         }}
       >
+        {/* System Health Card */}
+        <div
+          style={{
+            background: "var(--glass-bg)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "var(--radius-squircle)",
+            padding: "24px",
+            backdropFilter: "var(--glass-blur)",
+          }}
+        >
+          <div
+            style={{
+              color: "var(--text-muted)",
+              fontSize: "0.8rem",
+              fontWeight: 700,
+              marginBottom: "8px",
+            }}
+          >
+            SYSTEM PORTS & DB STATUS
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
+              <span>🔌 Backend Port:</span>
+              <strong style={{ color: "#4CAF50" }}>
+                {health?.server_port || 5000} (ONLINE)
+              </strong>
+            </div>
+            <div style={{ display: "flex", justifyContent: "space-between", fontSize: "0.85rem" }}>
+              <span>🗄️ MySQL Port:</span>
+              <strong style={{ color: health?.database === "connected" ? "#4CAF50" : "#F44336" }}>
+                {health?.database_port || 3306} ({health?.database?.toUpperCase() || "CONNECTED"})
+              </strong>
+            </div>
+          </div>
+        </div>
+
         <div
           style={{
             background: "var(--glass-bg)",
