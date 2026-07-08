@@ -618,12 +618,24 @@ export const MenuManager: React.FC = () => {
                 />
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/*, image/webp, image/png, image/jpeg, image/jpg, image/gif"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      setNewItemImageUrl(`/uploads/${file.name}`);
-                      toast.success(`Selected local file: ${file.name}`);
+                      const reader = new FileReader();
+                      reader.onloadend = async () => {
+                        try {
+                          const base64Data = reader.result as string;
+                          const res = await api.post("/upload", { image: base64Data });
+                          if (res.data.status === "success") {
+                            setNewItemImageUrl(res.data.url);
+                            toast.success("Image uploaded successfully!");
+                          }
+                        } catch (err) {
+                          toast.error("Failed to upload image.");
+                        }
+                      };
+                      reader.readAsDataURL(file);
                     }
                   }}
                   style={{ marginTop: "4px", fontSize: "0.8rem" }}

@@ -1,6 +1,9 @@
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import fs from "fs";
+import path from "path";
+import crypto from "crypto";
 import authRoutes from "./routes/authRoutes.js";
 import restaurantRoutes from "./routes/restaurantRoutes.js";
 import favoriteRoutes from "./routes/favoriteRoutes.js";
@@ -24,11 +27,51 @@ app.use(
   helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" }
   }),
 );
 app.use(cors());
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
+
+// Ensure uploads folder exists
+if (!fs.existsSync("uploads")) {
+  fs.mkdirSync("uploads", { recursive: true });
+}
+
+// Serve uploaded images statically
+app.use("/uploads", express.static("uploads"));
+
+// Base64 Image Upload Endpoint
+app.post("/api/upload", (req, res) => {
+  const { image } = req.body;
+  if (!image) {
+    return res.status(400).json({ status: "error", message: "No image payload provided" });
+  }
+
+  try {
+    const matches = image.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
+    if (!matches || matches.length !== 3) {
+      return res.status(400).json({ status: "error", message: "Invalid base64 image encoding" });
+    }
+
+    const extension = matches[1];
+    const dataBuffer = Buffer.from(matches[2], "base64");
+    const safeExtension = extension === "jpeg" ? "jpg" : extension;
+    const filename = `${crypto.randomUUID()}.${safeExtension}`;
+    const filePath = path.join("uploads", filename);
+
+    fs.writeFileSync(filePath, dataBuffer);
+
+    return res.status(200).json({
+      status: "success",
+      url: `http://localhost:5000/uploads/${filename}`,
+    });
+  } catch (err) {
+    console.error("File upload runtime error:", err);
+    return res.status(500).json({ status: "error", message: "Failed to upload image file" });
+  }
+});
 
 app.use("/api/auth", authRoutes);
 app.use("/api/restaurants", restaurantRoutes);

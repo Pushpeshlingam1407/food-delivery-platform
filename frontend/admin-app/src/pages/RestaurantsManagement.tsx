@@ -350,12 +350,24 @@ export const RestaurantsManagement: React.FC = () => {
                 />
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/*, image/webp, image/png, image/jpeg, image/jpg, image/gif"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      setLogoUrl(`/uploads/${file.name}`);
-                      toast.success(`Selected local logo: ${file.name}`);
+                      const reader = new FileReader();
+                      reader.onloadend = async () => {
+                        try {
+                          const base64Data = reader.result as string;
+                          const res = await api.post("/upload", { image: base64Data });
+                          if (res.data.status === "success") {
+                            setLogoUrl(res.data.url);
+                            toast.success("Logo uploaded successfully!");
+                          }
+                        } catch (err) {
+                          toast.error("Failed to upload logo.");
+                        }
+                      };
+                      reader.readAsDataURL(file);
                     }
                   }}
                   style={{ marginTop: "6px", fontSize: "0.8rem" }}
@@ -406,12 +418,24 @@ export const RestaurantsManagement: React.FC = () => {
                 />
                 <input
                   type="file"
-                  accept="image/*"
+                  accept="image/*, image/webp, image/png, image/jpeg, image/jpg, image/gif"
                   onChange={(e) => {
                     const file = e.target.files?.[0];
                     if (file) {
-                      setBannerUrl(`/uploads/${file.name}`);
-                      toast.success(`Selected local banner: ${file.name}`);
+                      const reader = new FileReader();
+                      reader.onloadend = async () => {
+                        try {
+                          const base64Data = reader.result as string;
+                          const res = await api.post("/upload", { image: base64Data });
+                          if (res.data.status === "success") {
+                            setBannerUrl(res.data.url);
+                            toast.success("Banner uploaded successfully!");
+                          }
+                        } catch (err) {
+                          toast.error("Failed to upload banner.");
+                        }
+                      };
+                      reader.readAsDataURL(file);
                     }
                   }}
                   style={{ marginTop: "6px", fontSize: "0.8rem" }}
