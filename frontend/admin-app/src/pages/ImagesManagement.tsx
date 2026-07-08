@@ -6,6 +6,8 @@ import {
   Image,
   Store,
   Link as LinkIcon,
+  Globe,
+  FileImage,
 } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
@@ -242,7 +244,40 @@ export const ImagesManagement: React.FC = () => {
             </div>
 
             <div className="form-field">
-              <label>Image URL Link</label>
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <label>Image URL Link</label>
+                {imageUrl.startsWith("http") ? (
+                  <span
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "var(--accent-orange)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <Globe size={12} /> Remote URL
+                  </span>
+                ) : imageUrl ? (
+                  <span
+                    style={{
+                      fontSize: "0.75rem",
+                      color: "var(--accent-violet)",
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                    }}
+                  >
+                    <FileImage size={12} /> Local File
+                  </span>
+                ) : null}
+              </div>
               <input
                 type="text"
                 value={imageUrl}
@@ -250,6 +285,18 @@ export const ImagesManagement: React.FC = () => {
                 required
                 placeholder="https://example.com/item.jpg"
                 className="input-premium"
+              />
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    setImageUrl(`/uploads/${file.name}`);
+                    toast.success(`Selected local file: ${file.name}`);
+                  }
+                }}
+                style={{ marginTop: "6px", fontSize: "0.8rem" }}
               />
             </div>
 

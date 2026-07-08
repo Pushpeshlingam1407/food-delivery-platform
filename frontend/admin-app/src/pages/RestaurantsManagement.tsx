@@ -1,5 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { Store, Plus, Edit2, Trash2, Check, X, Tag, Clock } from "lucide-react";
+import {
+  Store,
+  Plus,
+  Edit2,
+  Trash2,
+  Check,
+  X,
+  Tag,
+  Clock,
+  Globe,
+  FileImage,
+} from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 
@@ -296,7 +307,40 @@ export const RestaurantsManagement: React.FC = () => {
               style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}
             >
               <div className="form-field">
-                <label>Logo Image URL</label>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <label>Logo Image URL</label>
+                  {logoUrl.startsWith("http") ? (
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--accent-orange)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      <Globe size={12} /> Remote URL
+                    </span>
+                  ) : logoUrl ? (
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--accent-violet)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      <FileImage size={12} /> Local File
+                    </span>
+                  ) : null}
+                </div>
                 <input
                   type="text"
                   value={logoUrl}
@@ -304,16 +348,73 @@ export const RestaurantsManagement: React.FC = () => {
                   placeholder="https://example.com/logo.png"
                   className="input-premium"
                 />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setLogoUrl(`/uploads/${file.name}`);
+                      toast.success(`Selected local logo: ${file.name}`);
+                    }
+                  }}
+                  style={{ marginTop: "6px", fontSize: "0.8rem" }}
+                />
               </div>
 
               <div className="form-field">
-                <label>Banner Image URL</label>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <label>Banner Image URL</label>
+                  {bannerUrl.startsWith("http") ? (
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--accent-orange)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      <Globe size={12} /> Remote URL
+                    </span>
+                  ) : bannerUrl ? (
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--accent-violet)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      <FileImage size={12} /> Local File
+                    </span>
+                  ) : null}
+                </div>
                 <input
                   type="text"
                   value={bannerUrl}
                   onChange={(e) => setBannerUrl(e.target.value)}
                   placeholder="https://example.com/banner.png"
                   className="input-premium"
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setBannerUrl(`/uploads/${file.name}`);
+                      toast.success(`Selected local banner: ${file.name}`);
+                    }
+                  }}
+                  style={{ marginTop: "6px", fontSize: "0.8rem" }}
                 />
               </div>
             </div>

@@ -305,8 +305,15 @@ export async function updateMenuItem(req, res) {
   }
 
   const { id } = req.params;
-  const { name, description, price, is_veg, is_available, preparation_time, image_url } =
-    req.body;
+  const {
+    name,
+    description,
+    price,
+    is_veg,
+    is_available,
+    preparation_time,
+    image_url,
+  } = req.body;
 
   try {
     const [rows] = await pool.query(
@@ -369,18 +376,18 @@ export async function updateMenuItem(req, res) {
     if (image_url !== undefined) {
       const [imgRows] = await pool.query(
         "SELECT id FROM menu_images WHERE menu_id = ? AND is_primary = TRUE",
-        [id]
+        [id],
       );
       if (imgRows.length > 0) {
-        await pool.query(
-          "UPDATE menu_images SET image_url = ? WHERE id = ?",
-          [image_url, imgRows[0].id]
-        );
+        await pool.query("UPDATE menu_images SET image_url = ? WHERE id = ?", [
+          image_url,
+          imgRows[0].id,
+        ]);
       } else {
         const imageId = crypto.randomUUID();
         await pool.query(
           "INSERT INTO menu_images (id, menu_id, image_url, is_primary) VALUES (?, ?, ?, TRUE)",
-          [imageId, id, image_url]
+          [imageId, id, image_url],
         );
       }
     }

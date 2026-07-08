@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { Plus, Trash2, ShieldAlert, Edit2, Package, Eye } from "lucide-react";
+import {
+  Plus,
+  Trash2,
+  ShieldAlert,
+  Edit2,
+  Package,
+  Eye,
+  Globe,
+  FileImage,
+} from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 
@@ -55,9 +64,7 @@ export const MenuManager: React.FC = () => {
           setCategories(catRes.data.data || []);
         }
 
-        const menuRes = await api.get(
-          `/restaurants/${myRestaurant.id}/items`,
-        );
+        const menuRes = await api.get(`/restaurants/${myRestaurant.id}/items`);
         if (menuRes.data.status === "success") {
           setMenuItems(menuRes.data.data || []);
         }
@@ -242,7 +249,13 @@ export const MenuManager: React.FC = () => {
                     alignItems: "center",
                   }}
                 >
-                  <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "16px",
+                      alignItems: "center",
+                    }}
+                  >
                     {item.image_url && (
                       <img
                         src={item.image_url}
@@ -303,8 +316,19 @@ export const MenuManager: React.FC = () => {
                       >
                         {item.description || "No description provided."}
                       </p>
-                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                        <strong style={{ fontSize: "1.1rem", color: "var(--text-slate)" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "12px",
+                        }}
+                      >
+                        <strong
+                          style={{
+                            fontSize: "1.1rem",
+                            color: "var(--text-slate)",
+                          }}
+                        >
                           ${parseFloat(item.price.toString()).toFixed(2)}
                         </strong>
                         <span
@@ -316,7 +340,10 @@ export const MenuManager: React.FC = () => {
                             borderRadius: "4px",
                           }}
                         >
-                          Stock: {item.unlimited ? "Unlimited" : item.available_quantity}
+                          Stock:{" "}
+                          {item.unlimited
+                            ? "Unlimited"
+                            : item.available_quantity}
                         </span>
                       </div>
                     </div>
@@ -472,7 +499,12 @@ export const MenuManager: React.FC = () => {
             </h3>
             <form
               onSubmit={handleSaveMenuItem}
-              style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "12px" }}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+                marginTop: "12px",
+              }}
             >
               <div
                 style={{ display: "flex", flexDirection: "column", gap: "6px" }}
@@ -537,9 +569,42 @@ export const MenuManager: React.FC = () => {
               <div
                 style={{ display: "flex", flexDirection: "column", gap: "6px" }}
               >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Image URL Link
-                </label>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
+                    Image URL Link
+                  </label>
+                  {newItemImageUrl.startsWith("http") ? (
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--accent-orange)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      <Globe size={12} /> Remote URL
+                    </span>
+                  ) : newItemImageUrl ? (
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        color: "var(--accent-violet)",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      <FileImage size={12} /> Local File
+                    </span>
+                  ) : null}
+                </div>
                 <input
                   type="text"
                   value={newItemImageUrl}
@@ -550,6 +615,18 @@ export const MenuManager: React.FC = () => {
                     borderRadius: "6px",
                     border: "1px solid var(--glass-border)",
                   }}
+                />
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => {
+                    const file = e.target.files?.[0];
+                    if (file) {
+                      setNewItemImageUrl(`/uploads/${file.name}`);
+                      toast.success(`Selected local file: ${file.name}`);
+                    }
+                  }}
+                  style={{ marginTop: "4px", fontSize: "0.8rem" }}
                 />
               </div>
 
@@ -585,7 +662,9 @@ export const MenuManager: React.FC = () => {
                 <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
                   Inventory Stock Level
                 </label>
-                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                <div
+                  style={{ display: "flex", gap: "10px", alignItems: "center" }}
+                >
                   <input
                     type="number"
                     value={newItemStock}
@@ -599,7 +678,15 @@ export const MenuManager: React.FC = () => {
                       width: "80px",
                     }}
                   />
-                  <label style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer", fontSize: "0.85rem" }}>
+                  <label
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "4px",
+                      cursor: "pointer",
+                      fontSize: "0.85rem",
+                    }}
+                  >
                     <input
                       type="checkbox"
                       checked={newItemUnlimited}
@@ -641,7 +728,11 @@ export const MenuManager: React.FC = () => {
                     type="button"
                     onClick={resetForm}
                     className="btn-premium"
-                    style={{ background: "var(--text-slate)", flex: 1, padding: "12px" }}
+                    style={{
+                      background: "var(--text-slate)",
+                      flex: 1,
+                      padding: "12px",
+                    }}
                   >
                     Cancel
                   </button>
