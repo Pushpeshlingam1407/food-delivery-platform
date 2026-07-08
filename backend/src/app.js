@@ -74,4 +74,21 @@ app.get("/health", async (req, res) => {
   });
 });
 
+// Custom 404 fallback handler
+app.use((req, res, next) => {
+  res.status(404).json({
+    status: "error",
+    message: `API Route '${req.originalUrl}' (method: ${req.method}) not found.`,
+  });
+});
+
+// Global error handler middleware
+app.use((err, req, res, next) => {
+  console.error("Unhandled API Error:", err);
+  res.status(err.status || 500).json({
+    status: "error",
+    message: err.message || "Internal server error occurred on the backend.",
+  });
+});
+
 export default app;
