@@ -689,6 +689,12 @@ h3 {
   outline: none;
 }
 
+.two-column-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+}
+
 @media (max-width: 900px) {
   .panel-grid,
   .dashboard-grid {
@@ -711,12 +717,6 @@ h3 {
   .panel-card {
     padding: 14px;
   }
-}
-
-.two-column-layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 24px;
 }
 
 .navbar-action-group {
