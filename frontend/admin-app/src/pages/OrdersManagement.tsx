@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Truck, Edit2, Trash2, ShieldAlert, Clock, ShoppingBag } from "lucide-react";
+import {
+  Truck,
+  Edit2,
+  Trash2,
+  ShieldAlert,
+  Clock,
+  ShoppingBag,
+} from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 
@@ -13,7 +20,14 @@ interface Order {
   delivery_partner_id: string | null;
   driver_name: string | null;
   driver_phone: string | null;
-  status: "placed" | "accepted" | "preparing" | "ready_for_pickup" | "out_for_delivery" | "delivered" | "cancelled";
+  status:
+    | "placed"
+    | "accepted"
+    | "preparing"
+    | "ready_for_pickup"
+    | "out_for_delivery"
+    | "delivered"
+    | "cancelled";
   item_total: number;
   delivery_charges: number;
   tax_amount: number;
@@ -47,7 +61,7 @@ export const OrdersManagement: React.FC = () => {
     try {
       const ordersRes = await api.get("/admin/orders");
       const driversRes = await api.get("/admin/drivers");
-      
+
       if (ordersRes.data.status === "success") {
         setOrders(ordersRes.data.data);
       }
@@ -73,7 +87,7 @@ export const OrdersManagement: React.FC = () => {
       const res = await api.put(`/admin/orders/${editingId}`, {
         status,
         delivery_partner_id: deliveryPartnerId,
-        total_payable: parseFloat(totalPayable || "0")
+        total_payable: parseFloat(totalPayable || "0"),
       });
 
       if (res.data.status === "success") {
@@ -87,7 +101,12 @@ export const OrdersManagement: React.FC = () => {
   };
 
   const handleDeleteOrder = async (id: string) => {
-    if (!confirm("Are you sure you want to permanently delete this order from the system?")) return;
+    if (
+      !confirm(
+        "Are you sure you want to permanently delete this order from the system?",
+      )
+    )
+      return;
     try {
       const res = await api.delete(`/admin/orders/${id}`);
       if (res.data.status === "success") {
@@ -126,16 +145,26 @@ export const OrdersManagement: React.FC = () => {
   return (
     <div className="app-shell">
       <div className="section-spacing">
-        <h1 className="section-heading section-heading-lg" style={{ margin: 0 }}>
+        <h1
+          className="section-heading section-heading-lg"
+          style={{ margin: 0 }}
+        >
           Orders Console
         </h1>
-        <p className="text-muted">Manually dispatch delivery riders, update order state transitions, and audit system transactions.</p>
+        <p className="text-muted">
+          Manually dispatch delivery riders, update order state transitions, and
+          audit system transactions.
+        </p>
       </div>
 
       {showEditForm && (
-        <div className="panel-card section-spacing" style={{ maxWidth: "600px" }}>
+        <div
+          className="panel-card section-spacing"
+          style={{ maxWidth: "600px" }}
+        >
           <div className="panel-heading">
-            <Edit2 size={18} color="var(--accent-orange)" /> Dispatch & Edit Order
+            <Edit2 size={18} color="var(--accent-orange)" /> Dispatch & Edit
+            Order
           </div>
 
           <form onSubmit={handleUpdateOrder} className="form-grid">
@@ -170,7 +199,13 @@ export const OrdersManagement: React.FC = () => {
                   </option>
                 ))}
               </select>
-              <small style={{ color: "var(--text-muted)", marginTop: "4px", display: "block" }}>
+              <small
+                style={{
+                  color: "var(--text-muted)",
+                  marginTop: "4px",
+                  display: "block",
+                }}
+              >
                 Only active, online riders are displayed here.
               </small>
             </div>
@@ -208,22 +243,54 @@ export const OrdersManagement: React.FC = () => {
           <div key={o.id} className="panel-card panel-card-stacked">
             <div>
               <div className="panel-row">
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "6px" }}
+                >
                   <ShoppingBag size={18} color="var(--accent-violet)" />
-                  <strong style={{ fontSize: "1.1rem" }}>Order #{o.id.substring(0, 8)}</strong>
+                  <strong style={{ fontSize: "1.1rem" }}>
+                    Order #{o.id.substring(0, 8)}
+                  </strong>
                 </div>
-                <span className={`status-pill ${
-                  o.status === "delivered" ? "success" : o.status === "cancelled" ? "danger" : "warning"
-                }`}>
+                <span
+                  className={`status-pill ${
+                    o.status === "delivered"
+                      ? "success"
+                      : o.status === "cancelled"
+                        ? "danger"
+                        : "warning"
+                  }`}
+                >
                   {o.status.replace(/_/g, " ")}
                 </span>
               </div>
 
-              <div style={{ margin: "14px 0", fontSize: "0.85rem", color: "var(--text-muted)" }}>
-                <div>Merchant Store: <strong style={{ color: "var(--text-slate)" }}>{o.restaurant_name}</strong></div>
-                <div>Customer: <strong>{o.customer_name}</strong> ({o.customer_email})</div>
-                <div style={{ display: "flex", alignItems: "center", gap: "4px", marginTop: "8px" }}>
-                  <Clock size={12} /> Placed: {new Date(o.placed_at).toLocaleString()}
+              <div
+                style={{
+                  margin: "14px 0",
+                  fontSize: "0.85rem",
+                  color: "var(--text-muted)",
+                }}
+              >
+                <div>
+                  Merchant Store:{" "}
+                  <strong style={{ color: "var(--text-slate)" }}>
+                    {o.restaurant_name}
+                  </strong>
+                </div>
+                <div>
+                  Customer: <strong>{o.customer_name}</strong> (
+                  {o.customer_email})
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    marginTop: "8px",
+                  }}
+                >
+                  <Clock size={12} /> Placed:{" "}
+                  {new Date(o.placed_at).toLocaleString()}
                 </div>
               </div>
 
@@ -236,21 +303,25 @@ export const OrdersManagement: React.FC = () => {
                   padding: "10px 14px",
                   borderRadius: "8px",
                   border: "1px solid var(--glass-border)",
-                  fontSize: "0.9rem"
+                  fontSize: "0.9rem",
                 }}
               >
                 <div style={{ fontWeight: 600 }}>Total Payable:</div>
-                <strong style={{ fontSize: "1.1rem" }}>${parseFloat(o.total_payable.toString()).toFixed(2)}</strong>
+                <strong style={{ fontSize: "1.1rem" }}>
+                  ${parseFloat(o.total_payable.toString()).toFixed(2)}
+                </strong>
               </div>
 
               <div
                 style={{
                   marginTop: "14px",
                   padding: "10px",
-                  background: o.delivery_partner_id ? "rgba(76,175,80,0.08)" : "rgba(244,67,54,0.08)",
+                  background: o.delivery_partner_id
+                    ? "rgba(76,175,80,0.08)"
+                    : "rgba(244,67,54,0.08)",
                   borderRadius: "8px",
                   border: "1px solid var(--glass-border)",
-                  fontSize: "0.8rem"
+                  fontSize: "0.8rem",
                 }}
               >
                 {o.delivery_partner_id ? (
@@ -265,11 +336,22 @@ export const OrdersManagement: React.FC = () => {
               </div>
             </div>
 
-            <div className="panel-row" style={{ marginTop: "20px", borderTop: "1px solid var(--glass-border)", paddingTop: "12px" }}>
+            <div
+              className="panel-row"
+              style={{
+                marginTop: "20px",
+                borderTop: "1px solid var(--glass-border)",
+                paddingTop: "12px",
+              }}
+            >
               <button
                 onClick={() => startEdit(o)}
                 className="btn-premium btn-sm"
-                style={{ padding: "6px 12px", fontSize: "0.75rem", boxShadow: "none" }}
+                style={{
+                  padding: "6px 12px",
+                  fontSize: "0.75rem",
+                  boxShadow: "none",
+                }}
               >
                 Dispatch Order
               </button>
@@ -277,7 +359,12 @@ export const OrdersManagement: React.FC = () => {
               <div style={{ display: "flex", gap: "12px" }}>
                 <button
                   onClick={() => handleDeleteOrder(o.id)}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "#F44336" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#F44336",
+                  }}
                 >
                   <Trash2 size={16} />
                 </button>
