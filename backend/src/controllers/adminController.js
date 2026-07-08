@@ -643,3 +643,120 @@ export async function deleteDriver(req, res) {
       .json({ status: "error", message: "Internal server error" });
   }
 }
+
+// -------------------------------------------------------------
+// Admin Orders CRUD & Manual Rider Assignment
+// -------------------------------------------------------------
+
+export async function getOrders(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  try {
+    const [rows] = await pool.query(
+      `SELECT o.*, 
+              CONCAT(u.first_name, ' ', u.last_name) as customer_name, u.email as customer_email,
+              r.name as restaurant_name,
+              CONCAT(d.first_name, ' ', d.last_name) as driver_name, d.phone as driver_phone
+       FROM orders o
+       JOIN users u ON o.user_id = u.id
+       JOIN restaurants r ON o.restaurant_id = r.id
+       LEFT JOIN users d ON o.delivery_partner_id = d.id
+       ORDER BY o.placed_at DESC`
+    );
+    return res.status(200).json({ status: "success", data: rows });
+  } catch (error) {
+    console.error("Get orders error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function updateOrder(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  const { status, delivery_partner_id, total_payable } = req.body;
+
+  try {
+    await pool.query(
+      "UPDATE orders SET status = COALESCE(?, status), delivery_partner_id = ?, total_payable = COALESCE(?, total_payable) WHERE id = ?",
+      [status, delivery_partner_id === "" ? null : delivery_partner_id, total_payable, id]
+    );
+    return res.status(200).json({ status: "success", message: "Order updated successfully" });
+  } catch (error) {
+    console.error("Update order error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function deleteOrder(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  try {
+    await pool.query("DELETE FROM orders WHERE id = ?", [id]);
+    return res.status(200).json({ status: "success", message: "Order deleted from database" });
+  } catch (error) {
+    console.error("Delete order error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}
+
+// -------------------------------------------------------------
+// Admin Menu Images CRUD
+// -------------------------------------------------------------
+
+export async function getMenuImages(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  try {
+    const [rows] = await pool.query(
+      `SELECT mi.*, m.name as menu_item_name, r.name as restaurant_name 
+       FROM menu_images mi
+       JOIN menus m ON mi.menu_id = m.id
+       JOIN restaurants r ON m.restaurant_id = r.id`
+    );
+    return res.status(200).json({ status: "success", data: rows });
+  } catch (error) {
+    console.error("Get menu images error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function createMenuImage(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { menu_id, image_url, is_primary = false } = req.body;
+  if (!menu_id || !image_url) {
+    return res.status(400).json({ status: "error", message: "menu_id and image_url are required" });
+  }
+  try {
+    const id = crypto.randomUUID();
+    await pool.query(
+      "INSERT INTO menu_images (id, menu_id, image_url, is_primary) VALUES (?, ?, ?, ?)",
+      [id, menu_id, image_url, is_primary]
+    );
+    return res.status(201).json({ status: "success", message: "Menu image created", data: { id } });
+  } catch (error) {
+    console.error("Create menu image error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function deleteMenuImage(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  try {
+    await pool.query("DELETE FROM menu_images WHERE id = ?", [id]);
+    return res.status(200).json({ status: "success", message: "Menu image deleted" });
+  } catch (error) {
+    console.error("Delete menu image error:", error);
+    return res.status(500).json({ status: "error", message: "Internal server error" });
+  }
+}

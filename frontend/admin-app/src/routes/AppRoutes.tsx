@@ -9,6 +9,8 @@ import { CMS } from "../pages/CMS";
 import { RestaurantsManagement } from "../pages/RestaurantsManagement";
 import { CustomersManagement } from "../pages/CustomersManagement";
 import { DriversManagement } from "../pages/DriversManagement";
+import { OrdersManagement } from "../pages/OrdersManagement";
+import { ImagesManagement } from "../pages/ImagesManagement";
 
 export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
@@ -51,6 +53,14 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="/drivers"
           element={userEmail ? <DriversManagement /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/orders"
+          element={userEmail ? <OrdersManagement /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/images"
+          element={userEmail ? <ImagesManagement /> : <Navigate to="/login" />}
         />
         <Route
           path="/refunds"

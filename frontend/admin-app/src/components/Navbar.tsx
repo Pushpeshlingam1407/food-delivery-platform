@@ -119,6 +119,30 @@ export const Navbar: React.FC<NavbarProps> = ({
             Drivers
           </Link>
           <Link
+            to="/orders"
+            style={{
+              textDecoration: "none",
+              color: "var(--text-slate)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              fontFamily: "var(--font-cohere)",
+            }}
+          >
+            Orders
+          </Link>
+          <Link
+            to="/images"
+            style={{
+              textDecoration: "none",
+              color: "var(--text-slate)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              fontFamily: "var(--font-cohere)",
+            }}
+          >
+            Image Library
+          </Link>
+          <Link
             to="/refunds"
             style={{
               textDecoration: "none",
@@ -284,6 +308,28 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
             >
               Drivers Management
+            </Link>
+            <Link
+              to="/orders"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontWeight: 600,
+              }}
+            >
+              Orders Management
+            </Link>
+            <Link
+              to="/images"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontWeight: 600,
+              }}
+            >
+              Image Library
             </Link>
             <Link
               to="/refunds"
