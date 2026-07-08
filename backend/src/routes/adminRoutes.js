@@ -18,6 +18,12 @@ import {
   getDrivers,
   updateDriver,
   deleteDriver,
+  getOrders,
+  updateOrder,
+  deleteOrder,
+  getMenuImages,
+  createMenuImage,
+  deleteMenuImage,
 } from "../controllers/adminController.js";
 import { authenticateJWT } from "../middlewares/auth.js";
 
@@ -39,6 +45,16 @@ router.delete("/customers/:id", authenticateJWT, deleteCustomer);
 router.get("/drivers", authenticateJWT, getDrivers);
 router.put("/drivers/:id", authenticateJWT, updateDriver);
 router.delete("/drivers/:id", authenticateJWT, deleteDriver);
+
+// Orders CRUD
+router.get("/orders", authenticateJWT, getOrders);
+router.put("/orders/:id", authenticateJWT, updateOrder);
+router.delete("/orders/:id", authenticateJWT, deleteOrder);
+
+// Menu Images CRUD
+router.get("/menu-images", authenticateJWT, getMenuImages);
+router.post("/menu-images", authenticateJWT, createMenuImage);
+router.delete("/menu-images/:id", authenticateJWT, deleteMenuImage);
 
 router.get("/analytics", authenticateJWT, getSystemAnalytics);
 router.post("/coupons", authenticateJWT, createCoupon);

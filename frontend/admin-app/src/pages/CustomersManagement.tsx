@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Users, Edit2, Trash2, ShieldAlert, Award, Plus, DollarSign } from "lucide-react";
+import {
+  Users,
+  Edit2,
+  Trash2,
+  ShieldAlert,
+  Award,
+  Plus,
+  DollarSign,
+} from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 
@@ -25,7 +33,9 @@ export const CustomersManagement: React.FC = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [status, setStatus] = useState<"active" | "inactive" | "suspended">("active");
+  const [status, setStatus] = useState<"active" | "inactive" | "suspended">(
+    "active",
+  );
   const [isVerified, setIsVerified] = useState(true);
   const [walletBalance, setWalletBalance] = useState("0");
 
@@ -60,7 +70,7 @@ export const CustomersManagement: React.FC = () => {
         phone,
         status,
         is_verified: isVerified,
-        wallet_balance: parseFloat(walletBalance || "0")
+        wallet_balance: parseFloat(walletBalance || "0"),
       });
 
       if (res.data.status === "success") {
@@ -74,7 +84,8 @@ export const CustomersManagement: React.FC = () => {
   };
 
   const handleDeleteCustomer = async (id: string) => {
-    if (!confirm("Are you sure you want to block/deactivate this customer?")) return;
+    if (!confirm("Are you sure you want to block/deactivate this customer?"))
+      return;
     try {
       const res = await api.delete(`/admin/customers/${id}`);
       if (res.data.status === "success") {
@@ -121,20 +132,33 @@ export const CustomersManagement: React.FC = () => {
   return (
     <div className="app-shell">
       <div className="section-spacing">
-        <h1 className="section-heading section-heading-lg" style={{ margin: 0 }}>
+        <h1
+          className="section-heading section-heading-lg"
+          style={{ margin: 0 }}
+        >
           Customers Management
         </h1>
-        <p className="text-muted">Audit platform users, manage wallet balances, and handle account status suspensions.</p>
+        <p className="text-muted">
+          Audit platform users, manage wallet balances, and handle account
+          status suspensions.
+        </p>
       </div>
 
       {showEditForm && (
-        <div className="panel-card section-spacing" style={{ maxWidth: "600px" }}>
+        <div
+          className="panel-card section-spacing"
+          style={{ maxWidth: "600px" }}
+        >
           <div className="panel-heading">
-            <Edit2 size={18} color="var(--accent-orange)" /> Edit Customer & Wallet
+            <Edit2 size={18} color="var(--accent-orange)" /> Edit Customer &
+            Wallet
           </div>
 
           <form onSubmit={handleUpdateCustomer} className="form-grid">
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div
+              className="form-grid"
+              style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}
+            >
               <div className="form-field">
                 <label>First Name</label>
                 <input
@@ -198,7 +222,11 @@ export const CustomersManagement: React.FC = () => {
                     setWalletBalance((current + 10).toString());
                   }}
                   className="btn-premium btn-sm"
-                  style={{ whiteSpace: "nowrap", padding: "10px", boxShadow: "none" }}
+                  style={{
+                    whiteSpace: "nowrap",
+                    padding: "10px",
+                    boxShadow: "none",
+                  }}
                 >
                   + $10
                 </button>
@@ -209,14 +237,25 @@ export const CustomersManagement: React.FC = () => {
                     setWalletBalance((current + 50).toString());
                   }}
                   className="btn-premium btn-sm"
-                  style={{ whiteSpace: "nowrap", padding: "10px", boxShadow: "none" }}
+                  style={{
+                    whiteSpace: "nowrap",
+                    padding: "10px",
+                    boxShadow: "none",
+                  }}
                 >
                   + $50
                 </button>
               </div>
             </div>
 
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px", alignItems: "center" }}>
+            <div
+              className="form-grid"
+              style={{
+                gridTemplateColumns: "1fr 1fr",
+                gap: "16px",
+                alignItems: "center",
+              }}
+            >
               <div className="form-field">
                 <label>Account Status</label>
                 <select
@@ -230,7 +269,14 @@ export const CustomersManagement: React.FC = () => {
                 </select>
               </div>
 
-              <label style={{ display: "flex", alignItems: "center", gap: "8px", marginTop: "24px" }}>
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  marginTop: "24px",
+                }}
+              >
                 <input
                   type="checkbox"
                   checked={isVerified}
@@ -265,12 +311,17 @@ export const CustomersManagement: React.FC = () => {
                 <h3 style={{ margin: 0 }}>
                   {c.first_name} {c.last_name}
                 </h3>
-                <span className={`status-pill ${c.status === "active" ? "success" : "danger"}`}>
+                <span
+                  className={`status-pill ${c.status === "active" ? "success" : "danger"}`}
+                >
                   {c.status}
                 </span>
               </div>
 
-              <p className="card-subtitle" style={{ fontSize: "0.85rem", marginTop: "4px" }}>
+              <p
+                className="card-subtitle"
+                style={{ fontSize: "0.85rem", marginTop: "4px" }}
+              >
                 {c.email} | {c.phone}
               </p>
 
@@ -283,23 +334,47 @@ export const CustomersManagement: React.FC = () => {
                   padding: "10px 14px",
                   borderRadius: "8px",
                   marginTop: "16px",
-                  border: "1px solid var(--glass-border)"
+                  border: "1px solid var(--glass-border)",
                 }}
               >
-                <div style={{ display: "flex", alignItems: "center", gap: "6px", fontSize: "0.85rem", fontWeight: 700 }}>
-                  <DollarSign size={16} color="var(--accent-violet)" /> Wallet Balance:
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "6px",
+                    fontSize: "0.85rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  <DollarSign size={16} color="var(--accent-violet)" /> Wallet
+                  Balance:
                 </div>
-                <strong style={{ fontSize: "1.1rem", color: "var(--text-slate)" }}>
+                <strong
+                  style={{ fontSize: "1.1rem", color: "var(--text-slate)" }}
+                >
                   ${parseFloat(c.wallet_balance.toString()).toFixed(2)}
                 </strong>
               </div>
 
-              <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "12px" }}>
+              <div
+                style={{
+                  fontSize: "0.75rem",
+                  color: "var(--text-muted)",
+                  marginTop: "12px",
+                }}
+              >
                 Registered: {new Date(c.created_at).toLocaleDateString()}
               </div>
             </div>
 
-            <div className="panel-row" style={{ marginTop: "20px", borderTop: "1px solid var(--glass-border)", paddingTop: "12px" }}>
+            <div
+              className="panel-row"
+              style={{
+                marginTop: "20px",
+                borderTop: "1px solid var(--glass-border)",
+                paddingTop: "12px",
+              }}
+            >
               <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
                 ID: <strong>{c.id.substring(0, 8)}...</strong>
               </span>
@@ -307,13 +382,23 @@ export const CustomersManagement: React.FC = () => {
               <div style={{ display: "flex", gap: "12px" }}>
                 <button
                   onClick={() => startEdit(c)}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-slate)" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "var(--text-slate)",
+                  }}
                 >
                   <Edit2 size={16} />
                 </button>
                 <button
                   onClick={() => handleDeleteCustomer(c.id)}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "#F44336" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#F44336",
+                  }}
                 >
                   <Trash2 size={16} />
                 </button>

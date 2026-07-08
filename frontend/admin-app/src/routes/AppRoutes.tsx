@@ -38,11 +38,15 @@ export const AppRoutes: React.FC = () => {
         />
         <Route
           path="/restaurants"
-          element={userEmail ? <RestaurantsManagement /> : <Navigate to="/login" />}
+          element={
+            userEmail ? <RestaurantsManagement /> : <Navigate to="/login" />
+          }
         />
         <Route
           path="/customers"
-          element={userEmail ? <CustomersManagement /> : <Navigate to="/login" />}
+          element={
+            userEmail ? <CustomersManagement /> : <Navigate to="/login" />
+          }
         />
         <Route
           path="/drivers"

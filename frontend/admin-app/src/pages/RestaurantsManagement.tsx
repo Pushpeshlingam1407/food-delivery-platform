@@ -21,11 +21,26 @@ interface Restaurant {
 }
 
 const PRESET_IMAGES = [
-  { name: "Fast Food Store", url: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&auto=format&fit=crop" },
-  { name: "Pizza Kitchen", url: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop" },
-  { name: "Desserts & Bakery", url: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600&auto=format&fit=crop" },
-  { name: "Healthy Salads", url: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop" },
-  { name: "Coffee Shop", url: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&auto=format&fit=crop" }
+  {
+    name: "Fast Food Store",
+    url: "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&auto=format&fit=crop",
+  },
+  {
+    name: "Pizza Kitchen",
+    url: "https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop",
+  },
+  {
+    name: "Desserts & Bakery",
+    url: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=600&auto=format&fit=crop",
+  },
+  {
+    name: "Healthy Salads",
+    url: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&auto=format&fit=crop",
+  },
+  {
+    name: "Coffee Shop",
+    url: "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?w=600&auto=format&fit=crop",
+  },
 ];
 
 export const RestaurantsManagement: React.FC = () => {
@@ -83,7 +98,7 @@ export const RestaurantsManagement: React.FC = () => {
         commission_rate: parseFloat(commissionRate),
         average_delivery_time: parseInt(deliveryTime, 10),
         opening_time: openingTime,
-        closing_time: closingTime
+        closing_time: closingTime,
       });
 
       if (res.data.status === "success") {
@@ -112,7 +127,7 @@ export const RestaurantsManagement: React.FC = () => {
         closing_time: closingTime,
         is_active: isActive,
         is_verified: isVerified,
-        status
+        status,
       });
 
       if (res.data.status === "success") {
@@ -126,7 +141,8 @@ export const RestaurantsManagement: React.FC = () => {
   };
 
   const handleDeleteRestaurant = async (id: string) => {
-    if (!confirm("Are you sure you want to deactivate/delete this store?")) return;
+    if (!confirm("Are you sure you want to deactivate/delete this store?"))
+      return;
     try {
       const res = await api.delete(`/admin/restaurants/${id}`);
       if (res.data.status === "success") {
@@ -175,7 +191,7 @@ export const RestaurantsManagement: React.FC = () => {
   const toggleVerify = async (store: Restaurant) => {
     try {
       const res = await api.put(`/admin/restaurants/${store.id}/verify`, {
-        is_verified: !store.is_verified
+        is_verified: !store.is_verified,
       });
       if (res.data.status === "success") {
         toast.success("Store verification updated.");
@@ -198,10 +214,15 @@ export const RestaurantsManagement: React.FC = () => {
     <div className="app-shell">
       <div className="panel-row" style={{ marginBottom: "24px" }}>
         <div>
-          <h1 className="section-heading section-heading-lg" style={{ margin: 0 }}>
+          <h1
+            className="section-heading section-heading-lg"
+            style={{ margin: 0 }}
+          >
             Stores Management
           </h1>
-          <p className="text-muted">Create, edit, verify, and suspend merchants on the platform.</p>
+          <p className="text-muted">
+            Create, edit, verify, and suspend merchants on the platform.
+          </p>
         </div>
         <button
           onClick={() => {
@@ -216,13 +237,23 @@ export const RestaurantsManagement: React.FC = () => {
       </div>
 
       {showAddForm && (
-        <div className="panel-card section-spacing" style={{ maxWidth: "700px" }}>
+        <div
+          className="panel-card section-spacing"
+          style={{ maxWidth: "700px" }}
+        >
           <div className="panel-heading">
             <Store size={18} color="var(--accent-violet)" />
-            {editingId ? "Edit Merchant Details" : "Register New Merchant Store"}
+            {editingId
+              ? "Edit Merchant Details"
+              : "Register New Merchant Store"}
           </div>
 
-          <form onSubmit={editingId ? handleUpdateRestaurant : handleCreateRestaurant} className="form-grid">
+          <form
+            onSubmit={
+              editingId ? handleUpdateRestaurant : handleCreateRestaurant
+            }
+            className="form-grid"
+          >
             <div className="form-field">
               <label>Store Name *</label>
               <input
@@ -260,7 +291,10 @@ export const RestaurantsManagement: React.FC = () => {
               </div>
             )}
 
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div
+              className="form-grid"
+              style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}
+            >
               <div className="form-field">
                 <label>Logo Image URL</label>
                 <input
@@ -286,7 +320,14 @@ export const RestaurantsManagement: React.FC = () => {
 
             <div className="form-field">
               <label>Preset Image Selection Library</label>
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap", marginTop: "8px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  flexWrap: "wrap",
+                  marginTop: "8px",
+                }}
+              >
                 {PRESET_IMAGES.map((preset) => (
                   <button
                     key={preset.name}
@@ -302,7 +343,7 @@ export const RestaurantsManagement: React.FC = () => {
                       background: "rgba(255,255,255,0.7)",
                       border: "1px solid var(--glass-border)",
                       fontSize: "0.8rem",
-                      cursor: "pointer"
+                      cursor: "pointer",
                     }}
                   >
                     {preset.name}
@@ -311,7 +352,10 @@ export const RestaurantsManagement: React.FC = () => {
               </div>
             </div>
 
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div
+              className="form-grid"
+              style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}
+            >
               <div className="form-field">
                 <label>Commission Rate (%)</label>
                 <input
@@ -334,7 +378,10 @@ export const RestaurantsManagement: React.FC = () => {
               </div>
             </div>
 
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div
+              className="form-grid"
+              style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}
+            >
               <div className="form-field">
                 <label>Opening Time</label>
                 <input
@@ -359,8 +406,17 @@ export const RestaurantsManagement: React.FC = () => {
             </div>
 
             {editingId && (
-              <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr 1fr", gap: "16px", alignItems: "center" }}>
-                <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <div
+                className="form-grid"
+                style={{
+                  gridTemplateColumns: "1fr 1fr 1fr",
+                  gap: "16px",
+                  alignItems: "center",
+                }}
+              >
+                <label
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
                   <input
                     type="checkbox"
                     checked={isActive}
@@ -369,7 +425,9 @@ export const RestaurantsManagement: React.FC = () => {
                   Is Active
                 </label>
 
-                <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <label
+                  style={{ display: "flex", alignItems: "center", gap: "8px" }}
+                >
                   <input
                     type="checkbox"
                     checked={isVerified}
@@ -390,7 +448,11 @@ export const RestaurantsManagement: React.FC = () => {
               </div>
             )}
 
-            <button type="submit" className="btn-premium button-stretch" style={{ marginTop: "12px" }}>
+            <button
+              type="submit"
+              className="btn-premium button-stretch"
+              style={{ marginTop: "12px" }}
+            >
               {editingId ? "Update Store" : "Register Store"}
             </button>
           </form>
@@ -402,45 +464,94 @@ export const RestaurantsManagement: React.FC = () => {
           <div key={store.id} className="panel-card panel-card-stacked">
             <div>
               {store.banner_image_url && (
-                <div style={{ width: "100%", height: "120px", borderRadius: "8px", overflow: "hidden", marginBottom: "12px" }}>
+                <div
+                  style={{
+                    width: "100%",
+                    height: "120px",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                    marginBottom: "12px",
+                  }}
+                >
                   <img
                     src={store.banner_image_url}
                     alt={store.name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                    }}
                   />
                 </div>
               )}
               <div className="panel-row">
                 <h3 style={{ margin: 0, fontSize: "1.2rem" }}>{store.name}</h3>
-                <span className={`status-pill ${store.is_verified ? "success" : "warning"}`}>
+                <span
+                  className={`status-pill ${store.is_verified ? "success" : "warning"}`}
+                >
                   {store.is_verified ? "Verified" : "Pending Verification"}
                 </span>
               </div>
-              <p className="card-subtitle" style={{ fontSize: "0.85rem", marginTop: "6px" }}>
+              <p
+                className="card-subtitle"
+                style={{ fontSize: "0.85rem", marginTop: "6px" }}
+              >
                 {store.description || "No description provided."}
               </p>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                <div>Owner ID: <strong>{store.owner_id}</strong></div>
-                {store.owner_email && <div>Owner Email: <strong>{store.owner_email}</strong></div>}
-                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                  <Clock size={12} /> Hours: {store.opening_time} - {store.closing_time}
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  fontSize: "0.8rem",
+                  color: "var(--text-muted)",
+                }}
+              >
+                <div>
+                  Owner ID: <strong>{store.owner_id}</strong>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                  <Tag size={12} /> Commission: {store.commission_rate}% | Status: <strong style={{ textTransform: "uppercase" }}>{store.status}</strong>
+                {store.owner_email && (
+                  <div>
+                    Owner Email: <strong>{store.owner_email}</strong>
+                  </div>
+                )}
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "4px" }}
+                >
+                  <Clock size={12} /> Hours: {store.opening_time} -{" "}
+                  {store.closing_time}
+                </div>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "4px" }}
+                >
+                  <Tag size={12} /> Commission: {store.commission_rate}% |
+                  Status:{" "}
+                  <strong style={{ textTransform: "uppercase" }}>
+                    {store.status}
+                  </strong>
                 </div>
               </div>
             </div>
 
-            <div className="panel-row" style={{ marginTop: "20px", borderTop: "1px solid var(--glass-border)", paddingTop: "12px" }}>
+            <div
+              className="panel-row"
+              style={{
+                marginTop: "20px",
+                borderTop: "1px solid var(--glass-border)",
+                paddingTop: "12px",
+              }}
+            >
               <button
                 onClick={() => toggleVerify(store)}
                 className={`btn-premium btn-sm`}
                 style={{
-                  background: store.is_verified ? "var(--text-slate)" : "var(--primary-gradient)",
+                  background: store.is_verified
+                    ? "var(--text-slate)"
+                    : "var(--primary-gradient)",
                   padding: "6px 12px",
                   fontSize: "0.75rem",
-                  boxShadow: "none"
+                  boxShadow: "none",
                 }}
               >
                 {store.is_verified ? "Unverify Store" : "Verify Store"}
@@ -449,13 +560,23 @@ export const RestaurantsManagement: React.FC = () => {
               <div style={{ display: "flex", gap: "10px" }}>
                 <button
                   onClick={() => startEdit(store)}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-slate)" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "var(--text-slate)",
+                  }}
                 >
                   <Edit2 size={16} />
                 </button>
                 <button
                   onClick={() => handleDeleteRestaurant(store.id)}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "#F44336" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#F44336",
+                  }}
                 >
                   <Trash2 size={16} />
                 </button>

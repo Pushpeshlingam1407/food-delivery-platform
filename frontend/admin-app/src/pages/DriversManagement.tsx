@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Users, Edit2, Trash2, ShieldAlert, Award, Plus, Check } from "lucide-react";
+import {
+  Users,
+  Edit2,
+  Trash2,
+  ShieldAlert,
+  Award,
+  Plus,
+  Check,
+} from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 
@@ -28,13 +36,19 @@ export const DriversManagement: React.FC = () => {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
-  const [status, setStatus] = useState<"active" | "inactive" | "suspended">("active");
+  const [status, setStatus] = useState<"active" | "inactive" | "suspended">(
+    "active",
+  );
   const [isVerified, setIsVerified] = useState(true);
   const [vehicleNumber, setVehicleNumber] = useState("");
-  const [vehicleType, setVehicleType] = useState<"bicycle" | "bike" | "scooter" | "car">("bike");
+  const [vehicleType, setVehicleType] = useState<
+    "bicycle" | "bike" | "scooter" | "car"
+  >("bike");
   const [licenseNumber, setLicenseNumber] = useState("");
   const [isOnline, setIsOnline] = useState(false);
-  const [driverStatus, setDriverStatus] = useState<"idle" | "assigned" | "delivering">("idle");
+  const [driverStatus, setDriverStatus] = useState<
+    "idle" | "assigned" | "delivering"
+  >("idle");
 
   const [showEditForm, setShowEditForm] = useState(false);
 
@@ -71,7 +85,7 @@ export const DriversManagement: React.FC = () => {
         vehicle_type: vehicleType,
         license_number: licenseNumber,
         is_online: isOnline,
-        driver_status: driverStatus
+        driver_status: driverStatus,
       });
 
       if (res.data.status === "success") {
@@ -80,12 +94,15 @@ export const DriversManagement: React.FC = () => {
         fetchDrivers();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to update driver details.");
+      toast.error(
+        err.response?.data?.message || "Failed to update driver details.",
+      );
     }
   };
 
   const handleDeleteDriver = async (id: string) => {
-    if (!confirm("Are you sure you want to block/remove this driver partner?")) return;
+    if (!confirm("Are you sure you want to block/remove this driver partner?"))
+      return;
     try {
       const res = await api.delete(`/admin/drivers/${id}`);
       if (res.data.status === "success") {
@@ -132,7 +149,7 @@ export const DriversManagement: React.FC = () => {
   const toggleVerify = async (d: Driver) => {
     try {
       const res = await api.put(`/admin/drivers/${d.id}`, {
-        is_verified: !d.is_verified
+        is_verified: !d.is_verified,
       });
       if (res.data.status === "success") {
         toast.success("Driver verification updated.");
@@ -154,20 +171,33 @@ export const DriversManagement: React.FC = () => {
   return (
     <div className="app-shell">
       <div className="section-spacing">
-        <h1 className="section-heading section-heading-lg" style={{ margin: 0 }}>
+        <h1
+          className="section-heading section-heading-lg"
+          style={{ margin: 0 }}
+        >
           Drivers Management
         </h1>
-        <p className="text-muted">Audit delivery partners, vehicle licenses, and verify active dispatch riders.</p>
+        <p className="text-muted">
+          Audit delivery partners, vehicle licenses, and verify active dispatch
+          riders.
+        </p>
       </div>
 
       {showEditForm && (
-        <div className="panel-card section-spacing" style={{ maxWidth: "600px" }}>
+        <div
+          className="panel-card section-spacing"
+          style={{ maxWidth: "600px" }}
+        >
           <div className="panel-heading">
-            <Edit2 size={18} color="var(--accent-orange)" /> Edit Driver Partner details
+            <Edit2 size={18} color="var(--accent-orange)" /> Edit Driver Partner
+            details
           </div>
 
           <form onSubmit={handleUpdateDriver} className="form-grid">
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div
+              className="form-grid"
+              style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}
+            >
               <div className="form-field">
                 <label>First Name</label>
                 <input
@@ -213,7 +243,10 @@ export const DriversManagement: React.FC = () => {
               />
             </div>
 
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div
+              className="form-grid"
+              style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}
+            >
               <div className="form-field">
                 <label>Vehicle Number</label>
                 <input
@@ -251,7 +284,14 @@ export const DriversManagement: React.FC = () => {
               />
             </div>
 
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px", alignItems: "center" }}>
+            <div
+              className="form-grid"
+              style={{
+                gridTemplateColumns: "1fr 1fr",
+                gap: "16px",
+                alignItems: "center",
+              }}
+            >
               <div className="form-field">
                 <label>Account Status</label>
                 <select
@@ -279,8 +319,17 @@ export const DriversManagement: React.FC = () => {
               </div>
             </div>
 
-            <div className="form-grid" style={{ gridTemplateColumns: "1fr 1fr", gap: "16px", marginTop: "12px" }}>
-              <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <div
+              className="form-grid"
+              style={{
+                gridTemplateColumns: "1fr 1fr",
+                gap: "16px",
+                marginTop: "12px",
+              }}
+            >
+              <label
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <input
                   type="checkbox"
                   checked={isVerified}
@@ -289,7 +338,9 @@ export const DriversManagement: React.FC = () => {
                 Driver Verified
               </label>
 
-              <label style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <label
+                style={{ display: "flex", alignItems: "center", gap: "8px" }}
+              >
                 <input
                   type="checkbox"
                   checked={isOnline}
@@ -324,36 +375,79 @@ export const DriversManagement: React.FC = () => {
                 <h3 style={{ margin: 0 }}>
                   {d.first_name} {d.last_name}
                 </h3>
-                <span className={`status-pill ${d.is_verified ? "success" : "warning"}`}>
+                <span
+                  className={`status-pill ${d.is_verified ? "success" : "warning"}`}
+                >
                   {d.is_verified ? "Verified" : "Pending Verification"}
                 </span>
               </div>
 
-              <p className="card-subtitle" style={{ fontSize: "0.85rem", marginTop: "4px" }}>
+              <p
+                className="card-subtitle"
+                style={{ fontSize: "0.85rem", marginTop: "4px" }}
+              >
                 {d.email} | {d.phone}
               </p>
 
-              <div style={{ display: "flex", flexDirection: "column", gap: "6px", fontSize: "0.8rem", color: "var(--text-muted)", marginTop: "16px" }}>
-                <div>Vehicle: <strong style={{ textTransform: "uppercase" }}>{d.vehicle_type}</strong> ({d.vehicle_number || "No Vehicle Number"})</div>
-                <div>License Number: <strong>{d.license_number || "No License"}</strong></div>
-                <div>Duty Status: <strong style={{ textTransform: "uppercase" }}>{d.driver_status}</strong></div>
-                <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-                  Status: <span className={`status-pill ${d.is_online ? "success" : "neutral"}`} style={{ padding: "2px 8px", fontSize: "0.7rem" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "6px",
+                  fontSize: "0.8rem",
+                  color: "var(--text-muted)",
+                  marginTop: "16px",
+                }}
+              >
+                <div>
+                  Vehicle:{" "}
+                  <strong style={{ textTransform: "uppercase" }}>
+                    {d.vehicle_type}
+                  </strong>{" "}
+                  ({d.vehicle_number || "No Vehicle Number"})
+                </div>
+                <div>
+                  License Number:{" "}
+                  <strong>{d.license_number || "No License"}</strong>
+                </div>
+                <div>
+                  Duty Status:{" "}
+                  <strong style={{ textTransform: "uppercase" }}>
+                    {d.driver_status}
+                  </strong>
+                </div>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "6px" }}
+                >
+                  Status:{" "}
+                  <span
+                    className={`status-pill ${d.is_online ? "success" : "neutral"}`}
+                    style={{ padding: "2px 8px", fontSize: "0.7rem" }}
+                  >
                     {d.is_online ? "ONLINE" : "OFFLINE"}
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="panel-row" style={{ marginTop: "20px", borderTop: "1px solid var(--glass-border)", paddingTop: "12px" }}>
+            <div
+              className="panel-row"
+              style={{
+                marginTop: "20px",
+                borderTop: "1px solid var(--glass-border)",
+                paddingTop: "12px",
+              }}
+            >
               <button
                 onClick={() => toggleVerify(d)}
                 className="btn-premium btn-sm"
                 style={{
-                  background: d.is_verified ? "var(--text-slate)" : "var(--primary-gradient)",
+                  background: d.is_verified
+                    ? "var(--text-slate)"
+                    : "var(--primary-gradient)",
                   padding: "6px 12px",
                   fontSize: "0.75rem",
-                  boxShadow: "none"
+                  boxShadow: "none",
                 }}
               >
                 {d.is_verified ? "De-authorize" : "Verify Rider"}
@@ -362,13 +456,23 @@ export const DriversManagement: React.FC = () => {
               <div style={{ display: "flex", gap: "12px" }}>
                 <button
                   onClick={() => startEdit(d)}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "var(--text-slate)" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "var(--text-slate)",
+                  }}
                 >
                   <Edit2 size={16} />
                 </button>
                 <button
                   onClick={() => handleDeleteDriver(d.id)}
-                  style={{ background: "none", border: "none", cursor: "pointer", color: "#F44336" }}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    color: "#F44336",
+                  }}
                 >
                   <Trash2 size={16} />
                 </button>
