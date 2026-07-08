@@ -48,7 +48,7 @@ export const Dashboard: React.FC = () => {
     "percentage",
   );
   const [discountValue, setDiscountValue] = useState("");
-  const [minOrder, setMinOrder] = useState("0");
+  const [minOrder, setMinOrder] = useState("");
   const [couponLoading, setCouponLoading] = useState(false);
 
   const fetchDashboardData = async () => {
@@ -110,7 +110,7 @@ export const Dashboard: React.FC = () => {
         code,
         discount_type: discountType,
         discount_value: parseFloat(discountValue),
-        min_order_amount: parseFloat(minOrder),
+        min_order_amount: parseFloat(minOrder || "0"),
         start_date: new Date().toISOString().slice(0, 10),
         end_date: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000)
           .toISOString()
@@ -121,7 +121,7 @@ export const Dashboard: React.FC = () => {
         toast.success("Promo coupon created successfully!");
         setCode("");
         setDiscountValue("");
-        setMinOrder("0");
+        setMinOrder("");
         fetchDashboardData();
       }
     } catch (err: any) {
