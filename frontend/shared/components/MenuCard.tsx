@@ -10,6 +10,7 @@ interface MenuItem {
   image_url?: string;
   rating?: number;
   review_count?: number;
+  is_available?: boolean | number;
   available_quantity?: number;
   unlimited?: boolean | number;
 }
@@ -30,9 +31,10 @@ export const MenuCard: React.FC<MenuCardProps> = ({
   const isVeg = !!item.is_veg;
   const formattedPrice = `$${parseFloat(item.price.toString()).toFixed(2)}`;
   const isOutOfStock =
-    !item.unlimited &&
-    item.available_quantity !== undefined &&
-    item.available_quantity <= 0;
+    (item.is_available !== undefined && !item.is_available) ||
+    (!item.unlimited &&
+      item.available_quantity !== undefined &&
+      item.available_quantity <= 0);
 
   return (
     <div

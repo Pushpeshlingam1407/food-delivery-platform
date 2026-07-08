@@ -13,6 +13,9 @@ interface MenuItem {
   image_url: string;
   is_veg: boolean;
   category_id: string;
+  is_available?: boolean | number;
+  available_quantity?: number;
+  unlimited?: boolean | number;
 }
 
 interface Restaurant {

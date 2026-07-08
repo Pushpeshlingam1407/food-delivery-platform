@@ -118,10 +118,16 @@ export async function placeOrder(req, res) {
         }
         const inv = invRows[0];
         if (!inv.unlimited && inv.available_quantity < item.quantity) {
+          await connection.rollback();
           connection.release();
+          const [menuRows] = await pool.query(
+            "SELECT name FROM menus WHERE id = ?",
+            [item.menu_id],
+          );
+          const itemName = menuRows.length > 0 ? menuRows[0].name : "Item";
           return res.status(409).json({
             status: "error",
-            message: `Item stock exhausted. Not enough quantity available for order.`,
+            message: `'${itemName}' is out of stock. Please remove or decrease its quantity in your cart.`,
           });
         }
 
