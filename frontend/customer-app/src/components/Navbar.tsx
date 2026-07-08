@@ -71,7 +71,7 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Address Selector (Apple-style pill) */}
         <div
-          className="navbar-desktop-only"
+          className="navbar-row navbar-desktop-only"
           style={{
             display: "flex",
             alignItems: "center",
@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Action items */}
-        <div style={{ display: "flex", alignItems: "center", gap: "24px" }}>
+        <div className="navbar-action-group" style={{ display: "flex", alignItems: "center", gap: "24px" }}>
           {walletBalance !== null && (
             <div style={{ position: "relative" }}>
               <div
@@ -329,29 +329,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer (3-lines Sidebar) */}
       {menuOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "280px",
-            height: "100vh",
-            background: "#FFF",
-            boxShadow: "var(--glass-shadow)",
-            zIndex: 1000,
-            padding: "32px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+        <button
+          type="button"
+          aria-label="Close navigation drawer"
+          className="drawer-backdrop"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+
+      {menuOpen && (
+        <div className="mobile-drawer mobile-drawer--left">
+          <div className="drawer-header">
             <span
               style={{
                 fontFamily: "var(--font-cohere)",
@@ -363,7 +351,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </span>
             <button
               onClick={() => setMenuOpen(false)}
-              style={{ background: "none", border: "none", cursor: "pointer" }}
+              className="drawer-close-button"
             >
               <X size={20} />
             </button>

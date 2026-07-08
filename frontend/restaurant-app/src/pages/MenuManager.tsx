@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   Plus,
   Trash2,
-  ShieldAlert,
   Edit2,
-  Package,
-  Eye,
   Globe,
   FileImage,
 } from "lucide-react";
@@ -213,12 +210,13 @@ export const MenuManager: React.FC = () => {
   };
 
   return (
-    <div style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div className="app-shell menu-manager-page" style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
       <h1 style={{ fontSize: "2.5rem", marginBottom: "32px" }}>
         Menu Catalog Manager
       </h1>
 
       <div
+        className="responsive-split menu-manager-layout"
         style={{
           display: "grid",
           gridTemplateColumns: "1fr 340px",
@@ -226,7 +224,7 @@ export const MenuManager: React.FC = () => {
         }}
       >
         {/* Dishes list */}
-        <div>
+        <div className="menu-manager-list">
           <h2 style={{ fontSize: "1.8rem", marginBottom: "24px" }}>
             Dishes List
           </h2>
@@ -238,6 +236,7 @@ export const MenuManager: React.FC = () => {
               return (
                 <div
                   key={item.id}
+                  className="menu-manager-item"
                   style={{
                     background: "#FFF",
                     border: "1px solid var(--glass-border)",
@@ -269,7 +268,7 @@ export const MenuManager: React.FC = () => {
                         }}
                       />
                     )}
-                    <div>
+                    <div className="menu-manager-item-meta">
                       <div
                         style={{
                           display: "flex",
@@ -350,6 +349,7 @@ export const MenuManager: React.FC = () => {
                   </div>
 
                   <div
+                    className="menu-manager-item-actions"
                     style={{
                       display: "flex",
                       alignItems: "center",
@@ -421,9 +421,10 @@ export const MenuManager: React.FC = () => {
         </div>
 
         {/* Creation panels */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        <div className="menu-manager-sidebar" style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
           {/* Category CRUD Form */}
           <div
+            className="menu-manager-form-panel"
             style={{
               background: "var(--glass-bg)",
               border: "1px solid var(--glass-border)",
@@ -445,6 +446,7 @@ export const MenuManager: React.FC = () => {
             </h3>
             <form
               onSubmit={handleAddCategory}
+              className="menu-manager-inline-form"
               style={{ display: "flex", gap: "8px", marginTop: "12px" }}
             >
               <input
@@ -478,6 +480,7 @@ export const MenuManager: React.FC = () => {
 
           {/* Dish CRUD Form */}
           <div
+            className="menu-manager-form-panel"
             style={{
               background: "var(--glass-bg)",
               border: "1px solid var(--glass-border)",
@@ -499,6 +502,7 @@ export const MenuManager: React.FC = () => {
             </h3>
             <form
               onSubmit={handleSaveMenuItem}
+              className="menu-manager-inline-form"
               style={{
                 display: "flex",
                 flexDirection: "column",

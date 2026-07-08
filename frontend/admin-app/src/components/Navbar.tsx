@@ -16,7 +16,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <>
       <nav className="navbar-container">
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        <div className="navbar-row" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           {/* Hamburger toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
@@ -66,10 +66,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </span>
         </div>
 
-        <div
-          className="navbar-desktop-only"
-          style={{ alignItems: "center", gap: "32px" }}
-        >
+        <div className="navbar-action-group navbar-desktop-only" style={{ alignItems: "center", gap: "32px" }}>
           <Link
             to="/"
             style={{
@@ -203,29 +200,17 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer (3-lines Sidebar) */}
       {menuOpen && (
-        <div
-          style={{
-            position: "fixed",
-            top: 0,
-            left: 0,
-            width: "280px",
-            height: "100vh",
-            background: "#FFF",
-            boxShadow: "var(--glass-shadow)",
-            zIndex: 1000,
-            padding: "32px",
-            display: "flex",
-            flexDirection: "column",
-            gap: "24px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-          >
+        <button
+          type="button"
+          aria-label="Close admin navigation drawer"
+          className="drawer-backdrop"
+          onClick={() => setMenuOpen(false)}
+        />
+      )}
+
+      {menuOpen && (
+        <div className="mobile-drawer mobile-drawer--left">
+          <div className="drawer-header">
             <span
               style={{
                 fontFamily: "var(--font-cohere)",
@@ -237,7 +222,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             </span>
             <button
               onClick={() => setMenuOpen(false)}
-              style={{ background: "none", border: "none", cursor: "pointer" }}
+              className="drawer-close-button"
             >
               <X size={20} />
             </button>
