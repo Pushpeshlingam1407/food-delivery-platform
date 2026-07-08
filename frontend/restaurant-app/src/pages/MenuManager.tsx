@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Plus, Trash2, ShieldAlert } from "lucide-react";
+import { Plus, Trash2, ShieldAlert, Edit2, Package, Eye } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 
@@ -11,6 +11,9 @@ interface MenuItem {
   is_veg: boolean;
   is_available: boolean;
   category_id: string;
+  available_quantity: number | null;
+  unlimited: boolean;
+  image_url: string | null;
 }
 
 interface Category {
@@ -26,41 +29,45 @@ export const MenuManager: React.FC = () => {
   // New Category States
   const [newCatName, setNewCatName] = useState("");
 
-  // New MenuItem States
+  // Menu Item States
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [newItemName, setNewItemName] = useState("");
   const [newItemDesc, setNewItemDesc] = useState("");
   const [newItemPrice, setNewItemPrice] = useState("");
   const [newItemCategoryId, setNewItemCategoryId] = useState("");
   const [newItemIsVeg, setNewItemIsVeg] = useState(true);
+  const [newItemImageUrl, setNewItemImageUrl] = useState("");
+  const [newItemStock, setNewItemStock] = useState("50");
+  const [newItemUnlimited, setNewItemUnlimited] = useState(true);
+
+  const fetchMenuAndCategories = async () => {
+    try {
+      const meRes = await api.get("/auth/me");
+      const myRestaurant = meRes.data.data?.restaurant;
+
+      if (myRestaurant) {
+        setRestaurantId(myRestaurant.id);
+
+        const catRes = await api.get(
+          `/restaurants/${myRestaurant.id}/categories`,
+        );
+        if (catRes.data.status === "success") {
+          setCategories(catRes.data.data || []);
+        }
+
+        const menuRes = await api.get(
+          `/restaurants/${myRestaurant.id}/items`,
+        );
+        if (menuRes.data.status === "success") {
+          setMenuItems(menuRes.data.data || []);
+        }
+      }
+    } catch (err) {
+      console.error("Fetch menu list failed:", err);
+    }
+  };
 
   useEffect(() => {
-    const fetchMenuAndCategories = async () => {
-      try {
-        const meRes = await api.get("/auth/me");
-        const myRestaurant = meRes.data.data?.restaurant;
-
-        if (myRestaurant) {
-          setRestaurantId(myRestaurant.id);
-
-          const catRes = await api.get(
-            `/restaurants/${myRestaurant.id}/categories`,
-          );
-          if (catRes.data.status === "success") {
-            setCategories(catRes.data.data || []);
-          }
-
-          const menuRes = await api.get(
-            `/restaurants/${myRestaurant.id}/items`,
-          );
-          if (menuRes.data.status === "success") {
-            setMenuItems(menuRes.data.data);
-          }
-        }
-      } catch (err) {
-        console.error("Fetch menu list failed:", err);
-      }
-    };
-
     fetchMenuAndCategories();
   }, []);
 
@@ -85,7 +92,7 @@ export const MenuManager: React.FC = () => {
     }
   };
 
-  const handleAddMenuItem = async (e: React.FormEvent) => {
+  const handleSaveMenuItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newItemName || !newItemPrice || !newItemCategoryId || !restaurantId) {
       toast.error("All fields are required.");
@@ -93,29 +100,75 @@ export const MenuManager: React.FC = () => {
     }
 
     try {
-      const response = await api.post("/restaurants/items", {
-        restaurant_id: restaurantId,
-        category_id: newItemCategoryId,
-        name: newItemName,
-        description: newItemDesc,
-        price: parseFloat(newItemPrice),
-        is_veg: newItemIsVeg,
-      });
+      if (editingId) {
+        // Edit Mode
+        const response = await api.put(`/restaurants/items/${editingId}`, {
+          name: newItemName,
+          description: newItemDesc,
+          price: parseFloat(newItemPrice),
+          category_id: newItemCategoryId,
+          is_veg: newItemIsVeg,
+          image_url: newItemImageUrl,
+        });
 
-      if (response.data.status === "success") {
-        const newItem = response.data.data;
-        setMenuItems((prev) => [...prev, newItem]);
+        // Update inventory
+        await api.put(`/restaurants/items/${editingId}/inventory`, {
+          available_quantity: parseInt(newItemStock, 10) || 0,
+          unlimited: newItemUnlimited,
+        });
 
-        // Reset states
-        setNewItemName("");
-        setNewItemDesc("");
-        setNewItemPrice("");
-        setNewItemCategoryId("");
-        toast.success("Menu item added successfully!");
+        if (response.data.status === "success") {
+          toast.success("Dish updated successfully!");
+          resetForm();
+          fetchMenuAndCategories();
+        }
+      } else {
+        // Add Mode
+        const response = await api.post("/restaurants/items", {
+          restaurant_id: restaurantId,
+          category_id: newItemCategoryId,
+          name: newItemName,
+          description: newItemDesc,
+          price: parseFloat(newItemPrice),
+          is_veg: newItemIsVeg,
+          image_url: newItemImageUrl,
+          available_quantity: parseInt(newItemStock, 10) || 0,
+          unlimited: newItemUnlimited,
+        });
+
+        if (response.data.status === "success") {
+          toast.success("Menu item added successfully!");
+          resetForm();
+          fetchMenuAndCategories();
+        }
       }
     } catch (err) {
-      toast.error("Failed to create menu item.");
+      toast.error("Failed to save menu item.");
     }
+  };
+
+  const startEdit = (item: MenuItem) => {
+    setEditingId(item.id);
+    setNewItemName(item.name);
+    setNewItemDesc(item.description || "");
+    setNewItemPrice(item.price.toString());
+    setNewItemCategoryId(item.category_id);
+    setNewItemIsVeg(item.is_veg);
+    setNewItemImageUrl(item.image_url || "");
+    setNewItemStock((item.available_quantity ?? 0).toString());
+    setNewItemUnlimited(item.unlimited);
+  };
+
+  const resetForm = () => {
+    setEditingId(null);
+    setNewItemName("");
+    setNewItemDesc("");
+    setNewItemPrice("");
+    setNewItemCategoryId("");
+    setNewItemIsVeg(true);
+    setNewItemImageUrl("");
+    setNewItemStock("50");
+    setNewItemUnlimited(true);
   };
 
   const toggleItemAvailability = async (
@@ -132,7 +185,7 @@ export const MenuManager: React.FC = () => {
             item.id === itemId ? { ...item, is_available: !currentVal } : item,
           ),
         );
-        toast.success("Disponibility status updated.");
+        toast.success("Availability status updated.");
       }
     } catch (err) {
       toast.error("Failed to toggle availability.");
@@ -140,6 +193,7 @@ export const MenuManager: React.FC = () => {
   };
 
   const handleDeleteItem = async (itemId: string) => {
+    if (!confirm("Are you sure you want to delete this dish?")) return;
     try {
       const response = await api.delete(`/restaurants/items/${itemId}`);
       if (response.data.status === "success") {
@@ -181,64 +235,91 @@ export const MenuManager: React.FC = () => {
                     background: "#FFF",
                     border: "1px solid var(--glass-border)",
                     borderRadius: "var(--radius-standard)",
-                    padding: "24px",
+                    padding: "20px 24px",
                     boxShadow: "var(--glass-shadow)",
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                   }}
                 >
-                  <div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "12px",
-                        marginBottom: "8px",
-                      }}
-                    >
-                      <span
+                  <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+                    {item.image_url && (
+                      <img
+                        src={item.image_url}
+                        alt={item.name}
                         style={{
-                          border: `1px solid ${item.is_veg ? "#4CAF50" : "#F44336"}`,
-                          padding: "2px 6px",
-                          fontSize: "0.65rem",
-                          fontWeight: 800,
-                          color: item.is_veg ? "#4CAF50" : "#F44336",
+                          width: "70px",
+                          height: "70px",
+                          borderRadius: "8px",
+                          objectFit: "cover",
+                          border: "1px solid var(--glass-border)",
+                        }}
+                      />
+                    )}
+                    <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "12px",
+                          marginBottom: "8px",
                         }}
                       >
-                        {item.is_veg ? "VEG 🌱" : "NON-VEG 🍖"}
-                      </span>
-                      <h4
+                        <span
+                          style={{
+                            border: `1px solid ${item.is_veg ? "#4CAF50" : "#F44336"}`,
+                            padding: "2px 6px",
+                            fontSize: "0.65rem",
+                            fontWeight: 800,
+                            color: item.is_veg ? "#4CAF50" : "#F44336",
+                          }}
+                        >
+                          {item.is_veg ? "VEG 🌱" : "NON-VEG 🍖"}
+                        </span>
+                        <h4
+                          style={{
+                            fontFamily: "var(--font-cohere)",
+                            fontSize: "1.15rem",
+                            margin: 0,
+                          }}
+                        >
+                          {item.name}
+                        </h4>
+                        <span
+                          style={{
+                            fontSize: "0.85rem",
+                            color: "var(--text-muted)",
+                          }}
+                        >
+                          ({cat?.name || "Unassigned"})
+                        </span>
+                      </div>
+                      <p
                         style={{
-                          fontFamily: "var(--font-cohere)",
-                          fontSize: "1.15rem",
-                        }}
-                      >
-                        {item.name}
-                      </h4>
-                      <span
-                        style={{
-                          fontSize: "0.85rem",
                           color: "var(--text-muted)",
+                          fontSize: "0.9rem",
+                          margin: "0 0 8px 0",
                         }}
                       >
-                        ({cat?.name || "Unassigned"})
-                      </span>
+                        {item.description || "No description provided."}
+                      </p>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <strong style={{ fontSize: "1.1rem", color: "var(--text-slate)" }}>
+                          ${parseFloat(item.price.toString()).toFixed(2)}
+                        </strong>
+                        <span
+                          style={{
+                            fontSize: "0.8rem",
+                            color: "var(--text-muted)",
+                            background: "rgba(0,0,0,0.05)",
+                            padding: "2px 8px",
+                            borderRadius: "4px",
+                          }}
+                        >
+                          Stock: {item.unlimited ? "Unlimited" : item.available_quantity}
+                        </span>
+                      </div>
                     </div>
-                    <p
-                      style={{
-                        color: "var(--text-muted)",
-                        fontSize: "0.9rem",
-                        marginBottom: "12px",
-                      }}
-                    >
-                      {item.description}
-                    </p>
-                    <strong
-                      style={{ fontSize: "1.1rem", color: "var(--text-slate)" }}
-                    >
-                      ${parseFloat(item.price.toString()).toFixed(2)}
-                    </strong>
                   </div>
 
                   <div
@@ -268,6 +349,18 @@ export const MenuManager: React.FC = () => {
                         Available
                       </span>
                     </label>
+
+                    <button
+                      onClick={() => startEdit(item)}
+                      style={{
+                        background: "none",
+                        border: "none",
+                        cursor: "pointer",
+                        color: "var(--text-slate)",
+                      }}
+                    >
+                      <Edit2 size={18} />
+                    </button>
 
                     <button
                       onClick={() => handleDeleteItem(item.id)}
@@ -318,13 +411,14 @@ export const MenuManager: React.FC = () => {
                 fontFamily: "var(--font-cohere)",
                 fontSize: "1.1rem",
                 marginBottom: "16px",
+                margin: 0,
               }}
             >
               Add Category
             </h3>
             <form
               onSubmit={handleAddCategory}
-              style={{ display: "flex", gap: "8px" }}
+              style={{ display: "flex", gap: "8px", marginTop: "12px" }}
             >
               <input
                 type="text"
@@ -371,13 +465,14 @@ export const MenuManager: React.FC = () => {
                 fontFamily: "var(--font-cohere)",
                 fontSize: "1.1rem",
                 marginBottom: "16px",
+                margin: 0,
               }}
             >
-              Add New Dish
+              {editingId ? "Edit Dish Properties" : "Add New Dish"}
             </h3>
             <form
-              onSubmit={handleAddMenuItem}
-              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+              onSubmit={handleSaveMenuItem}
+              style={{ display: "flex", flexDirection: "column", gap: "16px", marginTop: "12px" }}
             >
               <div
                 style={{ display: "flex", flexDirection: "column", gap: "6px" }}
@@ -443,6 +538,25 @@ export const MenuManager: React.FC = () => {
                 style={{ display: "flex", flexDirection: "column", gap: "6px" }}
               >
                 <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
+                  Image URL Link
+                </label>
+                <input
+                  type="text"
+                  value={newItemImageUrl}
+                  onChange={(e) => setNewItemImageUrl(e.target.value)}
+                  placeholder="https://example.com/dish.jpg"
+                  style={{
+                    padding: "8px 12px",
+                    borderRadius: "6px",
+                    border: "1px solid var(--glass-border)",
+                  }}
+                />
+              </div>
+
+              <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
                   Category
                 </label>
                 <select
@@ -466,6 +580,37 @@ export const MenuManager: React.FC = () => {
               </div>
 
               <div
+                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
+              >
+                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
+                  Inventory Stock Level
+                </label>
+                <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
+                  <input
+                    type="number"
+                    value={newItemStock}
+                    onChange={(e) => setNewItemStock(e.target.value)}
+                    disabled={newItemUnlimited}
+                    placeholder="50"
+                    style={{
+                      padding: "8px 12px",
+                      borderRadius: "6px",
+                      border: "1px solid var(--glass-border)",
+                      width: "80px",
+                    }}
+                  />
+                  <label style={{ display: "flex", alignItems: "center", gap: "4px", cursor: "pointer", fontSize: "0.85rem" }}>
+                    <input
+                      type="checkbox"
+                      checked={newItemUnlimited}
+                      onChange={(e) => setNewItemUnlimited(e.target.checked)}
+                    />
+                    Unlimited
+                  </label>
+                </div>
+              </div>
+
+              <div
                 style={{ display: "flex", alignItems: "center", gap: "12px" }}
               >
                 <input
@@ -483,13 +628,25 @@ export const MenuManager: React.FC = () => {
                 </label>
               </div>
 
-              <button
-                type="submit"
-                className="btn-premium"
-                style={{ width: "100%", padding: "12px" }}
-              >
-                Create Dish
-              </button>
+              <div style={{ display: "flex", gap: "10px" }}>
+                <button
+                  type="submit"
+                  className="btn-premium"
+                  style={{ flex: 1, padding: "12px" }}
+                >
+                  {editingId ? "Update Dish" : "Create Dish"}
+                </button>
+                {editingId && (
+                  <button
+                    type="button"
+                    onClick={resetForm}
+                    className="btn-premium"
+                    style={{ background: "var(--text-slate)", flex: 1, padding: "12px" }}
+                  >
+                    Cancel
+                  </button>
+                )}
+              </div>
             </form>
           </div>
         </div>

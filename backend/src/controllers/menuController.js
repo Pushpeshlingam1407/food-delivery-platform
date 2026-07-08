@@ -305,7 +305,7 @@ export async function updateMenuItem(req, res) {
   }
 
   const { id } = req.params;
-  const { name, description, price, is_veg, is_available, preparation_time } =
+  const { name, description, price, is_veg, is_available, preparation_time, image_url } =
     req.body;
 
   try {
@@ -337,7 +337,7 @@ export async function updateMenuItem(req, res) {
       updates.push("name = ?");
       params.push(name);
     }
-    if (description) {
+    if (description !== undefined) {
       updates.push("description = ?");
       params.push(description);
     }
@@ -358,17 +358,32 @@ export async function updateMenuItem(req, res) {
       params.push(preparation_time);
     }
 
-    if (updates.length === 0) {
-      return res
-        .status(400)
-        .json({ status: "error", message: "No fields to update" });
+    if (updates.length > 0) {
+      params.push(id);
+      await pool.query(
+        `UPDATE menus SET ${updates.join(", ")} WHERE id = ?`,
+        params,
+      );
     }
 
-    params.push(id);
-    await pool.query(
-      `UPDATE menus SET ${updates.join(", ")} WHERE id = ?`,
-      params,
-    );
+    if (image_url !== undefined) {
+      const [imgRows] = await pool.query(
+        "SELECT id FROM menu_images WHERE menu_id = ? AND is_primary = TRUE",
+        [id]
+      );
+      if (imgRows.length > 0) {
+        await pool.query(
+          "UPDATE menu_images SET image_url = ? WHERE id = ?",
+          [image_url, imgRows[0].id]
+        );
+      } else {
+        const imageId = crypto.randomUUID();
+        await pool.query(
+          "INSERT INTO menu_images (id, menu_id, image_url, is_primary) VALUES (?, ?, ?, TRUE)",
+          [imageId, id, image_url]
+        );
+      }
+    }
 
     return res
       .status(200)
