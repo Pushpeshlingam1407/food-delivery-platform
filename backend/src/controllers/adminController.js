@@ -279,3 +279,367 @@ export async function updateSystemSettings(req, res) {
       .json({ status: "error", message: "Internal server error" });
   }
 }
+
+// -------------------------------------------------------------
+// Admin Restaurant CRUD
+// -------------------------------------------------------------
+
+export async function getRestaurants(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  try {
+    const [rows] = await pool.query(
+      "SELECT r.*, u.first_name, u.last_name, u.email as owner_email FROM restaurants r JOIN users u ON r.owner_id = u.id WHERE r.deleted_at IS NULL",
+    );
+    return res.status(200).json({ status: "success", data: rows });
+  } catch (error) {
+    console.error("Get restaurants error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function createRestaurant(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const {
+    name,
+    description,
+    owner_id,
+    banner_image_url = "",
+    logo_url = "",
+    commission_rate = 10.0,
+    average_delivery_time = 30,
+    opening_time = "08:00:00",
+    closing_time = "22:00:00",
+  } = req.body;
+
+  if (!name || !owner_id) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "Name and owner_id are required" });
+  }
+
+  try {
+    const id = crypto.randomUUID();
+    await pool.query(
+      "INSERT INTO restaurants (id, owner_id, name, description, banner_image_url, logo_url, commission_rate, average_delivery_time, opening_time, closing_time, is_active, is_verified, status) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, TRUE, TRUE, 'closed')",
+      [
+        id,
+        owner_id,
+        name,
+        description,
+        banner_image_url,
+        logo_url,
+        commission_rate,
+        average_delivery_time,
+        opening_time,
+        closing_time,
+      ],
+    );
+    return res
+      .status(201)
+      .json({ status: "success", message: "Restaurant created", data: { id } });
+  } catch (error) {
+    console.error("Create restaurant error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function updateRestaurant(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  const {
+    name,
+    description,
+    banner_image_url,
+    logo_url,
+    commission_rate,
+    average_delivery_time,
+    is_active,
+    is_verified,
+    status,
+    opening_time,
+    closing_time,
+  } = req.body;
+
+  try {
+    await pool.query(
+      "UPDATE restaurants SET name = COALESCE(?, name), description = COALESCE(?, description), banner_image_url = COALESCE(?, banner_image_url), logo_url = COALESCE(?, logo_url), commission_rate = COALESCE(?, commission_rate), average_delivery_time = COALESCE(?, average_delivery_time), is_active = COALESCE(?, is_active), is_verified = COALESCE(?, is_verified), status = COALESCE(?, status), opening_time = COALESCE(?, opening_time), closing_time = COALESCE(?, closing_time) WHERE id = ?",
+      [
+        name,
+        description,
+        banner_image_url,
+        logo_url,
+        commission_rate,
+        average_delivery_time,
+        is_active,
+        is_verified,
+        status,
+        opening_time,
+        closing_time,
+        id,
+      ],
+    );
+    return res
+      .status(200)
+      .json({ status: "success", message: "Restaurant updated" });
+  } catch (error) {
+    console.error("Update restaurant error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function deleteRestaurant(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  try {
+    await pool.query(
+      "UPDATE restaurants SET deleted_at = CURRENT_TIMESTAMP, is_active = FALSE WHERE id = ?",
+      [id],
+    );
+    return res
+      .status(200)
+      .json({ status: "success", message: "Restaurant deactivated" });
+  } catch (error) {
+    console.error("Delete restaurant error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+// -------------------------------------------------------------
+// Admin Customer CRUD
+// -------------------------------------------------------------
+
+export async function getCustomers(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  try {
+    const [rows] = await pool.query(
+      "SELECT u.id, u.first_name, u.last_name, u.email, u.phone, u.status, u.is_verified, u.created_at, COALESCE(w.balance, 0) as wallet_balance FROM users u LEFT JOIN wallets w ON u.id = w.user_id WHERE u.role_id = 2 AND u.deleted_at IS NULL",
+    );
+    return res.status(200).json({ status: "success", data: rows });
+  } catch (error) {
+    console.error("Get customers error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function updateCustomer(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  const {
+    first_name,
+    last_name,
+    email,
+    phone,
+    status,
+    is_verified,
+    wallet_balance,
+  } = req.body;
+
+  try {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+
+      await connection.query(
+        "UPDATE users SET first_name = COALESCE(?, first_name), last_name = COALESCE(?, last_name), email = COALESCE(?, email), phone = COALESCE(?, phone), status = COALESCE(?, status), is_verified = COALESCE(?, is_verified) WHERE id = ?",
+        [first_name, last_name, email, phone, status, is_verified, id],
+      );
+
+      if (wallet_balance !== undefined) {
+        const [wallets] = await connection.query(
+          "SELECT id FROM wallets WHERE user_id = ?",
+          [id],
+        );
+        if (wallets.length > 0) {
+          await connection.query(
+            "UPDATE wallets SET balance = ? WHERE user_id = ?",
+            [parseFloat(wallet_balance), id],
+          );
+        } else {
+          await connection.query(
+            "INSERT INTO wallets (id, user_id, balance) VALUES (?, ?, ?)",
+            [crypto.randomUUID(), id, parseFloat(wallet_balance)],
+          );
+        }
+      }
+
+      await connection.commit();
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
+
+    return res
+      .status(200)
+      .json({ status: "success", message: "Customer updated successfully" });
+  } catch (error) {
+    console.error("Update customer error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function deleteCustomer(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  try {
+    await pool.query(
+      "UPDATE users SET deleted_at = CURRENT_TIMESTAMP, status = 'inactive' WHERE id = ?",
+      [id],
+    );
+    return res
+      .status(200)
+      .json({ status: "success", message: "Customer blocked/deleted" });
+  } catch (error) {
+    console.error("Delete customer error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+// -------------------------------------------------------------
+// Admin Driver CRUD
+// -------------------------------------------------------------
+
+export async function getDrivers(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  try {
+    const [rows] = await pool.query(
+      "SELECT u.id, u.first_name, u.last_name, u.email, u.phone, u.status, u.is_verified, dp.vehicle_number, dp.vehicle_type, dp.license_number, dp.is_online, dp.status as driver_status FROM users u LEFT JOIN delivery_partners dp ON u.id = dp.id WHERE u.role_id = 4 AND u.deleted_at IS NULL",
+    );
+    return res.status(200).json({ status: "success", data: rows });
+  } catch (error) {
+    console.error("Get drivers error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function updateDriver(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  const {
+    first_name,
+    last_name,
+    email,
+    phone,
+    status,
+    is_verified,
+    vehicle_number,
+    vehicle_type,
+    license_number,
+    is_online,
+    driver_status,
+  } = req.body;
+
+  try {
+    const connection = await pool.getConnection();
+    try {
+      await connection.beginTransaction();
+
+      await connection.query(
+        "UPDATE users SET first_name = COALESCE(?, first_name), last_name = COALESCE(?, last_name), email = COALESCE(?, email), phone = COALESCE(?, phone), status = COALESCE(?, status), is_verified = COALESCE(?, is_verified) WHERE id = ?",
+        [first_name, last_name, email, phone, status, is_verified, id],
+      );
+
+      const [partners] = await connection.query(
+        "SELECT id FROM delivery_partners WHERE id = ?",
+        [id],
+      );
+      if (partners.length > 0) {
+        await connection.query(
+          "UPDATE delivery_partners SET vehicle_number = COALESCE(?, vehicle_number), vehicle_type = COALESCE(?, vehicle_type), license_number = COALESCE(?, license_number), is_online = COALESCE(?, is_online), status = COALESCE(?, status) WHERE id = ?",
+          [
+            vehicle_number,
+            vehicle_type,
+            license_number,
+            is_online,
+            driver_status,
+            id,
+          ],
+        );
+      } else {
+        await connection.query(
+          "INSERT INTO delivery_partners (id, vehicle_number, vehicle_type, license_number, is_online, status) VALUES (?, ?, ?, ?, ?, ?)",
+          [
+            id,
+            vehicle_number || "",
+            vehicle_type || "bike",
+            license_number || "",
+            is_online || false,
+            driver_status || "idle",
+          ],
+        );
+      }
+
+      await connection.commit();
+    } catch (err) {
+      await connection.rollback();
+      throw err;
+    } finally {
+      connection.release();
+    }
+
+    return res
+      .status(200)
+      .json({ status: "success", message: "Driver updated successfully" });
+  } catch (error) {
+    console.error("Update driver error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function deleteDriver(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  try {
+    await pool.query(
+      "UPDATE users SET deleted_at = CURRENT_TIMESTAMP, status = 'inactive' WHERE id = ?",
+      [id],
+    );
+    return res
+      .status(200)
+      .json({ status: "success", message: "Driver blocked/deleted" });
+  } catch (error) {
+    console.error("Delete driver error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}

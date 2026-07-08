@@ -83,6 +83,42 @@ export const Navbar: React.FC<NavbarProps> = ({
             Console
           </Link>
           <Link
+            to="/restaurants"
+            style={{
+              textDecoration: "none",
+              color: "var(--text-slate)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              fontFamily: "var(--font-cohere)",
+            }}
+          >
+            Stores
+          </Link>
+          <Link
+            to="/customers"
+            style={{
+              textDecoration: "none",
+              color: "var(--text-slate)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              fontFamily: "var(--font-cohere)",
+            }}
+          >
+            Customers
+          </Link>
+          <Link
+            to="/drivers"
+            style={{
+              textDecoration: "none",
+              color: "var(--text-slate)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              fontFamily: "var(--font-cohere)",
+            }}
+          >
+            Drivers
+          </Link>
+          <Link
             to="/refunds"
             style={{
               textDecoration: "none",

@@ -8,12 +8,38 @@ import {
   deleteCoupon,
   getSystemSettings,
   updateSystemSettings,
+  getRestaurants,
+  createRestaurant,
+  updateRestaurant,
+  deleteRestaurant,
+  getCustomers,
+  updateCustomer,
+  deleteCustomer,
+  getDrivers,
+  updateDriver,
+  deleteDriver,
 } from "../controllers/adminController.js";
 import { authenticateJWT } from "../middlewares/auth.js";
 
 const router = Router();
 
+// Restaurants CRUD
+router.get("/restaurants", authenticateJWT, getRestaurants);
+router.post("/restaurants", authenticateJWT, createRestaurant);
+router.put("/restaurants/:id", authenticateJWT, updateRestaurant);
+router.delete("/restaurants/:id", authenticateJWT, deleteRestaurant);
 router.put("/restaurants/:id/verify", authenticateJWT, verifyRestaurant);
+
+// Customers CRUD
+router.get("/customers", authenticateJWT, getCustomers);
+router.put("/customers/:id", authenticateJWT, updateCustomer);
+router.delete("/customers/:id", authenticateJWT, deleteCustomer);
+
+// Drivers CRUD
+router.get("/drivers", authenticateJWT, getDrivers);
+router.put("/drivers/:id", authenticateJWT, updateDriver);
+router.delete("/drivers/:id", authenticateJWT, deleteDriver);
+
 router.get("/analytics", authenticateJWT, getSystemAnalytics);
 router.post("/coupons", authenticateJWT, createCoupon);
 router.get("/coupons", getCoupons);
