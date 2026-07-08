@@ -6,6 +6,9 @@ import { Dashboard } from "../pages/Dashboard";
 import { Refunds } from "../pages/Refunds";
 import { Settings } from "../pages/Settings";
 import { CMS } from "../pages/CMS";
+import { RestaurantsManagement } from "../pages/RestaurantsManagement";
+import { CustomersManagement } from "../pages/CustomersManagement";
+import { DriversManagement } from "../pages/DriversManagement";
 
 export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
@@ -32,6 +35,18 @@ export const AppRoutes: React.FC = () => {
         <Route
           path="/"
           element={userEmail ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/restaurants"
+          element={userEmail ? <RestaurantsManagement /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/customers"
+          element={userEmail ? <CustomersManagement /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/drivers"
+          element={userEmail ? <DriversManagement /> : <Navigate to="/login" />}
         />
         <Route
           path="/refunds"

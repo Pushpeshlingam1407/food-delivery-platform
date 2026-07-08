@@ -253,6 +253,39 @@ export const Navbar: React.FC<NavbarProps> = ({
               Console Dashboard
             </Link>
             <Link
+              to="/restaurants"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontWeight: 600,
+              }}
+            >
+              Stores Management
+            </Link>
+            <Link
+              to="/customers"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontWeight: 600,
+              }}
+            >
+              Customers Management
+            </Link>
+            <Link
+              to="/drivers"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontWeight: 600,
+              }}
+            >
+              Drivers Management
+            </Link>
+            <Link
               to="/refunds"
               onClick={() => setMenuOpen(false)}
               style={{
