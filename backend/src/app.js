@@ -103,7 +103,7 @@ app.get("/", (req, res) => {
   });
 });
 
-app.get("/health", async (req, res) => {
+const healthHandler = async (req, res) => {
   let dbStatus = "disconnected";
   try {
     const connection = await pool.getConnection();
@@ -121,7 +121,10 @@ app.get("/health", async (req, res) => {
     uptime: process.uptime(),
     timestamp: new Date().toISOString(),
   });
-});
+};
+
+app.get("/health", healthHandler);
+app.get("/api/health", healthHandler);
 
 // Custom 404 fallback handler
 app.use((req, res, next) => {

@@ -6,9 +6,11 @@ import {
   Power,
   DollarSign,
   Navigation,
-  ArrowUpRight,
+  ArrowUpRight as ArrowUpRightIcon,
   Clock,
   FileText,
+  Wallet,
+  ArrowDownLeft,
 } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
@@ -27,6 +29,7 @@ interface Order {
   restaurant_name: string;
   street_address: string;
   city: string;
+  delivery_charges?: string;
 }
 
 export const Dashboard: React.FC = () => {
