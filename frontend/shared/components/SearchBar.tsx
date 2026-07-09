@@ -12,10 +12,12 @@ export const SearchBar: React.FC<SearchBarProps> = ({
   placeholder = "Search...",
   containerStyle,
   style,
+  className,
   ...props
 }) => {
   return (
     <div
+      className={className}
       style={{
         display: "flex",
         alignItems: "center",

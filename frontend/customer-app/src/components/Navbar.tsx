@@ -20,6 +20,7 @@ interface NavbarProps {
   onSearchChange?: (val: string) => void;
   walletBalance?: number | null;
   onDepositClick?: () => void;
+  deliveryAddress?: string;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -31,6 +32,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   onSearchChange,
   walletBalance = null,
   onDepositClick,
+  deliveryAddress = "Bengaluru, IND",
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [walletDropdownOpen, setWalletDropdownOpen] = useState(false);
@@ -79,7 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="navbar-address-pill navbar-desktop-only" style={{ marginLeft: "16px" }}>
               <MapPin size={16} color="var(--accent-orange)" />
               <span style={{ color: "var(--text-slate)" }}>Deliver to:</span>
-              <strong style={{ fontWeight: 600 }}>Bengaluru, IND</strong>
+              <strong style={{ fontWeight: 600 }}>{deliveryAddress}</strong>
             </div>
           </div>
 
@@ -297,7 +299,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
         </div>
 
-        {/* Mobile Address Pill and Search Bar (Visible on Mobile/Tablet only) */}
+        {/* Mobile Address Pill (Visible on Mobile/Tablet only) */}
         <div className="navbar-mobile-only" style={{ flexDirection: "column", gap: "10px", width: "100%" }}>
           {/* Mobile Address Selector */}
           <div
@@ -312,19 +314,8 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             <MapPin size={16} color="var(--accent-orange)" />
             <span style={{ color: "var(--text-slate)", fontSize: "0.85rem" }}>Deliver to:</span>
-            <strong style={{ fontWeight: 600, fontSize: "0.85rem" }}>Bengaluru, IND</strong>
+            <strong style={{ fontWeight: 600, fontSize: "0.85rem" }}>{deliveryAddress}</strong>
           </div>
-
-          {/* Mobile Search Input Bar */}
-          {isHomePage && (
-            <SearchBar
-              placeholder="Search restaurants, cuisines..."
-              value={searchQuery}
-              onSearchChange={onSearchChange}
-              containerStyle={{ padding: "10px 16px", width: "100%" }}
-              style={{ fontSize: "0.95rem" }}
-            />
-          )}
         </div>
       </nav>
 

@@ -157,6 +157,24 @@ export const AppRoutes: React.FC = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const [deliveryAddress, setDeliveryAddress] = useState<string>("Bengaluru, IND");
+
+  const fetchDeliveryAddress = async () => {
+    if (localStorage.getItem("accessToken")) {
+      try {
+        const res = await api.get("/addresses");
+        if (res.data.status === "success") {
+          const list = res.data.data || [];
+          const defaultAddr = list.find((addr: any) => addr.is_default) || list[0];
+          if (defaultAddr) {
+            setDeliveryAddress(`${defaultAddr.city}, ${defaultAddr.state}`);
+          }
+        }
+      } catch (err) {
+        console.error("Fetch delivery address error:", err);
+      }
+    }
+  };
 
   const fetchWallet = async () => {
     if (localStorage.getItem("accessToken")) {
@@ -197,6 +215,7 @@ export const AppRoutes: React.FC = () => {
     if (localStorage.getItem("accessToken")) {
       fetchCartFromBackend();
       fetchWallet();
+      fetchDeliveryAddress();
     }
   }, []);
 
@@ -341,6 +360,7 @@ export const AppRoutes: React.FC = () => {
         onSearchChange={setSearchQuery}
         walletBalance={walletBalance}
         onDepositClick={handleDeposit}
+        deliveryAddress={deliveryAddress}
       />
       <Routes>
         <Route path="/" element={<Home searchQuery={searchQuery} />} />
