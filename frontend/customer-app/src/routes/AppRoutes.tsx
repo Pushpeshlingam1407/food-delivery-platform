@@ -157,7 +157,8 @@ export const AppRoutes: React.FC = () => {
   const [cartOpen, setCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
-  const [deliveryAddress, setDeliveryAddress] = useState<string>("Bengaluru, IND");
+  const [deliveryAddress, setDeliveryAddress] =
+    useState<string>("Bengaluru, IND");
 
   const fetchDeliveryAddress = async () => {
     if (localStorage.getItem("accessToken")) {
@@ -165,7 +166,8 @@ export const AppRoutes: React.FC = () => {
         const res = await api.get("/addresses");
         if (res.data.status === "success") {
           const list = res.data.data || [];
-          const defaultAddr = list.find((addr: any) => addr.is_default) || list[0];
+          const defaultAddr =
+            list.find((addr: any) => addr.is_default) || list[0];
           if (defaultAddr) {
             setDeliveryAddress(`${defaultAddr.city}, ${defaultAddr.state}`);
           }

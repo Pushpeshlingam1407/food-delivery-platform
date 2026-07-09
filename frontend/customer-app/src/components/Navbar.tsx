@@ -43,7 +43,14 @@ export const Navbar: React.FC<NavbarProps> = ({
     <>
       <nav className="navbar-container">
         {/* Top Header Row containing Brand and Actions */}
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", width: "100%" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            width: "100%",
+          }}
+        >
           <div className="navbar-row">
             {/* Mobile Hamburger Menu Toggle */}
             <button
@@ -78,7 +85,10 @@ export const Navbar: React.FC<NavbarProps> = ({
             </Link>
 
             {/* Desktop Address Selector */}
-            <div className="navbar-address-pill navbar-desktop-only" style={{ marginLeft: "16px" }}>
+            <div
+              className="navbar-address-pill navbar-desktop-only"
+              style={{ marginLeft: "16px" }}
+            >
               <MapPin size={16} color="var(--accent-orange)" />
               <span style={{ color: "var(--text-slate)" }}>Deliver to:</span>
               <strong style={{ fontWeight: 600 }}>{deliveryAddress}</strong>
@@ -300,7 +310,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Mobile Address Pill (Visible on Mobile/Tablet only) */}
-        <div className="navbar-mobile-only" style={{ flexDirection: "column", gap: "10px", width: "100%" }}>
+        <div
+          className="navbar-mobile-only"
+          style={{ flexDirection: "column", gap: "10px", width: "100%" }}
+        >
           {/* Mobile Address Selector */}
           <div
             className="navbar-address-pill"
@@ -313,8 +326,12 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
           >
             <MapPin size={16} color="var(--accent-orange)" />
-            <span style={{ color: "var(--text-slate)", fontSize: "0.85rem" }}>Deliver to:</span>
-            <strong style={{ fontWeight: 600, fontSize: "0.85rem" }}>{deliveryAddress}</strong>
+            <span style={{ color: "var(--text-slate)", fontSize: "0.85rem" }}>
+              Deliver to:
+            </span>
+            <strong style={{ fontWeight: 600, fontSize: "0.85rem" }}>
+              {deliveryAddress}
+            </strong>
           </div>
         </div>
       </nav>

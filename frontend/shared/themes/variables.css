@@ -2028,16 +2028,18 @@ h3 {
 .menu-card-qty-control {
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: space-between;
+  width: 120px;
+  height: 40px;
   border: 1px solid var(--glass-border);
   border-radius: 100px;
-  padding: 8px 12px;
+  padding: 0 6px;
   background: rgba(25, 25, 25, 0.04);
 }
 
 .menu-card-qty-control button {
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   border-radius: 50%;
   background: transparent;
   border: none;
@@ -2053,16 +2055,19 @@ h3 {
   min-width: 20px;
   text-align: center;
   font-weight: 700;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
 }
 
 .menu-card-add-button {
-  min-width: 100px;
+  width: 120px;
+  height: 40px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   border: none;
   border-radius: 100px;
   background: var(--text-slate);
   color: var(--text-sand);
-  padding: 12px 20px;
   font-weight: 700;
   font-size: 0.9rem;
   cursor: pointer;

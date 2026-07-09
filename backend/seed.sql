@@ -116,8 +116,12 @@ INSERT INTO menus (id, restaurant_id, category_id, name, description, price, is_
 
 -- 9. Menu Images
 INSERT INTO menu_images (id, menu_id, image_url, is_primary) VALUES
-('mi000000-0000-0000-0000-000000000001', 'm0000000-0000-0000-0000-000000000001', 'http://cdn/images/butter_chicken.jpg', TRUE),
-('mi000000-0000-0000-0000-000000000002', 'm0000000-0000-0000-0000-000000000004', 'http://cdn/images/margherita.jpg', TRUE);
+('mi000000-0000-0000-0000-000000000001', 'm0000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000002', 'm0000000-0000-0000-0000-000000000002', 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000003', 'm0000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000004', 'm0000000-0000-0000-0000-000000000004', 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000005', 'm0000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&auto=format&fit=crop', TRUE);
+
 
 -- 10. Inventory
 INSERT INTO inventory (id, menu_id, available_quantity, unlimited) VALUES
