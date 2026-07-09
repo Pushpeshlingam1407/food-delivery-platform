@@ -213,6 +213,14 @@ export const Dashboard: React.FC = () => {
     }
   };
 
+  const handleQuickFill = (amount: number) => {
+    if (amount <= walletBalance) {
+      setPayoutAmount(amount.toString());
+    } else {
+      setPayoutAmount(walletBalance.toFixed(2));
+    }
+  };
+
   const handleRequestPayout = async (e: React.FormEvent) => {
     e.preventDefault();
     const amt = parseFloat(payoutAmount);
@@ -312,57 +320,167 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Wallet block */}
-        <div className="panel-card panel-card-stacked">
-          <div className="panel-row">
-            <div>
-              <div
+        <div
+          className="panel-card panel-card-stacked"
+          style={{
+            minHeight: "220px",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            background: "linear-gradient(135deg, #ffffff 0%, #fafcff 100%)",
+          }}
+        >
+          <div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+                marginBottom: "8px",
+              }}
+            >
+              <Wallet size={16} color="var(--accent-orange)" />
+              <span
                 style={{
                   fontSize: "0.8rem",
                   fontWeight: 700,
                   color: "var(--text-muted)",
-                  marginBottom: "4px",
+                  letterSpacing: "0.05em",
                 }}
               >
-                MY WALLET
-              </div>
-              <div
-                style={{
-                  fontSize: "1.8rem",
-                  fontWeight: 800,
-                  display: "flex",
-                  alignItems: "center",
-                }}
-              >
-                <DollarSign size={24} color="var(--accent-orange)" />
-                {walletBalance.toFixed(2)}
-              </div>
+                MY SETTLEMENT WALLET
+              </span>
             </div>
+            <div
+              style={{ display: "flex", alignItems: "baseline", gap: "4px" }}
+            >
+              <span
+                style={{
+                  fontSize: "2.4rem",
+                  fontWeight: 900,
+                  color: "var(--text-slate)",
+                }}
+              >
+                ₹{walletBalance.toFixed(2)}
+              </span>
+            </div>
+            <span
+              style={{
+                fontSize: "0.8rem",
+                color: "var(--text-muted)",
+                display: "block",
+                marginTop: "4px",
+              }}
+            >
+              Withdrawable earnings balance
+            </span>
           </div>
 
-          {/* Cash payout Form */}
           <form
             onSubmit={handleRequestPayout}
-            className="form-inline"
-            style={{ marginTop: "16px" }}
+            style={{
+              marginTop: "16px",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}
           >
-            <input
-              type="number"
-              step="0.01"
-              value={payoutAmount}
-              onChange={(e) => setPayoutAmount(e.target.value)}
-              placeholder="Amount"
-              required
-              className="input-premium"
-              style={{ width: "100px" }}
-            />
-            <button
-              type="submit"
-              disabled={payoutLoading}
-              className="btn-premium btn-sm"
-              style={{ flexGrow: 1 }}
-            >
-              {payoutLoading ? "Processing..." : "Cash Out"}
-            </button>
+            <div style={{ display: "flex", gap: "8px" }}>
+              <input
+                type="number"
+                step="0.01"
+                value={payoutAmount}
+                onChange={(e) => setPayoutAmount(e.target.value)}
+                placeholder="Amount"
+                required
+                className="input-premium"
+                style={{
+                  flexGrow: 1,
+                  padding: "10px 14px",
+                  fontSize: "0.95rem",
+                }}
+              />
+              <button
+                type="submit"
+                disabled={payoutLoading || walletBalance <= 0}
+                className="btn-premium"
+                style={{
+                  padding: "10px 20px",
+                  fontSize: "0.9rem",
+                  background: "var(--primary-gradient)",
+                  cursor:
+                    payoutLoading || walletBalance <= 0
+                      ? "not-allowed"
+                      : "pointer",
+                }}
+              >
+                {payoutLoading ? "Wait..." : "Cash Out"}
+              </button>
+            </div>
+            {/* Quick cash out presets */}
+            <div style={{ display: "flex", gap: "6px" }}>
+              <button
+                type="button"
+                onClick={() => handleQuickFill(50)}
+                style={{
+                  background: "#FFF",
+                  border: "1px solid var(--glass-border)",
+                  borderRadius: "6px",
+                  padding: "4px 8px",
+                  fontSize: "0.75rem",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+              >
+                ₹50
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickFill(100)}
+                style={{
+                  background: "#FFF",
+                  border: "1px solid var(--glass-border)",
+                  borderRadius: "6px",
+                  padding: "4px 8px",
+                  fontSize: "0.75rem",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+              >
+                ₹100
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickFill(500)}
+                style={{
+                  background: "#FFF",
+                  border: "1px solid var(--glass-border)",
+                  borderRadius: "6px",
+                  padding: "4px 8px",
+                  fontSize: "0.75rem",
+                  cursor: "pointer",
+                  fontWeight: 600,
+                }}
+              >
+                ₹500
+              </button>
+              <button
+                type="button"
+                onClick={() => handleQuickFill(walletBalance)}
+                style={{
+                  background: "rgba(255, 90, 31, 0.05)",
+                  border: "1px solid var(--accent-orange)",
+                  color: "var(--accent-orange)",
+                  borderRadius: "6px",
+                  padding: "4px 8px",
+                  fontSize: "0.75rem",
+                  cursor: "pointer",
+                  fontWeight: 700,
+                }}
+              >
+                Settlement Max
+              </button>
+            </div>
           </form>
         </div>
       </div>
@@ -415,7 +533,7 @@ export const Dashboard: React.FC = () => {
                     borderRadius: "100px",
                   }}
                 >
-                  Payout: $
+                  Payout: ₹
                   {parseFloat(activeJob.delivery_charges || "0").toFixed(2)}
                 </span>
                 {deliveryStep === "picked_up" && (
@@ -558,7 +676,7 @@ export const Dashboard: React.FC = () => {
                     >
                       <span>Items Total:</span>
                       <span>
-                        ${parseFloat(activeJobDetails.item_total).toFixed(2)}
+                        ₹{parseFloat(activeJobDetails.item_total).toFixed(2)}
                       </span>
                     </div>
                     <div
@@ -571,7 +689,7 @@ export const Dashboard: React.FC = () => {
                     >
                       <span>Delivery Fee:</span>
                       <span>
-                        $
+                        ₹
                         {parseFloat(activeJobDetails.delivery_charges).toFixed(
                           2,
                         )}
@@ -587,7 +705,7 @@ export const Dashboard: React.FC = () => {
                     >
                       <span>Taxes & Charges:</span>
                       <span>
-                        ${parseFloat(activeJobDetails.tax_amount).toFixed(2)}
+                        ₹{parseFloat(activeJobDetails.tax_amount).toFixed(2)}
                       </span>
                     </div>
                     {parseFloat(activeJobDetails.discount_amount) > 0 && (
@@ -602,7 +720,7 @@ export const Dashboard: React.FC = () => {
                       >
                         <span>Discount ({activeJobDetails.coupon_code}):</span>
                         <span>
-                          -$
+                          -₹
                           {parseFloat(activeJobDetails.discount_amount).toFixed(
                             2,
                           )}
@@ -622,7 +740,7 @@ export const Dashboard: React.FC = () => {
                     >
                       <span>Total Payable:</span>
                       <span style={{ color: "var(--accent-orange)" }}>
-                        ${parseFloat(activeJobDetails.total_payable).toFixed(2)}
+                        ₹{parseFloat(activeJobDetails.total_payable).toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -827,7 +945,7 @@ export const Dashboard: React.FC = () => {
                   fontWeight: 700,
                 }}
               >
-                Payout: ${parseFloat(job.delivery_charges || "0").toFixed(2)}
+                Payout: ₹{parseFloat(job.delivery_charges || "0").toFixed(2)}
               </div>
             </div>
 
@@ -863,36 +981,53 @@ export const Dashboard: React.FC = () => {
       </div>
 
       {/* Transaction History Ledger */}
-      <div className="panel-card">
+      <div
+        className="panel-card"
+        style={{
+          background: "#FFF",
+          borderRadius: "24px",
+          padding: "32px",
+          boxShadow: "0 10px 30px rgba(25, 25, 25, 0.02)",
+        }}
+      >
         <h3
           style={{
-            fontSize: "1.2rem",
-            fontWeight: 700,
+            fontSize: "1.3rem",
+            fontWeight: 800,
             marginBottom: "24px",
             display: "flex",
             alignItems: "center",
-            gap: "8px",
+            gap: "10px",
           }}
         >
-          <FileText size={18} color="var(--accent-violet)" /> Wallet Transaction
-          Log
+          <FileText size={20} color="var(--accent-violet)" /> Wallet Transaction
+          History Ledger
         </h3>
 
-        <div className="table-responsive">
-          <table className="table-panel">
+        <div style={{ overflowX: "auto" }}>
+          <table
+            style={{
+              width: "100%",
+              borderCollapse: "collapse",
+              textAlign: "left",
+            }}
+          >
             <thead>
               <tr
                 style={{
-                  borderBottom: "1px solid var(--glass-border)",
+                  borderBottom: "2px solid var(--glass-border)",
                   color: "var(--text-muted)",
                   fontSize: "0.85rem",
                   fontWeight: 700,
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
                 }}
               >
-                <th style={{ padding: "12px 16px" }}>DATE / TIME</th>
-                <th style={{ padding: "12px 16px" }}>TYPE</th>
-                <th style={{ padding: "12px 16px" }}>DESCRIPTION</th>
-                <th style={{ padding: "12px 16px" }}>AMOUNT</th>
+                <th style={{ padding: "14px 16px" }}>DATE & TIME</th>
+                <th style={{ padding: "14px 16px" }}>TRANSACTION DETAILS</th>
+                <th style={{ padding: "14px 16px" }}>REFERENCE TYPE</th>
+                <th style={{ padding: "14px 16px" }}>PAYMENT TYPE</th>
+                <th style={{ padding: "14px 16px" }}>AMOUNT</th>
               </tr>
             </thead>
             <tbody>
@@ -900,32 +1035,115 @@ export const Dashboard: React.FC = () => {
                 <tr
                   key={tx.id}
                   style={{
-                    borderBottom: "1px solid var(--glass-border)",
+                    borderBottom: "1px solid #f2efeb",
                     fontSize: "0.95rem",
+                    transition: "background 0.2s",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "#fafaf9";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "transparent";
                   }}
                 >
-                  <td style={{ padding: "16px" }}>
-                    {new Date(tx.created_at).toLocaleString()}
-                  </td>
-                  <td style={{ padding: "16px" }}>
-                    <span
-                      className={
-                        "status-pill " +
-                        (tx.type === "credit" ? "success" : "danger")
-                      }
+                  <td style={{ padding: "18px 16px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
                     >
-                      {tx.type}
+                      <Clock size={16} color="var(--text-muted)" />
+                      <span>{new Date(tx.created_at).toLocaleString()}</span>
+                    </div>
+                  </td>
+                  <td style={{ padding: "18px 16px" }}>
+                    <div
+                      style={{ fontWeight: 700, color: "var(--text-slate)" }}
+                    >
+                      {tx.description}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "var(--text-muted)",
+                        fontFamily: "monospace",
+                        marginTop: "4px",
+                      }}
+                    >
+                      ID: {tx.id}
+                    </div>
+                  </td>
+                  <td style={{ padding: "18px 16px" }}>
+                    <span
+                      style={{
+                        fontSize: "0.75rem",
+                        fontWeight: 800,
+                        textTransform: "uppercase",
+                        padding: "4px 10px",
+                        borderRadius: "100px",
+                        background:
+                          tx.reference_type === "refund"
+                            ? "rgba(244, 67, 54, 0.08)"
+                            : "rgba(25, 25, 25, 0.05)",
+                        color:
+                          tx.reference_type === "refund"
+                            ? "#F44336"
+                            : "var(--text-slate)",
+                      }}
+                    >
+                      {tx.reference_type.replace("_", " ")}
                     </span>
                   </td>
-                  <td style={{ padding: "16px" }}>{tx.description}</td>
+                  <td style={{ padding: "18px 16px" }}>
+                    <div
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      {tx.type === "credit" ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            color: "#4CAF50",
+                            fontWeight: 700,
+                            fontSize: "0.85rem",
+                          }}
+                        >
+                          <ArrowDownLeft size={16} />
+                          <span>Credit</span>
+                        </div>
+                      ) : (
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "4px",
+                            color: "#F44336",
+                            fontWeight: 700,
+                            fontSize: "0.85rem",
+                          }}
+                        >
+                          <ArrowUpRightIcon size={16} />
+                          <span>Settlement</span>
+                        </div>
+                      )}
+                    </div>
+                  </td>
                   <td
                     style={{
-                      padding: "16px",
-                      fontWeight: 700,
+                      padding: "18px 16px",
                       color: tx.type === "credit" ? "#4CAF50" : "#F44336",
+                      fontWeight: 800,
+                      fontSize: "1.1rem",
                     }}
                   >
-                    {tx.type === "credit" ? "+" : ""}$
+                    {tx.type === "credit" ? "+" : "-"}₹
                     {Math.abs(parseFloat(tx.amount)).toFixed(2)}
                   </td>
                 </tr>
@@ -934,14 +1152,15 @@ export const Dashboard: React.FC = () => {
               {transactions.length === 0 && (
                 <tr>
                   <td
-                    colSpan={4}
+                    colSpan={5}
                     style={{
-                      padding: "40px",
+                      padding: "50px",
                       textAlign: "center",
                       color: "var(--text-muted)",
+                      fontSize: "1rem",
                     }}
                   >
-                    No wallet activity logged.
+                    No wallet activity or payout logs found.
                   </td>
                 </tr>
               )}
