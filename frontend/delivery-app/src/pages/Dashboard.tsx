@@ -68,6 +68,21 @@ export const Dashboard: React.FC = () => {
   }, [activeJob?.id]);
 
   useEffect(() => {
+    if (activeJob) {
+      const savedStep = localStorage.getItem(`delivery_step_${activeJob.id}`);
+      if (savedStep) {
+        setDeliveryStep(savedStep as any);
+        if (savedStep === "picked_up" && socket) {
+          socket.emit("joinRoom", { room: `order_${activeJob.id}` });
+          simulateGPSMovement(activeJob.id);
+        }
+      } else {
+        setDeliveryStep("accepted");
+      }
+    }
+  }, [activeJob?.id, !!socket]);
+
+  useEffect(() => {
     let interval: any;
     if (activeJob && deliveryStep === "picked_up") {
       interval = setInterval(() => {
@@ -163,6 +178,7 @@ export const Dashboard: React.FC = () => {
           setActiveJob(updatedOrder);
           setJobs((prev) => prev.filter((j) => j.id !== orderId));
           setDeliveryStep("accepted");
+          localStorage.setItem(`delivery_step_${orderId}`, "accepted");
           toast.success(
             "Logistics job accepted! Start heading to the restaurant.",
           );
@@ -180,6 +196,7 @@ export const Dashboard: React.FC = () => {
       });
       if (response.data.status === "success") {
         setActiveJob(null);
+        localStorage.removeItem(`delivery_step_${orderId}`);
         toast.success("Order delivered successfully!", {
           description: "Delivery earnings credited to your wallet.",
         });
@@ -701,7 +718,15 @@ export const Dashboard: React.FC = () => {
             >
               {deliveryStep === "accepted" && (
                 <button
-                  onClick={() => setDeliveryStep("arrived_store")}
+                  onClick={() => {
+                    setDeliveryStep("arrived_store");
+                    if (activeJob) {
+                      localStorage.setItem(
+                        `delivery_step_${activeJob.id}`,
+                        "arrived_store",
+                      );
+                    }
+                  }}
                   className="btn-premium"
                   style={{
                     background: "var(--primary-gradient)",
@@ -719,6 +744,12 @@ export const Dashboard: React.FC = () => {
                   onClick={() => {
                     setDeliveryStep("picked_up");
                     setDeliveryTimer(600); // 10 minutes
+                    if (activeJob) {
+                      localStorage.setItem(
+                        `delivery_step_${activeJob.id}`,
+                        "picked_up",
+                      );
+                    }
                     if (socket) {
                       socket.emit("joinRoom", {
                         room: `order_${activeJob.id}`,
@@ -743,6 +774,7 @@ export const Dashboard: React.FC = () => {
                   onClick={() => {
                     handleDeliverJob(activeJob.id);
                     setDeliveryStep("accepted");
+                    localStorage.removeItem(`delivery_step_${activeJob.id}`);
                   }}
                   className="btn-premium"
                   style={{
