@@ -37,61 +37,42 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <>
       <nav className="navbar-container">
-        {/* Mobile Hamburger Menu Toggle */}
-        <button
-          onClick={() => setMenuOpen(!menuOpen)}
-          className="mobile-menu-toggle"
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "var(--text-slate)",
-            padding: "4px",
-          }}
-        >
-          <Menu size={24} />
-        </button>
+        <div className="navbar-row">
+          {/* Mobile Hamburger Menu Toggle */}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="mobile-menu-toggle"
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "var(--text-slate)",
+              padding: "4px",
+            }}
+          >
+            <Menu size={24} />
+          </button>
 
-        {/* Brand logo (Cohere style) */}
-        <Link
-          to="/"
-          style={{
-            fontFamily: "var(--font-cohere)",
-            fontWeight: 800,
-            fontSize: "1.6rem",
-            background: "var(--primary-gradient)",
-            WebkitBackgroundClip: "text",
-            WebkitTextFillColor: "transparent",
-            cursor: "pointer",
-            textDecoration: "none",
-          }}
-        >
-          bites.
-        </Link>
+          {/* Brand logo (Cohere style) */}
+          <Link
+            to="/"
+            style={{
+              fontFamily: "var(--font-cohere)",
+              fontWeight: 800,
+              fontSize: "1.6rem",
+              background: "var(--primary-gradient)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              cursor: "pointer",
+              textDecoration: "none",
+            }}
+          >
+            bites.
+          </Link>
+        </div>
 
         {/* Address Selector (Apple-style pill) */}
-        <div
-          className="navbar-row navbar-desktop-only"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            background: "rgba(25, 25, 25, 0.04)",
-            padding: "8px 16px",
-            borderRadius: "100px",
-            fontSize: "0.9rem",
-            fontWeight: 500,
-            cursor: "pointer",
-            border: "1px solid transparent",
-            transition: "all 0.2s ease",
-          }}
-          onMouseEnter={(e) =>
-            (e.currentTarget.style.border = "1px solid var(--glass-border)")
-          }
-          onMouseLeave={(e) =>
-            (e.currentTarget.style.border = "1px solid transparent")
-          }
-        >
+        <div className="navbar-address-pill navbar-desktop-only">
           <MapPin size={16} color="var(--accent-orange)" />
           <span style={{ color: "var(--text-slate)" }}>Deliver to:</span>
           <strong style={{ fontWeight: 600 }}>Bengaluru, IND</strong>

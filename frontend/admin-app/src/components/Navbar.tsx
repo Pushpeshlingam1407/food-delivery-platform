@@ -16,7 +16,7 @@ export const Navbar: React.FC<NavbarProps> = ({
   return (
     <>
       <nav className="navbar-container">
-        <div className="navbar-row" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        <div className="navbar-row">
           {/* Hamburger toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
