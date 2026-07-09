@@ -507,7 +507,7 @@ export async function updateOrderStatus(req, res) {
           const ownerTxId = crypto.randomUUID();
           await connection.query(
             `INSERT INTO wallet_transactions (id, wallet_id, amount, type, description, reference_type, reference_id) 
-             VALUES (?, ?, ?, 'credit', 'Restaurant Order Earning Deposited', 'restaurant_payout', ?)`,
+             VALUES (?, ?, ?, 'credit', 'Restaurant Order Earning Deposited', 'order_payment', ?)`,
             [ownerTxId, ownerWalletId, netEarning, id],
           );
         }
