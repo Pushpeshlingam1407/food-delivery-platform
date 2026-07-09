@@ -85,14 +85,15 @@ export const Navbar: React.FC<NavbarProps> = ({
             </Link>
 
             {/* Desktop Address Selector */}
-            <div
+            <Link
+              to="/addresses"
               className="navbar-address-pill navbar-desktop-only"
-              style={{ marginLeft: "16px" }}
+              style={{ marginLeft: "16px", textDecoration: "none" }}
             >
               <MapPin size={16} color="var(--accent-orange)" />
               <span style={{ color: "var(--text-slate)" }}>Deliver to:</span>
               <strong style={{ fontWeight: 600 }}>{deliveryAddress}</strong>
-            </div>
+            </Link>
           </div>
 
           {/* Desktop Search Input Bar */}

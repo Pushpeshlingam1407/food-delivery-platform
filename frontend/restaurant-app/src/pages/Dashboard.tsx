@@ -58,6 +58,7 @@ const playOrderChime = () => {
 export const Dashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [restaurantId, setRestaurantId] = useState<string | null>(null);
+  const [restaurantName, setRestaurantName] = useState<string | null>(null);
   const [restaurantStatus, setRestaurantStatus] = useState("closed");
   const [loading, setLoading] = useState(true);
 
@@ -81,6 +82,7 @@ export const Dashboard: React.FC = () => {
 
       if (myRestaurant) {
         setRestaurantId(myRestaurant.id);
+        setRestaurantName(myRestaurant.name);
         setRestaurantStatus(myRestaurant.status);
 
         // Fetch orders for this restaurant
@@ -356,10 +358,12 @@ export const Dashboard: React.FC = () => {
       <div className="header-panel-premium">
         <div>
           <h1 style={{ fontSize: "2.2rem", marginBottom: "8px" }}>
-            Active Orders
+            {restaurantName || "Active Orders"}
           </h1>
           <p style={{ color: "var(--text-muted)" }}>
-            Realtime order dispatch control panel
+            {restaurantName
+              ? `Realtime Order Dispatch Control for ${restaurantName}`
+              : "Realtime order dispatch control panel"}
           </p>
         </div>
 

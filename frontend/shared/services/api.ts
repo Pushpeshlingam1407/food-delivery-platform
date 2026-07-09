@@ -54,8 +54,18 @@ api.interceptors.response.use(
           // Clear active session and redirect
           localStorage.removeItem("accessToken");
           localStorage.removeItem("refreshToken");
+          localStorage.removeItem("userEmail");
+          localStorage.removeItem("userId");
+          localStorage.removeItem("userName");
           window.location.href = "/login";
         }
+      } else {
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userId");
+        localStorage.removeItem("userName");
+        window.location.href = "/login";
       }
     }
     return Promise.reject(error);

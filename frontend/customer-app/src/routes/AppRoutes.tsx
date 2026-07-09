@@ -158,7 +158,7 @@ export const AppRoutes: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [deliveryAddress, setDeliveryAddress] =
-    useState<string>("Bengaluru, IND");
+    useState<string>("Select Address");
 
   const fetchDeliveryAddress = async () => {
     if (localStorage.getItem("accessToken")) {

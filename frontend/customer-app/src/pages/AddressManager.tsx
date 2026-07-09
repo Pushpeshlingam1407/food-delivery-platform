@@ -141,7 +141,7 @@ export const AddressManager: React.FC = () => {
   }
 
   return (
-    <div style={{ padding: "40px", maxWidth: "960px", margin: "0 auto" }}>
+    <div className="address-container">
       <div style={{ marginBottom: "40px" }}>
         <h1
           style={{
@@ -157,13 +157,7 @@ export const AddressManager: React.FC = () => {
         </p>
       </div>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-          gap: "40px",
-        }}
-      >
+      <div className="address-grid">
         {/* Saved Addresses list */}
         <div>
           <h3 style={{ fontSize: "1.2rem", marginBottom: "20px" }}>

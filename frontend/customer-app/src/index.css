@@ -40,3 +40,29 @@ textarea {
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(25, 25, 25, 0.2);
 }
+
+/* Address Manager Responsive Classes */
+.address-container {
+  padding: 40px;
+  max-width: 960px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.address-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px;
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .address-container {
+    padding: 16px;
+  }
+  .address-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+

@@ -2176,3 +2176,43 @@ h3 {
     gap: 12px;
   }
 }
+
+/* Responsive Overrides for Restaurant Details Page */
+@media (max-width: 768px) {
+  .restaurant-header-card {
+    flex-direction: column;
+    padding: 20px;
+    align-items: stretch;
+    gap: 16px;
+  }
+  
+  .restaurant-content-grid {
+    flex-direction: column;
+    gap: 24px;
+    align-items: stretch;
+  }
+  
+  .restaurant-sidebar {
+    width: 100%;
+    max-width: none;
+    flex: none;
+  }
+
+  .category-list {
+    flex-direction: row !important;
+    overflow-x: auto;
+    padding-bottom: 8px;
+    white-space: nowrap;
+    gap: 10px;
+  }
+
+  .category-button {
+    padding: 8px 16px;
+    font-size: 0.85rem;
+  }
+  
+  .veg-filter {
+    margin-top: 16px;
+  }
+}
+
