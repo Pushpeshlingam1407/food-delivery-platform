@@ -212,14 +212,7 @@ export const MenuManager: React.FC = () => {
         Menu Catalog Manager
       </h1>
 
-      <div
-        className="responsive-split menu-manager-layout"
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 340px",
-          gap: "40px",
-        }}
-      >
+      <div className="responsive-split menu-manager-layout">
         {/* Dishes list */}
         <div className="menu-manager-list">
           <h2 style={{ fontSize: "1.8rem", marginBottom: "24px" }}>
@@ -231,20 +224,7 @@ export const MenuManager: React.FC = () => {
             {menuItems.map((item) => {
               const cat = categories.find((c) => c.id === item.category_id);
               return (
-                <div
-                  key={item.id}
-                  className="menu-manager-item"
-                  style={{
-                    background: "#FFF",
-                    border: "1px solid var(--glass-border)",
-                    borderRadius: "var(--radius-standard)",
-                    padding: "20px 24px",
-                    boxShadow: "var(--glass-shadow)",
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
+                <div key={item.id} className="menu-manager-item">
                   <div
                     style={{
                       display: "flex",
@@ -272,6 +252,7 @@ export const MenuManager: React.FC = () => {
                           alignItems: "center",
                           gap: "12px",
                           marginBottom: "8px",
+                          flexWrap: "wrap",
                         }}
                       >
                         <span
@@ -345,14 +326,7 @@ export const MenuManager: React.FC = () => {
                     </div>
                   </div>
 
-                  <div
-                    className="menu-manager-item-actions"
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "24px",
-                    }}
-                  >
+                  <div className="menu-manager-item-actions">
                     <label
                       style={{
                         display: "flex",
