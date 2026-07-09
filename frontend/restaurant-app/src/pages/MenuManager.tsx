@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Plus, Trash2, Edit2, Globe, FileImage } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
+import { MenuCard } from "../../../shared/components/MenuCard";
 
 interface MenuItem {
   id: string;
@@ -223,107 +224,72 @@ export const MenuManager: React.FC = () => {
           >
             {menuItems.map((item) => {
               const cat = categories.find((c) => c.id === item.category_id);
+              // Map the item to the expected type inside MenuCard
+              const cardItem = {
+                ...item,
+                description: item.description || undefined,
+                image_url: item.image_url || undefined,
+                available_quantity: item.available_quantity ?? undefined,
+                unlimited: item.unlimited
+              };
+
               return (
-                <div key={item.id} className="restaurant-menu-card">
-                  <div className="menu-card-image">
-                    {item.image_url ? (
-                      <img src={item.image_url} alt={item.name} />
-                    ) : (
-                      <div className="menu-card-image-placeholder">No Image</div>
-                    )}
-                  </div>
-
-                  <div className="menu-card-body">
-                    <div className="menu-card-topline">
-                      <span
-                        className={`menu-card-badge ${
-                          item.is_veg ? "menu-card-badge--veg" : "menu-card-badge--nonveg"
-                        }`}
+                <MenuCard
+                  key={item.id}
+                  item={cardItem}
+                  renderFooterActions={() => (
+                    <div className="menu-manager-item-actions">
+                      <label
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          cursor: "pointer",
+                        }}
                       >
-                        {item.is_veg ? "VEG 🌱" : "NON-VEG 🍖"}
-                      </span>
-                      <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginLeft: "4px" }}>
-                        ({cat?.name || "Unassigned"})
-                      </span>
-                    </div>
-
-                    <h4 className="menu-card-title">{item.name}</h4>
-
-                    <p className="menu-card-description">
-                      {item.description || "No description provided."}
-                    </p>
-
-                    <div className="menu-card-footer">
-                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-                        <strong className="menu-card-price">
-                          ${parseFloat(item.price.toString()).toFixed(2)}
-                        </strong>
-                        <span
-                          style={{
-                            fontSize: "0.8rem",
-                            color: "var(--text-muted)",
-                            background: "rgba(0,0,0,0.05)",
-                            padding: "2px 8px",
-                            borderRadius: "4px",
-                          }}
-                        >
-                          Stock: {item.unlimited ? "Unlimited" : item.available_quantity}
+                        <input
+                          type="checkbox"
+                          checked={!!item.is_available}
+                          onChange={() =>
+                            toggleItemAvailability(item.id, !!item.is_available)
+                          }
+                          style={{ width: "16px", height: "16px" }}
+                        />
+                        <span style={{ fontSize: "0.9rem", fontWeight: 600 }}>
+                          Available
                         </span>
-                      </div>
+                      </label>
 
-                      <div className="menu-manager-item-actions">
-                        <label
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "8px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            checked={!!item.is_available}
-                            onChange={() =>
-                              toggleItemAvailability(item.id, !!item.is_available)
-                            }
-                            style={{ width: "16px", height: "16px" }}
-                          />
-                          <span style={{ fontSize: "0.9rem", fontWeight: 600 }}>
-                            Available
-                          </span>
-                        </label>
+                      <button
+                        onClick={() => startEdit(item)}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          color: "var(--text-slate)",
+                          display: "inline-flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Edit2 size={16} />
+                      </button>
 
-                        <button
-                          onClick={() => startEdit(item)}
-                          style={{
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
-                            color: "var(--text-slate)",
-                            display: "inline-flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Edit2 size={16} />
-                        </button>
-
-                        <button
-                          onClick={() => handleDeleteItem(item.id)}
-                          style={{
-                            background: "none",
-                            border: "none",
-                            cursor: "pointer",
-                            color: "#F44336",
-                            display: "inline-flex",
-                            alignItems: "center",
-                          }}
-                        >
-                          <Trash2 size={16} />
-                        </button>
-                      </div>
+                      <button
+                        onClick={() => handleDeleteItem(item.id)}
+                        style={{
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          color: "#F44336",
+                          display: "inline-flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Trash2 size={16} />
+                      </button>
                     </div>
-                  </div>
-                </div>
+                  )}
+                />
               );
             })}
 

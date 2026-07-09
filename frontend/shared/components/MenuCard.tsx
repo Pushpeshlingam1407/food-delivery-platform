@@ -17,16 +17,18 @@ interface MenuItem {
 
 interface MenuCardProps {
   item: MenuItem;
-  qty: number;
-  onAdd: (item: any) => void;
-  onRemove: (itemId: string) => void;
+  qty?: number;
+  onAdd?: (item: any) => void;
+  onRemove?: (itemId: string) => void;
+  renderFooterActions?: (item: MenuItem) => React.ReactNode;
 }
 
 export const MenuCard: React.FC<MenuCardProps> = ({
   item,
-  qty,
+  qty = 0,
   onAdd,
   onRemove,
+  renderFooterActions,
 }) => {
   const isVeg = !!item.is_veg;
   const formattedPrice = `$${parseFloat(item.price.toString()).toFixed(2)}`;
@@ -78,7 +80,9 @@ export const MenuCard: React.FC<MenuCardProps> = ({
         <div className="menu-card-footer">
           <strong className="menu-card-price">{formattedPrice}</strong>
 
-          {isOutOfStock ? (
+          {renderFooterActions ? (
+            renderFooterActions(item)
+          ) : isOutOfStock ? (
             <button
               type="button"
               className="menu-card-add-button out-of-stock-btn"
@@ -90,7 +94,7 @@ export const MenuCard: React.FC<MenuCardProps> = ({
             <div className="menu-card-qty-control">
               <button
                 type="button"
-                onClick={() => onRemove(item.id)}
+                onClick={() => onRemove && onRemove(item.id)}
                 aria-label={`Remove one ${item.name}`}
               >
                 <Minus size={16} />
@@ -98,7 +102,7 @@ export const MenuCard: React.FC<MenuCardProps> = ({
               <span>{qty}</span>
               <button
                 type="button"
-                onClick={() => onAdd(item)}
+                onClick={() => onAdd && onAdd(item)}
                 aria-label={`Add one ${item.name}`}
               >
                 <Plus size={16} />
@@ -108,7 +112,7 @@ export const MenuCard: React.FC<MenuCardProps> = ({
             <button
               type="button"
               className="menu-card-add-button"
-              onClick={() => onAdd(item)}
+              onClick={() => onAdd && onAdd(item)}
             >
               ADD
             </button>
@@ -118,3 +122,4 @@ export const MenuCard: React.FC<MenuCardProps> = ({
     </div>
   );
 };
+
