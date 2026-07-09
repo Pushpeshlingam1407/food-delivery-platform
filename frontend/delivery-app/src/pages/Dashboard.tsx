@@ -41,6 +41,47 @@ export const Dashboard: React.FC = () => {
   const [payoutLoading, setPayoutLoading] = useState(false);
   const [transactions, setTransactions] = useState<any[]>([]);
 
+  // Blinkit / Zomato custom delivery features
+  const [deliveryStep, setDeliveryStep] = useState<
+    "accepted" | "arrived_store" | "picked_up"
+  >("accepted");
+  const [activeOrderItems, setActiveOrderItems] = useState<any[]>([]);
+  const [deliveryTimer, setDeliveryTimer] = useState(600); // 10 mins
+  const [gpsProgress, setGpsProgress] = useState(0);
+
+  useEffect(() => {
+    if (activeJob) {
+      api
+        .get(`/orders/${activeJob.id}`)
+        .then((res) => {
+          if (res.data.status === "success" && res.data.data) {
+            setActiveOrderItems(res.data.data.items || []);
+          }
+        })
+        .catch(console.error);
+    } else {
+      setActiveOrderItems([]);
+    }
+  }, [activeJob?.id]);
+
+  useEffect(() => {
+    let interval: any;
+    if (activeJob && deliveryStep === "picked_up") {
+      interval = setInterval(() => {
+        setDeliveryTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [activeJob, deliveryStep]);
+
+  const formatTime = (seconds: number) => {
+    const isNegative = seconds < 0;
+    const absSeconds = Math.abs(seconds);
+    const mins = Math.floor(absSeconds / 60);
+    const secs = absSeconds % 60;
+    return `${isNegative ? "-" : ""}${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
+  };
+
   useEffect(() => {
     const fetchDriverStats = async () => {
       try {
@@ -118,13 +159,10 @@ export const Dashboard: React.FC = () => {
           );
           setActiveJob(updatedOrder);
           setJobs((prev) => prev.filter((j) => j.id !== orderId));
-          toast.success("Logistics job accepted successfully!");
-
-          // Start simulating GPS movements
-          if (socket) {
-            socket.emit("joinRoom", { room: `order_${orderId}` });
-            simulateGPSMovement(orderId);
-          }
+          setDeliveryStep("accepted");
+          toast.success(
+            "Logistics job accepted! Start heading to the restaurant.",
+          );
         }
       }
     } catch (err) {
@@ -193,6 +231,7 @@ export const Dashboard: React.FC = () => {
     let lat = 12.9716;
     let lon = 77.5946;
     let stepCount = 0;
+    setGpsProgress(0);
 
     const interval = setInterval(() => {
       if (stepCount >= 10 || !activeJob) {
@@ -203,6 +242,7 @@ export const Dashboard: React.FC = () => {
       lat += 0.0005;
       lon += 0.0005;
       stepCount++;
+      setGpsProgress(stepCount * 10);
 
       if (socket) {
         socket.emit("updateLocation", {
@@ -311,56 +351,282 @@ export const Dashboard: React.FC = () => {
       {activeJob && (
         <div
           className="panel-card accent-panel"
-          style={{ marginBottom: "40px" }}
+          style={{
+            marginBottom: "40px",
+            borderLeft: "5px solid var(--accent-orange)",
+          }}
         >
-          <h2
-            style={{
-              fontSize: "1.6rem",
-              marginBottom: "16px",
-              color: "var(--accent-violet)",
-            }}
-          >
-            Active Delivery Job
-          </h2>
           <div
             style={{
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "flex-start",
+              flexWrap: "wrap",
+              gap: "20px",
             }}
           >
-            <div>
-              <strong style={{ fontSize: "1.2rem" }}>
+            <div style={{ flex: 1, minWidth: "280px" }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  marginBottom: "12px",
+                  flexWrap: "wrap",
+                }}
+              >
+                <span
+                  className="status-pill warning"
+                  style={{
+                    textTransform: "uppercase",
+                    letterSpacing: "1px",
+                    fontWeight: 800,
+                  }}
+                >
+                  Active Job: {deliveryStep.replace("_", " ")}
+                </span>
+                {deliveryStep === "picked_up" && (
+                  <span
+                    style={{
+                      fontSize: "1.1rem",
+                      fontWeight: 800,
+                      color:
+                        deliveryTimer < 60 ? "#F44336" : "var(--accent-orange)",
+                      fontFamily: "monospace",
+                    }}
+                  >
+                    ⏱️ Deliver in: {formatTime(deliveryTimer)}
+                  </span>
+                )}
+              </div>
+
+              <strong style={{ fontSize: "1.5rem" }}>
                 Order #{activeJob.order_number}
               </strong>
               <div
                 style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.95rem",
+                  color: "var(--text-slate)",
+                  fontSize: "1rem",
+                  marginTop: "8px",
+                }}
+              >
+                Pickup Store: <strong>{activeJob.restaurant_name}</strong>
+              </div>
+              <div
+                style={{
+                  color: "var(--text-slate)",
+                  fontSize: "1rem",
                   marginTop: "4px",
                 }}
               >
-                Pickup: {activeJob.restaurant_name}
+                Deliver Address:{" "}
+                <strong>
+                  {activeJob.street_address}, {activeJob.city}
+                </strong>
               </div>
-              <div style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
-                Delivery Address: {activeJob.street_address}, {activeJob.city}
-              </div>
+
+              {/* Order items checklist when arrived at store */}
+              {deliveryStep === "arrived_store" && (
+                <div
+                  style={{
+                    marginTop: "16px",
+                    background: "rgba(0,0,0,0.02)",
+                    padding: "16px",
+                    borderRadius: "8px",
+                    border: "1px dashed var(--glass-border)",
+                    maxWidth: "500px",
+                  }}
+                >
+                  <h4
+                    style={{
+                      margin: "0 0 10px 0",
+                      fontSize: "0.95rem",
+                      textTransform: "uppercase",
+                      letterSpacing: "0.5px",
+                    }}
+                  >
+                    Verify Store Order Items:
+                  </h4>
+                  <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "8px",
+                    }}
+                  >
+                    {activeOrderItems.map((item, idx) => (
+                      <label
+                        key={idx}
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          cursor: "pointer",
+                          fontSize: "0.9rem",
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          defaultChecked={false}
+                          style={{ width: "16px", height: "16px" }}
+                        />
+                        <span>
+                          <strong>{item.quantity}x</strong> {item.item_name}
+                        </span>
+                      </label>
+                    ))}
+                    {activeOrderItems.length === 0 && (
+                      <span
+                        style={{
+                          color: "var(--text-muted)",
+                          fontSize: "0.85rem",
+                        }}
+                      >
+                        Loading items...
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
 
-            <button
-              onClick={() => handleDeliverJob(activeJob.id)}
-              className="btn-premium"
+            {/* Steps & Controls */}
+            <div
               style={{
-                background: "var(--accent-violet)",
-                padding: "12px 28px",
                 display: "flex",
-                alignItems: "center",
-                gap: "8px",
+                flexDirection: "column",
+                alignItems: "flex-end",
+                gap: "16px",
               }}
             >
-              <Check size={18} /> Confirm Handover/Delivery
-            </button>
+              {deliveryStep === "accepted" && (
+                <button
+                  onClick={() => setDeliveryStep("arrived_store")}
+                  className="btn-premium"
+                  style={{
+                    background: "var(--primary-gradient)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <Navigation size={18} /> I have Arrived at Store
+                </button>
+              )}
+
+              {deliveryStep === "arrived_store" && (
+                <button
+                  onClick={() => {
+                    setDeliveryStep("picked_up");
+                    setDeliveryTimer(600); // 10 minutes
+                    if (socket) {
+                      socket.emit("joinRoom", {
+                        room: `order_${activeJob.id}`,
+                      });
+                      simulateGPSMovement(activeJob.id);
+                    }
+                  }}
+                  className="btn-premium"
+                  style={{
+                    background: "var(--accent-orange)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <Check size={18} /> Order Picked Up (Start GPS)
+                </button>
+              )}
+
+              {deliveryStep === "picked_up" && (
+                <button
+                  onClick={() => {
+                    handleDeliverJob(activeJob.id);
+                    setDeliveryStep("accepted");
+                  }}
+                  className="btn-premium"
+                  style={{
+                    background: "var(--accent-violet)",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                  }}
+                >
+                  <Check size={18} /> Mark Order Delivered
+                </button>
+              )}
+            </div>
           </div>
+
+          {/* Interactive Mock Route Tracker (Pulsing Rider GPS visual) */}
+          {deliveryStep === "picked_up" && (
+            <div
+              style={{
+                marginTop: "24px",
+                background: "rgba(0,0,0,0.03)",
+                padding: "16px",
+                borderRadius: "12px",
+                border: "1px solid var(--glass-border)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  fontSize: "0.8rem",
+                  fontWeight: 700,
+                  color: "var(--text-muted)",
+                  marginBottom: "8px",
+                }}
+              >
+                <span>STORE ({activeJob.restaurant_name})</span>
+                <span>RIDER ROUTE PROGRESS ({gpsProgress}%)</span>
+                <span>CUSTOMER</span>
+              </div>
+              <div
+                style={{
+                  position: "relative",
+                  height: "8px",
+                  background: "rgba(0,0,0,0.06)",
+                  borderRadius: "999px",
+                  overflow: "visible",
+                }}
+              >
+                {/* Dotted path line */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: 0,
+                    top: 0,
+                    height: "100%",
+                    width: `${gpsProgress}%`,
+                    background: "var(--primary-gradient)",
+                    borderRadius: "999px",
+                    transition: "width 0.4s ease",
+                  }}
+                />
+                {/* Rider Dot */}
+                <div
+                  style={{
+                    position: "absolute",
+                    left: `calc(${gpsProgress}% - 8px)`,
+                    top: "-4px",
+                    width: "16px",
+                    height: "16px",
+                    background: "var(--accent-orange)",
+                    borderRadius: "50%",
+                    boxShadow: "0 0 10px var(--accent-orange)",
+                    transition: "left 0.4s ease",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Truck size={10} color="#fff" />
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       )}
 

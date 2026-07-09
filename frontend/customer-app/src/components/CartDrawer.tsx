@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { X, ShoppingCart, Percent, Trash2 } from "lucide-react";
+import { X, ShoppingCart, Percent, Trash2, Plus } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 
@@ -17,6 +17,7 @@ interface CartDrawerProps {
   cartItems: CartItem[];
   updateQty: (itemId: string, newQty: number) => void;
   clearCart: () => void;
+  addToCart: (item: any) => void;
 }
 
 export const CartDrawer: React.FC<CartDrawerProps> = ({
@@ -24,11 +25,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   onClose,
   cartItems,
   updateQty,
+  addToCart,
 }) => {
   const navigate = useNavigate();
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [appliedCouponId, setAppliedCouponId] = useState<string | null>(null);
+
+  // Custom Swiggy/Blinkit features
+  const [availableCoupons, setAvailableCoupons] = useState<any[]>([]);
+  const [recommendedItems, setRecommendedItems] = useState<any[]>([]);
 
   const subtotal = cartItems.reduce(
     (acc, item) => acc + item.price * item.qty,
@@ -38,15 +44,62 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const deliveryFee = subtotal > 0 ? 2.0 : 0;
   const total = subtotal - discount + tax + deliveryFee;
 
-  const handleApplyCoupon = async () => {
-    if (!couponCode) return;
+  // Load coupons and recommended items
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const loadDrawerFeatures = async () => {
+      try {
+        // 1. Fetch available coupons
+        const couponRes = await api.get("/admin/coupons");
+        if (couponRes.data.status === "success") {
+          const now = new Date();
+          const active = couponRes.data.data.filter((c: any) => {
+            const start = new Date(c.start_date);
+            const end = new Date(c.end_date);
+            return c.is_active && now >= start && now <= end;
+          });
+          setAvailableCoupons(active);
+        }
+
+        // 2. Fetch cart to find restaurant_id and fetch menu for recommendations
+        if (cartItems.length > 0) {
+          const cartRes = await api.get("/cart");
+          if (
+            cartRes.data.status === "success" &&
+            cartRes.data.data.restaurant_id
+          ) {
+            const restId = cartRes.data.data.restaurant_id;
+            const itemsRes = await api.get(`/restaurants/${restId}/items`);
+            if (itemsRes.data.status === "success") {
+              const menuItems = itemsRes.data.data || [];
+              const cartItemIds = cartItems.map((ci) => ci.id);
+              // Filter out items already in cart
+              const remaining = menuItems.filter(
+                (mi: any) => !cartItemIds.includes(mi.id),
+              );
+              setRecommendedItems(remaining.slice(0, 3)); // show top 3 recommendations
+            }
+          }
+        } else {
+          setRecommendedItems([]);
+        }
+      } catch (err) {
+        console.error("Load cart drawer enhancements failed:", err);
+      }
+    };
+
+    loadDrawerFeatures();
+  }, [isOpen, cartItems.length]);
+
+  const handleApplyCouponCode = async (code: string) => {
     try {
-      const response = await api.get(`/admin/coupons`); // Fetch active coupons list
+      const response = await api.get(`/admin/coupons`);
       if (response.data.status === "success") {
         const coupons = response.data.data;
         const coupon = coupons.find(
           (c: any) =>
-            c.code.toLowerCase() === couponCode.toLowerCase() && c.is_active,
+            c.code.toLowerCase() === code.toLowerCase() && c.is_active,
         );
 
         if (coupon) {
@@ -85,13 +138,12 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
           setDiscount(discountAmt);
           setAppliedCouponId(coupon.id);
+          setCouponCode(coupon.code);
 
           const discountMsg =
             coupon.discount_type === "percentage"
               ? `${coupon.discount_value}% discount applied.`
-              : `$${parseFloat(coupon.discount_value.toString()).toFixed(
-                  2,
-                )} discount applied.`;
+              : `$${parseFloat(coupon.discount_value.toString()).toFixed(2)} discount applied.`;
 
           toast.success("Coupon applied successfully!", {
             description: discountMsg,
@@ -104,6 +156,11 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
       console.error(error);
       toast.error("Failed to validate coupon.");
     }
+  };
+
+  const handleApplyCoupon = () => {
+    if (!couponCode) return;
+    handleApplyCouponCode(couponCode);
   };
 
   const handleCheckout = () => {
@@ -260,6 +317,84 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               Your basket is empty
             </div>
           )}
+
+          {/* Blinkit Recommended Items Section */}
+          {cartItems.length > 0 && recommendedItems.length > 0 && (
+            <div
+              style={{
+                marginTop: "32px",
+                borderTop: "2px dashed var(--glass-border)",
+                paddingTop: "20px",
+              }}
+            >
+              <h4
+                style={{
+                  margin: "0 0 12px 0",
+                  fontFamily: "var(--font-cohere)",
+                  fontSize: "0.95rem",
+                  color: "var(--text-slate)",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.5px",
+                }}
+              >
+                Add to your order?
+              </h4>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "10px",
+                }}
+              >
+                {recommendedItems.map((item) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                      padding: "12px",
+                      background: "rgba(25,25,25,0.02)",
+                      borderRadius: "8px",
+                      border: "1px solid var(--glass-border)",
+                    }}
+                  >
+                    <div>
+                      <div style={{ fontSize: "0.9rem", fontWeight: 700 }}>
+                        {item.name}
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "0.8rem",
+                          color: "var(--text-muted)",
+                        }}
+                      >
+                        ${parseFloat(item.price).toFixed(2)}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => addToCart(item)}
+                      style={{
+                        padding: "4px 10px",
+                        fontSize: "0.8rem",
+                        fontWeight: 700,
+                        border: "1px solid var(--accent-orange)",
+                        borderRadius: "4px",
+                        color: "var(--accent-orange)",
+                        background: "#fff",
+                        cursor: "pointer",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "4px",
+                      }}
+                    >
+                      <Plus size={12} /> ADD
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
 
         <div
@@ -270,6 +405,60 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             borderTop: "1px solid var(--glass-border)",
           }}
         >
+          {/* Coupon Browse list */}
+          {cartItems.length > 0 && availableCoupons.length > 0 && (
+            <div style={{ marginBottom: "16px" }}>
+              <div
+                style={{
+                  fontSize: "0.8rem",
+                  fontWeight: 700,
+                  color: "var(--text-muted)",
+                  marginBottom: "8px",
+                  textTransform: "uppercase",
+                }}
+              >
+                Available Coupons
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  gap: "8px",
+                  overflowX: "auto",
+                  paddingBottom: "4px",
+                }}
+              >
+                {availableCoupons.map((c) => (
+                  <button
+                    key={c.id}
+                    onClick={() => handleApplyCouponCode(c.code)}
+                    style={{
+                      background:
+                        appliedCouponId === c.id
+                          ? "rgba(76, 175, 80, 0.1)"
+                          : "#fff",
+                      border:
+                        appliedCouponId === c.id
+                          ? "1px solid #4CAF50"
+                          : "1px solid var(--glass-border)",
+                      color:
+                        appliedCouponId === c.id
+                          ? "#4CAF50"
+                          : "var(--text-slate)",
+                      borderRadius: "20px",
+                      padding: "4px 12px",
+                      fontSize: "0.75rem",
+                      fontWeight: 700,
+                      cursor: "pointer",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    🏷️ {c.code}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
           <div
             className="cart-drawer-coupon"
             style={{ display: "flex", gap: "12px", marginBottom: "24px" }}

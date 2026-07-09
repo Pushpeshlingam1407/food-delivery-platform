@@ -27,6 +27,34 @@ interface Order {
   customer_last_name: string;
 }
 
+const playOrderChime = () => {
+  try {
+    const AudioContext =
+      window.AudioContext || (window as any).webkitAudioContext;
+    if (!AudioContext) return;
+    const ctx = new AudioContext();
+
+    const playBeep = (time: number, freq: number, duration: number) => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(freq, time);
+      gain.gain.setValueAtTime(0.15, time);
+      gain.gain.exponentialRampToValueAtTime(0.0001, time + duration);
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+      osc.start(time);
+      osc.stop(time + duration);
+    };
+
+    const now = ctx.currentTime;
+    playBeep(now, 587.33, 0.35); // D5
+    playBeep(now + 0.15, 880, 0.5); // A5
+  } catch (err) {
+    console.error("Failed to play audio chime:", err);
+  }
+};
+
 export const Dashboard: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
   const [restaurantId, setRestaurantId] = useState<string | null>(null);
@@ -89,6 +117,7 @@ export const Dashboard: React.FC = () => {
 
     socket.on("newOrderReceived", (newOrder: Order) => {
       setOrders((prev) => [newOrder, ...prev]);
+      playOrderChime();
       toast.success("Incoming Order Received!", {
         description: `Order #${newOrder.order_number} for $${newOrder.item_total} placed.`,
         duration: 10000,

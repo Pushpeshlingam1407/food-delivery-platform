@@ -10,6 +10,8 @@ import {
 } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
+import { PremiumButton } from "../../../shared/components/PremiumButton";
+import { PremiumInput } from "../../../shared/components/PremiumInput";
 
 interface Owner {
   id: string;
@@ -176,7 +178,7 @@ export const OwnersManagement: React.FC = () => {
             outlets.
           </p>
         </div>
-        <button
+        <PremiumButton
           onClick={() => {
             if (showAddForm) resetForm();
             else {
@@ -184,11 +186,11 @@ export const OwnersManagement: React.FC = () => {
               setShowAddForm(true);
             }
           }}
-          className="btn-premium"
-          style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          variant="secondary"
+          style={{ width: "auto", display: "inline-flex", gap: "8px" }}
         >
           <Plus size={18} /> {showAddForm ? "Cancel" : "Add Owner"}
-        </button>
+        </PremiumButton>
       </div>
 
       {showAddForm && (
@@ -198,68 +200,51 @@ export const OwnersManagement: React.FC = () => {
         >
           <div className="panel-heading">Register New Restaurant Owner</div>
           <form onSubmit={handleCreateOwner} className="form-grid">
-            <div className="form-field">
-              <label>First Name</label>
-              <input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-                placeholder="Rajesh"
-                className="input-premium"
-              />
+            <PremiumInput
+              label="First Name"
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+              placeholder="Rajesh"
+            />
+            <PremiumInput
+              label="Last Name"
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+              placeholder="Kumar"
+            />
+            <PremiumInput
+              label="Email Address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="rajesh.owner1@example.com"
+            />
+            <PremiumInput
+              label="Phone Number"
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+              placeholder="+918765432101"
+            />
+            <PremiumInput
+              label="Login Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="••••••••"
+            />
+            <div style={{ gridColumn: "span 2", marginTop: "12px" }}>
+              <PremiumButton type="submit">
+                Register Owner Account
+              </PremiumButton>
             </div>
-            <div className="form-field">
-              <label>Last Name</label>
-              <input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-                placeholder="Kumar"
-                className="input-premium"
-              />
-            </div>
-            <div className="form-field">
-              <label>Email Address</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                placeholder="rajesh.owner1@example.com"
-                className="input-premium"
-              />
-            </div>
-            <div className="form-field">
-              <label>Phone Number</label>
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                placeholder="+918765432101"
-                className="input-premium"
-              />
-            </div>
-            <div className="form-field">
-              <label>Login Password</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                placeholder="••••••••"
-                className="input-premium"
-              />
-            </div>
-            <button
-              type="submit"
-              className="btn-premium button-stretch"
-              style={{ marginTop: "12px" }}
-            >
-              Register Owner Account
-            </button>
           </form>
         </div>
       )}
@@ -271,52 +256,50 @@ export const OwnersManagement: React.FC = () => {
         >
           <div className="panel-heading">Edit Owner Account Details</div>
           <form onSubmit={handleUpdateOwner} className="form-grid">
+            <PremiumInput
+              label="First Name"
+              type="text"
+              value={firstName}
+              onChange={(e) => setFirstName(e.target.value)}
+              required
+            />
+            <PremiumInput
+              label="Last Name"
+              type="text"
+              value={lastName}
+              onChange={(e) => setLastName(e.target.value)}
+              required
+            />
+            <PremiumInput
+              label="Email Address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <PremiumInput
+              label="Phone Number"
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              required
+            />
             <div className="form-field">
-              <label>First Name</label>
-              <input
-                type="text"
-                value={firstName}
-                onChange={(e) => setFirstName(e.target.value)}
-                required
-                className="input-premium"
-              />
-            </div>
-            <div className="form-field">
-              <label>Last Name</label>
-              <input
-                type="text"
-                value={lastName}
-                onChange={(e) => setLastName(e.target.value)}
-                required
-                className="input-premium"
-              />
-            </div>
-            <div className="form-field">
-              <label>Email Address</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="input-premium"
-              />
-            </div>
-            <div className="form-field">
-              <label>Phone Number</label>
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                className="input-premium"
-              />
-            </div>
-            <div className="form-field">
-              <label>Account Status</label>
+              <label
+                style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 700,
+                  color: "var(--text-slate)",
+                  textTransform: "uppercase",
+                }}
+              >
+                Account Status
+              </label>
               <select
                 value={status}
                 onChange={(e: any) => setStatus(e.target.value)}
                 className="input-premium"
+                style={{ marginTop: "6px" }}
               >
                 <option value="active">Active</option>
                 <option value="inactive">Inactive</option>
@@ -353,17 +336,17 @@ export const OwnersManagement: React.FC = () => {
                 marginTop: "12px",
               }}
             >
-              <button type="submit" className="btn-premium" style={{ flex: 1 }}>
+              <PremiumButton type="submit" style={{ flex: 1 }}>
                 Save Profile Changes
-              </button>
-              <button
+              </PremiumButton>
+              <PremiumButton
                 type="button"
                 onClick={resetForm}
-                className="btn-premium"
-                style={{ background: "var(--text-slate)", flex: 1 }}
+                variant="secondary"
+                style={{ flex: 1 }}
               >
                 Cancel
-              </button>
+              </PremiumButton>
             </div>
           </form>
         </div>

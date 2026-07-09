@@ -407,6 +407,7 @@ export const AppRoutes: React.FC = () => {
         cartItems={cartList}
         updateQty={updateQty}
         clearCart={clearCart}
+        addToCart={addToCart}
       />
     </BrowserRouter>
   );

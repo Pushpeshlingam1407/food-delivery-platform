@@ -831,12 +831,10 @@ export async function createOwner(req, res) {
       [email, phone],
     );
     if (existing.length > 0) {
-      return res
-        .status(400)
-        .json({
-          status: "error",
-          message: "Owner email or phone already exists",
-        });
+      return res.status(400).json({
+        status: "error",
+        message: "Owner email or phone already exists",
+      });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
