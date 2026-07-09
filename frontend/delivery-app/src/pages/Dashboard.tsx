@@ -11,6 +11,8 @@ import {
   FileText,
   Wallet,
   ArrowDownLeft,
+  TrendingUp,
+  CheckCircle,
 } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
@@ -52,6 +54,10 @@ export const Dashboard: React.FC = () => {
   const [activeOrderItems, setActiveOrderItems] = useState<any[]>([]);
   const [deliveryTimer, setDeliveryTimer] = useState(600); // 10 mins
   const [gpsProgress, setGpsProgress] = useState(0);
+
+
+  const [completedDeliveriesCount, setCompletedDeliveriesCount] = useState(0);
+  const [totalEarningAmt, setTotalEarningAmt] = useState(0);
 
   useEffect(() => {
     if (activeJob) {
@@ -103,42 +109,58 @@ export const Dashboard: React.FC = () => {
     return `${isNegative ? "-" : ""}${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
-  useEffect(() => {
-    const fetchDriverStats = async () => {
-      try {
-        const meRes = await api.get("/auth/me");
-        if (meRes.data.status === "success" && meRes.data.data) {
-          setIsOnline(!!meRes.data.data.is_online);
-        }
-
-        const walletRes = await api.get("/wallets");
-        if (walletRes.data.status === "success") {
-          setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
-          setTransactions(walletRes.data.data.transactions || []);
-        }
-
-        const ordersRes = await api.get("/orders");
-        if (ordersRes.data.status === "success") {
-          const allOrders = ordersRes.data.data;
-
-          // Filter jobs ready for pickup
-          setJobs(
-            allOrders.filter((o: any) => o.status === "ready_for_pickup"),
-          );
-
-          // Find if there is an active delivery job currently assigned to this driver
-          const active = allOrders.find(
-            (o: any) => o.status === "out_for_delivery",
-          );
-          if (active) {
-            setActiveJob(active);
-          }
-        }
-      } catch (err) {
-        console.error("Fetch driver stats failed:", err);
+  const fetchDriverStats = async () => {
+    try {
+      const meRes = await api.get("/auth/me");
+      let currentDriverId = "";
+      if (meRes.data.status === "success" && meRes.data.data) {
+        setIsOnline(!!meRes.data.data.is_online);
+        currentDriverId = meRes.data.data.id;
       }
-    };
 
+      const walletRes = await api.get("/wallets");
+      if (walletRes.data.status === "success") {
+        setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
+        setTransactions(walletRes.data.data.transactions || []);
+      }
+
+      const ordersRes = await api.get("/orders");
+      if (ordersRes.data.status === "success") {
+        const allOrders = ordersRes.data.data;
+
+        // Filter jobs ready for pickup
+        setJobs(allOrders.filter((o: any) => o.status === "ready_for_pickup"));
+
+        // Find if there is an active delivery job currently assigned to this driver
+        const active = allOrders.find(
+          (o: any) => o.status === "out_for_delivery",
+        );
+        if (active) {
+          setActiveJob(active);
+        }
+
+        // Calculate statistics
+        if (currentDriverId) {
+          const completed = allOrders.filter(
+            (o: any) =>
+              o.status === "delivered" &&
+              o.delivery_partner_id === currentDriverId,
+          );
+          setCompletedDeliveriesCount(completed.length);
+          const totalEarnings = completed.reduce(
+            (sum: number, o: any) =>
+              sum + parseFloat(o.delivery_charges || "0"),
+            0,
+          );
+          setTotalEarningAmt(totalEarnings);
+        }
+      }
+    } catch (err) {
+      console.error("Fetch driver stats failed:", err);
+    }
+  };
+
+  useEffect(() => {
     fetchDriverStats();
 
     // Bind Socket.IO client connections
@@ -173,19 +195,12 @@ export const Dashboard: React.FC = () => {
         status: "out_for_delivery",
       });
       if (response.data.status === "success") {
-        const ordersRes = await api.get("/orders");
-        if (ordersRes.data.status === "success") {
-          const updatedOrder = ordersRes.data.data.find(
-            (o: any) => o.id === orderId,
-          );
-          setActiveJob(updatedOrder);
-          setJobs((prev) => prev.filter((j) => j.id !== orderId));
-          setDeliveryStep("accepted");
-          localStorage.setItem(`delivery_step_${orderId}`, "accepted");
-          toast.success(
-            "Logistics job accepted! Start heading to the restaurant.",
-          );
-        }
+        await fetchDriverStats();
+        setDeliveryStep("accepted");
+        localStorage.setItem(`delivery_step_${orderId}`, "accepted");
+        toast.success(
+          "Logistics job accepted! Start heading to the restaurant.",
+        );
       }
     } catch (err) {
       toast.error("Failed to accept job.");
@@ -204,12 +219,7 @@ export const Dashboard: React.FC = () => {
           description: "Delivery earnings credited to your wallet.",
         });
 
-        // Refresh wallet balance
-        const walletRes = await api.get("/wallets");
-        if (walletRes.data.status === "success") {
-          setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
-          setTransactions(walletRes.data.data.transactions || []);
-        }
+        await fetchDriverStats();
       }
     } catch (err) {
       toast.error("Failed to complete delivery.");
@@ -243,12 +253,7 @@ export const Dashboard: React.FC = () => {
         toast.success("Payout transfer completed successfully!");
         setPayoutAmount("");
 
-        // Refresh stats
-        const walletRes = await api.get("/wallets");
-        if (walletRes.data.status === "success") {
-          setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
-          setTransactions(walletRes.data.data.transactions || []);
-        }
+        await fetchDriverStats();
       }
     } catch (err: any) {
       toast.error(err.response?.data?.message || "Failed to trigger payout.");
@@ -488,6 +493,244 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Grid Stats matching restaurant app's Earnings.tsx */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "24px",
+          marginBottom: "40px",
+        }}
+      >
+        {/* Gross Revenue / Total Earnings */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #fefcf9 100%)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "20px",
+            padding: "28px",
+            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "16px",
+            }}
+          >
+            <span
+              style={{
+                color: "var(--text-muted)",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                letterSpacing: "0.05em",
+              }}
+            >
+              GROSS EARNINGS
+            </span>
+            <div
+              style={{
+                background: "rgba(255, 90, 31, 0.08)",
+                padding: "8px",
+                borderRadius: "12px",
+              }}
+            >
+              <TrendingUp size={20} color="var(--accent-orange)" />
+            </div>
+          </div>
+          <div
+            style={{
+              fontSize: "2.2rem",
+              fontWeight: 800,
+              color: "var(--text-slate)",
+            }}
+          >
+            ₹{totalEarningAmt.toFixed(2)}
+          </div>
+          <div
+            style={{
+              fontSize: "0.85rem",
+              color: "var(--text-muted)",
+              marginTop: "8px",
+            }}
+          >
+            Total delivery payouts earned
+          </div>
+        </div>
+
+        {/* Current Settlement Balance */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #fafffa 100%)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "20px",
+            padding: "28px",
+            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "16px",
+            }}
+          >
+            <span
+              style={{
+                color: "var(--text-muted)",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                letterSpacing: "0.05em",
+              }}
+            >
+              SETTLEMENT BALANCE
+            </span>
+            <div
+              style={{
+                background: "rgba(76, 175, 80, 0.08)",
+                padding: "8px",
+                borderRadius: "12px",
+              }}
+            >
+              <CheckCircle size={20} color="#4CAF50" />
+            </div>
+          </div>
+          <div
+            style={{ fontSize: "2.2rem", fontWeight: 800, color: "#4CAF50" }}
+          >
+            ₹{walletBalance.toFixed(2)}
+          </div>
+          <div
+            style={{
+              fontSize: "0.85rem",
+              color: "var(--text-muted)",
+              marginTop: "8px",
+            }}
+          >
+            Available in your driver wallet
+          </div>
+        </div>
+
+        {/* Completed Deliveries */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #fafcff 100%)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "20px",
+            padding: "28px",
+            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "16px",
+            }}
+          >
+            <span
+              style={{
+                color: "var(--text-muted)",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                letterSpacing: "0.05em",
+              }}
+            >
+              COMPLETED JOBS
+            </span>
+            <div
+              style={{
+                background: "rgba(138, 43, 226, 0.08)",
+                padding: "8px",
+                borderRadius: "12px",
+              }}
+            >
+              <Truck size={20} color="var(--accent-violet)" />
+            </div>
+          </div>
+          <div
+            style={{
+              fontSize: "2.2rem",
+              fontWeight: 800,
+              color: "var(--text-slate)",
+            }}
+          >
+            {completedDeliveriesCount}
+          </div>
+          <div
+            style={{
+              fontSize: "0.85rem",
+              color: "var(--text-muted)",
+              marginTop: "8px",
+            }}
+          >
+            Successfully delivered orders
+          </div>
+        </div>
+
+        {/* Online Shift Status */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #fcfcfe 100%)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "20px",
+            padding: "28px",
+            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
+          }}
+        >
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "16px",
+            }}
+          >
+            <span
+              style={{
+                color: "var(--text-muted)",
+                fontSize: "0.85rem",
+                fontWeight: 700,
+                letterSpacing: "0.05em",
+              }}
+            >
+              SHIFT STATUS
+            </span>
+            <div
+              style={{
+                background: "rgba(0, 0, 0, 0.04)",
+                padding: "8px",
+                borderRadius: "12px",
+              }}
+            >
+              <Power size={20} color="var(--text-slate)" />
+            </div>
+          </div>
+          <div
+            style={{
+              fontSize: "2.2rem",
+              fontWeight: 800,
+              color: isOnline ? "#4CAF50" : "#F44336",
+            }}
+          >
+            {isOnline ? "ONLINE" : "OFFLINE"}
+          </div>
+          <div
+            style={{
+              fontSize: "0.85rem",
+              color: "var(--text-muted)",
+              marginTop: "8px",
+            }}
+          >
+            Toggle shifts using status button
+          </div>
+        </div>
+      </div>
+
       {/* Active delivery job card */}
       {activeJob && (
         <div
@@ -549,7 +792,8 @@ export const Dashboard: React.FC = () => {
                       fontFamily: "monospace",
                     }}
                   >
-                    ⏱️ Deliver in: {formatTime(deliveryTimer)}
+                    ⏱️ Deliver in: {formatTime(deliveryTimer)} (GPS Progress:{" "}
+                    {gpsProgress}%)
                   </span>
                 )}
               </div>

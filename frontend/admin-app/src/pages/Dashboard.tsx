@@ -164,62 +164,142 @@ export const Dashboard: React.FC = () => {
         </p>
       </div>
 
-      {/* Analytics Grid */}
-      <div className="dashboard-grid section-spacing">
-        <div className="panel-card">
-          <div className="card-banner">SYSTEM PORTS & DB STATUS</div>
-          <div className="card-stack">
-            <div className="panel-row">
-              <span>🔌 Backend Port:</span>
-              <strong className="text-success">
-                {health?.server_port || 5000} (ONLINE)
-              </strong>
+      {/* Analytics Grid - Premium Cards matching restaurant/delivery apps */}
+      <div
+        style={{
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+          gap: "24px",
+          marginBottom: "40px",
+        }}
+      >
+        {/* System Status */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #fcfcfe 100%)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "20px",
+            padding: "28px",
+            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
+              SYSTEM STATUS
+            </span>
+            <div style={{ background: "rgba(76, 175, 80, 0.08)", padding: "8px", borderRadius: "12px" }}>
+              <ShieldAlert size={20} color="#4CAF50" />
             </div>
-            <div className="panel-row">
-              <span>🗄️ MySQL Port:</span>
-              <strong
-                className={
-                  health?.database === "connected"
-                    ? "text-success"
-                    : "text-danger"
-                }
-              >
-                {health?.database_port || 3306} (
-                {health?.database?.toUpperCase() || "CONNECTED"})
-              </strong>
-            </div>
+          </div>
+          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: health?.database === "connected" ? "#4CAF50" : "#F44336" }}>
+            {health?.database === "connected" ? "HEALTHY" : "DOWN"}
+          </div>
+          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
+            Port {health?.server_port || 5000} · MySQL {health?.database_port || 3306}
           </div>
         </div>
 
-        <div className="panel-card">
-          <div className="card-banner">CAPTURED REVENUE</div>
-          <div className="stat-value text-success">
-            <DollarSign size={24} />
-            {analytics?.total_payments_captured.toFixed(2)}
+        {/* Captured Revenue */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #fefcf9 100%)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "20px",
+            padding: "28px",
+            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
+              CAPTURED REVENUE
+            </span>
+            <div style={{ background: "rgba(255, 90, 31, 0.08)", padding: "8px", borderRadius: "12px" }}>
+              <DollarSign size={20} color="var(--accent-orange)" />
+            </div>
+          </div>
+          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--text-slate)" }}>
+            ₹{analytics?.total_payments_captured.toFixed(2)}
+          </div>
+          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
+            Total platform payment volume
           </div>
         </div>
 
-        <div className="panel-card">
-          <div className="card-banner">COMPLETED ORDERS</div>
-          <div className="stat-value">
-            <Award size={24} color="var(--accent-orange)" />
+        {/* Completed Orders */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #fafffa 100%)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "20px",
+            padding: "28px",
+            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
+              COMPLETED ORDERS
+            </span>
+            <div style={{ background: "rgba(255, 90, 31, 0.08)", padding: "8px", borderRadius: "12px" }}>
+              <Award size={20} color="var(--accent-orange)" />
+            </div>
+          </div>
+          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--text-slate)" }}>
             {analytics?.total_orders}
           </div>
-        </div>
-
-        <div className="panel-card">
-          <div className="card-banner">ACTIVE RESTAURANTS</div>
-          <div className="stat-value">
-            <Store size={24} color="var(--accent-violet)" />
-            {analytics?.total_restaurants}
+          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
+            Orders fulfilled across the platform
           </div>
         </div>
 
-        <div className="panel-card">
-          <div className="card-banner">PLATFORM USERS</div>
-          <div className="stat-value">
-            <Users size={24} color="var(--accent-orange)" />
+        {/* Active Restaurants */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #fafcff 100%)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "20px",
+            padding: "28px",
+            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
+              ACTIVE RESTAURANTS
+            </span>
+            <div style={{ background: "rgba(138, 43, 226, 0.08)", padding: "8px", borderRadius: "12px" }}>
+              <Store size={20} color="var(--accent-violet)" />
+            </div>
+          </div>
+          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--text-slate)" }}>
+            {analytics?.total_restaurants}
+          </div>
+          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
+            Verified partner restaurants
+          </div>
+        </div>
+
+        {/* Platform Users */}
+        <div
+          style={{
+            background: "linear-gradient(135deg, #ffffff 0%, #fcfcfe 100%)",
+            border: "1px solid var(--glass-border)",
+            borderRadius: "20px",
+            padding: "28px",
+            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
+            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
+              PLATFORM USERS
+            </span>
+            <div style={{ background: "rgba(255, 90, 31, 0.08)", padding: "8px", borderRadius: "12px" }}>
+              <Users size={20} color="var(--accent-orange)" />
+            </div>
+          </div>
+          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--text-slate)" }}>
             {analytics?.total_users}
+          </div>
+          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
+            Registered customers and partners
           </div>
         </div>
       </div>
