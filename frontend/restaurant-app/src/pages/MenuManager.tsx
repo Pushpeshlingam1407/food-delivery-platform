@@ -224,88 +224,38 @@ export const MenuManager: React.FC = () => {
             {menuItems.map((item) => {
               const cat = categories.find((c) => c.id === item.category_id);
               return (
-                <div key={item.id} className="menu-manager-item">
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "16px",
-                      alignItems: "center",
-                    }}
-                  >
-                    {item.image_url && (
-                      <img
-                        src={item.image_url}
-                        alt={item.name}
-                        style={{
-                          width: "70px",
-                          height: "70px",
-                          borderRadius: "8px",
-                          objectFit: "cover",
-                          border: "1px solid var(--glass-border)",
-                        }}
-                      />
+                <div key={item.id} className="restaurant-menu-card">
+                  <div className="menu-card-image">
+                    {item.image_url ? (
+                      <img src={item.image_url} alt={item.name} />
+                    ) : (
+                      <div className="menu-card-image-placeholder">No Image</div>
                     )}
-                    <div className="menu-manager-item-meta">
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "12px",
-                          marginBottom: "8px",
-                          flexWrap: "wrap",
-                        }}
+                  </div>
+
+                  <div className="menu-card-body">
+                    <div className="menu-card-topline">
+                      <span
+                        className={`menu-card-badge ${
+                          item.is_veg ? "menu-card-badge--veg" : "menu-card-badge--nonveg"
+                        }`}
                       >
-                        <span
-                          style={{
-                            border: `1px solid ${item.is_veg ? "#4CAF50" : "#F44336"}`,
-                            padding: "2px 6px",
-                            fontSize: "0.65rem",
-                            fontWeight: 800,
-                            color: item.is_veg ? "#4CAF50" : "#F44336",
-                          }}
-                        >
-                          {item.is_veg ? "VEG 🌱" : "NON-VEG 🍖"}
-                        </span>
-                        <h4
-                          style={{
-                            fontFamily: "var(--font-cohere)",
-                            fontSize: "1.15rem",
-                            margin: 0,
-                          }}
-                        >
-                          {item.name}
-                        </h4>
-                        <span
-                          style={{
-                            fontSize: "0.85rem",
-                            color: "var(--text-muted)",
-                          }}
-                        >
-                          ({cat?.name || "Unassigned"})
-                        </span>
-                      </div>
-                      <p
-                        style={{
-                          color: "var(--text-muted)",
-                          fontSize: "0.9rem",
-                          margin: "0 0 8px 0",
-                        }}
-                      >
-                        {item.description || "No description provided."}
-                      </p>
-                      <div
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "12px",
-                        }}
-                      >
-                        <strong
-                          style={{
-                            fontSize: "1.1rem",
-                            color: "var(--text-slate)",
-                          }}
-                        >
+                        {item.is_veg ? "VEG 🌱" : "NON-VEG 🍖"}
+                      </span>
+                      <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginLeft: "4px" }}>
+                        ({cat?.name || "Unassigned"})
+                      </span>
+                    </div>
+
+                    <h4 className="menu-card-title">{item.name}</h4>
+
+                    <p className="menu-card-description">
+                      {item.description || "No description provided."}
+                    </p>
+
+                    <div className="menu-card-footer">
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                        <strong className="menu-card-price">
                           ${parseFloat(item.price.toString()).toFixed(2)}
                         </strong>
                         <span
@@ -317,60 +267,61 @@ export const MenuManager: React.FC = () => {
                             borderRadius: "4px",
                           }}
                         >
-                          Stock:{" "}
-                          {item.unlimited
-                            ? "Unlimited"
-                            : item.available_quantity}
+                          Stock: {item.unlimited ? "Unlimited" : item.available_quantity}
                         </span>
                       </div>
+
+                      <div className="menu-manager-item-actions">
+                        <label
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            checked={!!item.is_available}
+                            onChange={() =>
+                              toggleItemAvailability(item.id, !!item.is_available)
+                            }
+                            style={{ width: "16px", height: "16px" }}
+                          />
+                          <span style={{ fontSize: "0.9rem", fontWeight: 600 }}>
+                            Available
+                          </span>
+                        </label>
+
+                        <button
+                          onClick={() => startEdit(item)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            color: "var(--text-slate)",
+                            display: "inline-flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Edit2 size={16} />
+                        </button>
+
+                        <button
+                          onClick={() => handleDeleteItem(item.id)}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            color: "#F44336",
+                            display: "inline-flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-
-                  <div className="menu-manager-item-actions">
-                    <label
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "8px",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <input
-                        type="checkbox"
-                        checked={item.is_available}
-                        onChange={() =>
-                          toggleItemAvailability(item.id, item.is_available)
-                        }
-                        style={{ width: "16px", height: "16px" }}
-                      />
-                      <span style={{ fontSize: "0.9rem", fontWeight: 600 }}>
-                        Available
-                      </span>
-                    </label>
-
-                    <button
-                      onClick={() => startEdit(item)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "var(--text-slate)",
-                      }}
-                    >
-                      <Edit2 size={18} />
-                    </button>
-
-                    <button
-                      onClick={() => handleDeleteItem(item.id)}
-                      style={{
-                        background: "none",
-                        border: "none",
-                        cursor: "pointer",
-                        color: "#F44336",
-                      }}
-                    >
-                      <Trash2 size={18} />
-                    </button>
                   </div>
                 </div>
               );
