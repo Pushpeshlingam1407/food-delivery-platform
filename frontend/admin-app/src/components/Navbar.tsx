@@ -95,6 +95,18 @@ export const Navbar: React.FC<NavbarProps> = ({
             Stores
           </Link>
           <Link
+            to="/owners"
+            style={{
+              textDecoration: "none",
+              color: "var(--text-slate)",
+              fontWeight: 600,
+              fontSize: "0.95rem",
+              fontFamily: "var(--font-cohere)",
+            }}
+          >
+            Owners
+          </Link>
+          <Link
             to="/customers"
             style={{
               textDecoration: "none",
@@ -274,6 +286,17 @@ export const Navbar: React.FC<NavbarProps> = ({
               }}
             >
               Stores Management
+            </Link>
+            <Link
+              to="/owners"
+              onClick={() => setMenuOpen(false)}
+              style={{
+                textDecoration: "none",
+                color: "var(--text-slate)",
+                fontWeight: 600,
+              }}
+            >
+              Owners Management
             </Link>
             <Link
               to="/customers"

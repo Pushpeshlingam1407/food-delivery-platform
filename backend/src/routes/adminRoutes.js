@@ -24,6 +24,10 @@ import {
   getMenuImages,
   createMenuImage,
   deleteMenuImage,
+  getOwners,
+  createOwner,
+  updateOwner,
+  deleteOwner,
 } from "../controllers/adminController.js";
 import { authenticateJWT } from "../middlewares/auth.js";
 
@@ -40,6 +44,12 @@ router.put("/restaurants/:id/verify", authenticateJWT, verifyRestaurant);
 router.get("/customers", authenticateJWT, getCustomers);
 router.put("/customers/:id", authenticateJWT, updateCustomer);
 router.delete("/customers/:id", authenticateJWT, deleteCustomer);
+
+// Owners CRUD
+router.get("/owners", authenticateJWT, getOwners);
+router.post("/owners", authenticateJWT, createOwner);
+router.put("/owners/:id", authenticateJWT, updateOwner);
+router.delete("/owners/:id", authenticateJWT, deleteOwner);
 
 // Drivers CRUD
 router.get("/drivers", authenticateJWT, getDrivers);

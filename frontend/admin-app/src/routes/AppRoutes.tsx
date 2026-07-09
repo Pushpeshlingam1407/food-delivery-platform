@@ -11,6 +11,7 @@ import { CustomersManagement } from "../pages/CustomersManagement";
 import { DriversManagement } from "../pages/DriversManagement";
 import { OrdersManagement } from "../pages/OrdersManagement";
 import { ImagesManagement } from "../pages/ImagesManagement";
+import { OwnersManagement } from "../pages/OwnersManagement";
 
 export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
@@ -49,6 +50,10 @@ export const AppRoutes: React.FC = () => {
           element={
             userEmail ? <CustomersManagement /> : <Navigate to="/login" />
           }
+        />
+        <Route
+          path="/owners"
+          element={userEmail ? <OwnersManagement /> : <Navigate to="/login" />}
         />
         <Route
           path="/drivers"

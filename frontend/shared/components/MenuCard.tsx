@@ -122,4 +122,3 @@ export const MenuCard: React.FC<MenuCardProps> = ({
     </div>
   );
 };
-

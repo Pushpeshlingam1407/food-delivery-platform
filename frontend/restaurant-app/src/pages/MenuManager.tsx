@@ -230,7 +230,7 @@ export const MenuManager: React.FC = () => {
                 description: item.description || undefined,
                 image_url: item.image_url || undefined,
                 available_quantity: item.available_quantity ?? undefined,
-                unlimited: item.unlimited
+                unlimited: item.unlimited,
               };
 
               return (

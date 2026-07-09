@@ -1,4 +1,5 @@
 import crypto from "crypto";
+import bcrypt from "bcryptjs";
 import pool from "../config/db.js";
 
 export async function verifyRestaurant(req, res) {
@@ -782,6 +783,129 @@ export async function deleteMenuImage(req, res) {
       .json({ status: "success", message: "Menu image deleted" });
   } catch (error) {
     console.error("Delete menu image error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+// -------------------------------------------------------------
+// Admin Restaurant Owners CRUD
+// -------------------------------------------------------------
+
+export async function getOwners(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  try {
+    const [rows] = await pool.query(
+      `SELECT u.id, u.first_name, u.last_name, u.email, u.phone, u.status, u.is_verified, u.created_at, 
+              r.id as restaurant_id, r.name as restaurant_name 
+       FROM users u 
+       LEFT JOIN restaurants r ON u.id = r.owner_id AND r.deleted_at IS NULL
+       WHERE u.role_id = 3 AND u.deleted_at IS NULL`,
+    );
+    return res.status(200).json({ status: "success", data: rows });
+  } catch (error) {
+    console.error("Get owners error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function createOwner(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { first_name, last_name, email, phone, password } = req.body;
+  if (!first_name || !last_name || !email || !phone || !password) {
+    return res
+      .status(400)
+      .json({ status: "error", message: "All fields are required" });
+  }
+
+  try {
+    const [existing] = await pool.query(
+      "SELECT id FROM users WHERE email = ? OR phone = ?",
+      [email, phone],
+    );
+    if (existing.length > 0) {
+      return res
+        .status(400)
+        .json({
+          status: "error",
+          message: "Owner email or phone already exists",
+        });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const userId = crypto.randomUUID();
+
+    await pool.query(
+      `INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, is_verified) 
+       VALUES (?, 3, ?, ?, ?, ?, ?, TRUE)`,
+      [userId, first_name, last_name, email, phone, hashedPassword],
+    );
+
+    return res.status(201).json({
+      status: "success",
+      message: "Restaurant owner registered successfully",
+      data: { id: userId, email },
+    });
+  } catch (error) {
+    console.error("Create owner error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function updateOwner(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  const { first_name, last_name, email, phone, status, is_verified } = req.body;
+
+  try {
+    await pool.query(
+      `UPDATE users SET 
+        first_name = COALESCE(?, first_name), 
+        last_name = COALESCE(?, last_name), 
+        email = COALESCE(?, email), 
+        phone = COALESCE(?, phone), 
+        status = COALESCE(?, status), 
+        is_verified = COALESCE(?, is_verified) 
+       WHERE id = ?`,
+      [first_name, last_name, email, phone, status, is_verified, id],
+    );
+    return res
+      .status(200)
+      .json({ status: "success", message: "Owner profile updated" });
+  } catch (error) {
+    console.error("Update owner error:", error);
+    return res
+      .status(500)
+      .json({ status: "error", message: "Internal server error" });
+  }
+}
+
+export async function deleteOwner(req, res) {
+  if (!req.user || req.user.role !== "admin") {
+    return res.status(403).json({ status: "error", message: "Forbidden" });
+  }
+  const { id } = req.params;
+  try {
+    await pool.query(
+      "UPDATE users SET deleted_at = CURRENT_TIMESTAMP WHERE id = ?",
+      [id],
+    );
+    return res
+      .status(200)
+      .json({ status: "success", message: "Owner deleted" });
+  } catch (error) {
+    console.error("Delete owner error:", error);
     return res
       .status(500)
       .json({ status: "error", message: "Internal server error" });
