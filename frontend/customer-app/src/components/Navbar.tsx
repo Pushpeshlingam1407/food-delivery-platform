@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import {
   ShoppingBag,
   User,
@@ -34,6 +34,8 @@ export const Navbar: React.FC<NavbarProps> = ({
 }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [walletDropdownOpen, setWalletDropdownOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   return (
     <>
@@ -82,13 +84,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Desktop Search Input Bar */}
-          <SearchBar
-            className="navbar-desktop-only"
-            placeholder="Search restaurants, cuisines..."
-            value={searchQuery}
-            onSearchChange={onSearchChange}
-            containerStyle={{ width: "320px" }}
-          />
+          {isHomePage && (
+            <SearchBar
+              className="navbar-desktop-only"
+              placeholder="Search restaurants, cuisines..."
+              value={searchQuery}
+              onSearchChange={onSearchChange}
+              containerStyle={{ width: "320px" }}
+            />
+          )}
 
           {/* Action items */}
           <div
@@ -312,13 +316,15 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile Search Input Bar */}
-          <SearchBar
-            placeholder="Search restaurants, cuisines..."
-            value={searchQuery}
-            onSearchChange={onSearchChange}
-            containerStyle={{ padding: "10px 16px", width: "100%" }}
-            style={{ fontSize: "0.95rem" }}
-          />
+          {isHomePage && (
+            <SearchBar
+              placeholder="Search restaurants, cuisines..."
+              value={searchQuery}
+              onSearchChange={onSearchChange}
+              containerStyle={{ padding: "10px 16px", width: "100%" }}
+              style={{ fontSize: "0.95rem" }}
+            />
+          )}
         </div>
       </nav>
 

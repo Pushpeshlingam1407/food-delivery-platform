@@ -251,7 +251,7 @@ export async function updateCartItem(req, res) {
     const cartId = await getOrCreateCart(req.user.userId);
 
     const [rows] = await pool.query(
-      "SELECT * FROM cart_items WHERE id = ? AND cart_id = ?",
+      "SELECT * FROM cart_items WHERE menu_id = ? AND cart_id = ?",
       [itemId, cartId],
     );
     const cartItems = rows;
@@ -262,11 +262,12 @@ export async function updateCartItem(req, res) {
     }
 
     if (quantity === 0) {
-      await pool.query("DELETE FROM cart_items WHERE id = ?", [itemId]);
+      await pool.query("DELETE FROM cart_items WHERE menu_id = ? AND cart_id = ?", [itemId, cartId]);
     } else {
-      await pool.query("UPDATE cart_items SET quantity = ? WHERE id = ?", [
+      await pool.query("UPDATE cart_items SET quantity = ? WHERE menu_id = ? AND cart_id = ?", [
         quantity,
         itemId,
+        cartId,
       ]);
     }
 
@@ -302,7 +303,7 @@ export async function removeFromCart(req, res) {
     const cartId = await getOrCreateCart(req.user.userId);
 
     const [rows] = await pool.query(
-      "SELECT id FROM cart_items WHERE id = ? AND cart_id = ?",
+      "SELECT id FROM cart_items WHERE menu_id = ? AND cart_id = ?",
       [itemId, cartId],
     );
     if (rows.length === 0) {
@@ -311,7 +312,7 @@ export async function removeFromCart(req, res) {
         .json({ status: "error", message: "Item not found in your cart" });
     }
 
-    await pool.query("DELETE FROM cart_items WHERE id = ?", [itemId]);
+    await pool.query("DELETE FROM cart_items WHERE menu_id = ? AND cart_id = ?", [itemId, cartId]);
 
     const [countRows] = await pool.query(
       "SELECT COUNT(*) as count FROM cart_items WHERE cart_id = ?",
