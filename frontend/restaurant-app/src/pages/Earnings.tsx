@@ -202,243 +202,68 @@ export const Earnings: React.FC = () => {
         }}
       >
         {/* Main Financial Cards Row */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-            gap: "24px",
-          }}
-        >
+        <div className="stat-grid">
           {/* Gross Sales */}
-          <div
-            style={{
-              background: "linear-gradient(135deg, #ffffff 0%, #fefcf9 100%)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "20px",
-              padding: "28px",
-              boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "16px",
-              }}
-            >
-              <span
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.05em",
-                }}
-              >
-                GROSS REVENUE
-              </span>
-              <div
-                style={{
-                  background: "rgba(255, 90, 31, 0.08)",
-                  padding: "8px",
-                  borderRadius: "12px",
-                }}
-              >
+          <div className="stat-card stat-card--warm">
+            <div className="stat-card__header">
+              <span className="stat-card__label">GROSS REVENUE</span>
+              <div className="stat-card__icon stat-card__icon--orange">
                 <TrendingUp size={20} color="var(--accent-orange)" />
               </div>
             </div>
-            <div
-              style={{
-                fontSize: "2.2rem",
-                fontWeight: 800,
-                color: "var(--text-slate)",
-              }}
-            >
+            <div className="stat-card__value">
               ₹{parseFloat(summary?.gross_sales?.toString() || "0").toFixed(2)}
             </div>
-            <div
-              style={{
-                fontSize: "0.85rem",
-                color: "var(--text-muted)",
-                marginTop: "8px",
-              }}
-            >
+            <div className="stat-card__subtitle">
               Before commissions & deductions
             </div>
           </div>
 
           {/* Commissions */}
-          <div
-            style={{
-              background: "linear-gradient(135deg, #ffffff 0%, #fafcff 100%)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "20px",
-              padding: "28px",
-              boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "16px",
-              }}
-            >
-              <span
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.05em",
-                }}
-              >
-                PLATFORM COMMISSIONS
-              </span>
-              <div
-                style={{
-                  background: "rgba(138, 43, 226, 0.08)",
-                  padding: "8px",
-                  borderRadius: "12px",
-                }}
-              >
+          <div className="stat-card stat-card--cool">
+            <div className="stat-card__header">
+              <span className="stat-card__label">PLATFORM COMMISSIONS</span>
+              <div className="stat-card__icon stat-card__icon--violet">
                 <DollarSign size={20} color="var(--accent-violet)" />
               </div>
             </div>
-            <div
-              style={{
-                fontSize: "2.2rem",
-                fontWeight: 800,
-                color: "var(--text-slate)",
-              }}
-            >
+            <div className="stat-card__value">
               ₹
               {parseFloat(
                 summary?.total_commissions?.toString() || "0",
               ).toFixed(2)}
             </div>
-            <div
-              style={{
-                fontSize: "0.85rem",
-                color: "#F44336",
-                marginTop: "8px",
-                fontWeight: 600,
-              }}
-            >
+            <div className="stat-card__subtitle stat-card__subtitle--danger">
               Deducted at source (avg 10%)
             </div>
           </div>
 
           {/* Net Earnings */}
-          <div
-            style={{
-              background: "linear-gradient(135deg, #ffffff 0%, #fafffa 100%)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "20px",
-              padding: "28px",
-              boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "16px",
-              }}
-            >
-              <span
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.05em",
-                }}
-              >
-                NET EARNINGS
-              </span>
-              <div
-                style={{
-                  background: "rgba(76, 175, 80, 0.08)",
-                  padding: "8px",
-                  borderRadius: "12px",
-                }}
-              >
+          <div className="stat-card stat-card--green">
+            <div className="stat-card__header">
+              <span className="stat-card__label">NET EARNINGS</span>
+              <div className="stat-card__icon stat-card__icon--green">
                 <CheckCircle size={20} color="#4CAF50" />
               </div>
             </div>
-            <div
-              style={{ fontSize: "2.2rem", fontWeight: 800, color: "#4CAF50" }}
-            >
+            <div className="stat-card__value stat-card__value--green">
               ₹{parseFloat(summary?.net_earnings?.toString() || "0").toFixed(2)}
             </div>
-            <div
-              style={{
-                fontSize: "0.85rem",
-                color: "var(--text-muted)",
-                marginTop: "8px",
-              }}
-            >
+            <div className="stat-card__subtitle">
               Credited directly to owner wallet
             </div>
           </div>
 
           {/* Total Orders */}
-          <div
-            style={{
-              background: "linear-gradient(135deg, #ffffff 0%, #fcfcfe 100%)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "20px",
-              padding: "28px",
-              boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "16px",
-              }}
-            >
-              <span
-                style={{
-                  color: "var(--text-muted)",
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  letterSpacing: "0.05em",
-                }}
-              >
-                TOTAL ORDERS
-              </span>
-              <div
-                style={{
-                  background: "rgba(0, 0, 0, 0.04)",
-                  padding: "8px",
-                  borderRadius: "12px",
-                }}
-              >
+          <div className="stat-card">
+            <div className="stat-card__header">
+              <span className="stat-card__label">TOTAL ORDERS</span>
+              <div className="stat-card__icon stat-card__icon--muted">
                 <FileText size={20} color="var(--text-slate)" />
               </div>
             </div>
-            <div
-              style={{
-                fontSize: "2.2rem",
-                fontWeight: 800,
-                color: "var(--text-slate)",
-              }}
-            >
-              {summary?.total_orders || 0}
-            </div>
-            <div
-              style={{
-                fontSize: "0.85rem",
-                color: "var(--text-muted)",
-                marginTop: "8px",
-              }}
-            >
-              Completed deliveries
-            </div>
+            <div className="stat-card__value">{summary?.total_orders || 0}</div>
+            <div className="stat-card__subtitle">Completed deliveries</div>
           </div>
         </div>
 

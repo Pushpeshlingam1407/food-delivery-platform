@@ -11,11 +11,17 @@ export async function getWalletBalance(req, res) {
     const [rows] = await pool.query("SELECT * FROM wallets WHERE user_id = ?", [
       req.user.userId,
     ]);
-    const wallets = rows;
+    let wallet;
     if (wallets.length === 0) {
-      return res
-        .status(404)
-        .json({ status: "error", message: "Wallet not found" });
+      // Auto-create a wallet for this user
+      const walletId = crypto.randomUUID();
+      await pool.query(
+        "INSERT INTO wallets (id, user_id, balance, currency) VALUES (?, ?, 0, 'INR')",
+        [walletId, req.user.userId],
+      );
+      wallet = { id: walletId, balance: 0, currency: "INR" };
+    } else {
+      wallet = wallets[0];
     }
 
     const wallet = wallets[0];

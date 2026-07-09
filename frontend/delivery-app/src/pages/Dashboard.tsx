@@ -55,7 +55,6 @@ export const Dashboard: React.FC = () => {
   const [deliveryTimer, setDeliveryTimer] = useState(600); // 10 mins
   const [gpsProgress, setGpsProgress] = useState(0);
 
-
   const [completedDeliveriesCount, setCompletedDeliveriesCount] = useState(0);
   const [totalEarningAmt, setTotalEarningAmt] = useState(0);
 
@@ -493,239 +492,66 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Grid Stats matching restaurant app's Earnings.tsx */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-          gap: "24px",
-          marginBottom: "40px",
-        }}
-      >
-        {/* Gross Revenue / Total Earnings */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #fefcf9 100%)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "20px",
-            padding: "28px",
-            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "16px",
-            }}
-          >
-            <span
-              style={{
-                color: "var(--text-muted)",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                letterSpacing: "0.05em",
-              }}
-            >
-              GROSS EARNINGS
-            </span>
-            <div
-              style={{
-                background: "rgba(255, 90, 31, 0.08)",
-                padding: "8px",
-                borderRadius: "12px",
-              }}
-            >
+      {/* Grid Stats */}
+      <div className="stat-grid">
+        {/* Gross Earnings */}
+        <div className="stat-card stat-card--warm">
+          <div className="stat-card__header">
+            <span className="stat-card__label">GROSS EARNINGS</span>
+            <div className="stat-card__icon stat-card__icon--orange">
               <TrendingUp size={20} color="var(--accent-orange)" />
             </div>
           </div>
-          <div
-            style={{
-              fontSize: "2.2rem",
-              fontWeight: 800,
-              color: "var(--text-slate)",
-            }}
-          >
-            ₹{totalEarningAmt.toFixed(2)}
-          </div>
-          <div
-            style={{
-              fontSize: "0.85rem",
-              color: "var(--text-muted)",
-              marginTop: "8px",
-            }}
-          >
+          <div className="stat-card__value">₹{totalEarningAmt.toFixed(2)}</div>
+          <div className="stat-card__subtitle">
             Total delivery payouts earned
           </div>
         </div>
 
-        {/* Current Settlement Balance */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #fafffa 100%)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "20px",
-            padding: "28px",
-            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "16px",
-            }}
-          >
-            <span
-              style={{
-                color: "var(--text-muted)",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                letterSpacing: "0.05em",
-              }}
-            >
-              SETTLEMENT BALANCE
-            </span>
-            <div
-              style={{
-                background: "rgba(76, 175, 80, 0.08)",
-                padding: "8px",
-                borderRadius: "12px",
-              }}
-            >
+        {/* Settlement Balance */}
+        <div className="stat-card stat-card--green">
+          <div className="stat-card__header">
+            <span className="stat-card__label">SETTLEMENT BALANCE</span>
+            <div className="stat-card__icon stat-card__icon--green">
               <CheckCircle size={20} color="#4CAF50" />
             </div>
           </div>
-          <div
-            style={{ fontSize: "2.2rem", fontWeight: 800, color: "#4CAF50" }}
-          >
+          <div className="stat-card__value stat-card__value--green">
             ₹{walletBalance.toFixed(2)}
           </div>
-          <div
-            style={{
-              fontSize: "0.85rem",
-              color: "var(--text-muted)",
-              marginTop: "8px",
-            }}
-          >
+          <div className="stat-card__subtitle">
             Available in your driver wallet
           </div>
         </div>
 
-        {/* Completed Deliveries */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #fafcff 100%)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "20px",
-            padding: "28px",
-            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "16px",
-            }}
-          >
-            <span
-              style={{
-                color: "var(--text-muted)",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                letterSpacing: "0.05em",
-              }}
-            >
-              COMPLETED JOBS
-            </span>
-            <div
-              style={{
-                background: "rgba(138, 43, 226, 0.08)",
-                padding: "8px",
-                borderRadius: "12px",
-              }}
-            >
+        {/* Completed Jobs */}
+        <div className="stat-card stat-card--cool">
+          <div className="stat-card__header">
+            <span className="stat-card__label">COMPLETED JOBS</span>
+            <div className="stat-card__icon stat-card__icon--violet">
               <Truck size={20} color="var(--accent-violet)" />
             </div>
           </div>
-          <div
-            style={{
-              fontSize: "2.2rem",
-              fontWeight: 800,
-              color: "var(--text-slate)",
-            }}
-          >
-            {completedDeliveriesCount}
-          </div>
-          <div
-            style={{
-              fontSize: "0.85rem",
-              color: "var(--text-muted)",
-              marginTop: "8px",
-            }}
-          >
+          <div className="stat-card__value">{completedDeliveriesCount}</div>
+          <div className="stat-card__subtitle">
             Successfully delivered orders
           </div>
         </div>
 
-        {/* Online Shift Status */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #fcfcfe 100%)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "20px",
-            padding: "28px",
-            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "16px",
-            }}
-          >
-            <span
-              style={{
-                color: "var(--text-muted)",
-                fontSize: "0.85rem",
-                fontWeight: 700,
-                letterSpacing: "0.05em",
-              }}
-            >
-              SHIFT STATUS
-            </span>
-            <div
-              style={{
-                background: "rgba(0, 0, 0, 0.04)",
-                padding: "8px",
-                borderRadius: "12px",
-              }}
-            >
+        {/* Shift Status */}
+        <div className="stat-card">
+          <div className="stat-card__header">
+            <span className="stat-card__label">SHIFT STATUS</span>
+            <div className="stat-card__icon stat-card__icon--muted">
               <Power size={20} color="var(--text-slate)" />
             </div>
           </div>
           <div
-            style={{
-              fontSize: "2.2rem",
-              fontWeight: 800,
-              color: isOnline ? "#4CAF50" : "#F44336",
-            }}
+            className={`stat-card__value ${isOnline ? "stat-card__value--green" : "stat-card__value--danger"}`}
           >
             {isOnline ? "ONLINE" : "OFFLINE"}
           </div>
-          <div
-            style={{
-              fontSize: "0.85rem",
-              color: "var(--text-muted)",
-              marginTop: "8px",
-            }}
-          >
+          <div className="stat-card__subtitle">
             Toggle shifts using status button
           </div>
         </div>

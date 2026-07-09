@@ -164,141 +164,81 @@ export const Dashboard: React.FC = () => {
         </p>
       </div>
 
-      {/* Analytics Grid - Premium Cards matching restaurant/delivery apps */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-          gap: "24px",
-          marginBottom: "40px",
-        }}
-      >
+      {/* Analytics Grid */}
+      <div className="stat-grid">
         {/* System Status */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #fcfcfe 100%)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "20px",
-            padding: "28px",
-            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
-              SYSTEM STATUS
-            </span>
-            <div style={{ background: "rgba(76, 175, 80, 0.08)", padding: "8px", borderRadius: "12px" }}>
+        <div className="stat-card">
+          <div className="stat-card__header">
+            <span className="stat-card__label">SYSTEM STATUS</span>
+            <div className="stat-card__icon stat-card__icon--green">
               <ShieldAlert size={20} color="#4CAF50" />
             </div>
           </div>
-          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: health?.database === "connected" ? "#4CAF50" : "#F44336" }}>
+          <div
+            className={`stat-card__value ${health?.database === "connected" ? "stat-card__value--green" : "stat-card__value--danger"}`}
+          >
             {health?.database === "connected" ? "HEALTHY" : "DOWN"}
           </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
-            Port {health?.server_port || 5000} · MySQL {health?.database_port || 3306}
+          <div className="stat-card__subtitle">
+            Port {health?.server_port || 5000} · MySQL{" "}
+            {health?.database_port || 3306}
           </div>
         </div>
 
         {/* Captured Revenue */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #fefcf9 100%)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "20px",
-            padding: "28px",
-            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
-              CAPTURED REVENUE
-            </span>
-            <div style={{ background: "rgba(255, 90, 31, 0.08)", padding: "8px", borderRadius: "12px" }}>
+        <div className="stat-card stat-card--warm">
+          <div className="stat-card__header">
+            <span className="stat-card__label">CAPTURED REVENUE</span>
+            <div className="stat-card__icon stat-card__icon--orange">
               <DollarSign size={20} color="var(--accent-orange)" />
             </div>
           </div>
-          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--text-slate)" }}>
+          <div className="stat-card__value">
             ₹{analytics?.total_payments_captured.toFixed(2)}
           </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
+          <div className="stat-card__subtitle">
             Total platform payment volume
           </div>
         </div>
 
         {/* Completed Orders */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #fafffa 100%)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "20px",
-            padding: "28px",
-            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
-              COMPLETED ORDERS
-            </span>
-            <div style={{ background: "rgba(255, 90, 31, 0.08)", padding: "8px", borderRadius: "12px" }}>
+        <div className="stat-card stat-card--green">
+          <div className="stat-card__header">
+            <span className="stat-card__label">COMPLETED ORDERS</span>
+            <div className="stat-card__icon stat-card__icon--orange">
               <Award size={20} color="var(--accent-orange)" />
             </div>
           </div>
-          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--text-slate)" }}>
-            {analytics?.total_orders}
-          </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
+          <div className="stat-card__value">{analytics?.total_orders}</div>
+          <div className="stat-card__subtitle">
             Orders fulfilled across the platform
           </div>
         </div>
 
         {/* Active Restaurants */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #fafcff 100%)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "20px",
-            padding: "28px",
-            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
-              ACTIVE RESTAURANTS
-            </span>
-            <div style={{ background: "rgba(138, 43, 226, 0.08)", padding: "8px", borderRadius: "12px" }}>
+        <div className="stat-card stat-card--cool">
+          <div className="stat-card__header">
+            <span className="stat-card__label">ACTIVE RESTAURANTS</span>
+            <div className="stat-card__icon stat-card__icon--violet">
               <Store size={20} color="var(--accent-violet)" />
             </div>
           </div>
-          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--text-slate)" }}>
-            {analytics?.total_restaurants}
-          </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
+          <div className="stat-card__value">{analytics?.total_restaurants}</div>
+          <div className="stat-card__subtitle">
             Verified partner restaurants
           </div>
         </div>
 
         {/* Platform Users */}
-        <div
-          style={{
-            background: "linear-gradient(135deg, #ffffff 0%, #fcfcfe 100%)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "20px",
-            padding: "28px",
-            boxShadow: "0 10px 25px rgba(25, 25, 25, 0.02)",
-          }}
-        >
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "16px" }}>
-            <span style={{ color: "var(--text-muted)", fontSize: "0.85rem", fontWeight: 700, letterSpacing: "0.05em" }}>
-              PLATFORM USERS
-            </span>
-            <div style={{ background: "rgba(255, 90, 31, 0.08)", padding: "8px", borderRadius: "12px" }}>
+        <div className="stat-card">
+          <div className="stat-card__header">
+            <span className="stat-card__label">PLATFORM USERS</span>
+            <div className="stat-card__icon stat-card__icon--orange">
               <Users size={20} color="var(--accent-orange)" />
             </div>
           </div>
-          <div style={{ fontSize: "2.2rem", fontWeight: 800, color: "var(--text-slate)" }}>
-            {analytics?.total_users}
-          </div>
-          <div style={{ fontSize: "0.85rem", color: "var(--text-muted)", marginTop: "8px" }}>
+          <div className="stat-card__value">{analytics?.total_users}</div>
+          <div className="stat-card__subtitle">
             Registered customers and partners
           </div>
         </div>
