@@ -46,10 +46,12 @@ api.interceptors.response.use(
     // Auto-toast validation and API errors
     if (error.response) {
       const { status, data } = error.response;
-      const isAuthRoute = originalRequest.url && originalRequest.url.includes("/auth/");
-      
+      const isAuthRoute =
+        originalRequest.url && originalRequest.url.includes("/auth/");
+
       if (status >= 400 && (status !== 401 || isAuthRoute)) {
-        let message = data?.message || "Something went wrong. Please try again later.";
+        let message =
+          data?.message || "Something went wrong. Please try again later.";
         const validationErrors = data?.errors;
 
         // Map specific error messages from the table
@@ -57,14 +59,28 @@ api.interceptors.response.use(
           message = "Incorrect password.";
         } else if (message === "User does not exist") {
           message = "User didn't exist, go register";
-        } else if (message.includes("disabled") || message.includes("inactive")) {
+        } else if (
+          message.includes("disabled") ||
+          message.includes("inactive")
+        ) {
           message = "Your account has been disabled. Contact support.";
-        } else if (message.includes("locked") || message.includes("suspended")) {
+        } else if (
+          message.includes("locked") ||
+          message.includes("suspended")
+        ) {
           message = "Your account is temporarily locked. Try again later.";
-        } else if (message.includes("Too many attempts") || message.includes("Rate limit")) {
-          toast.warning("Too many login attempts. Please wait before trying again.");
+        } else if (
+          message.includes("Too many attempts") ||
+          message.includes("Rate limit")
+        ) {
+          toast.warning(
+            "Too many login attempts. Please wait before trying again.",
+          );
           return Promise.reject(error);
-        } else if (message.includes("Email already exists") || message.includes("already registered")) {
+        } else if (
+          message.includes("Email already exists") ||
+          message.includes("already registered")
+        ) {
           message = "An account with this email already exists.";
         } else if (message.includes("Passwords do not match")) {
           message = "Passwords do not match.";

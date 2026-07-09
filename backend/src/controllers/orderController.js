@@ -324,10 +324,12 @@ export async function getOrderById(req, res) {
 
   try {
     const [orderRows] = await pool.query(
-      `SELECT o.*, r.name as restaurant_name, a.street_address, a.city, a.postal_code 
+      `SELECT o.*, r.name as restaurant_name, a.street_address, a.city, a.postal_code, a.landmark, a.state,
+              u.first_name as customer_first_name, u.last_name as customer_last_name, u.phone as customer_phone
        FROM orders o
        JOIN restaurants r ON o.restaurant_id = r.id
        JOIN addresses a ON o.delivery_address_id = a.id
+       JOIN users u ON o.user_id = u.id
        WHERE o.id = ?`,
       [id],
     );
@@ -465,9 +467,10 @@ export async function updateOrderStatus(req, res) {
         );
         const restEarningId = crypto.randomUUID();
 
+        // Save restaurant earnings log as paid, since we transfer instantly to wallet
         await connection.query(
           `INSERT INTO restaurant_earnings (id, restaurant_id, order_id, order_total, commission_amount, net_earning, is_paid) 
-           VALUES (?, ?, ?, ?, ?, ?, FALSE)`,
+           VALUES (?, ?, ?, ?, ?, ?, TRUE)`,
           [
             restEarningId,
             order.restaurant_id,
@@ -478,12 +481,43 @@ export async function updateOrderStatus(req, res) {
           ],
         );
 
+        // Credit the Restaurant Owner's wallet balance
+        const ownerId = order.owner_id;
+        if (ownerId) {
+          const [ownerWalletRows] = await connection.query(
+            "SELECT id FROM wallets WHERE user_id = ?",
+            [ownerId],
+          );
+          let ownerWalletId;
+          if (ownerWalletRows.length === 0) {
+            ownerWalletId = crypto.randomUUID();
+            await connection.query(
+              "INSERT INTO wallets (id, user_id, balance, currency) VALUES (?, ?, 0.00, 'INR')",
+              [ownerWalletId, ownerId],
+            );
+          } else {
+            ownerWalletId = ownerWalletRows[0].id;
+          }
+
+          await connection.query(
+            "UPDATE wallets SET balance = balance + ? WHERE id = ?",
+            [netEarning, ownerWalletId],
+          );
+
+          const ownerTxId = crypto.randomUUID();
+          await connection.query(
+            `INSERT INTO wallet_transactions (id, wallet_id, amount, type, description, reference_type, reference_id) 
+             VALUES (?, ?, ?, 'credit', 'Restaurant Order Earning Deposited', 'restaurant_payout', ?)`,
+            [ownerTxId, ownerWalletId, netEarning, id],
+          );
+        }
+
         if (assignedDriverId) {
           const devEarningId = crypto.randomUUID();
           const deliveryFee = parseFloat(order.delivery_charges);
           await connection.query(
             `INSERT INTO delivery_earnings (id, driver_id, order_id, delivery_fee, tip_amount, total_earning, is_paid) 
-             VALUES (?, ?, ?, ?, 0.00, ?, FALSE)`,
+             VALUES (?, ?, ?, ?, 0.00, ?, TRUE)`,
             [devEarningId, assignedDriverId, id, deliveryFee, deliveryFee],
           );
 

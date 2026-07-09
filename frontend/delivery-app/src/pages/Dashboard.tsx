@@ -33,6 +33,7 @@ export const Dashboard: React.FC = () => {
   const [isOnline, setIsOnline] = useState(false);
   const [jobs, setJobs] = useState<Order[]>([]);
   const [activeJob, setActiveJob] = useState<Order | null>(null);
+  const [activeJobDetails, setActiveJobDetails] = useState<any | null>(null);
   const [walletBalance, setWalletBalance] = useState(0);
   const [socket, setSocket] = useState<Socket | null>(null);
 
@@ -56,11 +57,13 @@ export const Dashboard: React.FC = () => {
         .then((res) => {
           if (res.data.status === "success" && res.data.data) {
             setActiveOrderItems(res.data.data.items || []);
+            setActiveJobDetails(res.data.data);
           }
         })
         .catch(console.error);
     } else {
       setActiveOrderItems([]);
+      setActiveJobDetails(null);
     }
   }, [activeJob?.id]);
 
@@ -385,6 +388,19 @@ export const Dashboard: React.FC = () => {
                 >
                   Active Job: {deliveryStep.replace("_", " ")}
                 </span>
+                <span
+                  style={{
+                    fontSize: "0.95rem",
+                    fontWeight: 700,
+                    color: "var(--accent-orange)",
+                    background: "rgba(255, 90, 31, 0.08)",
+                    padding: "4px 10px",
+                    borderRadius: "100px",
+                  }}
+                >
+                  Payout: $
+                  {parseFloat(activeJob.delivery_charges || "0").toFixed(2)}
+                </span>
                 {deliveryStep === "picked_up" && (
                   <span
                     style={{
@@ -412,18 +428,202 @@ export const Dashboard: React.FC = () => {
               >
                 Pickup Store: <strong>{activeJob.restaurant_name}</strong>
               </div>
-              <div
-                style={{
-                  color: "var(--text-slate)",
-                  fontSize: "1rem",
-                  marginTop: "4px",
-                }}
-              >
-                Deliver Address:{" "}
-                <strong>
-                  {activeJob.street_address}, {activeJob.city}
-                </strong>
-              </div>
+
+              {/* Detailed Bill and Customer Info */}
+              {activeJobDetails ? (
+                <div
+                  style={{
+                    marginTop: "16px",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "12px",
+                    borderTop: "1px solid var(--glass-border)",
+                    paddingTop: "16px",
+                  }}
+                >
+                  <div>
+                    <span
+                      style={{
+                        fontSize: "0.85rem",
+                        fontWeight: 700,
+                        color: "var(--text-muted)",
+                        display: "block",
+                      }}
+                    >
+                      CUSTOMER DETAILS
+                    </span>
+                    <strong>
+                      {activeJobDetails.customer_first_name}{" "}
+                      {activeJobDetails.customer_last_name}
+                    </strong>{" "}
+                    ({activeJobDetails.customer_phone})
+                  </div>
+                  <div>
+                    <span
+                      style={{
+                        fontSize: "0.85rem",
+                        fontWeight: 700,
+                        color: "var(--text-muted)",
+                        display: "block",
+                      }}
+                    >
+                      DELIVERY ADDRESS
+                    </span>
+                    <strong>{activeJobDetails.street_address}</strong>
+                    {activeJobDetails.landmark && (
+                      <span
+                        style={{
+                          display: "block",
+                          fontSize: "0.9rem",
+                          color: "var(--text-muted)",
+                          fontStyle: "italic",
+                        }}
+                      >
+                        Landmark: {activeJobDetails.landmark}
+                      </span>
+                    )}
+                    <span style={{ display: "block", fontSize: "0.9rem" }}>
+                      {activeJobDetails.city}, {activeJobDetails.state} -{" "}
+                      {activeJobDetails.postal_code}
+                    </span>
+                  </div>
+                  {activeJobDetails.notes && (
+                    <div>
+                      <span
+                        style={{
+                          fontSize: "0.85rem",
+                          fontWeight: 700,
+                          color: "var(--text-muted)",
+                          display: "block",
+                        }}
+                      >
+                        DELIVERY INSTRUCTIONS / NOTES
+                      </span>
+                      <p
+                        style={{
+                          margin: "4px 0 0 0",
+                          fontSize: "0.9rem",
+                          fontStyle: "italic",
+                          color: "var(--accent-orange)",
+                        }}
+                      >
+                        "{activeJobDetails.notes}"
+                      </p>
+                    </div>
+                  )}
+
+                  <div
+                    style={{
+                      background: "rgba(25, 25, 25, 0.03)",
+                      padding: "16px",
+                      borderRadius: "12px",
+                      border: "1px solid var(--glass-border)",
+                      maxWidth: "400px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "0.85rem",
+                        fontWeight: 700,
+                        color: "var(--text-muted)",
+                        marginBottom: "10px",
+                      }}
+                    >
+                      BILL DETAIL SUMMARY
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: "0.9rem",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <span>Items Total:</span>
+                      <span>
+                        ${parseFloat(activeJobDetails.item_total).toFixed(2)}
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: "0.9rem",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <span>Delivery Fee:</span>
+                      <span>
+                        $
+                        {parseFloat(activeJobDetails.delivery_charges).toFixed(
+                          2,
+                        )}
+                      </span>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: "0.9rem",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      <span>Taxes & Charges:</span>
+                      <span>
+                        ${parseFloat(activeJobDetails.tax_amount).toFixed(2)}
+                      </span>
+                    </div>
+                    {parseFloat(activeJobDetails.discount_amount) > 0 && (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          fontSize: "0.9rem",
+                          color: "#4CAF50",
+                          marginBottom: "6px",
+                        }}
+                      >
+                        <span>Discount ({activeJobDetails.coupon_code}):</span>
+                        <span>
+                          -$
+                          {parseFloat(activeJobDetails.discount_amount).toFixed(
+                            2,
+                          )}
+                        </span>
+                      </div>
+                    )}
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        fontSize: "1rem",
+                        fontWeight: 800,
+                        borderTop: "1px dashed var(--glass-border)",
+                        paddingTop: "8px",
+                        marginTop: "8px",
+                      }}
+                    >
+                      <span>Total Payable:</span>
+                      <span style={{ color: "var(--accent-orange)" }}>
+                        ${parseFloat(activeJobDetails.total_payable).toFixed(2)}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div
+                  style={{
+                    color: "var(--text-slate)",
+                    fontSize: "1rem",
+                    marginTop: "4px",
+                  }}
+                >
+                  Deliver Address:{" "}
+                  <strong>
+                    {activeJob.street_address}, {activeJob.city}
+                  </strong>
+                </div>
+              )}
 
               {/* Order items checklist when arrived at store */}
               {deliveryStep === "arrived_store" && (
@@ -557,76 +757,6 @@ export const Dashboard: React.FC = () => {
               )}
             </div>
           </div>
-
-          {/* Interactive Mock Route Tracker (Pulsing Rider GPS visual) */}
-          {deliveryStep === "picked_up" && (
-            <div
-              style={{
-                marginTop: "24px",
-                background: "rgba(0,0,0,0.03)",
-                padding: "16px",
-                borderRadius: "12px",
-                border: "1px solid var(--glass-border)",
-              }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                  color: "var(--text-muted)",
-                  marginBottom: "8px",
-                }}
-              >
-                <span>STORE ({activeJob.restaurant_name})</span>
-                <span>RIDER ROUTE PROGRESS ({gpsProgress}%)</span>
-                <span>CUSTOMER</span>
-              </div>
-              <div
-                style={{
-                  position: "relative",
-                  height: "8px",
-                  background: "rgba(0,0,0,0.06)",
-                  borderRadius: "999px",
-                  overflow: "visible",
-                }}
-              >
-                {/* Dotted path line */}
-                <div
-                  style={{
-                    position: "absolute",
-                    left: 0,
-                    top: 0,
-                    height: "100%",
-                    width: `${gpsProgress}%`,
-                    background: "var(--primary-gradient)",
-                    borderRadius: "999px",
-                    transition: "width 0.4s ease",
-                  }}
-                />
-                {/* Rider Dot */}
-                <div
-                  style={{
-                    position: "absolute",
-                    left: `calc(${gpsProgress}% - 8px)`,
-                    top: "-4px",
-                    width: "16px",
-                    height: "16px",
-                    background: "var(--accent-orange)",
-                    borderRadius: "50%",
-                    boxShadow: "0 0 10px var(--accent-orange)",
-                    transition: "left 0.4s ease",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Truck size={10} color="#fff" />
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       )}
 
@@ -657,6 +787,15 @@ export const Dashboard: React.FC = () => {
               </div>
               <div>
                 To: <strong>{job.street_address}</strong>
+              </div>
+              <div
+                style={{
+                  marginTop: "4px",
+                  color: "var(--accent-orange)",
+                  fontWeight: 700,
+                }}
+              >
+                Payout: ${parseFloat(job.delivery_charges || "0").toFixed(2)}
               </div>
             </div>
 
