@@ -12,7 +12,7 @@ export async function getWalletBalance(req, res) {
       req.user.userId,
     ]);
     let wallet;
-    if (wallets.length === 0) {
+    if (rows.length === 0) {
       // Auto-create a wallet for this user
       const walletId = crypto.randomUUID();
       await pool.query(
@@ -21,10 +21,8 @@ export async function getWalletBalance(req, res) {
       );
       wallet = { id: walletId, balance: 0, currency: "INR" };
     } else {
-      wallet = wallets[0];
+      wallet = rows[0];
     }
-
-    const wallet = wallets[0];
 
     // 2. Get transaction history
     const [txRows] = await pool.query(
