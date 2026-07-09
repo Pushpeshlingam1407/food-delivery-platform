@@ -40,12 +40,10 @@ export const Login: React.FC = () => {
           `${user.first_name} ${user.last_name}`,
         );
 
-        toast.success(`Welcome back, Administrator ${user.first_name}!`);
         window.location.href = "/";
       }
     } catch (error: any) {
       console.error(error);
-      toast.info("Demo Account Hint: Use 'admin@fooddelivery.com' with 'password123'", { duration: 8000 });
     } finally {
       setLoading(false);
     }

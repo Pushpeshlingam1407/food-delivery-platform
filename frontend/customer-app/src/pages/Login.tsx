@@ -31,12 +31,10 @@ export const Login: React.FC = () => {
           `${user.first_name} ${user.last_name || ""}`,
         );
 
-        toast.success(`Welcome back, ${user.first_name}!`);
         window.location.href = "/";
       }
     } catch (err: any) {
       console.error(err);
-      toast.info("Demo Customer Accounts:\n- aarav.sharma@example.com\n- aditi.verma@example.com\n(Password: password123)", { duration: 8000 });
     } finally {
       setLoading(false);
     }

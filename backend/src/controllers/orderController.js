@@ -70,12 +70,14 @@ export async function placeOrder(req, res) {
     const taxAmount = parseFloat((itemTotal * (taxRate / 100)).toFixed(2));
     let discountAmount = 0.0;
 
+    let couponRows = [];
     if (couponCode) {
-      const [couponRows] = await pool.query(
+      const [rows] = await pool.query(
         `SELECT * FROM coupons 
          WHERE code = ? AND is_active = TRUE AND CURDATE() BETWEEN DATE(start_date) AND DATE(end_date)`,
         [couponCode],
       );
+      couponRows = rows;
       if (couponRows.length > 0) {
         const c = couponRows[0];
         if (itemTotal >= parseFloat(c.min_order_amount)) {

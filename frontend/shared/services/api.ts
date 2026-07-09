@@ -56,7 +56,7 @@ api.interceptors.response.use(
         if (message === "Incorrect password") {
           message = "Incorrect password.";
         } else if (message === "User does not exist") {
-          message = "No account found with this email.";
+          message = "User didn't exist, go register";
         } else if (message.includes("disabled") || message.includes("inactive")) {
           message = "Your account has been disabled. Contact support.";
         } else if (message.includes("locked") || message.includes("suspended")) {

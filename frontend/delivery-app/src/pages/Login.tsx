@@ -40,12 +40,10 @@ export const Login: React.FC = () => {
           `${user.first_name} ${user.last_name}`,
         );
 
-        toast.success(`Welcome back, ${user.first_name}!`);
         window.location.href = "/";
       }
     } catch (error: any) {
       console.error(error);
-      toast.info("Demo Driver Accounts:\n- amit.driver1@example.com\n- vikram.driver2@example.com\n(Password: password123)", { duration: 8000 });
     } finally {
       setLoading(false);
     }
