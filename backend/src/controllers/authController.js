@@ -117,8 +117,8 @@ export async function login(req, res) {
     const users = rows;
     if (users.length === 0) {
       return res
-        .status(401)
-        .json({ status: "error", message: "Invalid credentials" });
+        .status(404)
+        .json({ status: "error", message: "User does not exist" });
     }
 
     const user = users[0];
@@ -139,7 +139,7 @@ export async function login(req, res) {
     if (!passwordMatch) {
       return res
         .status(401)
-        .json({ status: "error", message: "Invalid credentials" });
+        .json({ status: "error", message: "Incorrect password" });
     }
 
     const payload = {

@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import { toast } from "sonner";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
@@ -23,14 +24,81 @@ api.interceptors.request.use(
 
 // Interceptor to handle token refresh and unauthorized access errors
 api.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // Intercept success cases for standard auth actions
+    const url = response.config.url;
+    if (url) {
+      if (url.endsWith("/auth/login")) {
+        toast.success("Logged in successfully.");
+      } else if (url.endsWith("/auth/register")) {
+        toast.success("Account created successfully.");
+      } else if (url.endsWith("/auth/verify-otp")) {
+        toast.success("OTP verified successfully.");
+      } else if (url.endsWith("/auth/send-otp")) {
+        toast.success("OTP sent successfully.");
+      }
+    }
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
+
+    // Auto-toast validation and API errors
+    if (error.response) {
+      const { status, data } = error.response;
+      const isAuthRoute = originalRequest.url && originalRequest.url.includes("/auth/");
+      
+      if (status >= 400 && (status !== 401 || isAuthRoute)) {
+        let message = data?.message || "Something went wrong. Please try again later.";
+        const validationErrors = data?.errors;
+
+        // Map specific error messages from the table
+        if (message === "Incorrect password") {
+          message = "Incorrect password.";
+        } else if (message === "User does not exist") {
+          message = "No account found with this email.";
+        } else if (message.includes("disabled") || message.includes("inactive")) {
+          message = "Your account has been disabled. Contact support.";
+        } else if (message.includes("locked") || message.includes("suspended")) {
+          message = "Your account is temporarily locked. Try again later.";
+        } else if (message.includes("Too many attempts") || message.includes("Rate limit")) {
+          toast.warning("Too many login attempts. Please wait before trying again.");
+          return Promise.reject(error);
+        } else if (message.includes("Email already exists") || message.includes("already registered")) {
+          message = "An account with this email already exists.";
+        } else if (message.includes("Passwords do not match")) {
+          message = "Passwords do not match.";
+        } else if (message.includes("Invalid OTP")) {
+          message = "Invalid OTP.";
+        } else if (message.includes("OTP expired")) {
+          message = "OTP has expired. Request a new one.";
+        } else if (status >= 500) {
+          message = "Something went wrong. Please try again later.";
+        }
+
+        if (Array.isArray(validationErrors) && validationErrors.length > 0) {
+          validationErrors.forEach((err: any) => {
+            let valMsg = err.msg || err.message || message;
+            if (valMsg.toLowerCase().includes("email")) {
+              valMsg = "Please enter a valid email address.";
+            }
+            toast.error(valMsg);
+          });
+        } else {
+          toast.error(message);
+        }
+      }
+    } else {
+      // Network errors
+      toast.error("Unable to connect. Check your internet connection.");
+    }
 
     if (
       error.response &&
       error.response.status === 401 &&
-      !originalRequest._retry
+      !originalRequest._retry &&
+      originalRequest.url &&
+      !originalRequest.url.includes("/auth/")
     ) {
       originalRequest._retry = true;
       const refreshToken = localStorage.getItem("refreshToken");

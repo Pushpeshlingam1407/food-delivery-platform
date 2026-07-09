@@ -45,10 +45,7 @@ export const Login: React.FC = () => {
       }
     } catch (error: any) {
       console.error(error);
-      const errMsg =
-        error.response?.data?.message ||
-        "Invalid credentials. Please try again.";
-      toast.error(errMsg);
+      //toast.info("Demo Owner Accounts:\n- rajesh.owner1@example.com\n- priya.owner2@example.com\n(Password: password123)", { duration: 8000 });
     } finally {
       setLoading(false);
     }
