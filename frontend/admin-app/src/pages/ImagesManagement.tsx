@@ -296,7 +296,9 @@ export const ImagesManagement: React.FC = () => {
                     reader.onloadend = async () => {
                       try {
                         const base64Data = reader.result as string;
-                        const res = await api.post("/upload", { image: base64Data });
+                        const res = await api.post("/upload", {
+                          image: base64Data,
+                        });
                         if (res.data.status === "success") {
                           setImageUrl(res.data.url);
                           toast.success("Image uploaded successfully!");

@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Plus,
-  Trash2,
-  Edit2,
-  Globe,
-  FileImage,
-} from "lucide-react";
+import { Plus, Trash2, Edit2, Globe, FileImage } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
 
@@ -210,7 +204,10 @@ export const MenuManager: React.FC = () => {
   };
 
   return (
-    <div className="app-shell menu-manager-page" style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}>
+    <div
+      className="app-shell menu-manager-page"
+      style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}
+    >
       <h1 style={{ fontSize: "2.5rem", marginBottom: "32px" }}>
         Menu Catalog Manager
       </h1>
@@ -421,7 +418,10 @@ export const MenuManager: React.FC = () => {
         </div>
 
         {/* Creation panels */}
-        <div className="menu-manager-sidebar" style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+        <div
+          className="menu-manager-sidebar"
+          style={{ display: "flex", flexDirection: "column", gap: "32px" }}
+        >
           {/* Category CRUD Form */}
           <div
             className="menu-manager-form-panel"
@@ -630,7 +630,9 @@ export const MenuManager: React.FC = () => {
                       reader.onloadend = async () => {
                         try {
                           const base64Data = reader.result as string;
-                          const res = await api.post("/upload", { image: base64Data });
+                          const res = await api.post("/upload", {
+                            image: base64Data,
+                          });
                           if (res.data.status === "success") {
                             setNewItemImageUrl(res.data.url);
                             toast.success("Image uploaded successfully!");

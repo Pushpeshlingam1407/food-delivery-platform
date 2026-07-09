@@ -66,7 +66,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           </span>
         </div>
 
-        <div className="navbar-action-group navbar-desktop-only" style={{ alignItems: "center", gap: "32px" }}>
+        <div
+          className="navbar-action-group navbar-desktop-only"
+          style={{ alignItems: "center", gap: "32px" }}
+        >
           <Link
             to="/"
             style={{

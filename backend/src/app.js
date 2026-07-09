@@ -27,7 +27,7 @@ app.use(
   helmet({
     contentSecurityPolicy: false,
     crossOriginEmbedderPolicy: false,
-    crossOriginResourcePolicy: { policy: "cross-origin" }
+    crossOriginResourcePolicy: { policy: "cross-origin" },
   }),
 );
 app.use(cors());
@@ -46,13 +46,17 @@ app.use("/uploads", express.static("uploads"));
 app.post("/api/upload", (req, res) => {
   const { image } = req.body;
   if (!image) {
-    return res.status(400).json({ status: "error", message: "No image payload provided" });
+    return res
+      .status(400)
+      .json({ status: "error", message: "No image payload provided" });
   }
 
   try {
     const matches = image.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
     if (!matches || matches.length !== 3) {
-      return res.status(400).json({ status: "error", message: "Invalid base64 image encoding" });
+      return res
+        .status(400)
+        .json({ status: "error", message: "Invalid base64 image encoding" });
     }
 
     const extension = matches[1];
@@ -69,7 +73,9 @@ app.post("/api/upload", (req, res) => {
     });
   } catch (err) {
     console.error("File upload runtime error:", err);
-    return res.status(500).json({ status: "error", message: "Failed to upload image file" });
+    return res
+      .status(500)
+      .json({ status: "error", message: "Failed to upload image file" });
   }
 });
 
@@ -135,4 +141,3 @@ app.use((err, req, res, next) => {
 });
 
 export default app;
-

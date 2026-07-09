@@ -109,7 +109,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Action items */}
-        <div className="navbar-action-group" style={{ display: "flex", alignItems: "center", gap: "24px" }}>
+        <div
+          className="navbar-action-group"
+          style={{ display: "flex", alignItems: "center", gap: "24px" }}
+        >
           {walletBalance !== null && (
             <div style={{ position: "relative" }}>
               <div
@@ -346,6 +349,50 @@ export const Navbar: React.FC<NavbarProps> = ({
               marginTop: "20px",
             }}
           >
+            {/* Mobile Address Selector */}
+            <div
+              className="navbar-address-pill"
+              style={{
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
+              <MapPin size={16} color="var(--accent-orange)" />
+              <span style={{ color: "var(--text-slate)" }}>Deliver to:</span>
+              <strong style={{ fontWeight: 600 }}>Bengaluru, IND</strong>
+            </div>
+
+            {/* Mobile Search Input Bar */}
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                background: "#FFF",
+                border: "1px solid var(--glass-border)",
+                borderRadius: "var(--radius-standard)",
+                padding: "10px 16px",
+                width: "100%",
+                gap: "8px",
+              }}
+            >
+              <Search size={16} color="var(--text-muted)" />
+              <input
+                type="text"
+                placeholder="Search restaurants, cuisines..."
+                value={searchQuery}
+                onChange={(e) =>
+                  onSearchChange && onSearchChange(e.target.value)
+                }
+                style={{
+                  border: "none",
+                  outline: "none",
+                  width: "100%",
+                  fontFamily: "var(--font-apple)",
+                  fontSize: "0.95rem",
+                }}
+              />
+            </div>
+
             {userEmail ? (
               <>
                 <div

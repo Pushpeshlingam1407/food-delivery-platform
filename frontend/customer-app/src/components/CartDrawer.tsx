@@ -162,7 +162,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         >
           <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <ShoppingCart size={20} />
-            <h3 style={{ fontFamily: "var(--font-cohere)", fontSize: "1.2rem" }}>
+            <h3
+              style={{ fontFamily: "var(--font-cohere)", fontSize: "1.2rem" }}
+            >
               Your Basket
             </h3>
           </div>
@@ -206,7 +208,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 >
                   {item.name}
                 </h4>
-                <span style={{ fontSize: "0.9rem", color: "var(--text-muted)" }}>
+                <span
+                  style={{ fontSize: "0.9rem", color: "var(--text-muted)" }}
+                >
                   ${item.price.toFixed(2)} x {item.qty}
                 </span>
               </div>
@@ -219,7 +223,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                   type="number"
                   min={0}
                   value={item.qty}
-                  onChange={(e) => updateQty(item.id, parseInt(e.target.value) || 0)}
+                  onChange={(e) =>
+                    updateQty(item.id, parseInt(e.target.value) || 0)
+                  }
                   style={{
                     width: "50px",
                     padding: "4px 8px",
