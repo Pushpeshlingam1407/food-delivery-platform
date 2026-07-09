@@ -144,7 +144,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           background: "var(--bg-sand)",
           borderLeft: "1px solid var(--glass-border)",
           boxShadow: "-8px 0 32px rgba(25, 25, 25, 0.08)",
-          zIndex: 200,
+          zIndex: 1000,
           display: "flex",
           flexDirection: "column",
           fontFamily: "var(--font-apple)",

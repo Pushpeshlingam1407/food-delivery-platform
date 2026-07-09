@@ -9,6 +9,7 @@ import {
   X,
   Wallet,
 } from "lucide-react";
+import { SearchBar } from "../../../shared/components/SearchBar";
 
 interface NavbarProps {
   cartCount?: number;
@@ -81,34 +82,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Desktop Search Input Bar */}
-          <div
+          <SearchBar
             className="navbar-desktop-only"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              background: "#FFF",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-standard)",
-              padding: "8px 16px",
-              width: "320px",
-              gap: "8px",
-            }}
-          >
-            <Search size={16} color="var(--text-muted)" />
-            <input
-              type="text"
-              placeholder="Search restaurants, cuisines..."
-              value={searchQuery}
-              onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
-              style={{
-                border: "none",
-                outline: "none",
-                width: "100%",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.9rem",
-              }}
-            />
-          </div>
+            placeholder="Search restaurants, cuisines..."
+            value={searchQuery}
+            onSearchChange={onSearchChange}
+            containerStyle={{ width: "320px" }}
+          />
 
           {/* Action items */}
           <div
@@ -332,33 +312,13 @@ export const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Mobile Search Input Bar */}
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              background: "#FFF",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-standard)",
-              padding: "10px 16px",
-              width: "100%",
-              gap: "8px",
-            }}
-          >
-            <Search size={16} color="var(--text-muted)" />
-            <input
-              type="text"
-              placeholder="Search restaurants, cuisines..."
-              value={searchQuery}
-              onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
-              style={{
-                border: "none",
-                outline: "none",
-                width: "100%",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.95rem",
-              }}
-            />
-          </div>
+          <SearchBar
+            placeholder="Search restaurants, cuisines..."
+            value={searchQuery}
+            onSearchChange={onSearchChange}
+            containerStyle={{ padding: "10px 16px", width: "100%" }}
+            style={{ fontSize: "0.95rem" }}
+          />
         </div>
       </nav>
 
