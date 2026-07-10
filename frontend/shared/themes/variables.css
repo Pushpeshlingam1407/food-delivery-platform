@@ -2352,3 +2352,115 @@ h3 {
   color: #f44336;
   font-weight: 600;
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Role Utility Header — For back/logout navigation across dashboards
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.role-utility-header {
+  background: var(--text-slate);
+  color: var(--text-sand);
+  padding: 8px 24px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.82rem;
+  fontweight: 600;
+  font-family: var(--font-cohere);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.role-utility-btn {
+  background: rgba(255, 90, 31, 0.2);
+  border: 1px solid var(--accent-orange);
+  color: var(--text-sand);
+  padding: 4px 12px;
+  border-radius: 100px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+}
+
+.role-utility-btn:hover {
+  background: rgba(25, 90, 31, 0.35);
+  transform: scale(1.02);
+}
+
+/* PremiumButton Modifier Variants */
+.btn-premium--primary {
+  background: var(--primary-gradient);
+  color: var(--text-sand);
+  border: none;
+  box-shadow: 0 4px 14px rgba(255, 90, 31, 0.15);
+}
+
+.btn-premium--danger {
+  background: #f44336;
+  color: var(--text-sand);
+  border: none;
+  box-shadow: 0 4px 14px rgba(244, 67, 54, 0.15);
+}
+
+.btn-premium--secondary {
+  background: rgba(25, 25, 25, 0.04);
+  color: var(--text-slate);
+  border: 1px solid var(--glass-border);
+  box-shadow: none;
+}
+
+/* Spinner Loader styling */
+.spinner-loader {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  animation: shimmerSpin 0.8s linear infinite;
+  display: inline-block;
+}
+
+.spinner-loader--light {
+  border: 2px solid #fff;
+  border-top-color: transparent;
+}
+
+.spinner-loader--dark {
+  border: 2px solid var(--text-slate);
+  border-top-color: transparent;
+}
+
+.card-premium--hover-lift {
+  cursor: pointer;
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-premium--hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(21, 21, 21, 0.05);
+}
+
+.input-container {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+}
+
+.input-label {
+  fontsize: 0.74rem;
+  font-weight: 700;
+  color: var(--text-slate);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.input-error {
+  font-size: 0.75rem;
+  color: #f44336;
+  margin-top: 2px;
+}
+
+.input-premium--error {
+  border-color: #f44336 !important;
+}

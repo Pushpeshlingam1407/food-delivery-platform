@@ -12,42 +12,14 @@ export const PremiumInput: React.FC<PremiumInputProps> = ({
   ...props
 }) => {
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "6px",
-        width: "100%",
-      }}
-    >
-      {label && (
-        <label
-          style={{
-            fontSize: "0.74rem",
-            fontWeight: 700,
-            color: "var(--text-slate)",
-            textTransform: "uppercase",
-            letterSpacing: "0.06em",
-          }}
-        >
-          {label}
-        </label>
-      )}
+    <div className="input-container">
+      {label && <label className="input-label">{label}</label>}
       <input
-        className="input-premium"
-        style={{
-          borderColor: error ? "#F44336" : "var(--glass-border)",
-          ...style,
-        }}
+        className={`input-premium ${error ? "input-premium--error" : ""}`}
+        style={style}
         {...props}
       />
-      {error && (
-        <span
-          style={{ fontSize: "0.75rem", color: "#F44336", marginTop: "2px" }}
-        >
-          {error}
-        </span>
-      )}
+      {error && <span className="input-error">{error}</span>}
     </div>
   );
 };

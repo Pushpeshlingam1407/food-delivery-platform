@@ -269,8 +269,12 @@ export const Register: React.FC = () => {
               }}
             >
               <option value="customer">Customer (Order Food)</option>
-              <option value="restaurant_owner">Restaurant Owner (Sell Food)</option>
-              <option value="delivery_partner">Delivery Partner (Deliver Food)</option>
+              <option value="restaurant_owner">
+                Restaurant Owner (Sell Food)
+              </option>
+              <option value="delivery_partner">
+                Delivery Partner (Deliver Food)
+              </option>
             </select>
           </div>
 

@@ -380,7 +380,16 @@ export const AppRoutes: React.FC = () => {
   if (userEmail && userRole === "admin") {
     return (
       <BrowserRouter>
-        <AdminNavbar adminName={localStorage.getItem("userName")} onLogout={handleLogout} />
+        <div className="role-utility-header">
+          <span>Console Mode: {userRole?.toUpperCase()} View</span>
+          <button onClick={handleLogout} className="role-utility-btn">
+            ← Back to Role Selector / Sign Out
+          </button>
+        </div>
+        <AdminNavbar
+          adminName={localStorage.getItem("userName")}
+          onLogout={handleLogout}
+        />
         <Routes>
           <Route path="/" element={<AdminDashboard />} />
           <Route path="/restaurants" element={<RestaurantsManagement />} />
@@ -401,7 +410,16 @@ export const AppRoutes: React.FC = () => {
   if (userEmail && userRole === "restaurant_owner") {
     return (
       <BrowserRouter>
-        <RestaurantNavbar restaurantName={localStorage.getItem("userName")} onLogout={handleLogout} />
+        <div className="role-utility-header">
+          <span>Console Mode: MERCHANT View</span>
+          <button onClick={handleLogout} className="role-utility-btn">
+            ← Back to Role Selector / Sign Out
+          </button>
+        </div>
+        <RestaurantNavbar
+          restaurantName={localStorage.getItem("userName")}
+          onLogout={handleLogout}
+        />
         <Routes>
           <Route path="/" element={<RestaurantDashboard />} />
           <Route path="/menu" element={<MenuManager />} />
@@ -415,7 +433,16 @@ export const AppRoutes: React.FC = () => {
   if (userEmail && userRole === "delivery_partner") {
     return (
       <BrowserRouter>
-        <DeliveryNavbar driverName={localStorage.getItem("userName")} onLogout={handleLogout} />
+        <div className="role-utility-header">
+          <span>Console Mode: DRIVER View</span>
+          <button onClick={handleLogout} className="role-utility-btn">
+            ← Back to Role Selector / Sign Out
+          </button>
+        </div>
+        <DeliveryNavbar
+          driverName={localStorage.getItem("userName")}
+          onLogout={handleLogout}
+        />
         <Routes>
           <Route path="/" element={<DeliveryDashboard />} />
           <Route path="*" element={<Navigate to="/" />} />
