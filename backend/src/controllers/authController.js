@@ -54,10 +54,20 @@ export async function register(req, res) {
         });
       }
 
+      const isVerified = role === "customer";
       await connection.query(
         `INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, is_verified) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, TRUE)`,
-        [userId, roleId, first_name, last_name, email, phone, hashedPassword],
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [
+          userId,
+          roleId,
+          first_name,
+          last_name,
+          email,
+          phone,
+          hashedPassword,
+          isVerified,
+        ],
       );
 
       if (role === "customer" || role === "delivery_partner") {
@@ -127,6 +137,13 @@ export async function login(req, res) {
       return res
         .status(403)
         .json({ status: "error", message: `Your account is ${user.status}` });
+    }
+
+    if (!user.is_verified && user.role_name !== "customer") {
+      return res.status(403).json({
+        status: "error",
+        message: "Your account is pending Admin approval and verification.",
+      });
     }
 
     let passwordMatch = false;

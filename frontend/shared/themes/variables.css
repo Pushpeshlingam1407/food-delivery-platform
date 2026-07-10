@@ -1046,26 +1046,26 @@ h3 {
 
 .btn-premium {
   font-family: var(--font-cohere);
-  font-weight: 600;
-  background: var(--primary-gradient);
-  color: var(--text-sand);
-  border: none;
+  font-weight: 500;
+  background: var(--text-slate);
+  color: var(--bg-sand);
+  border: 1px solid var(--text-slate);
   border-radius: var(--radius-standard);
-  padding: 12px 26px;
-  font-size: 0.9rem;
+  padding: 10px 22px;
+  font-size: 0.88rem;
   letter-spacing: -0.01em;
   cursor: pointer;
-  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(255, 90, 31, 0.15);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .btn-premium:hover {
-  transform: scale(1.02);
-  box-shadow: 0 8px 24px rgba(255, 90, 31, 0.25);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .btn-premium:active {
-  transform: scale(0.98);
+  transform: translateY(0);
 }
 
 .btn-sm {
@@ -1116,12 +1116,13 @@ h3 {
 }
 
 .card-premium {
-  background: var(--glass-bg);
+  background: #ffffff;
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-squircle);
-  padding: 40px;
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-standard);
+  padding: 32px;
+  box-shadow:
+    0 4px 20px -2px rgba(21, 21, 21, 0.02),
+    0 12px 32px -4px rgba(21, 21, 21, 0.04);
 }
 
 .input-premium {
@@ -2414,24 +2415,33 @@ h3 {
 
 /* PremiumButton Modifier Variants */
 .btn-premium--primary {
-  background: var(--primary-gradient);
-  color: var(--text-sand);
-  border: none;
-  box-shadow: 0 4px 14px rgba(255, 90, 31, 0.15);
+  background: var(--text-slate);
+  color: var(--bg-sand);
+  border: 1px solid var(--text-slate);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.btn-premium--primary:hover {
+  background: #333333;
+  border-color: #333333;
 }
 
 .btn-premium--danger {
-  background: #f44336;
+  background: #d32f2f;
   color: var(--text-sand);
   border: none;
-  box-shadow: 0 4px 14px rgba(244, 67, 54, 0.15);
+  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.12);
 }
 
 .btn-premium--secondary {
-  background: rgba(25, 25, 25, 0.04);
+  background: transparent;
   color: var(--text-slate);
   border: 1px solid var(--glass-border);
   box-shadow: none;
+}
+
+.btn-premium--secondary:hover {
+  background: rgba(21, 21, 21, 0.03);
 }
 
 /* Spinner Loader styling */
@@ -2554,15 +2564,16 @@ h3 {
 }
 
 .auth-card {
-  background: var(--glass-bg);
+  background: #ffffff;
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-squircle);
+  border-radius: var(--radius-standard);
   padding: 40px;
   width: 100%;
   max-width: 450px;
-  box-shadow: var(--glass-shadow);
-  backdrop-filter: var(--glass-blur);
-  transition: all 0.3s ease;
+  box-shadow:
+    0 4px 20px -2px rgba(21, 21, 21, 0.02),
+    0 12px 32px -4px rgba(21, 21, 21, 0.04);
+  transition: all 0.25s ease;
 }
 
 .auth-title {
@@ -2698,5 +2709,79 @@ h3 {
   .auth-button {
     padding: 12px;
     font-size: 0.95rem;
+  }
+}
+
+/* Blinkit Inspired Premium Responsive Footer */
+.footer-container {
+  background: #ffffff;
+  border-top: 1px solid var(--glass-border);
+  padding: 60px 40px 30px;
+  margin-top: 80px;
+  width: 100%;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.footer-column h4 {
+  font-family: var(--font-cohere);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-slate);
+  margin-bottom: 20px;
+  letter-spacing: 0.05em;
+}
+
+.footer-column ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-column ul li {
+  margin-bottom: 12px;
+}
+
+.footer-column ul li a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.88rem;
+  transition: color 0.2s ease;
+}
+
+.footer-column ul li a:hover {
+  color: var(--accent-orange);
+}
+
+.footer-bottom {
+  border-top: 1px solid var(--glass-border);
+  padding-top: 30px;
+  margin-top: 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 20px;
+  max-width: 1200px;
+  margin-left: auto;
+  margin-right: auto;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+@media (max-width: 768px) {
+  .footer-container {
+    padding: 40px 20px 20px;
+  }
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
   }
 }

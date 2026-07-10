@@ -508,6 +508,92 @@ export const AppRoutes: React.FC = () => {
         />
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>
+      <footer className="footer-container">
+        <div className="footer-grid">
+          <div className="footer-column">
+            <h4>Popular Categories</h4>
+            <ul>
+              <li>
+                <Link to="/">Vegetables & Fruits</Link>
+              </li>
+              <li>
+                <Link to="/">Cold Drinks & Juices</Link>
+              </li>
+              <li>
+                <Link to="/">Bakery & Biscuits</Link>
+              </li>
+              <li>
+                <Link to="/">Chicken, Meat & Fish</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="footer-column">
+            <h4>Company</h4>
+            <ul>
+              <li>
+                <Link to="/page/about-us">About Us</Link>
+              </li>
+              <li>
+                <Link to="/page/terms-of-service">Terms & Conditions</Link>
+              </li>
+              <li>
+                <Link to="/page/privacy-policy">Privacy Policy</Link>
+              </li>
+              <li>
+                <Link to="/page/faqs">FAQs</Link>
+              </li>
+            </ul>
+          </div>
+          <div className="footer-column">
+            <h4>For Partners</h4>
+            <ul>
+              <li>
+                <a
+                  href="/login"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.setItem("userRole", "restaurant_owner");
+                    window.location.href = "/login";
+                  }}
+                >
+                  Merchant Console
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/login"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.setItem("userRole", "delivery_partner");
+                    window.location.href = "/login";
+                  }}
+                >
+                  Rider Partner Portal
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/login"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    localStorage.setItem("userRole", "admin");
+                    window.location.href = "/login";
+                  }}
+                >
+                  Admin Operations Console
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div className="footer-bottom">
+          <div>
+            © {new Date().getFullYear()} Bites Internet Private Limited. All
+            rights reserved.
+          </div>
+          <div>Inspired by Blinkit | Crafted by human UI Developer</div>
+        </div>
+      </footer>
       <CartDrawer
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
