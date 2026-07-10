@@ -9,6 +9,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
+import { DesktopSidebar } from "../../../shared/components/DesktopSidebar";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { OtpLogin } from "../pages/OtpLogin";
@@ -30,6 +31,9 @@ import {
   Wallet,
   LogOut,
   LogIn,
+  User,
+  ShoppingBag,
+  Menu,
 } from "lucide-react";
 import { toast } from "../utils/toast";
 
@@ -199,67 +203,7 @@ const GlobalBackBar: React.FC = () => {
   );
 };
 
-const DesktopSidebar: React.FC<{
-  userEmail: string | null;
-  onLogout: () => void;
-  onDepositClick: () => void;
-  walletBalance: number | null;
-}> = ({ userEmail, onLogout, onDepositClick, walletBalance }) => {
-  return (
-    <div className="desktop-sidebar">
-      <Link to="/" className="desktop-sidebar-logo">
-        bites.
-      </Link>
-      <nav className="desktop-sidebar-nav">
-        <Link to="/" className="desktop-sidebar-link">
-          <Compass size={18} />
-          Explore Stores
-        </Link>
-        {userEmail && (
-          <>
-            <Link to="/orders" className="desktop-sidebar-link">
-              <Truck size={18} />
-              My Orders
-            </Link>
-            <Link to="/addresses" className="desktop-sidebar-link">
-              <MapPin size={18} />
-              Addresses
-            </Link>
-            <div
-              onClick={onDepositClick}
-              className="desktop-sidebar-link cursor-pointer"
-            >
-              <Wallet size={18} />
-              <span>
-                Wallet: $
-                {walletBalance !== null ? walletBalance.toFixed(2) : "0.00"}
-              </span>
-            </div>
-          </>
-        )}
-      </nav>
-      <div className="desktop-sidebar-footer">
-        {userEmail ? (
-          <button
-            onClick={onLogout}
-            className="desktop-sidebar-link desktop-sidebar-logout"
-          >
-            <LogOut size={18} />
-            Sign Out
-          </button>
-        ) : (
-          <Link
-            to="/login"
-            className="desktop-sidebar-link desktop-sidebar-login"
-          >
-            <LogIn size={18} />
-            Sign In
-          </Link>
-        )}
-      </div>
-    </div>
-  );
-};
+
 
 export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
@@ -476,30 +420,41 @@ export const AppRoutes: React.FC = () => {
   if (userEmail && userRole === "admin") {
     return (
       <BrowserRouter>
-        <div className="role-utility-header">
-          <span>Console Mode: {userRole?.toUpperCase()} View</span>
-          <button onClick={handleLogout} className="role-utility-btn">
-            ← Back to Role Selector / Sign Out
-          </button>
+        <div className="main-layout-wrapper">
+          <DesktopSidebar
+            userEmail={userEmail}
+            userRole={userRole}
+            onLogout={handleLogout}
+            onDepositClick={handleDeposit}
+            walletBalance={walletBalance}
+          />
+          <div className="main-content-area">
+            <div className="role-utility-header">
+              <span>Console Mode: {userRole?.toUpperCase()} View</span>
+              <button onClick={handleLogout} className="role-utility-btn">
+                ← Back to Role Selector / Sign Out
+              </button>
+            </div>
+            <AdminNavbar
+              adminName={localStorage.getItem("userName")}
+              onLogout={handleLogout}
+            />
+            <GlobalBackBar />
+            <Routes>
+              <Route path="/" element={<AdminDashboard />} />
+              <Route path="/restaurants" element={<RestaurantsManagement />} />
+              <Route path="/customers" element={<CustomersManagement />} />
+              <Route path="/owners" element={<OwnersManagement />} />
+              <Route path="/drivers" element={<DriversManagement />} />
+              <Route path="/orders" element={<OrdersManagement />} />
+              <Route path="/images" element={<ImagesManagement />} />
+              <Route path="/refunds" element={<Refunds />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/cms" element={<CMS />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </div>
         </div>
-        <AdminNavbar
-          adminName={localStorage.getItem("userName")}
-          onLogout={handleLogout}
-        />
-        <GlobalBackBar />
-        <Routes>
-          <Route path="/" element={<AdminDashboard />} />
-          <Route path="/restaurants" element={<RestaurantsManagement />} />
-          <Route path="/customers" element={<CustomersManagement />} />
-          <Route path="/owners" element={<OwnersManagement />} />
-          <Route path="/drivers" element={<DriversManagement />} />
-          <Route path="/orders" element={<OrdersManagement />} />
-          <Route path="/images" element={<ImagesManagement />} />
-          <Route path="/refunds" element={<Refunds />} />
-          <Route path="/settings" element={<Settings />} />
-          <Route path="/cms" element={<CMS />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
       </BrowserRouter>
     );
   }
@@ -507,23 +462,34 @@ export const AppRoutes: React.FC = () => {
   if (userEmail && userRole === "restaurant_owner") {
     return (
       <BrowserRouter>
-        <div className="role-utility-header">
-          <span>Console Mode: MERCHANT View</span>
-          <button onClick={handleLogout} className="role-utility-btn">
-            ← Back to Role Selector / Sign Out
-          </button>
+        <div className="main-layout-wrapper">
+          <DesktopSidebar
+            userEmail={userEmail}
+            userRole={userRole}
+            onLogout={handleLogout}
+            onDepositClick={handleDeposit}
+            walletBalance={walletBalance}
+          />
+          <div className="main-content-area">
+            <div className="role-utility-header">
+              <span>Console Mode: MERCHANT View</span>
+              <button onClick={handleLogout} className="role-utility-btn">
+                ← Back to Role Selector / Sign Out
+              </button>
+            </div>
+            <RestaurantNavbar
+              restaurantName={localStorage.getItem("userName")}
+              onLogout={handleLogout}
+            />
+            <GlobalBackBar />
+            <Routes>
+              <Route path="/" element={<RestaurantDashboard />} />
+              <Route path="/menu" element={<MenuManager />} />
+              <Route path="/earnings" element={<Earnings />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </div>
         </div>
-        <RestaurantNavbar
-          restaurantName={localStorage.getItem("userName")}
-          onLogout={handleLogout}
-        />
-        <GlobalBackBar />
-        <Routes>
-          <Route path="/" element={<RestaurantDashboard />} />
-          <Route path="/menu" element={<MenuManager />} />
-          <Route path="/earnings" element={<Earnings />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
       </BrowserRouter>
     );
   }
@@ -531,21 +497,32 @@ export const AppRoutes: React.FC = () => {
   if (userEmail && userRole === "delivery_partner") {
     return (
       <BrowserRouter>
-        <div className="role-utility-header">
-          <span>Console Mode: DRIVER View</span>
-          <button onClick={handleLogout} className="role-utility-btn">
-            ← Back to Role Selector / Sign Out
-          </button>
+        <div className="main-layout-wrapper">
+          <DesktopSidebar
+            userEmail={userEmail}
+            userRole={userRole}
+            onLogout={handleLogout}
+            onDepositClick={handleDeposit}
+            walletBalance={walletBalance}
+          />
+          <div className="main-content-area">
+            <div className="role-utility-header">
+              <span>Console Mode: DRIVER View</span>
+              <button onClick={handleLogout} className="role-utility-btn">
+                ← Back to Role Selector / Sign Out
+              </button>
+            </div>
+            <DeliveryNavbar
+              driverName={localStorage.getItem("userName")}
+              onLogout={handleLogout}
+            />
+            <GlobalBackBar />
+            <Routes>
+              <Route path="/" element={<DeliveryDashboard />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </div>
         </div>
-        <DeliveryNavbar
-          driverName={localStorage.getItem("userName")}
-          onLogout={handleLogout}
-        />
-        <GlobalBackBar />
-        <Routes>
-          <Route path="/" element={<DeliveryDashboard />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
       </BrowserRouter>
     );
   }
@@ -556,6 +533,7 @@ export const AppRoutes: React.FC = () => {
       <div className="main-layout-wrapper">
         <DesktopSidebar
           userEmail={userEmail}
+          userRole={userRole}
           onLogout={handleLogout}
           onDepositClick={handleDeposit}
           walletBalance={walletBalance}
@@ -701,7 +679,6 @@ export const AppRoutes: React.FC = () => {
                 © {new Date().getFullYear()} Bites Internet Private Limited. All
                 rights reserved.
               </div>
-              <div>Inspired by Blinkit | Crafted by human UI Developer</div>
             </div>
           </footer>
         </div>

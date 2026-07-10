@@ -2865,8 +2865,7 @@ h3 {
 .desktop-sidebar {
   width: 260px;
   background: #ffffff;
-  border-right: 1px solid var(--glass-border);
-  padding: 40px 24px;
+  padding: 16px 12px;
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
@@ -2875,13 +2874,20 @@ h3 {
   height: 100vh;
 }
 
+.desktop-sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
 .desktop-sidebar-logo {
   font-family: var(--font-cohere);
   font-weight: 800;
   font-size: 1.8rem;
   color: var(--text-slate);
   text-decoration: none;
-  margin-bottom: 48px;
 }
 
 .desktop-sidebar-nav {
@@ -2993,6 +2999,46 @@ h3 {
   text-decoration: none;
   color: var(--text-slate);
   font-size: 0.9rem;
-  fontweight: 600;
+  font-weight: 600;
   font-family: var(--font-cohere);
+}
+
+/* Collapsed Sidebar Rules */
+.desktop-sidebar.collapsed {
+  width: 80px;
+  padding: 32px 12px;
+  align-items: center;
+}
+
+.desktop-sidebar.collapsed .desktop-sidebar-logo {
+  font-size: 1.5rem;
+  margin-bottom: 32px;
+}
+
+.desktop-sidebar.collapsed .desktop-sidebar-link {
+  justify-content: center;
+  padding: 12px;
+  width: 48px;
+  height: 48px;
+}
+
+.desktop-sidebar.collapsed .desktop-sidebar-link span {
+  display: none;
+}
+
+.desktop-sidebar-toggle-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-slate);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  border-radius: 50%;
+  transition: background 0.2s ease;
+}
+
+.desktop-sidebar-toggle-btn:hover {
+  background: rgba(21, 21, 21, 0.05);
 }
