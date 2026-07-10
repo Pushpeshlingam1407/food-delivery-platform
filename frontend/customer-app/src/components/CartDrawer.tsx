@@ -190,58 +190,23 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         className="drawer-backdrop drawer-backdrop--soft"
         onClick={onClose}
       />
-      <div
-        className="cart-drawer"
-        style={{
-          position: "fixed",
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: "min(420px, 100vw)",
-          background: "var(--bg-sand)",
-          borderLeft: "1px solid var(--glass-border)",
-          boxShadow: "-8px 0 32px rgba(25, 25, 25, 0.08)",
-          zIndex: 1000,
-          display: "flex",
-          flexDirection: "column",
-          fontFamily: "var(--font-apple)",
-        }}
-      >
-        <div
-          className="cart-drawer-header"
-          style={{
-            padding: "24px",
-            borderBottom: "1px solid var(--glass-border)",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+      <div className="cart-drawer">
+        <div className="cart-drawer-header">
+          <div className="cart-drawer-header-left">
             <ShoppingCart size={20} />
-            <h3
-              style={{ fontFamily: "var(--font-cohere)", fontSize: "1.2rem" }}
-            >
+            <h3 className="cart-drawer-title">
               Your Basket
             </h3>
           </div>
           <button
             onClick={onClose}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "var(--text-slate)",
-            }}
+            className="cart-drawer-close-btn"
           >
             <X size={20} />
           </button>
         </div>
 
-        <div
-          className="cart-drawer-body"
-          style={{ flexGrow: 1, overflowY: "auto", padding: "24px" }}
-        >
+        <div className="cart-drawer-body">
           {cartItems.map((item) => (
             <div
               key={item.id}
