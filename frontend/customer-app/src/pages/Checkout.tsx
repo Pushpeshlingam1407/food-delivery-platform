@@ -164,25 +164,10 @@ export const Checkout: React.FC = () => {
         Order Checkout
       </h1>
 
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 360px",
-          gap: "40px",
-        }}
-      >
+      <div className="checkout-layout-grid">
         <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
           {/* Address select block */}
-          <div
-            style={{
-              background: "var(--glass-bg)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-squircle)",
-              padding: "32px",
-              boxShadow: "var(--glass-shadow)",
-              backdropFilter: "var(--glass-blur)",
-            }}
-          >
+          <div className="card-premium">
             <h3
               style={{
                 fontFamily: "var(--font-cohere)",
@@ -349,16 +334,7 @@ export const Checkout: React.FC = () => {
           </div>
 
           {/* Payment Method select block */}
-          <div
-            style={{
-              background: "var(--glass-bg)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-squircle)",
-              padding: "32px",
-              boxShadow: "var(--glass-shadow)",
-              backdropFilter: "var(--glass-blur)",
-            }}
-          >
+          <div className="card-premium">
             <h3
               style={{
                 fontFamily: "var(--font-cohere)",
@@ -437,13 +413,8 @@ export const Checkout: React.FC = () => {
         {/* Order details checklist card */}
         <div>
           <div
+            className="card-premium"
             style={{
-              background: "var(--glass-bg)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-squircle)",
-              padding: "32px",
-              boxShadow: "var(--glass-shadow)",
-              backdropFilter: "var(--glass-blur)",
               position: "sticky",
               top: "100px",
             }}

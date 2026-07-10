@@ -165,6 +165,23 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
   );
 };
 
+const GlobalBackBar: React.FC = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  if (location.pathname === "/" || location.pathname === "") {
+    return null;
+  }
+
+  return (
+    <div className="global-back-bar">
+      <button onClick={() => navigate(-1)} className="back-button-global">
+        ← Back
+      </button>
+    </div>
+  );
+};
+
 export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
     localStorage.getItem("userEmail"),
@@ -390,6 +407,7 @@ export const AppRoutes: React.FC = () => {
           adminName={localStorage.getItem("userName")}
           onLogout={handleLogout}
         />
+        <GlobalBackBar />
         <Routes>
           <Route path="/" element={<AdminDashboard />} />
           <Route path="/restaurants" element={<RestaurantsManagement />} />
@@ -420,6 +438,7 @@ export const AppRoutes: React.FC = () => {
           restaurantName={localStorage.getItem("userName")}
           onLogout={handleLogout}
         />
+        <GlobalBackBar />
         <Routes>
           <Route path="/" element={<RestaurantDashboard />} />
           <Route path="/menu" element={<MenuManager />} />
@@ -443,6 +462,7 @@ export const AppRoutes: React.FC = () => {
           driverName={localStorage.getItem("userName")}
           onLogout={handleLogout}
         />
+        <GlobalBackBar />
         <Routes>
           <Route path="/" element={<DeliveryDashboard />} />
           <Route path="*" element={<Navigate to="/" />} />
@@ -465,6 +485,7 @@ export const AppRoutes: React.FC = () => {
         onDepositClick={handleDeposit}
         deliveryAddress={deliveryAddress}
       />
+      <GlobalBackBar />
       <Routes>
         <Route path="/" element={<Home searchQuery={searchQuery} />} />
         <Route

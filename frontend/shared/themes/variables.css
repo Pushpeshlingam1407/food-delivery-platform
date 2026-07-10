@@ -2785,3 +2785,54 @@ h3 {
     text-align: center;
   }
 }
+
+/* Responsive Checkout Layout Grid */
+.checkout-layout-grid {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 40px;
+}
+
+@media (max-width: 820px) {
+  .checkout-layout-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* Universal Global Back Button Bar */
+.global-back-bar {
+  max-width: 1200px;
+  margin: 16px auto 0;
+  padding: 0 40px;
+  width: 100%;
+  display: flex;
+}
+
+.back-button-global {
+  background: transparent;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-standard);
+  padding: 8px 16px;
+  font-family: var(--font-cohere);
+  font-weight: 500;
+  color: var(--text-slate);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.85rem;
+  transition: all 0.2s ease;
+}
+
+.back-button-global:hover {
+  background: rgba(21, 21, 21, 0.03);
+  transform: translateX(-2px);
+}
+
+@media (max-width: 768px) {
+  .global-back-bar {
+    padding: 0 16px;
+    margin-top: 12px;
+  }
+}
