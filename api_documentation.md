@@ -1,20 +1,20 @@
-# API Reference Guide - Monorepo Integration
+# API Reference Guide - Unified Portal Integration
 
-This document outlines all backend REST endpoints and Socket.IO real-time events exposed by the single backend server, categorized by which of the three frontend apps consumes them.
+This document outlines all backend REST endpoints and Socket.IO real-time events exposed by the backend server, now consumed by a unified frontend application wrapper with role-based routing.
 
 ---
 
-## 1. Customer Application Endpoints
+## 1. Unified Portal & Authentication Endpoints
 
 ### Authentication & Profile
 
-- **POST `/api/auth/register`**: Registers a new customer profile.
-- **POST `/api/auth/login`**: Logs in customer using email and password.
+- **POST `/api/auth/register`**: Registers a new profile. Accepts `role` parameter (`"customer"`, `"restaurant_owner"`, `"delivery_partner"`) to initialize the profile with correct permissions.
+- **POST `/api/auth/login`**: Authenticates any user (Customer, Owner, Driver, Admin) using email and password, returning their JWT tokens and `role` credentials.
 - **POST `/api/auth/otp/send`**: Dispatches 6-digit OTP code to phone.
-- **POST `/api/auth/otp/verify`**: Verifies phone OTP, automatically registers profile if new, returns JWT.
-- **GET `/api/auth/me`**: Fetches details of the active customer profile.
+- **POST `/api/auth/otp/verify`**: Verifies phone OTP, automatically registers profile if new, returns JWT and default `"customer"` role.
+- **GET `/api/auth/me`**: Fetches details of the active user profile (includes user role validation).
 - **POST `/api/auth/refresh`**: Generates a new short-lived access token.
-- **POST `/api/auth/logout`**: Revokes customer's session refresh token.
+- **POST `/api/auth/logout`**: Revokes user's session refresh token.
 
 ### Browsing & Search
 

@@ -106,12 +106,16 @@ graph TD
 
 Unlike standard template backends, this system is custom-tailored for multi-portal, high-concurrency food logistics:
 
-### 🔄 1. Dual-Token Silent Handshake Interceptor Sync
+### 🌐 1. Unified Monorepo Client Orchestration
+
+The authentication engine supports role token returns (`customer`, `restaurant_owner`, `delivery_partner`, `admin`) to coordinate unified frontend redirects. A single landing router resolves the authenticated profile structure dynamically and serves the respective workspace layout, providing zero-friction session management.
+
+### 🔄 2. Dual-Token Silent Handshake Interceptor Sync
 
 > [!IMPORTANT]
 > Prevents user session drops by signaling a standard `401 Unauthorized` for expired tokens, enabling clients to silently refresh security parameters via `/auth/refresh` without prompting login screens.
 
-### 💰 2. Multi-Role Transaction Ledger Isolation
+### 💰 3. Multi-Role Transaction Ledger Isolation
 
 Uses MySQL isolation locks to guarantee database integrity across three roles:
 
@@ -119,7 +123,7 @@ Uses MySQL isolation locks to guarantee database integrity across three roles:
 2. **Merchants**: Receive net payout (Total minus Commission) immediately upon order completion.
 3. **Drivers**: Earn delivery fees and tips credited to their account.
 
-### 📡 3. Resilient WebSocket State Recovery
+### 📡 4. Resilient WebSocket State Recovery
 
 > [!TIP]
 > Tuned `pingTimeout` parameter buffers connection drops during delivery transit. Reconnecting drivers automatically rejoin active tracking rooms to resume GPS coordinates broadcasts.
