@@ -291,6 +291,24 @@ export const Dashboard: React.FC = () => {
 
   return (
     <div className="app-shell">
+      {/* Earnings Highlight Strip */}
+      <div className="earnings-highlight-strip">
+        <div>
+          <div className="earnings-strip-label">Today's Earnings</div>
+          <div className="earnings-strip-amount">
+            ${totalEarningAmt.toFixed(2)}
+          </div>
+          <div className="earnings-strip-sub">
+            {completedDeliveriesCount} deliveries completed
+          </div>
+        </div>
+        <div style={{ textAlign: "right" }}>
+          <div className="earnings-strip-label">Wallet</div>
+          <div className="earnings-strip-amount">${walletBalance.toFixed(2)}</div>
+          <div className="earnings-strip-sub">Available balance</div>
+        </div>
+      </div>
+
       {/* Header Info */}
       <div className="dashboard-grid section-spacing">
         {/* Toggle block */}

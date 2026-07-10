@@ -20,6 +20,7 @@ import { OrderTracking } from "../pages/OrderTracking";
 import { CmsPage } from "../pages/CmsPage";
 import { Orders } from "../pages/Orders";
 import { AddressManager } from "../pages/AddressManager";
+import { Profile } from "../pages/Profile";
 import { ShimmerList } from "../components/Shimmer";
 import api from "../../../shared/services/api";
 import {
@@ -34,6 +35,10 @@ import {
   User,
   ShoppingBag,
   Menu,
+  Clock,
+  RotateCcw,
+  Home as HomeIcon,
+  ClipboardList,
 } from "lucide-react";
 import { toast } from "../utils/toast";
 
@@ -62,13 +67,52 @@ import { Navbar as DeliveryNavbar } from "../../../delivery-app/src/components/N
 
 interface HomeProps {
   searchQuery: string;
+  addToCart?: (item: any) => void;
 }
 
+const CUISINE_CATEGORIES = [
+  { id: "all", label: "All", emoji: "🍽️" },
+  { id: "biryani", label: "Biryani", emoji: "🍛" },
+  { id: "pizza", label: "Pizza", emoji: "🍕" },
+  { id: "burger", label: "Burgers", emoji: "🍔" },
+  { id: "chinese", label: "Chinese", emoji: "🥢" },
+  { id: "south indian", label: "South Indian", emoji: "🥘" },
+  { id: "desserts", label: "Desserts", emoji: "🍰" },
+  { id: "healthy", label: "Healthy", emoji: "🥗" },
+  { id: "rolls", label: "Rolls & Wraps", emoji: "🌯" },
+  { id: "thali", label: "Thali", emoji: "🍱" },
+];
+
+const REST_EMOJIS: Record<string, string> = {
+  biryani: "🍛",
+  pizza: "🍕",
+  burger: "🍔",
+  chinese: "🥢",
+  "south indian": "🥘",
+  desserts: "🍰",
+  healthy: "🥗",
+  rolls: "🌯",
+  thali: "🍱",
+  default: "🍽️",
+};
+
+const getRestEmoji = (desc: string = "") => {
+  const d = desc.toLowerCase();
+  for (const key of Object.keys(REST_EMOJIS)) {
+    if (d.includes(key)) return REST_EMOJIS[key];
+  }
+  return REST_EMOJIS.default;
+};
+
 // Landing Page Dashboard (Customers)
-const Home: React.FC<HomeProps> = ({ searchQuery }) => {
+const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
+  const navigate = useNavigate();
   const [restaurants, setRestaurants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeOrders, setActiveOrders] = useState<any[]>([]);
+  const [pastOrders, setPastOrders] = useState<any[]>([]);
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [reordering, setReordering] = useState<string | null>(null);
 
   const fetchDashboardData = async () => {
     try {
@@ -92,6 +136,10 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
             ].includes(o.status),
           );
           setActiveOrders(active);
+          const delivered = allOrders.filter(
+            (o: any) => o.status === "delivered",
+          );
+          setPastOrders(delivered.slice(0, 4));
         }
       }
     } catch (err) {
@@ -105,81 +153,222 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
     fetchDashboardData();
   }, [searchQuery]);
 
+  const handleOrderAgain = async (orderId: string) => {
+    if (!localStorage.getItem("accessToken")) {
+      navigate("/login");
+      return;
+    }
+    setReordering(orderId);
+    try {
+      const res = await api.get(`/orders/${orderId}`);
+      if (res.data.status === "success") {
+        const items = res.data.data?.items || [];
+        for (const item of items) {
+          if (addToCart) {
+            await addToCart({
+              id: item.menu_id,
+              name: item.name,
+              price: item.price,
+            });
+          }
+        }
+        toast.success("Items added to your cart! 🛒");
+      }
+    } catch {
+      toast.error("Could not reorder. Please try again.");
+    } finally {
+      setReordering(null);
+    }
+  };
+
+  const filteredRestaurants =
+    activeCategory === "all"
+      ? restaurants
+      : restaurants.filter(
+          (r) =>
+            (r.description || "").toLowerCase().includes(activeCategory) ||
+            (r.name || "").toLowerCase().includes(activeCategory),
+        );
+
   return (
     <div className="app-shell">
+      {/* Active order live banner */}
       {localStorage.getItem("accessToken") && activeOrders.length > 0 && (
-        <div className="dashboard-grid section-spacing">
-          <div className="panel-card accent-panel panel-card-stacked">
-            <div className="card-banner">
-              <Truck size={20} /> Active Deliveries ({activeOrders.length})
-            </div>
-            <div className="card-stack">
-              {activeOrders.map((o) => (
-                <div
-                  key={o.id}
-                  className="panel-card compact panel-card-stacked"
-                >
-                  <div className="panel-row">
-                    <div>
-                      <div className="card-heading">{o.restaurant_name}</div>
-                      <div className="card-subtitle">
-                        Status: {o.status.replace(/_/g, " ").toUpperCase()}
-                      </div>
-                    </div>
-                    <Link
-                      to={`/track/${o.id}`}
-                      className="btn-premium btn-sm button-flex"
-                    >
-                      Track <ArrowRight size={14} />
-                    </Link>
-                  </div>
+        <div className="feature-section">
+          {activeOrders.map((o) => (
+            <div
+              key={o.id}
+              style={{
+                background: "#fff",
+                border: "1.5px solid rgba(12,128,64,0.2)",
+                borderRadius: 16,
+                padding: "16px 20px",
+                display: "flex",
+                alignItems: "center",
+                gap: 14,
+                marginBottom: 10,
+                cursor: "pointer",
+                transition: "box-shadow 0.2s",
+              }}
+              onClick={() => navigate(`/track/${o.id}`)}
+            >
+              <div className="delivery-active-dot" />
+              <div style={{ flex: 1 }}>
+                <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>
+                  {o.restaurant_name}
                 </div>
-              ))}
+                <div
+                  style={{
+                    fontSize: "0.78rem",
+                    color: "var(--text-muted)",
+                    marginTop: 2,
+                  }}
+                >
+                  {o.status
+                    .replace(/_/g, " ")
+                    .replace(/\b\w/g, (c: string) => c.toUpperCase())}
+                </div>
+              </div>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 6,
+                  color: "#0c8040",
+                  fontWeight: 700,
+                  fontSize: "0.85rem",
+                }}
+              >
+                Track <ArrowRight size={14} />
+              </div>
             </div>
+          ))}
+        </div>
+      )}
+
+      {/* Order Again strip */}
+      {localStorage.getItem("accessToken") && pastOrders.length > 0 && (
+        <div className="feature-section order-again-section">
+          <div className="order-again-header">
+            <div className="order-again-title">Order Again</div>
+            <Link to="/orders" className="order-again-see-all">
+              See all <ArrowRight size={13} />
+            </Link>
+          </div>
+          <div className="order-again-scroll">
+            {pastOrders.map((o) => (
+              <div key={o.id} className="order-again-card">
+                <div className="order-again-rest">{o.restaurant_name}</div>
+                <div className="order-again-meta">
+                  Order #{o.order_number}
+                  <br />$
+                  {parseFloat(o.total_payable?.toString() || "0").toFixed(2)}
+                </div>
+                <button
+                  className="order-again-btn"
+                  disabled={reordering === o.id}
+                  onClick={() => handleOrderAgain(o.id)}
+                >
+                  <RotateCcw size={13} />
+                  {reordering === o.id ? "Adding..." : "Order Again"}
+                </button>
+              </div>
+            ))}
           </div>
         </div>
       )}
 
-      <div className="header-panel-premium section-spacing">
-        <div>
-          <h1 className="section-heading section-heading-lg">
-            Discover Restaurants
-          </h1>
-          <p className="panel-note">
-            Browse nearby restaurants and manage your active orders and wallet
-            from one unified dashboard.
-          </p>
+      {/* Category filter pills */}
+      <div className="feature-section category-pills-section">
+        <div className="category-pills-scroll">
+          {CUISINE_CATEGORIES.map((cat) => (
+            <button
+              key={cat.id}
+              className={`category-pill${activeCategory === cat.id ? " active" : ""}`}
+              onClick={() => setActiveCategory(cat.id)}
+            >
+              {cat.emoji} {cat.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Section heading */}
+      <div className="section-row-header" style={{ marginBottom: 20 }}>
+        <div className="section-row-title">
+          {activeCategory === "all"
+            ? "All Restaurants"
+            : `${CUISINE_CATEGORIES.find((c) => c.id === activeCategory)?.label} Near You`}
+        </div>
+        <div
+          style={{
+            fontSize: "0.78rem",
+            color: "var(--text-muted)",
+            fontWeight: 600,
+          }}
+        >
+          {filteredRestaurants.length} places
         </div>
       </div>
 
       {loading ? (
         <ShimmerList />
       ) : (
-        <div className="panel-grid">
-          {restaurants.map((r) => (
+        <div className="blinkit-restaurant-grid">
+          {filteredRestaurants.map((r, i) => (
             <Link
               to={`/restaurant/${r.id}`}
               key={r.id}
-              className="panel-card panel-card-stacked"
+              className="blinkit-restaurant-card"
+              style={{ animationDelay: `${i * 0.05}s` }}
             >
-              <div className="card-heading">{r.name}</div>
-              <p className="card-subtitle">
-                {r.description || "No description available"}
-              </p>
-              <div className="panel-row mt-16">
-                <span className="text-small">
-                  {r.average_delivery_time} mins
-                </span>
-                <span
-                  className={`status-pill ${
-                    r.status === "open" ? "success" : "danger"
-                  }`}
-                >
-                  {r.status}
-                </span>
+              <div className="blinkit-card-image-wrapper">
+                {getRestEmoji(r.description)}
+                {r.status !== "open" && (
+                  <div className="blinkit-card-closed-overlay">Closed</div>
+                )}
+              </div>
+              <div className="blinkit-card-body">
+                <div className="blinkit-card-name">{r.name}</div>
+                <div className="blinkit-card-cuisine">
+                  {r.description
+                    ? r.description.slice(0, 48) +
+                      (r.description.length > 48 ? "…" : "")
+                    : "Multi-cuisine restaurant"}
+                </div>
+                <div className="blinkit-card-footer">
+                  <div className="blinkit-card-time-pill">
+                    <Clock size={11} />
+                    {r.average_delivery_time || 30}–
+                    {(r.average_delivery_time || 30) + 10} min
+                  </div>
+                  <div
+                    className={`blinkit-card-status ${r.status === "open" ? "open" : "closed"}`}
+                  >
+                    {r.status === "open" ? "Open" : "Closed"}
+                  </div>
+                </div>
               </div>
             </Link>
           ))}
+          {filteredRestaurants.length === 0 && (
+            <div
+              style={{
+                gridColumn: "1/-1",
+                textAlign: "center",
+                padding: "60px 24px",
+                color: "var(--text-muted)",
+              }}
+            >
+              <div style={{ fontSize: "3rem", marginBottom: 12 }}>🍽️</div>
+              <div style={{ fontWeight: 600, marginBottom: 8 }}>
+                No restaurants found
+              </div>
+              <div style={{ fontSize: "0.85rem" }}>
+                Try a different category or search term
+              </div>
+            </div>
+          )}
         </div>
       )}
     </div>
@@ -200,6 +389,67 @@ const GlobalBackBar: React.FC = () => {
         ← Back
       </button>
     </div>
+  );
+};
+
+interface MobileBottomNavProps {
+  cartCount: number;
+  userEmail: string | null;
+  onCartClick: () => void;
+}
+
+const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
+  cartCount,
+  userEmail,
+  onCartClick,
+}) => {
+  const location = useLocation();
+  const path = location.pathname;
+
+  const items = [
+    { icon: <HomeIcon size={22} />, label: "Home", route: "/" },
+    { icon: <ClipboardList size={22} />, label: "Orders", route: "/orders" },
+    {
+      icon: <ShoppingBag size={22} />,
+      label: "Cart",
+      action: onCartClick,
+      badge: cartCount > 0 ? cartCount : null,
+    },
+    {
+      icon: <User size={22} />,
+      label: "Profile",
+      route: userEmail ? "/profile" : "/login",
+    },
+  ];
+
+  return (
+    <nav className="mobile-bottom-nav">
+      {items.map((item, i) => {
+        const isActive = item.route ? path === item.route : false;
+        return item.action ? (
+          <button
+            key={i}
+            className={`mobile-bottom-nav-item${isActive ? " active" : ""}`}
+            onClick={item.action}
+          >
+            {item.badge != null && (
+              <span className="mobile-bottom-nav-badge">{item.badge}</span>
+            )}
+            {item.icon}
+            <span>{item.label}</span>
+          </button>
+        ) : (
+          <Link
+            key={i}
+            to={item.route!}
+            className={`mobile-bottom-nav-item${isActive ? " active" : ""}`}
+          >
+            {item.icon}
+            <span>{item.label}</span>
+          </Link>
+        );
+      })}
+    </nav>
   );
 };
 
@@ -550,7 +800,10 @@ export const AppRoutes: React.FC = () => {
           />
           <GlobalBackBar />
           <Routes>
-            <Route path="/" element={<Home searchQuery={searchQuery} />} />
+            <Route
+              path="/"
+              element={<Home searchQuery={searchQuery} addToCart={addToCart} />}
+            />
             <Route
               path="/restaurant/:id"
               element={
@@ -590,6 +843,22 @@ export const AppRoutes: React.FC = () => {
               path="/addresses"
               element={
                 userEmail ? <AddressManager /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/profile"
+              element={
+                userEmail ? (
+                  <Profile
+                    userEmail={userEmail}
+                    userName={localStorage.getItem("userName")}
+                    walletBalance={walletBalance}
+                    onLogout={handleLogout}
+                    onDepositClick={handleDeposit}
+                  />
+                ) : (
+                  <Navigate to="/login" />
+                )
               }
             />
             <Route path="*" element={<Navigate to="/" />} />
@@ -681,6 +950,12 @@ export const AppRoutes: React.FC = () => {
           </footer>
         </div>
       </div>
+      {/* Mobile bottom navigation — Blinkit-style */}
+      <MobileBottomNav
+        cartCount={cartCount}
+        userEmail={userEmail}
+        onCartClick={() => setCartOpen(true)}
+      />
       <CartDrawer
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}

@@ -194,14 +194,9 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
         <div className="cart-drawer-header">
           <div className="cart-drawer-header-left">
             <ShoppingCart size={20} />
-            <h3 className="cart-drawer-title">
-              Your Basket
-            </h3>
+            <h3 className="cart-drawer-title">Your Basket</h3>
           </div>
-          <button
-            onClick={onClose}
-            className="cart-drawer-close-btn"
-          >
+          <button onClick={onClose} className="cart-drawer-close-btn">
             <X size={20} />
           </button>
         </div>

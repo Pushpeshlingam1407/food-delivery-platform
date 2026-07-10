@@ -397,6 +397,55 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
+      {/* Today's Stats Strip */}
+      {orders.length > 0 && (
+        <div className="today-stats-strip">
+          <div
+            className="stat-tile"
+            style={{ "--stat-accent": "#0c8040" } as React.CSSProperties}
+          >
+            <div className="stat-tile-icon">
+              <CookingPot size={32} />
+            </div>
+            <div className="stat-tile-label">Total Orders</div>
+            <div className="stat-tile-value">{orders.length}</div>
+            <div className="stat-tile-sub">Today's count</div>
+          </div>
+          <div
+            className="stat-tile"
+            style={{ "--stat-accent": "#ff3f1a" } as React.CSSProperties}
+          >
+            <div className="stat-tile-icon">
+              <Clock size={32} />
+            </div>
+            <div className="stat-tile-label">Pending</div>
+            <div className="stat-tile-value">
+              {orders.filter((o) => o.status === "placed").length}
+            </div>
+            <div className="stat-tile-sub">Need action now</div>
+          </div>
+          <div
+            className="stat-tile"
+            style={{ "--stat-accent": "#7a00ff" } as React.CSSProperties}
+          >
+            <div className="stat-tile-icon">
+              <Check size={32} />
+            </div>
+            <div className="stat-tile-label">Revenue</div>
+            <div className="stat-tile-value">
+              $
+              {orders
+                .reduce(
+                  (acc, o) => acc + parseFloat(o.item_total?.toString() || "0"),
+                  0,
+                )
+                .toFixed(0)}
+            </div>
+            <div className="stat-tile-sub">Estimated total</div>
+          </div>
+        </div>
+      )}
+
       {/* Grid list of orders */}
       <div className="panel-grid">
         {orders.map((o) => (
