@@ -70,6 +70,9 @@ export const Orders: React.FC = () => {
 
   return (
     <div style={{ padding: "40px", maxWidth: "800px", margin: "0 auto" }}>
+      <button onClick={() => navigate(-1)} className="back-button">
+        ← Back
+      </button>
       {/* Title */}
       <div style={{ marginBottom: "40px" }}>
         <h1
