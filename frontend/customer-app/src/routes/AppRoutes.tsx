@@ -299,13 +299,13 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
                 <div className="foodie-card-cuisine">
                   {r.description
                     ? r.description.slice(0, 48) +
-                      (r.description.length > 48 ? "â€¦" : "")
+                      (r.description.length > 48 ? "..." : "")
                     : "Multi-cuisine restaurant"}
                 </div>
                 <div className="foodie-card-footer">
                   <div className="foodie-card-time-pill">
                     <Clock size={11} />
-                    {r.average_delivery_time || 30}â€“
+                    {r.average_delivery_time || 30}-
                     {(r.average_delivery_time || 30) + 10} min
                   </div>
                   <div
@@ -319,7 +319,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
           ))}
           {filteredRestaurants.length === 0 && (
             <div className="foodie-empty-state">
-              <div className="foodie-empty-icon">ðŸ½ï¸</div>
+              <div className="foodie-empty-icon">🍽️</div>
               <div className="foodie-empty-title">No restaurants found</div>
               <div className="foodie-empty-sub">
                 Try a different category or search term

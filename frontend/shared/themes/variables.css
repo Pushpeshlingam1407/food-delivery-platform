@@ -4282,4 +4282,56 @@ h3 {
   color: var(--text-muted);
 }
 
+/* =============================================
+   CUSTOM BEAUTIFIED TOASTS & SONNER OVERRIDES
+   ============================================= */
+
+.custom-toast-success {
+  background: #f0fdf4 !important;
+  color: #166534 !important;
+  border: 1.5px solid #bbf7d0 !important;
+  border-radius: 12px !important;
+  padding: 12px 18px !important;
+  font-family: var(--font-cohere) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 10px 30px -5px rgba(22, 101, 52, 0.15) !important;
+}
+
+.custom-toast-error {
+  background: #fef2f2 !important;
+  color: #991b1b !important;
+  border: 1.5px solid #fca5a5 !important;
+  border-radius: 12px !important;
+  padding: 12px 18px !important;
+  font-family: var(--font-cohere) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 10px 30px -5px rgba(153, 27, 27, 0.15) !important;
+}
+
+.custom-toast-info {
+  background: #eff6ff !important;
+  color: #1e40af !important;
+  border: 1.5px solid #bfdbfe !important;
+  border-radius: 12px !important;
+  padding: 12px 18px !important;
+  font-family: var(--font-cohere) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 10px 30px -5px rgba(30, 64, 175, 0.15) !important;
+}
+
+.custom-toast-warning {
+  background: #fffbeb !important;
+  color: #92400e !important;
+  border: 1.5px solid #fde68a !important;
+  border-radius: 12px !important;
+  padding: 12px 18px !important;
+  font-family: var(--font-cohere) !important;
+  font-weight: 600 !important;
+  font-size: 0.9rem !important;
+  box-shadow: 0 10px 30px -5px rgba(146, 64, 14, 0.15) !important;
+}
+
 

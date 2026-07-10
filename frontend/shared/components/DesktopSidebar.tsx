@@ -56,24 +56,24 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
         {!userRole || userRole === "customer" ? (
           <>
             <Link to="/" className="desktop-sidebar-link">
-              <Compass size={18} />
+              <span className="sidebar-emoji">🏪</span>
               <span>Explore Stores</span>
             </Link>
             {userEmail && (
               <>
                 <Link to="/orders" className="desktop-sidebar-link">
-                  <Truck size={18} />
+                  <span className="sidebar-emoji">📦</span>
                   <span>My Orders</span>
                 </Link>
                 <Link to="/addresses" className="desktop-sidebar-link">
-                  <MapPin size={18} />
+                  <span className="sidebar-emoji">📍</span>
                   <span>Addresses</span>
                 </Link>
                 <div
                   onClick={onDepositClick}
                   className="desktop-sidebar-link cursor-pointer"
                 >
-                  <Wallet size={18} />
+                  <span className="sidebar-emoji">💳</span>
                   <span>
                     Wallet: $
                     {walletBalance !== null ? walletBalance.toFixed(2) : "0.00"}
@@ -85,65 +85,65 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
         ) : userRole === "admin" ? (
           <>
             <Link to="/" className="desktop-sidebar-link">
-              <Compass size={18} />
+              <span className="sidebar-emoji">📊</span>
               <span>Dashboard</span>
             </Link>
             <Link to="/restaurants" className="desktop-sidebar-link">
-              <Truck size={18} />
+              <span className="sidebar-emoji">🍳</span>
               <span>Restaurants</span>
             </Link>
             <Link to="/customers" className="desktop-sidebar-link">
-              <User size={18} />
+              <span className="sidebar-emoji">👥</span>
               <span>Customers</span>
             </Link>
             <Link to="/owners" className="desktop-sidebar-link">
-              <User size={18} />
+              <span className="sidebar-emoji">💼</span>
               <span>Owners</span>
             </Link>
             <Link to="/drivers" className="desktop-sidebar-link">
-              <User size={18} />
+              <span className="sidebar-emoji">🛵</span>
               <span>Drivers</span>
             </Link>
             <Link to="/orders" className="desktop-sidebar-link">
-              <ShoppingBag size={18} />
+              <span className="sidebar-emoji">📝</span>
               <span>Orders</span>
             </Link>
             <Link to="/images" className="desktop-sidebar-link">
-              <Compass size={18} />
+              <span className="sidebar-emoji">🖼️</span>
               <span>Images</span>
             </Link>
             <Link to="/refunds" className="desktop-sidebar-link">
-              <Wallet size={18} />
+              <span className="sidebar-emoji">💰</span>
               <span>Refunds</span>
             </Link>
             <Link to="/cms" className="desktop-sidebar-link">
-              <Compass size={18} />
+              <span className="sidebar-emoji">📄</span>
               <span>CMS Pages</span>
             </Link>
             <Link to="/settings" className="desktop-sidebar-link">
-              <Compass size={18} />
+              <span className="sidebar-emoji">⚙️</span>
               <span>Settings</span>
             </Link>
           </>
         ) : userRole === "restaurant_owner" ? (
           <>
             <Link to="/" className="desktop-sidebar-link">
-              <Compass size={18} />
+              <span className="sidebar-emoji">📈</span>
               <span>Dashboard</span>
             </Link>
             <Link to="/menu" className="desktop-sidebar-link">
-              <Compass size={18} />
+              <span className="sidebar-emoji">📋</span>
               <span>Menu Manager</span>
             </Link>
             <Link to="/earnings" className="desktop-sidebar-link">
-              <Wallet size={18} />
+              <span className="sidebar-emoji">💵</span>
               <span>Earnings</span>
             </Link>
           </>
         ) : userRole === "delivery_partner" ? (
           <>
             <Link to="/" className="desktop-sidebar-link">
-              <Compass size={18} />
+              <span className="sidebar-emoji">🚀</span>
               <span>Active Jobs</span>
             </Link>
           </>
@@ -156,7 +156,7 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
             onClick={onLogout}
             className="desktop-sidebar-link desktop-sidebar-logout"
           >
-            <LogOut size={18} />
+            <span className="sidebar-emoji">🚪</span>
             <span>Sign Out</span>
           </button>
         ) : (
@@ -164,7 +164,7 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
             to="/login"
             className="desktop-sidebar-link desktop-sidebar-login"
           >
-            <LogIn size={18} />
+            <span className="sidebar-emoji">🔑</span>
             <span>Sign In</span>
           </Link>
         )}

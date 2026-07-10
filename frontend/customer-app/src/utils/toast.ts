@@ -4,36 +4,48 @@ import { toast as sonnerToast } from "sonner";
 export const toast = {
   success: (message: string, description?: any) => {
     hotToast.success(message, {
-      style: {
-        background: "#f0fdf4",
-        color: "#166534",
-        border: "1px solid #bbf7d0",
-        fontWeight: 600,
-      },
+      className: "custom-toast-success",
+      duration: 3000,
     });
-    sonnerToast.success(message, description);
+    if (description) {
+      sonnerToast.success(message, { description });
+    } else {
+      sonnerToast.success(message);
+    }
   },
   error: (message: string, description?: any) => {
     hotToast.error(message, {
-      style: {
-        background: "#fef2f2",
-        color: "#991b1b",
-        border: "1px solid #fca5a5",
-        fontWeight: 600,
-      },
+      className: "custom-toast-error",
+      duration: 4000,
     });
-    sonnerToast.error(message, description);
+    if (description) {
+      sonnerToast.error(message, { description });
+    } else {
+      sonnerToast.error(message);
+    }
   },
   info: (message: string, description?: any) => {
     hotToast(message, {
       icon: "ℹ️",
-      style: {
-        background: "#eff6ff",
-        color: "#1e40af",
-        border: "1px solid #bfdbfe",
-        fontWeight: 600,
-      },
+      className: "custom-toast-info",
+      duration: 3000,
     });
-    sonnerToast.info(message, description);
+    if (description) {
+      sonnerToast.info(message, { description });
+    } else {
+      sonnerToast.info(message);
+    }
   },
+  warning: (message: string, description?: any) => {
+    hotToast(message, {
+      icon: "⚠️",
+      className: "custom-toast-warning",
+      duration: 3500,
+    });
+    if (description) {
+      sonnerToast.warning(message, { description });
+    } else {
+      sonnerToast.warning(message);
+    }
+  }
 };
