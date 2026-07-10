@@ -119,6 +119,9 @@ export const OrderTracking: React.FC = () => {
 
   return (
     <div style={{ padding: "40px", maxWidth: "800px", margin: "0 auto" }}>
+      <button onClick={() => navigate(-1)} className="back-button">
+        ← Back
+      </button>
       <h1 style={{ fontSize: "2.5rem", marginBottom: "8px" }}>Track Order</h1>
       <p
         style={{

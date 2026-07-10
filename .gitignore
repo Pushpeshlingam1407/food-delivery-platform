@@ -9,3 +9,4 @@ backend/.env
 *.log
 backend/uploads/
 uploads/
+credentials.md

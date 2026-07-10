@@ -237,46 +237,49 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {userEmail ? (
-              <div
-                className="navbar-desktop-only"
-                style={{ alignItems: "center", gap: "20px" }}
-              >
-                <Link
-                  to="/orders"
-                  style={{
-                    textDecoration: "none",
-                    color: "var(--text-slate)",
-                    fontSize: "0.9rem",
-                    fontWeight: 600,
-                    fontFamily: "var(--font-cohere)",
-                  }}
-                >
-                  My Orders
-                </Link>
-                <Link
-                  to="/addresses"
-                  style={{
-                    textDecoration: "none",
-                    color: "var(--text-slate)",
-                    fontSize: "0.9rem",
-                    fontWeight: 600,
-                    fontFamily: "var(--font-cohere)",
-                  }}
-                >
-                  Addresses
-                </Link>
+              <div style={{ display: "flex", alignItems: "center" }}>
                 <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    cursor: "pointer",
-                  }}
+                  className="navbar-desktop-only"
+                  style={{ alignItems: "center", gap: "20px" }}
                 >
-                  <User size={20} color="var(--text-slate)" />
-                  <span style={{ fontSize: "0.9rem", fontWeight: 500 }}>
-                    {userEmail}
-                  </span>
+                  <Link
+                    to="/orders"
+                    style={{
+                      textDecoration: "none",
+                      color: "var(--text-slate)",
+                      fontSize: "0.9rem",
+                      fontWeight: 600,
+                      fontFamily: "var(--font-cohere)",
+                    }}
+                  >
+                    My Orders
+                  </Link>
+                  <Link
+                    to="/addresses"
+                    style={{
+                      textDecoration: "none",
+                      color: "var(--text-slate)",
+                      fontSize: "0.9rem",
+                      fontWeight: 600,
+                      fontFamily: "var(--font-cohere)",
+                    }}
+                  >
+                    Addresses
+                  </Link>
+                  <div
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      cursor: "pointer",
+                      marginRight: "20px",
+                    }}
+                  >
+                    <User size={20} color="var(--text-slate)" />
+                    <span style={{ fontSize: "0.9rem", fontWeight: 500 }}>
+                      {userEmail}
+                    </span>
+                  </div>
                 </div>
                 <button
                   onClick={onLogout}
@@ -293,14 +296,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                 </button>
               </div>
             ) : (
-              <div className="navbar-desktop-only">
+              <div>
                 <Link
                   to="/login"
                   className="btn-premium"
                   style={{
                     textDecoration: "none",
-                    padding: "8px 20px",
-                    fontSize: "0.9rem",
+                    padding: "8px 16px",
+                    fontSize: "0.85rem",
                   }}
                 >
                   Sign In
