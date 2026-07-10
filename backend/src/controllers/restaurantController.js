@@ -63,7 +63,7 @@ export async function createRestaurant(req, res) {
 
       await connection.query(
         `INSERT INTO restaurants (id, owner_id, name, description, address_id, commission_rate, average_delivery_time, is_active, is_verified, status, opening_time, closing_time) 
-         VALUES (?, ?, ?, ?, ?, ?, ?, TRUE, TRUE, 'open', ?, ?)`,
+         VALUES (?, ?, ?, ?, ?, ?, ?, TRUE, FALSE, 'closed', ?, ?)`,
         [
           restaurantId,
           req.user.userId,

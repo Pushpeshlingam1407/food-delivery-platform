@@ -19,13 +19,13 @@ export async function verifyRestaurant(req, res) {
   }
 
   try {
-    await pool.query("UPDATE restaurants SET is_verified = ? WHERE id = ?", [
-      is_verified,
-      id,
-    ]);
+    await pool.query(
+      "UPDATE restaurants SET is_verified = ?, status = ? WHERE id = ?",
+      [is_verified, is_verified ? "open" : "closed", id]
+    );
     return res.status(200).json({
       status: "success",
-      message: "Restaurant verification status updated",
+      message: "Restaurant verification status and opening state updated",
     });
   } catch (error) {
     console.error("Verify restaurant error:", error);
