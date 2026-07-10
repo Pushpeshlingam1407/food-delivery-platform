@@ -11,13 +11,14 @@ export const PremiumButton: React.FC<PremiumButtonProps> = ({
   loading = false,
   loadingText = "Processing...",
   variant = "primary",
+  className = "",
   style,
   disabled,
   ...props
 }) => {
   return (
     <button
-      className={`btn-premium btn-premium--${variant}`}
+      className={`btn-premium btn-premium--${variant} ${className}`}
       disabled={disabled || loading}
       style={style}
       {...props}

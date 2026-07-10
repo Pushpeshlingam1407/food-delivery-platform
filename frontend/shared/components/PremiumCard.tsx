@@ -7,12 +7,13 @@ interface PremiumCardProps extends React.HTMLAttributes<HTMLDivElement> {
 export const PremiumCard: React.FC<PremiumCardProps> = ({
   children,
   hoverLift = false,
+  className = "",
   style,
   ...props
 }) => {
   return (
     <div
-      className={`card-premium ${hoverLift ? "card-premium--hover-lift" : ""}`}
+      className={`card-premium ${hoverLift ? "card-premium--hover-lift" : ""} ${className}`}
       style={style}
       {...props}
     >

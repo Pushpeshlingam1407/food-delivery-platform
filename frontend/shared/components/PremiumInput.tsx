@@ -10,6 +10,7 @@ export const PremiumInput: React.FC<PremiumInputProps> = ({
   label,
   error,
   success,
+  className = "",
   style,
   ...props
 }) => {
@@ -21,7 +22,7 @@ export const PremiumInput: React.FC<PremiumInputProps> = ({
         </label>
       )}
       <input
-        className={`input-premium ${error ? "input-premium--error" : success ? "input-premium--success" : ""}`}
+        className={`input-premium ${error ? "input-premium--error" : success ? "input-premium--success" : ""} ${className}`}
         style={style}
         {...props}
       />
