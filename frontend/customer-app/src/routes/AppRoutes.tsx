@@ -71,29 +71,29 @@ interface HomeProps {
 }
 
 const CUISINE_CATEGORIES = [
-  { id: "all", label: "All", emoji: "🍽️" },
-  { id: "biryani", label: "Biryani", emoji: "🍛" },
-  { id: "pizza", label: "Pizza", emoji: "🍕" },
-  { id: "burger", label: "Burgers", emoji: "🍔" },
-  { id: "chinese", label: "Chinese", emoji: "🥢" },
-  { id: "south indian", label: "South Indian", emoji: "🥘" },
-  { id: "desserts", label: "Desserts", emoji: "🍰" },
-  { id: "healthy", label: "Healthy", emoji: "🥗" },
-  { id: "rolls", label: "Rolls & Wraps", emoji: "🌯" },
-  { id: "thali", label: "Thali", emoji: "🍱" },
+  { id: "all", label: "All", emoji: "ðŸ½ï¸" },
+  { id: "biryani", label: "Biryani", emoji: "ðŸ›" },
+  { id: "pizza", label: "Pizza", emoji: "ðŸ•" },
+  { id: "burger", label: "Burgers", emoji: "ðŸ”" },
+  { id: "chinese", label: "Chinese", emoji: "ðŸ¥¢" },
+  { id: "south indian", label: "South Indian", emoji: "ðŸ¥˜" },
+  { id: "desserts", label: "Desserts", emoji: "ðŸ°" },
+  { id: "healthy", label: "Healthy", emoji: "ðŸ¥—" },
+  { id: "rolls", label: "Rolls & Wraps", emoji: "ðŸŒ¯" },
+  { id: "thali", label: "Thali", emoji: "ðŸ±" },
 ];
 
 const REST_EMOJIS: Record<string, string> = {
-  biryani: "🍛",
-  pizza: "🍕",
-  burger: "🍔",
-  chinese: "🥢",
-  "south indian": "🥘",
-  desserts: "🍰",
-  healthy: "🥗",
-  rolls: "🌯",
-  thali: "🍱",
-  default: "🍽️",
+  biryani: "ðŸ›",
+  pizza: "ðŸ•",
+  burger: "ðŸ”",
+  chinese: "ðŸ¥¢",
+  "south indian": "ðŸ¥˜",
+  desserts: "ðŸ°",
+  healthy: "ðŸ¥—",
+  rolls: "ðŸŒ¯",
+  thali: "ðŸ±",
+  default: "ðŸ½ï¸",
 };
 
 const getRestEmoji = (desc: string = "") => {
@@ -172,7 +172,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
             });
           }
         }
-        toast.success("Items added to your cart! 🛒");
+        toast.success("Items added to your cart! ðŸ›’");
       }
     } catch {
       toast.error("Could not reorder. Please try again.");
@@ -280,36 +280,36 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
       {loading ? (
         <ShimmerList />
       ) : (
-        <div className="blinkit-restaurant-grid">
+        <div className="foodie-restaurant-grid">
           {filteredRestaurants.map((r, i) => (
             <Link
               to={`/restaurant/${r.id}`}
               key={r.id}
-              className="blinkit-restaurant-card"
+              className="foodie-restaurant-card"
               style={{ animationDelay: `${i * 0.05}s` }}
             >
-              <div className="blinkit-card-image-wrapper">
+              <div className="foodie-card-image-wrapper">
                 {getRestEmoji(r.description)}
                 {r.status !== "open" && (
-                  <div className="blinkit-card-closed-overlay">Closed</div>
+                  <div className="foodie-card-closed-overlay">Closed</div>
                 )}
               </div>
-              <div className="blinkit-card-body">
-                <div className="blinkit-card-name">{r.name}</div>
-                <div className="blinkit-card-cuisine">
+              <div className="foodie-card-body">
+                <div className="foodie-card-name">{r.name}</div>
+                <div className="foodie-card-cuisine">
                   {r.description
                     ? r.description.slice(0, 48) +
-                      (r.description.length > 48 ? "…" : "")
+                      (r.description.length > 48 ? "â€¦" : "")
                     : "Multi-cuisine restaurant"}
                 </div>
-                <div className="blinkit-card-footer">
-                  <div className="blinkit-card-time-pill">
+                <div className="foodie-card-footer">
+                  <div className="foodie-card-time-pill">
                     <Clock size={11} />
-                    {r.average_delivery_time || 30}–
+                    {r.average_delivery_time || 30}â€“
                     {(r.average_delivery_time || 30) + 10} min
                   </div>
                   <div
-                    className={`blinkit-card-status ${r.status === "open" ? "open" : "closed"}`}
+                    className={`foodie-card-status ${r.status === "open" ? "open" : "closed"}`}
                   >
                     {r.status === "open" ? "Open" : "Closed"}
                   </div>
@@ -318,10 +318,10 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
             </Link>
           ))}
           {filteredRestaurants.length === 0 && (
-            <div className="blinkit-empty-state">
-              <div className="blinkit-empty-icon">🍽️</div>
-              <div className="blinkit-empty-title">No restaurants found</div>
-              <div className="blinkit-empty-sub">
+            <div className="foodie-empty-state">
+              <div className="foodie-empty-icon">ðŸ½ï¸</div>
+              <div className="foodie-empty-title">No restaurants found</div>
+              <div className="foodie-empty-sub">
                 Try a different category or search term
               </div>
             </div>
@@ -343,7 +343,7 @@ const GlobalBackBar: React.FC = () => {
   return (
     <div className="global-back-bar">
       <button onClick={() => navigate(-1)} className="back-button-global">
-        ← Back
+        â† Back
       </button>
     </div>
   );
@@ -637,7 +637,7 @@ export const AppRoutes: React.FC = () => {
             <div className="role-utility-header">
               <span>Console Mode: {userRole?.toUpperCase()} View</span>
               <button onClick={handleLogout} className="role-utility-btn">
-                ← Back to Role Selector / Sign Out
+                â† Back to Role Selector / Sign Out
               </button>
             </div>
             <AdminNavbar
@@ -679,7 +679,7 @@ export const AppRoutes: React.FC = () => {
             <div className="role-utility-header">
               <span>Console Mode: MERCHANT View</span>
               <button onClick={handleLogout} className="role-utility-btn">
-                ← Back to Role Selector / Sign Out
+                â† Back to Role Selector / Sign Out
               </button>
             </div>
             <RestaurantNavbar
@@ -714,7 +714,7 @@ export const AppRoutes: React.FC = () => {
             <div className="role-utility-header">
               <span>Console Mode: DRIVER View</span>
               <button onClick={handleLogout} className="role-utility-btn">
-                ← Back to Role Selector / Sign Out
+                â† Back to Role Selector / Sign Out
               </button>
             </div>
             <DeliveryNavbar
@@ -900,14 +900,14 @@ export const AppRoutes: React.FC = () => {
             </div>
             <div className="footer-bottom">
               <div>
-                © {new Date().getFullYear()} Bites Internet Private Limited. All
+                Â© {new Date().getFullYear()} Bites Internet Private Limited. All
                 rights reserved.
               </div>
             </div>
           </footer>
         </div>
       </div>
-      {/* Mobile bottom navigation — Blinkit-style */}
+      {/* Mobile bottom navigation */}
       <MobileBottomNav
         cartCount={cartCount}
         userEmail={userEmail}
@@ -924,3 +924,4 @@ export const AppRoutes: React.FC = () => {
     </BrowserRouter>
   );
 };
+

@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
+﻿@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
 
 :root {
   /* Font Families - Strictly Anthropic (Playfair) and Cohere (Outfit) */
@@ -2296,9 +2296,9 @@ h3 {
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   Premium Stat Cards — Reusable across admin, restaurant & delivery apps
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   Premium Stat Cards â€” Reusable across admin, restaurant & delivery apps
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .stat-grid {
   display: grid;
@@ -2395,9 +2395,9 @@ h3 {
   font-weight: 600;
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   Role Utility Header — For back/logout navigation across dashboards
-   ═══════════════════════════════════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   Role Utility Header â€” For back/logout navigation across dashboards
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 
 .role-utility-header {
   background: var(--text-slate);
@@ -2567,9 +2567,9 @@ h3 {
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════════════
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
    Responsive Auth Form Classes
-   ═══════════════════════════════════════════════════════════════════════════ */
+   â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .auth-container {
   display: flex;
   align-items: center;
@@ -2746,7 +2746,7 @@ h3 {
   }
 }
 
-/* Blinkit Inspired Premium Responsive Footer */
+/* Premium Responsive Footer */
 .footer-container {
   background: #ffffff;
   border-top: 1px solid var(--glass-border);
@@ -3101,7 +3101,7 @@ h3 {
 }
 
 /* ============================================================
-   PREMIUM BLINKIT-INSPIRED FEATURE STYLES
+   PREMIUM FEATURE STYLES
    ============================================================ */
 
 /* Category Pills Strip */
@@ -3305,7 +3305,7 @@ h3 {
   transform: none;
 }
 
-/* Blinkit Restaurant Cards */
+/* Premium Restaurant Cards */
 @keyframes cardReveal {
   from {
     opacity: 0;
@@ -3317,13 +3317,13 @@ h3 {
   }
 }
 
-.blinkit-restaurant-grid {
+.foodie-restaurant-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
 
-.blinkit-restaurant-card {
+.foodie-restaurant-card {
   background: #fff;
   border-radius: 20px;
   overflow: hidden;
@@ -3336,13 +3336,13 @@ h3 {
   animation: cardReveal 0.4s ease both;
   position: relative;
 }
-.blinkit-restaurant-card:hover {
+.foodie-restaurant-card:hover {
   transform: translateY(-6px);
   box-shadow: 0 20px 48px rgba(21, 21, 21, 0.12);
   border-color: rgba(21, 21, 21, 0.12);
 }
 
-.blinkit-card-image-wrapper {
+.foodie-card-image-wrapper {
   width: 100%;
   height: 160px;
   background: linear-gradient(135deg, #f5f5f0, #ede8e0);
@@ -3354,7 +3354,7 @@ h3 {
   overflow: hidden;
 }
 
-.blinkit-card-closed-overlay {
+.foodie-card-closed-overlay {
   position: absolute;
   inset: 0;
   background: rgba(255, 255, 255, 0.75);
@@ -3369,7 +3369,7 @@ h3 {
   text-transform: uppercase;
 }
 
-.blinkit-card-body {
+.foodie-card-body {
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -3377,7 +3377,7 @@ h3 {
   flex: 1;
 }
 
-.blinkit-card-name {
+.foodie-card-name {
   font-size: 1rem;
   font-weight: 700;
   color: var(--text-slate);
@@ -3385,13 +3385,13 @@ h3 {
   line-height: 1.2;
 }
 
-.blinkit-card-cuisine {
+.foodie-card-cuisine {
   font-size: 0.78rem;
   color: var(--text-muted);
   font-weight: 500;
 }
 
-.blinkit-card-footer {
+.foodie-card-footer {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -3399,7 +3399,7 @@ h3 {
   margin-top: 4px;
 }
 
-.blinkit-card-time-pill {
+.foodie-card-time-pill {
   display: flex;
   align-items: center;
   gap: 4px;
@@ -3411,7 +3411,7 @@ h3 {
   color: var(--text-slate);
 }
 
-.blinkit-card-status {
+.foodie-card-status {
   padding: 4px 10px;
   border-radius: 100px;
   font-size: 0.72rem;
@@ -3419,11 +3419,11 @@ h3 {
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
-.blinkit-card-status.open {
+.foodie-card-status.open {
   background: rgba(12, 128, 64, 0.1);
   color: #0c8040;
 }
-.blinkit-card-status.closed {
+.foodie-card-status.closed {
   background: rgba(21, 21, 21, 0.05);
   color: var(--text-muted);
 }
@@ -3942,7 +3942,7 @@ h3 {
 }
 
 /* =============================================
-   PROFILE PAGE — STAT TILE WALLET
+   PROFILE PAGE â€” STAT TILE WALLET
    ============================================= */
 
 .profile-wallet-tile {
@@ -3951,7 +3951,7 @@ h3 {
 }
 
 /* =============================================
-   RESTAURANT DASHBOARD — STAT TILES
+   RESTAURANT DASHBOARD â€” STAT TILES
    ============================================= */
 
 .restaurant-stat-icon {
@@ -3963,7 +3963,7 @@ h3 {
 }
 
 /* =============================================
-   ORDERS PAGE — INLINE STYLES EXTRACTED
+   ORDERS PAGE â€” INLINE STYLES EXTRACTED
    ============================================= */
 
 .orders-page-wrapper {
@@ -4109,7 +4109,7 @@ h3 {
 }
 
 /* =============================================
-   CART DRAWER ITEM — EXTRACTED STYLES
+   CART DRAWER ITEM â€” EXTRACTED STYLES
    ============================================= */
 
 .cart-item-name {
@@ -4180,7 +4180,7 @@ h3 {
 }
 
 /* =============================================
-   DELIVERY DASHBOARD — EXTRACTED STYLES
+   DELIVERY DASHBOARD â€” EXTRACTED STYLES
    ============================================= */
 
 .delivery-toggle-header {
@@ -4233,7 +4233,7 @@ h3 {
 }
 
 /* =============================================
-   RESTAURANT DASHBOARD — EXTRACTED STYLES
+   RESTAURANT DASHBOARD â€” EXTRACTED STYLES
    ============================================= */
 
 .restaurant-status-online {
@@ -4266,4 +4266,5 @@ h3 {
 .restaurant-dashboard-subtitle {
   color: var(--text-muted);
 }
+
 

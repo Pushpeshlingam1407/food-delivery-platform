@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+﻿import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { X, ShoppingCart, Percent, Trash2, Plus } from "lucide-react";
 import { toast } from "sonner";
@@ -32,7 +32,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
   const [discount, setDiscount] = useState(0);
   const [appliedCouponId, setAppliedCouponId] = useState<string | null>(null);
 
-  // Custom Swiggy/Blinkit features
+  // Custom cart features
   const [availableCoupons, setAvailableCoupons] = useState<any[]>([]);
   const [recommendedItems, setRecommendedItems] = useState<any[]>([]);
 
@@ -278,7 +278,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
             </div>
           )}
 
-          {/* Blinkit Recommended Items Section */}
+          {/* Recommended Items Section */}
           {cartItems.length > 0 && recommendedItems.length > 0 && (
             <div
               style={{
@@ -413,7 +413,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         whiteSpace: "nowrap",
                       }}
                     >
-                      🏷️ {c.code}
+                      ðŸ·ï¸ {c.code}
                     </button>
                   ))}
                 </div>
@@ -539,3 +539,4 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
     </>
   );
 };
+
