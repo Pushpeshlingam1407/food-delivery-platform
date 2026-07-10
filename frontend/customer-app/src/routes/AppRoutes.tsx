@@ -198,47 +198,19 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
           {activeOrders.map((o) => (
             <div
               key={o.id}
-              style={{
-                background: "#fff",
-                border: "1.5px solid rgba(12,128,64,0.2)",
-                borderRadius: 16,
-                padding: "16px 20px",
-                display: "flex",
-                alignItems: "center",
-                gap: 14,
-                marginBottom: 10,
-                cursor: "pointer",
-                transition: "box-shadow 0.2s",
-              }}
+              className="active-order-banner-card"
               onClick={() => navigate(`/track/${o.id}`)}
             >
               <div className="delivery-active-dot" />
-              <div style={{ flex: 1 }}>
-                <div style={{ fontWeight: 700, fontSize: "0.95rem" }}>
-                  {o.restaurant_name}
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.78rem",
-                    color: "var(--text-muted)",
-                    marginTop: 2,
-                  }}
-                >
+              <div className="active-order-banner-info">
+                <div className="active-order-banner-name">{o.restaurant_name}</div>
+                <div className="active-order-banner-status">
                   {o.status
                     .replace(/_/g, " ")
                     .replace(/\b\w/g, (c: string) => c.toUpperCase())}
                 </div>
               </div>
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  color: "#0c8040",
-                  fontWeight: 700,
-                  fontSize: "0.85rem",
-                }}
-              >
+              <div className="active-order-banner-track">
                 Track <ArrowRight size={14} />
               </div>
             </div>
@@ -294,19 +266,13 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
       </div>
 
       {/* Section heading */}
-      <div className="section-row-header" style={{ marginBottom: 20 }}>
+      <div className="section-row-header">
         <div className="section-row-title">
           {activeCategory === "all"
             ? "All Restaurants"
             : `${CUISINE_CATEGORIES.find((c) => c.id === activeCategory)?.label} Near You`}
         </div>
-        <div
-          style={{
-            fontSize: "0.78rem",
-            color: "var(--text-muted)",
-            fontWeight: 600,
-          }}
-        >
+        <div className="section-meta-count">
           {filteredRestaurants.length} places
         </div>
       </div>
@@ -352,19 +318,10 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
             </Link>
           ))}
           {filteredRestaurants.length === 0 && (
-            <div
-              style={{
-                gridColumn: "1/-1",
-                textAlign: "center",
-                padding: "60px 24px",
-                color: "var(--text-muted)",
-              }}
-            >
-              <div style={{ fontSize: "3rem", marginBottom: 12 }}>🍽️</div>
-              <div style={{ fontWeight: 600, marginBottom: 8 }}>
-                No restaurants found
-              </div>
-              <div style={{ fontSize: "0.85rem" }}>
+            <div className="blinkit-empty-state">
+              <div className="blinkit-empty-icon">🍽️</div>
+              <div className="blinkit-empty-title">No restaurants found</div>
+              <div className="blinkit-empty-sub">
                 Try a different category or search term
               </div>
             </div>
