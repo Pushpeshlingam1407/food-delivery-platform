@@ -400,10 +400,7 @@ export const Dashboard: React.FC = () => {
       {/* Today's Stats Strip */}
       {orders.length > 0 && (
         <div className="today-stats-strip">
-          <div
-            className="stat-tile"
-            style={{ "--stat-accent": "#0c8040" } as React.CSSProperties}
-          >
+          <div className="stat-tile stat-tile--green">
             <div className="stat-tile-icon">
               <CookingPot size={32} />
             </div>
@@ -411,10 +408,7 @@ export const Dashboard: React.FC = () => {
             <div className="stat-tile-value">{orders.length}</div>
             <div className="stat-tile-sub">Today's count</div>
           </div>
-          <div
-            className="stat-tile"
-            style={{ "--stat-accent": "#ff3f1a" } as React.CSSProperties}
-          >
+          <div className="stat-tile stat-tile--orange">
             <div className="stat-tile-icon">
               <Clock size={32} />
             </div>
@@ -424,10 +418,7 @@ export const Dashboard: React.FC = () => {
             </div>
             <div className="stat-tile-sub">Need action now</div>
           </div>
-          <div
-            className="stat-tile"
-            style={{ "--stat-accent": "#7a00ff" } as React.CSSProperties}
-          >
+          <div className="stat-tile stat-tile--violet">
             <div className="stat-tile-icon">
               <Check size={32} />
             </div>

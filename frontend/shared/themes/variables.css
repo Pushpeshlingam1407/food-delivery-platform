@@ -1,4 +1,4 @@
-﻿@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700;800;900&display=swap");
 
 :root {
   /* Font Families - Strictly Anthropic (Playfair) and Cohere (Outfit) */
@@ -3764,6 +3764,21 @@ h3 {
 .profile-menu-arrow {
   margin-left: auto;
   color: var(--text-muted);
+}
+
+.profile-menu-item-content {
+  flex: 1;
+}
+
+.profile-menu-item-label {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.profile-menu-item-sub {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  margin-top: 2px;
 }
 
 .profile-logout-btn {

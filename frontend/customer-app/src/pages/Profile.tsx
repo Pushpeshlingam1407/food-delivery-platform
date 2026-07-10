@@ -92,14 +92,7 @@ export const Profile: React.FC<ProfileProps> = ({
       {/* Wallet quick tile */}
       {walletBalance !== null && (
         <div
-          className="stat-tile"
-          style={
-            {
-              marginBottom: 20,
-              cursor: "pointer",
-              "--stat-accent": "#0c8040",
-            } as React.CSSProperties
-          }
+          className="stat-tile stat-tile--green profile-wallet-tile"
           onClick={onDepositClick}
         >
           <div className="stat-tile-icon">
@@ -116,11 +109,9 @@ export const Profile: React.FC<ProfileProps> = ({
         {menuItems.map((item, i) => (
           <button key={i} className="profile-menu-item" onClick={item.action}>
             <div className="profile-menu-icon">{item.icon}</div>
-            <div style={{ flex: 1 }}>
-              <div style={{ fontWeight: 600 }}>{item.label}</div>
-              <div className="profile-email" style={{ marginTop: 2 }}>
-                {item.sub}
-              </div>
+            <div className="profile-menu-item-content">
+              <div className="profile-menu-item-label">{item.label}</div>
+              <div className="profile-menu-item-sub">{item.sub}</div>
             </div>
             <ChevronRight size={16} className="profile-menu-arrow" />
           </button>
