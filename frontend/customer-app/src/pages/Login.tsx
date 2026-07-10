@@ -48,43 +48,14 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "calc(100vh - 80px)",
-        padding: "20px",
-      }}
-    >
-      <PremiumCard
-        style={{ width: "100%", maxWidth: "440px", padding: "48px" }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--font-anthropic)",
-            fontSize: "2rem",
-            color: "var(--text-slate)",
-            marginBottom: "8px",
-            fontWeight: 600,
-          }}
-        >
-          Sign In
-        </h2>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            fontSize: "0.95rem",
-            marginBottom: "32px",
-          }}
-        >
+    <div className="auth-container">
+      <PremiumCard className="auth-card">
+        <h2 className="auth-title">Sign In</h2>
+        <p className="auth-subtitle">
           Enter your details below to access your account
         </p>
 
-        <form
-          onSubmit={handleLogin}
-          style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-        >
+        <form onSubmit={handleLogin} className="auth-form">
           <PremiumInput
             type="email"
             label="Email Address"
@@ -107,34 +78,15 @@ export const Login: React.FC = () => {
             type="submit"
             loading={loading}
             loadingText="Authenticating..."
-            style={{
-              width: "100%",
-              padding: "14px",
-              marginTop: "12px",
-              fontSize: "1rem",
-            }}
+            className="auth-button"
           >
             Sign In
           </PremiumButton>
         </form>
 
-        <div
-          style={{
-            marginTop: "24px",
-            textAlign: "center",
-            fontSize: "0.9rem",
-            color: "var(--text-muted)",
-          }}
-        >
+        <div className="auth-footer">
           Don't have an account?{" "}
-          <Link
-            to="/register"
-            style={{
-              color: "var(--accent-orange)",
-              fontWeight: 600,
-              textDecoration: "none",
-            }}
-          >
+          <Link to="/register" className="auth-link">
             Create one
           </Link>
         </div>

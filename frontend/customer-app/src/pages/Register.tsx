@@ -48,225 +48,81 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "calc(100vh - 80px)",
-        padding: "20px",
-      }}
-    >
-      <div
-        style={{
-          background: "var(--glass-bg)",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-squircle)",
-          padding: "48px",
-          width: "100%",
-          maxWidth: "460px",
-          boxShadow: "var(--glass-shadow)",
-          backdropFilter: "var(--glass-blur)",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--font-anthropic)",
-            fontSize: "2rem",
-            color: "var(--text-slate)",
-            marginBottom: "8px",
-            fontWeight: 600,
-          }}
-        >
-          Create Account
-        </h2>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            fontSize: "0.95rem",
-            marginBottom: "32px",
-          }}
-        >
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2 className="auth-title">Create Account</h2>
+        <p className="auth-subtitle">
           Sign up to order delicious meals in seconds
         </p>
 
-        <form
-          onSubmit={handleRegister}
-          style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-        >
-          <div style={{ display: "flex", gap: "16px" }}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-                flex: 1,
-              }}
-            >
-              <label
-                style={{
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  color: "var(--text-slate)",
-                }}
-              >
-                First Name
-              </label>
+        <form onSubmit={handleRegister} className="auth-form">
+          <div className="auth-flex-row">
+            <div className="auth-form-field">
+              <label className="auth-label">First Name</label>
               <input
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Jane"
                 required
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: "var(--radius-standard)",
-                  border: "1px solid var(--glass-border)",
-                  fontFamily: "var(--font-apple)",
-                  fontSize: "0.9rem",
-                  outline: "none",
-                }}
+                className="auth-input"
               />
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-                flex: 1,
-              }}
-            >
-              <label
-                style={{
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  color: "var(--text-slate)",
-                }}
-              >
-                Last Name
-              </label>
+            <div className="auth-form-field">
+              <label className="auth-label">Last Name</label>
               <input
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Doe"
                 required
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: "var(--radius-standard)",
-                  border: "1px solid var(--glass-border)",
-                  fontFamily: "var(--font-apple)",
-                  fontSize: "0.9rem",
-                  outline: "none",
-                }}
+                className="auth-input"
               />
             </div>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <label
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Email
-            </label>
+          <div className="auth-form-field">
+            <label className="auth-label">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="jane@domain.com"
               required
-              style={{
-                padding: "10px 14px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.9rem",
-                outline: "none",
-              }}
+              className="auth-input"
             />
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <label
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Phone Number
-            </label>
+          <div className="auth-form-field">
+            <label className="auth-label">Phone Number</label>
             <input
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="+919999912345"
               required
-              style={{
-                padding: "10px 14px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.9rem",
-                outline: "none",
-              }}
+              className="auth-input"
             />
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <label
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Password
-            </label>
+          <div className="auth-form-field">
+            <label className="auth-label">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              style={{
-                padding: "10px 14px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.9rem",
-                outline: "none",
-              }}
+              className="auth-input"
             />
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <label
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Join as
-            </label>
+          <div className="auth-form-field">
+            <label className="auth-label">Join as</label>
             <select
               value={role}
               onChange={(e) => setRole(e.target.value)}
-              style={{
-                padding: "10px 14px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.9rem",
-                outline: "none",
-                background: "var(--bg-sand)",
-                color: "var(--text-slate)",
-              }}
+              className="auth-input"
             >
               <option value="customer">Customer (Order Food)</option>
               <option value="restaurant_owner">
@@ -281,40 +137,20 @@ export const Register: React.FC = () => {
           <button
             type="submit"
             disabled={loading}
-            className="btn-premium"
-            style={{
-              padding: "12px",
-              fontSize: "0.95rem",
-              marginTop: "12px",
-              opacity: loading ? 0.7 : 1,
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
+            className="btn-premium auth-button"
           >
             {loading ? "Registering..." : "Sign Up"}
           </button>
         </form>
 
-        <div
-          style={{
-            marginTop: "24px",
-            textAlign: "center",
-            fontSize: "0.9rem",
-            color: "var(--text-muted)",
-          }}
-        >
+        <div className="auth-footer">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            style={{
-              color: "var(--accent-orange)",
-              fontWeight: 600,
-              textDecoration: "none",
-            }}
-          >
+          <Link to="/login" className="auth-link">
             Sign In
           </Link>
         </div>
       </div>
     </div>
+  );
   );
 };

@@ -78,115 +78,41 @@ export const OtpLogin: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "calc(100vh - 80px)",
-        padding: "20px",
-      }}
-    >
-      <div
-        style={{
-          background: "var(--glass-bg)",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-squircle)",
-          padding: "48px",
-          width: "100%",
-          maxWidth: "420px",
-          boxShadow: "var(--glass-shadow)",
-          backdropFilter: "var(--glass-blur)",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--font-anthropic)",
-            fontSize: "2rem",
-            color: "var(--text-slate)",
-            marginBottom: "8px",
-            fontWeight: 600,
-          }}
-        >
-          OTP Login
-        </h2>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            fontSize: "0.95rem",
-            marginBottom: "32px",
-          }}
-        >
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2 className="auth-title">OTP Login</h2>
+        <p className="auth-subtitle">
           {!otpSent
             ? "Enter your mobile number to sign in or register"
             : "Enter the 6-digit code sent to your phone"}
         </p>
 
         {!otpSent ? (
-          <form
-            onSubmit={handleSendOTP}
-            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-          >
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
-            >
-              <label
-                style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "var(--text-slate)",
-                }}
-              >
-                Phone Number
-              </label>
+          <form onSubmit={handleSendOTP} className="auth-form">
+            <div className="auth-form-field">
+              <label className="auth-label">Phone Number</label>
               <input
                 type="text"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
                 placeholder="+919876543210"
                 required
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: "var(--radius-standard)",
-                  border: "1px solid var(--glass-border)",
-                  fontFamily: "var(--font-apple)",
-                  fontSize: "0.95rem",
-                  outline: "none",
-                }}
+                className="auth-input"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="btn-premium"
-              style={{
-                padding: "14px",
-                fontSize: "1rem",
-                opacity: loading ? 0.7 : 1,
-                cursor: loading ? "not-allowed" : "pointer",
-              }}
+              className="btn-premium auth-button"
             >
               {loading ? "Sending..." : "Request Verification Code"}
             </button>
           </form>
         ) : (
-          <form
-            onSubmit={handleVerifyOTP}
-            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-          >
-            <div
-              style={{ display: "flex", flexDirection: "column", gap: "8px" }}
-            >
-              <label
-                style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 600,
-                  color: "var(--text-slate)",
-                }}
-              >
-                OTP Code
-              </label>
+          <form onSubmit={handleVerifyOTP} className="auth-form">
+            <div className="auth-form-field">
+              <label className="auth-label">OTP Code</label>
               <input
                 type="text"
                 maxLength={6}
@@ -194,29 +120,14 @@ export const OtpLogin: React.FC = () => {
                 onChange={(e) => setOtpCode(e.target.value)}
                 placeholder="123456"
                 required
-                style={{
-                  padding: "12px 16px",
-                  borderRadius: "var(--radius-standard)",
-                  border: "1px solid var(--glass-border)",
-                  fontFamily: "var(--font-apple)",
-                  fontSize: "1.2rem",
-                  letterSpacing: "8px",
-                  textAlign: "center",
-                  outline: "none",
-                }}
+                className="auth-input auth-input--otp"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="btn-premium"
-              style={{
-                padding: "14px",
-                fontSize: "1rem",
-                opacity: loading ? 0.7 : 1,
-                cursor: loading ? "not-allowed" : "pointer",
-              }}
+              className="btn-premium auth-button"
             >
               {loading ? "Verifying..." : "Verify & Log In"}
             </button>
@@ -224,14 +135,7 @@ export const OtpLogin: React.FC = () => {
             <button
               type="button"
               onClick={() => setOtpSent(false)}
-              style={{
-                background: "transparent",
-                border: "none",
-                color: "var(--text-muted)",
-                fontSize: "0.85rem",
-                cursor: "pointer",
-                textAlign: "center",
-              }}
+              className="auth-link-button"
             >
               Go Back
             </button>
