@@ -237,75 +237,28 @@ export const Navbar: React.FC<NavbarProps> = ({
             </div>
 
             {userEmail ? (
-              <div style={{ display: "flex", alignItems: "center" }}>
-                <div
-                  className="navbar-desktop-only"
-                  style={{ alignItems: "center", gap: "20px" }}
-                >
-                  <Link
-                    to="/orders"
-                    style={{
-                      textDecoration: "none",
-                      color: "var(--text-slate)",
-                      fontSize: "0.9rem",
-                      fontWeight: 600,
-                      fontFamily: "var(--font-cohere)",
-                    }}
-                  >
+              <div className="navbar-user-wrapper">
+                <div className="navbar-desktop-only navbar-desktop-nav">
+                  <Link to="/orders" className="navbar-link-text">
                     My Orders
                   </Link>
-                  <Link
-                    to="/addresses"
-                    style={{
-                      textDecoration: "none",
-                      color: "var(--text-slate)",
-                      fontSize: "0.9rem",
-                      fontWeight: 600,
-                      fontFamily: "var(--font-cohere)",
-                    }}
-                  >
+                  <Link to="/addresses" className="navbar-link-text">
                     Addresses
                   </Link>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "8px",
-                      cursor: "pointer",
-                      marginRight: "20px",
-                    }}
-                  >
+                  <div className="navbar-user-badge">
                     <User size={20} color="var(--text-slate)" />
                     <span style={{ fontSize: "0.9rem", fontWeight: 500 }}>
                       {userEmail}
                     </span>
                   </div>
                 </div>
-                <button
-                  onClick={onLogout}
-                  style={{
-                    background: "transparent",
-                    border: "none",
-                    color: "var(--accent-orange)",
-                    fontWeight: 600,
-                    fontSize: "0.9rem",
-                    cursor: "pointer",
-                  }}
-                >
+                <button onClick={onLogout} className="navbar-signout-btn">
                   Sign Out
                 </button>
               </div>
             ) : (
               <div>
-                <Link
-                  to="/login"
-                  className="btn-premium"
-                  style={{
-                    textDecoration: "none",
-                    padding: "8px 16px",
-                    fontSize: "0.85rem",
-                  }}
-                >
+                <Link to="/login" className="btn-premium navbar-signin-link">
                   Sign In
                 </Link>
               </div>

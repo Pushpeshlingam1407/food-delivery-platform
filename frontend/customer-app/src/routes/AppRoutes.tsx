@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter, Routes, Route, Navigate, Link } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  Link,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
@@ -13,7 +21,16 @@ import { Orders } from "../pages/Orders";
 import { AddressManager } from "../pages/AddressManager";
 import { ShimmerList } from "../components/Shimmer";
 import api from "../../../shared/services/api";
-import { DollarSign, Truck, ArrowRight } from "lucide-react";
+import {
+  DollarSign,
+  Truck,
+  ArrowRight,
+  Compass,
+  MapPin,
+  Wallet,
+  LogOut,
+  LogIn,
+} from "lucide-react";
 import { toast } from "sonner";
 
 // Admin Imports
@@ -178,6 +195,68 @@ const GlobalBackBar: React.FC = () => {
       <button onClick={() => navigate(-1)} className="back-button-global">
         ← Back
       </button>
+    </div>
+  );
+};
+
+const DesktopSidebar: React.FC<{
+  userEmail: string | null;
+  onLogout: () => void;
+  onDepositClick: () => void;
+  walletBalance: number | null;
+}> = ({ userEmail, onLogout, onDepositClick, walletBalance }) => {
+  return (
+    <div className="desktop-sidebar">
+      <Link to="/" className="desktop-sidebar-logo">
+        bites.
+      </Link>
+      <nav className="desktop-sidebar-nav">
+        <Link to="/" className="desktop-sidebar-link">
+          <Compass size={18} />
+          Explore Stores
+        </Link>
+        {userEmail && (
+          <>
+            <Link to="/orders" className="desktop-sidebar-link">
+              <Truck size={18} />
+              My Orders
+            </Link>
+            <Link to="/addresses" className="desktop-sidebar-link">
+              <MapPin size={18} />
+              Addresses
+            </Link>
+            <div
+              onClick={onDepositClick}
+              className="desktop-sidebar-link cursor-pointer"
+            >
+              <Wallet size={18} />
+              <span>
+                Wallet: $
+                {walletBalance !== null ? walletBalance.toFixed(2) : "0.00"}
+              </span>
+            </div>
+          </>
+        )}
+      </nav>
+      <div className="desktop-sidebar-footer">
+        {userEmail ? (
+          <button
+            onClick={onLogout}
+            className="desktop-sidebar-link desktop-sidebar-logout"
+          >
+            <LogOut size={18} />
+            Sign Out
+          </button>
+        ) : (
+          <Link
+            to="/login"
+            className="desktop-sidebar-link desktop-sidebar-login"
+          >
+            <LogIn size={18} />
+            Sign In
+          </Link>
+        )}
+      </div>
     </div>
   );
 };
@@ -474,147 +553,159 @@ export const AppRoutes: React.FC = () => {
   // Fallback / Customer Routes
   return (
     <BrowserRouter>
-      <Navbar
-        cartCount={cartCount}
-        userEmail={userEmail}
-        onLogout={handleLogout}
-        onCartClick={() => setCartOpen(true)}
-        searchQuery={searchQuery}
-        onSearchChange={setSearchQuery}
-        walletBalance={walletBalance}
-        onDepositClick={handleDeposit}
-        deliveryAddress={deliveryAddress}
-      />
-      <GlobalBackBar />
-      <Routes>
-        <Route path="/" element={<Home searchQuery={searchQuery} />} />
-        <Route
-          path="/restaurant/:id"
-          element={
-            <RestaurantDetails
-              addToCart={addToCart}
-              removeFromCart={removeFromCart}
-              cartItems={cartItemsCountMap}
+      <div className="main-layout-wrapper">
+        <DesktopSidebar
+          userEmail={userEmail}
+          onLogout={handleLogout}
+          onDepositClick={handleDeposit}
+          walletBalance={walletBalance}
+        />
+        <div className="main-content-area">
+          <Navbar
+            cartCount={cartCount}
+            userEmail={userEmail}
+            onLogout={handleLogout}
+            onCartClick={() => setCartOpen(true)}
+            searchQuery={searchQuery}
+            onSearchChange={setSearchQuery}
+            walletBalance={walletBalance}
+            onDepositClick={handleDeposit}
+            deliveryAddress={deliveryAddress}
+          />
+          <GlobalBackBar />
+          <Routes>
+            <Route path="/" element={<Home searchQuery={searchQuery} />} />
+            <Route
+              path="/restaurant/:id"
+              element={
+                <RestaurantDetails
+                  addToCart={addToCart}
+                  removeFromCart={removeFromCart}
+                  cartItems={cartItemsCountMap}
+                />
+              }
             />
-          }
-        />
-        <Route
-          path="/login"
-          element={!userEmail ? <Login /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/register"
-          element={!userEmail ? <Register /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/otp-login"
-          element={!userEmail ? <OtpLogin /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/checkout"
-          element={userEmail ? <Checkout /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/track/:orderId"
-          element={userEmail ? <OrderTracking /> : <Navigate to="/login" />}
-        />
-        <Route path="/page/:slug" element={<CmsPage />} />
-        <Route
-          path="/orders"
-          element={userEmail ? <Orders /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/addresses"
-          element={userEmail ? <AddressManager /> : <Navigate to="/login" />}
-        />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-      <footer className="footer-container">
-        <div className="footer-grid">
-          <div className="footer-column">
-            <h4>Popular Categories</h4>
-            <ul>
-              <li>
-                <Link to="/">Vegetables & Fruits</Link>
-              </li>
-              <li>
-                <Link to="/">Cold Drinks & Juices</Link>
-              </li>
-              <li>
-                <Link to="/">Bakery & Biscuits</Link>
-              </li>
-              <li>
-                <Link to="/">Chicken, Meat & Fish</Link>
-              </li>
-            </ul>
-          </div>
-          <div className="footer-column">
-            <h4>Company</h4>
-            <ul>
-              <li>
-                <Link to="/page/about-us">About Us</Link>
-              </li>
-              <li>
-                <Link to="/page/terms-of-service">Terms & Conditions</Link>
-              </li>
-              <li>
-                <Link to="/page/privacy-policy">Privacy Policy</Link>
-              </li>
-              <li>
-                <Link to="/page/faqs">FAQs</Link>
-              </li>
-            </ul>
-          </div>
-          <div className="footer-column">
-            <h4>For Partners</h4>
-            <ul>
-              <li>
-                <a
-                  href="/login"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    localStorage.setItem("userRole", "restaurant_owner");
-                    window.location.href = "/login";
-                  }}
-                >
-                  Merchant Console
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/login"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    localStorage.setItem("userRole", "delivery_partner");
-                    window.location.href = "/login";
-                  }}
-                >
-                  Rider Partner Portal
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/login"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    localStorage.setItem("userRole", "admin");
-                    window.location.href = "/login";
-                  }}
-                >
-                  Admin Operations Console
-                </a>
-              </li>
-            </ul>
-          </div>
+            <Route
+              path="/login"
+              element={!userEmail ? <Login /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/register"
+              element={!userEmail ? <Register /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/otp-login"
+              element={!userEmail ? <OtpLogin /> : <Navigate to="/" />}
+            />
+            <Route
+              path="/checkout"
+              element={userEmail ? <Checkout /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/track/:orderId"
+              element={userEmail ? <OrderTracking /> : <Navigate to="/login" />}
+            />
+            <Route path="/page/:slug" element={<CmsPage />} />
+            <Route
+              path="/orders"
+              element={userEmail ? <Orders /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/addresses"
+              element={
+                userEmail ? <AddressManager /> : <Navigate to="/login" />
+              }
+            />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+          <footer className="footer-container">
+            <div className="footer-grid">
+              <div className="footer-column">
+                <h4>Popular Categories</h4>
+                <ul>
+                  <li>
+                    <Link to="/">Vegetables & Fruits</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Cold Drinks & Juices</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Bakery & Biscuits</Link>
+                  </li>
+                  <li>
+                    <Link to="/">Chicken, Meat & Fish</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="footer-column">
+                <h4>Company</h4>
+                <ul>
+                  <li>
+                    <Link to="/page/about-us">About Us</Link>
+                  </li>
+                  <li>
+                    <Link to="/page/terms-of-service">Terms & Conditions</Link>
+                  </li>
+                  <li>
+                    <Link to="/page/privacy-policy">Privacy Policy</Link>
+                  </li>
+                  <li>
+                    <Link to="/page/faqs">FAQs</Link>
+                  </li>
+                </ul>
+              </div>
+              <div className="footer-column">
+                <h4>For Partners</h4>
+                <ul>
+                  <li>
+                    <a
+                      href="/login"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        localStorage.setItem("userRole", "restaurant_owner");
+                        window.location.href = "/login";
+                      }}
+                    >
+                      Merchant Console
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/login"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        localStorage.setItem("userRole", "delivery_partner");
+                        window.location.href = "/login";
+                      }}
+                    >
+                      Rider Partner Portal
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="/login"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        localStorage.setItem("userRole", "admin");
+                        window.location.href = "/login";
+                      }}
+                    >
+                      Admin Operations Console
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="footer-bottom">
+              <div>
+                © {new Date().getFullYear()} Bites Internet Private Limited. All
+                rights reserved.
+              </div>
+              <div>Inspired by Blinkit | Crafted by human UI Developer</div>
+            </div>
+          </footer>
         </div>
-        <div className="footer-bottom">
-          <div>
-            © {new Date().getFullYear()} Bites Internet Private Limited. All
-            rights reserved.
-          </div>
-          <div>Inspired by Blinkit | Crafted by human UI Developer</div>
-        </div>
-      </footer>
+      </div>
       <CartDrawer
         isOpen={cartOpen}
         onClose={() => setCartOpen(false)}
