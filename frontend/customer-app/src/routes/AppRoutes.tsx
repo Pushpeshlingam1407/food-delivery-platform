@@ -31,7 +31,7 @@ import {
   LogOut,
   LogIn,
 } from "lucide-react";
-import { toast } from "sonner";
+import { toast } from "../utils/toast";
 
 // Admin Imports
 import { Dashboard as AdminDashboard } from "../../../admin-app/src/pages/Dashboard";

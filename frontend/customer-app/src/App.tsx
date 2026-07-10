@@ -7,8 +7,8 @@ const App: React.FC = () => {
   return (
     <>
       <AppRoutes />
-      <SonnerToaster position="bottom-right" richColors />
-      <HotToaster position="top-right" />
+      <SonnerToaster position="top-center" richColors />
+      <HotToaster position="top-center" />
     </>
   );
 };

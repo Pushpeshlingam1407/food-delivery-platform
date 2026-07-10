@@ -1,8 +1,8 @@
 import { toast as hotToast } from "react-hot-toast";
 import { toast as sonnerToast } from "sonner";
 
-export const notify = {
-  success: (message: string, description?: string) => {
+export const toast = {
+  success: (message: string, description?: any) => {
     hotToast.success(message, {
       style: {
         background: "#f0fdf4",
@@ -11,9 +11,9 @@ export const notify = {
         fontWeight: 600,
       },
     });
-    sonnerToast.success(message, { description });
+    sonnerToast.success(message, description);
   },
-  error: (message: string, description?: string) => {
+  error: (message: string, description?: any) => {
     hotToast.error(message, {
       style: {
         background: "#fef2f2",
@@ -22,9 +22,9 @@ export const notify = {
         fontWeight: 600,
       },
     });
-    sonnerToast.error(message, { description });
+    sonnerToast.error(message, description);
   },
-  info: (message: string, description?: string) => {
+  info: (message: string, description?: any) => {
     hotToast(message, {
       icon: "ℹ️",
       style: {
@@ -34,6 +34,6 @@ export const notify = {
         fontWeight: 600,
       },
     });
-    sonnerToast.info(message, { description });
+    sonnerToast.info(message, description);
   },
 };
