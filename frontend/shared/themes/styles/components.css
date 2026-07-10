@@ -6,7 +6,9 @@
   padding: 32px 28px;
   box-shadow: var(--glass-shadow);
   backdrop-filter: var(--glass-blur);
-  transition: box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease;
+  transition:
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    border-color 0.25s ease;
 }
 
 .surface-card:focus-within {
@@ -26,7 +28,9 @@
   backdrop-filter: var(--glass-blur);
   text-decoration: none;
   color: inherit;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .panel-card:hover {
@@ -49,7 +53,9 @@
 
 .card-premium--hover-lift {
   cursor: pointer;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition:
+    transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .card-premium--hover-lift:hover {
@@ -139,7 +145,10 @@
   font-size: 0.92rem;
   outline: none;
   background: rgba(25, 25, 25, 0.03);
-  transition: border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.25s ease, box-shadow 0.25s ease;
+  transition:
+    border-color 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    background-color 0.25s ease,
+    box-shadow 0.25s ease;
 }
 
 .input-premium:focus {
@@ -165,7 +174,7 @@
 
 .input-error {
   font-size: 0.75rem;
-  color: #F44336;
+  color: #f44336;
   margin-top: 2px;
 }
 
@@ -248,7 +257,7 @@
 }
 
 .spinner-loader--light {
-  border: 2px solid #FFF;
+  border: 2px solid #fff;
   border-top-color: transparent;
 }
 

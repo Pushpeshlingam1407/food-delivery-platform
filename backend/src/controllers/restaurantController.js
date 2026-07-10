@@ -113,7 +113,7 @@ export async function getRestaurants(req, res) {
       SELECT r.*, a.street_address, a.city, a.latitude, a.longitude 
       FROM restaurants r 
       LEFT JOIN addresses a ON r.address_id = a.id 
-      WHERE r.deleted_at IS NULL
+      WHERE r.deleted_at IS NULL AND r.is_verified = TRUE
     `;
     const params = [];
 
