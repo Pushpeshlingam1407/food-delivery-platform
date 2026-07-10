@@ -9,6 +9,7 @@ export const Register: React.FC = () => {
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
+  const [role, setRole] = useState("customer");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
@@ -27,7 +28,7 @@ export const Register: React.FC = () => {
         email,
         phone,
         password,
-        role: "customer",
+        role,
       });
 
       if (response.data.status === "success") {
@@ -241,6 +242,36 @@ export const Register: React.FC = () => {
                 outline: "none",
               }}
             />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+            <label
+              style={{
+                fontSize: "0.8rem",
+                fontWeight: 600,
+                color: "var(--text-slate)",
+              }}
+            >
+              Join as
+            </label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              style={{
+                padding: "10px 14px",
+                borderRadius: "var(--radius-standard)",
+                border: "1px solid var(--glass-border)",
+                fontFamily: "var(--font-apple)",
+                fontSize: "0.9rem",
+                outline: "none",
+                background: "var(--bg-sand)",
+                color: "var(--text-slate)",
+              }}
+            >
+              <option value="customer">Customer (Order Food)</option>
+              <option value="restaurant_owner">Restaurant Owner (Sell Food)</option>
+              <option value="delivery_partner">Delivery Partner (Deliver Food)</option>
+            </select>
           </div>
 
           <button

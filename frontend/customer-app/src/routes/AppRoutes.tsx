@@ -16,11 +16,34 @@ import api from "../../../shared/services/api";
 import { DollarSign, Truck, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 
+// Admin Imports
+import { Dashboard as AdminDashboard } from "../../../admin-app/src/pages/Dashboard";
+import { RestaurantsManagement } from "../../../admin-app/src/pages/RestaurantsManagement";
+import { CustomersManagement } from "../../../admin-app/src/pages/CustomersManagement";
+import { OwnersManagement } from "../../../admin-app/src/pages/OwnersManagement";
+import { DriversManagement } from "../../../admin-app/src/pages/DriversManagement";
+import { OrdersManagement } from "../../../admin-app/src/pages/OrdersManagement";
+import { ImagesManagement } from "../../../admin-app/src/pages/ImagesManagement";
+import { Refunds } from "../../../admin-app/src/pages/Refunds";
+import { Settings } from "../../../admin-app/src/pages/Settings";
+import { CMS } from "../../../admin-app/src/pages/CMS";
+import { Navbar as AdminNavbar } from "../../../admin-app/src/components/Navbar";
+
+// Restaurant Imports
+import { Dashboard as RestaurantDashboard } from "../../../restaurant-app/src/pages/Dashboard";
+import { MenuManager } from "../../../restaurant-app/src/pages/MenuManager";
+import { Earnings } from "../../../restaurant-app/src/pages/Earnings";
+import { Navbar as RestaurantNavbar } from "../../../restaurant-app/src/components/Navbar";
+
+// Delivery Imports
+import { Dashboard as DeliveryDashboard } from "../../../delivery-app/src/pages/Dashboard";
+import { Navbar as DeliveryNavbar } from "../../../delivery-app/src/components/Navbar";
+
 interface HomeProps {
   searchQuery: string;
 }
 
-// Landing Page Dashboard
+// Landing Page Dashboard (Customers)
 const Home: React.FC<HomeProps> = ({ searchQuery }) => {
   const [restaurants, setRestaurants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +51,6 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
 
   const fetchDashboardData = async () => {
     try {
-      // Fetch restaurants
       const response = await api.get(
         `/restaurants?search=${encodeURIComponent(searchQuery)}`,
       );
@@ -36,7 +58,6 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
         setRestaurants(response.data.data);
       }
 
-      // If user is authenticated, fetch orders
       if (localStorage.getItem("accessToken")) {
         const ordersRes = await api.get("/orders");
         if (ordersRes.data.status === "success") {
@@ -65,10 +86,8 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
 
   return (
     <div className="app-shell">
-      {/* Dashboard Section */}
       {localStorage.getItem("accessToken") && activeOrders.length > 0 && (
         <div className="dashboard-grid section-spacing">
-          {/* Active Orders Box */}
           <div className="panel-card accent-panel panel-card-stacked">
             <div className="card-banner">
               <Truck size={20} /> Active Deliveries ({activeOrders.length})
@@ -100,7 +119,6 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
         </div>
       )}
 
-      {/* Discover Feed */}
       <div className="header-panel-premium section-spacing">
         <div>
           <h1 className="section-heading section-heading-lg">
@@ -150,6 +168,9 @@ const Home: React.FC<HomeProps> = ({ searchQuery }) => {
 export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
     localStorage.getItem("userEmail"),
+  );
+  const [userRole, setUserRole] = useState<string | null>(() =>
+    localStorage.getItem("userRole"),
   );
   const [cart, setCart] = useState<{
     [itemId: string]: { name: string; price: number; qty: number };
@@ -245,7 +266,12 @@ export const AppRoutes: React.FC = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
     localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("realEmail");
     setUserEmail(null);
+    setUserRole(null);
     window.location.reload();
   };
 
@@ -288,7 +314,6 @@ export const AppRoutes: React.FC = () => {
     try {
       if (localStorage.getItem("accessToken")) {
         if (existing.qty <= 1) {
-          // Find item ID or delete directly
           await api.delete(`/cart/items/${itemId}`);
         } else {
           await api.put(`/cart/items/${itemId}`, {
@@ -351,6 +376,55 @@ export const AppRoutes: React.FC = () => {
     {} as { [key: string]: number },
   );
 
+  // Render role-specific navigation and routing
+  if (userEmail && userRole === "admin") {
+    return (
+      <BrowserRouter>
+        <AdminNavbar adminName={localStorage.getItem("userName")} onLogout={handleLogout} />
+        <Routes>
+          <Route path="/" element={<AdminDashboard />} />
+          <Route path="/restaurants" element={<RestaurantsManagement />} />
+          <Route path="/customers" element={<CustomersManagement />} />
+          <Route path="/owners" element={<OwnersManagement />} />
+          <Route path="/drivers" element={<DriversManagement />} />
+          <Route path="/orders" element={<OrdersManagement />} />
+          <Route path="/images" element={<ImagesManagement />} />
+          <Route path="/refunds" element={<Refunds />} />
+          <Route path="/settings" element={<Settings />} />
+          <Route path="/cms" element={<CMS />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
+
+  if (userEmail && userRole === "restaurant_owner") {
+    return (
+      <BrowserRouter>
+        <RestaurantNavbar restaurantName={localStorage.getItem("userName")} onLogout={handleLogout} />
+        <Routes>
+          <Route path="/" element={<RestaurantDashboard />} />
+          <Route path="/menu" element={<MenuManager />} />
+          <Route path="/earnings" element={<Earnings />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
+
+  if (userEmail && userRole === "delivery_partner") {
+    return (
+      <BrowserRouter>
+        <DeliveryNavbar driverName={localStorage.getItem("userName")} onLogout={handleLogout} />
+        <Routes>
+          <Route path="/" element={<DeliveryDashboard />} />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  }
+
+  // Fallback / Customer Routes
   return (
     <BrowserRouter>
       <Navbar
@@ -388,8 +462,14 @@ export const AppRoutes: React.FC = () => {
           path="/otp-login"
           element={!userEmail ? <OtpLogin /> : <Navigate to="/" />}
         />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/track/:orderId" element={<OrderTracking />} />
+        <Route
+          path="/checkout"
+          element={userEmail ? <Checkout /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/track/:orderId"
+          element={userEmail ? <OrderTracking /> : <Navigate to="/login" />}
+        />
         <Route path="/page/:slug" element={<CmsPage />} />
         <Route
           path="/orders"

@@ -52,7 +52,14 @@ export const OtpLogin: React.FC = () => {
         const { accessToken, refreshToken, user } = response.data.data;
         localStorage.setItem("accessToken", accessToken);
         localStorage.setItem("refreshToken", refreshToken);
-        localStorage.setItem("userEmail", user.email);
+        localStorage.setItem("userRole", user.role || "customer");
+        localStorage.setItem("userName", `${user.first_name} ${user.last_name || ""}`);
+        localStorage.setItem("userId", user.id);
+        localStorage.setItem("realEmail", user.email);
+        localStorage.setItem(
+          "userEmail",
+          `${user.first_name} ${user.last_name || ""}`,
+        );
 
         toast.success("OTP Verified successfully!", {
           description: `Logged in as ${user.first_name}.`,
