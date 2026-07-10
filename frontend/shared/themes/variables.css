@@ -2665,15 +2665,15 @@ h3 {
 }
 
 .auth-link {
-  color: var(--accent-orange);
-  font-weight: 600;
-  text-decoration: none;
+  color: var(--text-slate);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 4px;
   transition: opacity 0.2s ease;
 }
 
 .auth-link:hover {
-  opacity: 0.85;
-  text-decoration: underline;
+  opacity: 0.75;
 }
 
 .auth-link-button {
@@ -2697,33 +2697,36 @@ h3 {
 }
 
 @media (max-width: 480px) {
-  .auth-flex-row {
-    flex-direction: column;
-    gap: 20px;
-  }
-}
-
-/* Responsive constraints to fit small phones perfectly without zoom */
-
-@media (max-width: 480px) {
-  .auth-card {
+  .auth-container {
     padding: 24px 16px;
-    border-radius: 16px;
+    align-items: flex-start;
+  }
+  .auth-card {
+    background: transparent;
+    border: none;
+    padding: 0;
+    box-shadow: none;
+    max-width: 100%;
   }
   .auth-title {
-    font-size: 1.7rem;
+    font-size: 2rem;
+    font-weight: 800;
   }
   .auth-subtitle {
-    font-size: 0.9rem;
-    margin-bottom: 24px;
+    font-size: 0.95rem;
+    margin-bottom: 28px;
   }
   .auth-input {
-    padding: 10px 12px;
-    font-size: 0.9rem;
+    padding: 12px 14px;
+    font-size: 0.95rem;
   }
   .auth-button {
-    padding: 12px;
+    padding: 14px;
     font-size: 0.95rem;
+  }
+  .auth-flex-row {
+    flex-direction: column;
+    gap: 24px;
   }
 }
 
@@ -2990,6 +2993,6 @@ h3 {
   text-decoration: none;
   color: var(--text-slate);
   font-size: 0.9rem;
-  fontWeight: 600;
+  fontweight: 600;
   font-family: var(--font-cohere);
 }

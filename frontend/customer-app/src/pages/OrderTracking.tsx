@@ -21,8 +21,9 @@ export const OrderTracking: React.FC = () => {
   const { orderId } = useParams<{ orderId: string }>();
   const navigate = useNavigate();
   const [status, setStatus] = useState<
-    "placed" | "preparing" | "ready" | "out_for_delivery" | "delivered"
+    "placed" | "preparing" | "ready_for_pickup" | "picked_up" | "delivered"
   >("placed");
+  const [orderNumber, setOrderNumber] = useState<string | null>(null);
   const [driverLoc, setDriverLoc] = useState<DriverLocation | null>(null);
   const [driverName, setDriverName] = useState<string | null>(null);
   const [driverPhone, setDriverPhone] = useState<string | null>(null);
@@ -36,6 +37,9 @@ export const OrderTracking: React.FC = () => {
         if (response.data.status === "success") {
           const order = response.data.data;
           setStatus(order.status);
+          if (order.order_number) {
+            setOrderNumber(order.order_number);
+          }
           if (order.status === "delivered") {
             setFeedbackOpen(true);
           }
