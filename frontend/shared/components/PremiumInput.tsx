@@ -23,10 +23,11 @@ export const PremiumInput: React.FC<PremiumInputProps> = ({
       {label && (
         <label
           style={{
-            fontSize: "0.85rem",
+            fontSize: "0.74rem",
             fontWeight: 700,
             color: "var(--text-slate)",
             textTransform: "uppercase",
+            letterSpacing: "0.06em",
           }}
         >
           {label}

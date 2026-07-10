@@ -14,15 +14,15 @@ export const PremiumCard: React.FC<PremiumCardProps> = ({
     <div
       className="card-premium"
       style={{
-        transition: "transform 0.25s ease, box-shadow 0.25s ease",
+        transition: "transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
         cursor: hoverLift ? "pointer" : "default",
         ...style,
       }}
       onMouseEnter={(e) => {
         if (hoverLift) {
-          e.currentTarget.style.transform = "translateY(-4px)";
+          e.currentTarget.style.transform = "translateY(-2px)";
           e.currentTarget.style.boxShadow =
-            "0 12px 40px 0 rgba(25, 25, 25, 0.08)";
+            "0 8px 30px rgba(21, 21, 21, 0.05)";
         }
       }}
       onMouseLeave={(e) => {
