@@ -27,7 +27,7 @@ export const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
   onDepositClick,
   walletBalance,
 }) => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
 
   return (
     <div className={`desktop-sidebar ${isCollapsed ? "collapsed" : ""}`}>

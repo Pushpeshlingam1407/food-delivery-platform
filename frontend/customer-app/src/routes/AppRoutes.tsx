@@ -71,29 +71,29 @@ interface HomeProps {
 }
 
 const CUISINE_CATEGORIES = [
-  { id: "all", label: "All", emoji: "ðŸ½ï¸" },
-  { id: "biryani", label: "Biryani", emoji: "ðŸ›" },
-  { id: "pizza", label: "Pizza", emoji: "ðŸ•" },
-  { id: "burger", label: "Burgers", emoji: "ðŸ”" },
-  { id: "chinese", label: "Chinese", emoji: "ðŸ¥¢" },
-  { id: "south indian", label: "South Indian", emoji: "ðŸ¥˜" },
-  { id: "desserts", label: "Desserts", emoji: "ðŸ°" },
-  { id: "healthy", label: "Healthy", emoji: "ðŸ¥—" },
-  { id: "rolls", label: "Rolls & Wraps", emoji: "ðŸŒ¯" },
-  { id: "thali", label: "Thali", emoji: "ðŸ±" },
+  { id: "all", label: "All", emoji: "🍽️" },
+  { id: "biryani", label: "Biryani", emoji: "🍛" },
+  { id: "pizza", label: "Pizza", emoji: "🍕" },
+  { id: "burger", label: "Burgers", emoji: "🍔" },
+  { id: "chinese", label: "Chinese", emoji: "🥢" },
+  { id: "south indian", label: "South Indian", emoji: "🥘" },
+  { id: "desserts", label: "Desserts", emoji: "🍰" },
+  { id: "healthy", label: "Healthy", emoji: "🥗" },
+  { id: "rolls", label: "Rolls & Wraps", emoji: "🌯" },
+  { id: "thali", label: "Thali", emoji: "🍱" },
 ];
 
 const REST_EMOJIS: Record<string, string> = {
-  biryani: "ðŸ›",
-  pizza: "ðŸ•",
-  burger: "ðŸ”",
-  chinese: "ðŸ¥¢",
-  "south indian": "ðŸ¥˜",
-  desserts: "ðŸ°",
-  healthy: "ðŸ¥—",
-  rolls: "ðŸŒ¯",
-  thali: "ðŸ±",
-  default: "ðŸ½ï¸",
+  biryani: "🍛",
+  pizza: "🍕",
+  burger: "🍔",
+  chinese: "🥢",
+  "south indian": "🥘",
+  desserts: "🍰",
+  healthy: "🥗",
+  rolls: "🌯",
+  thali: "🍱",
+  default: "🍽️",
 };
 
 const getRestEmoji = (desc: string = "") => {
@@ -343,7 +343,7 @@ const GlobalBackBar: React.FC = () => {
   return (
     <div className="global-back-bar">
       <button onClick={() => navigate(-1)} className="back-button-global">
-        â† Back
+        ←  Back
       </button>
     </div>
   );
@@ -637,7 +637,7 @@ export const AppRoutes: React.FC = () => {
             <div className="role-utility-header">
               <span>Console Mode: {userRole?.toUpperCase()} View</span>
               <button onClick={handleLogout} className="role-utility-btn">
-                â† Back to Role Selector / Sign Out
+                ←  Back to Role Selector / Sign Out
               </button>
             </div>
             <AdminNavbar
@@ -679,7 +679,7 @@ export const AppRoutes: React.FC = () => {
             <div className="role-utility-header">
               <span>Console Mode: MERCHANT View</span>
               <button onClick={handleLogout} className="role-utility-btn">
-                â† Back to Role Selector / Sign Out
+                ←  Back to Role Selector / Sign Out
               </button>
             </div>
             <RestaurantNavbar
@@ -714,7 +714,7 @@ export const AppRoutes: React.FC = () => {
             <div className="role-utility-header">
               <span>Console Mode: DRIVER View</span>
               <button onClick={handleLogout} className="role-utility-btn">
-                â† Back to Role Selector / Sign Out
+                ←  Back to Role Selector / Sign Out
               </button>
             </div>
             <DeliveryNavbar
@@ -924,4 +924,5 @@ export const AppRoutes: React.FC = () => {
     </BrowserRouter>
   );
 };
+
 
