@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { MapPin, Plus, Trash2, Edit2, Check } from "lucide-react";
 import api from "../../../shared/services/api";
@@ -14,6 +15,7 @@ interface Address {
 }
 
 export const AddressManager: React.FC = () => {
+  const navigate = useNavigate();
   const [addresses, setAddresses] = useState<Address[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -142,6 +144,9 @@ export const AddressManager: React.FC = () => {
 
   return (
     <div className="address-container">
+      <button onClick={() => navigate(-1)} className="back-button">
+        ← Back
+      </button>
       <div style={{ marginBottom: "40px" }}>
         <h1
           style={{
