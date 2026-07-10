@@ -397,182 +397,184 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           )}
         </div>
 
-        <div
-          className="cart-drawer-footer"
-          style={{
-            padding: "24px",
-            background: "rgba(25, 25, 25, 0.02)",
-            borderTop: "1px solid var(--glass-border)",
-          }}
-        >
-          {/* Coupon Browse list */}
-          {cartItems.length > 0 && availableCoupons.length > 0 && (
-            <div style={{ marginBottom: "16px" }}>
-              <div
-                style={{
-                  fontSize: "0.8rem",
-                  fontWeight: 700,
-                  color: "var(--text-muted)",
-                  marginBottom: "8px",
-                  textTransform: "uppercase",
-                }}
-              >
-                Available Coupons
+        {cartItems.length > 0 && (
+          <div
+            className="cart-drawer-footer"
+            style={{
+              padding: "24px",
+              background: "rgba(25, 25, 25, 0.02)",
+              borderTop: "1px solid var(--glass-border)",
+            }}
+          >
+            {/* Coupon Browse list */}
+            {availableCoupons.length > 0 && (
+              <div style={{ marginBottom: "16px" }}>
+                <div
+                  style={{
+                    fontSize: "0.8rem",
+                    fontWeight: 700,
+                    color: "var(--text-muted)",
+                    marginBottom: "8px",
+                    textTransform: "uppercase",
+                  }}
+                >
+                  Available Coupons
+                </div>
+                <div
+                  style={{
+                    display: "flex",
+                    gap: "8px",
+                    overflowX: "auto",
+                    paddingBottom: "4px",
+                  }}
+                >
+                  {availableCoupons.map((c) => (
+                    <button
+                      key={c.id}
+                      onClick={() => handleApplyCouponCode(c.code)}
+                      style={{
+                        background:
+                          appliedCouponId === c.id
+                            ? "rgba(76, 175, 80, 0.1)"
+                            : "#fff",
+                        border:
+                          appliedCouponId === c.id
+                            ? "1px solid #4CAF50"
+                            : "1px solid var(--glass-border)",
+                        color:
+                          appliedCouponId === c.id
+                            ? "#4CAF50"
+                            : "var(--text-slate)",
+                        borderRadius: "20px",
+                        padding: "4px 12px",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        cursor: "pointer",
+                        whiteSpace: "nowrap",
+                      }}
+                    >
+                      🏷️ {c.code}
+                    </button>
+                  ))}
+                </div>
               </div>
+            )}
+
+            <div
+              className="cart-drawer-coupon"
+              style={{ display: "flex", gap: "12px", marginBottom: "24px" }}
+            >
               <div
                 style={{
                   display: "flex",
+                  alignItems: "center",
+                  background: "#FFF",
+                  border: "1px solid var(--glass-border)",
+                  borderRadius: "var(--radius-standard)",
+                  padding: "6px 12px",
+                  flexGrow: 1,
                   gap: "8px",
-                  overflowX: "auto",
-                  paddingBottom: "4px",
                 }}
               >
-                {availableCoupons.map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => handleApplyCouponCode(c.code)}
-                    style={{
-                      background:
-                        appliedCouponId === c.id
-                          ? "rgba(76, 175, 80, 0.1)"
-                          : "#fff",
-                      border:
-                        appliedCouponId === c.id
-                          ? "1px solid #4CAF50"
-                          : "1px solid var(--glass-border)",
-                      color:
-                        appliedCouponId === c.id
-                          ? "#4CAF50"
-                          : "var(--text-slate)",
-                      borderRadius: "20px",
-                      padding: "4px 12px",
-                      fontSize: "0.75rem",
-                      fontWeight: 700,
-                      cursor: "pointer",
-                      whiteSpace: "nowrap",
-                    }}
-                  >
-                    🏷️ {c.code}
-                  </button>
-                ))}
+                <Percent size={16} color="var(--text-muted)" />
+                <input
+                  type="text"
+                  placeholder="PROMOCODE"
+                  value={couponCode}
+                  onChange={(e) => setCouponCode(e.target.value)}
+                  style={{
+                    border: "none",
+                    outline: "none",
+                    width: "100%",
+                    fontSize: "0.85rem",
+                    textTransform: "uppercase",
+                  }}
+                />
               </div>
+              <button
+                onClick={handleApplyCoupon}
+                style={{
+                  background: "var(--text-slate)",
+                  color: "var(--text-sand)",
+                  border: "none",
+                  borderRadius: "var(--radius-standard)",
+                  padding: "8px 16px",
+                  fontWeight: 700,
+                  fontSize: "0.85rem",
+                  cursor: "pointer",
+                }}
+              >
+                Apply
+              </button>
             </div>
-          )}
 
-          <div
-            className="cart-drawer-coupon"
-            style={{ display: "flex", gap: "12px", marginBottom: "24px" }}
-          >
             <div
               style={{
                 display: "flex",
-                alignItems: "center",
-                background: "#FFF",
-                border: "1px solid var(--glass-border)",
-                borderRadius: "var(--radius-standard)",
-                padding: "6px 12px",
-                flexGrow: 1,
+                flexDirection: "column",
                 gap: "8px",
+                fontSize: "0.9rem",
+                marginBottom: "24px",
               }}
             >
-              <Percent size={16} color="var(--text-muted)" />
-              <input
-                type="text"
-                placeholder="PROMOCODE"
-                value={couponCode}
-                onChange={(e) => setCouponCode(e.target.value)}
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span>Subtotal</span>
+                <span>${subtotal.toFixed(2)}</span>
+              </div>
+              {discount > 0 && (
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    color: "#4CAF50",
+                  }}
+                >
+                  <span>Discount</span>
+                  <span>-${discount.toFixed(2)}</span>
+                </div>
+              )}
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span>GST (18%)</span>
+                <span>${tax.toFixed(2)}</span>
+              </div>
+              <div style={{ display: "flex", justifyContent: "space-between" }}>
+                <span>Delivery Fee</span>
+                <span>${deliveryFee.toFixed(2)}</span>
+              </div>
+              <hr
                 style={{
                   border: "none",
-                  outline: "none",
-                  width: "100%",
-                  fontSize: "0.85rem",
-                  textTransform: "uppercase",
+                  borderTop: "1px solid var(--glass-border)",
+                  margin: "8px 0",
                 }}
               />
-            </div>
-            <button
-              onClick={handleApplyCoupon}
-              style={{
-                background: "var(--text-slate)",
-                color: "var(--text-sand)",
-                border: "none",
-                borderRadius: "var(--radius-standard)",
-                padding: "8px 16px",
-                fontWeight: 700,
-                fontSize: "0.85rem",
-                cursor: "pointer",
-              }}
-            >
-              Apply
-            </button>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "8px",
-              fontSize: "0.9rem",
-              marginBottom: "24px",
-            }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span>Subtotal</span>
-              <span>${subtotal.toFixed(2)}</span>
-            </div>
-            {discount > 0 && (
               <div
                 style={{
                   display: "flex",
                   justifyContent: "space-between",
-                  color: "#4CAF50",
+                  fontWeight: 800,
+                  fontSize: "1.1rem",
                 }}
               >
-                <span>Discount</span>
-                <span>-${discount.toFixed(2)}</span>
+                <span>Total Pay</span>
+                <span>${total.toFixed(2)}</span>
               </div>
-            )}
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span>GST (18%)</span>
-              <span>${tax.toFixed(2)}</span>
             </div>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              <span>Delivery Fee</span>
-              <span>${deliveryFee.toFixed(2)}</span>
-            </div>
-            <hr
+
+            <button
+              onClick={handleCheckout}
+              disabled={cartItems.length === 0}
+              className="btn-premium"
               style={{
-                border: "none",
-                borderTop: "1px solid var(--glass-border)",
-                margin: "8px 0",
-              }}
-            />
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                fontWeight: 800,
-                fontSize: "1.1rem",
+                width: "100%",
+                padding: "14px",
+                fontSize: "1rem",
               }}
             >
-              <span>Total Pay</span>
-              <span>${total.toFixed(2)}</span>
-            </div>
+              Place Order
+            </button>
           </div>
-
-          <button
-            onClick={handleCheckout}
-            disabled={cartItems.length === 0}
-            className="btn-premium"
-            style={{
-              width: "100%",
-              padding: "14px",
-              fontSize: "1rem",
-            }}
-          >
-            Place Order
-          </button>
-        </div>
+        )}
       </div>
     </>
   );

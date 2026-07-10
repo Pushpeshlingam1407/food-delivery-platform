@@ -208,33 +208,14 @@ export const Navbar: React.FC<NavbarProps> = ({
                 )}
               </div>
             )}
-            <div
-              style={{ position: "relative", cursor: "pointer" }}
-              onClick={onCartClick}
-            >
-              <ShoppingBag size={20} color="var(--text-slate)" />
-              {cartCount > 0 && (
-                <span
-                  style={{
-                    position: "absolute",
-                    top: "-8px",
-                    right: "-8px",
-                    background: "var(--accent-orange)",
-                    color: "var(--text-sand)",
-                    fontSize: "0.75rem",
-                    fontWeight: 700,
-                    borderRadius: "50%",
-                    width: "18px",
-                    height: "18px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  {cartCount}
-                </span>
-              )}
-            </div>
+            <button onClick={onCartClick} className="navbar-cart-capsule">
+              <ShoppingBag size={18} />
+              <span>
+                {cartCount > 0
+                  ? `${cartCount} Item${cartCount > 1 ? "s" : ""}`
+                  : "My Cart"}
+              </span>
+            </button>
 
             {userEmail ? (
               <div className="navbar-user-wrapper">

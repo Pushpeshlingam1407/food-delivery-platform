@@ -203,8 +203,6 @@ const GlobalBackBar: React.FC = () => {
   );
 };
 
-
-
 export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
     localStorage.getItem("userEmail"),

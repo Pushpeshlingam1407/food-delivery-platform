@@ -3042,3 +3042,23 @@ h3 {
 .desktop-sidebar-toggle-btn:hover {
   background: rgba(21, 21, 21, 0.05);
 }
+
+.navbar-cart-capsule {
+  background: #0c8040;
+  color: #ffffff;
+  border-radius: 8px;
+  padding: 8px 16px;
+  font-weight: 700;
+  border: none;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar-cart-capsule:hover {
+  background: #0a6b35;
+  transform: translateY(-1px);
+}
