@@ -1,14 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import {
-  ShoppingBag,
-  User,
-  Search,
-  MapPin,
-  Menu,
-  X,
-  Wallet,
-} from "lucide-react";
+import { ShoppingBag, MapPin, ChevronDown } from "lucide-react";
 import { SearchBar } from "../../../shared/components/SearchBar";
 
 interface NavbarProps {
@@ -26,361 +18,156 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   cartCount = 0,
   userEmail = null,
-  onLogout,
   onCartClick,
   searchQuery = "",
   onSearchChange,
-  walletBalance = null,
-  onDepositClick,
   deliveryAddress = "Bengaluru, IND",
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [walletDropdownOpen, setWalletDropdownOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
   return (
     <>
-      <nav className="navbar-container">
-        {/* Top Header Row containing Brand and Actions */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: "100%",
-          }}
-        >
-          <div className="navbar-row">
-            {/* Mobile Hamburger Menu Toggle */}
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="mobile-menu-toggle"
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "var(--text-slate)",
-                padding: "4px",
-              }}
-            >
-              <Menu size={24} />
-            </button>
-
-            {/* Brand logo (Cohere style) */}
-            <Link
-              to="/"
-              style={{
-                fontFamily: "var(--font-cohere)",
-                fontWeight: 800,
-                fontSize: "1.6rem",
-                background: "var(--primary-gradient)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                cursor: "pointer",
-                textDecoration: "none",
-              }}
-            >
-              bites
-            </Link>
-
-            {/* Desktop Address Selector */}
-            <Link
-              to="/addresses"
-              className="navbar-address-pill navbar-desktop-only"
-              style={{ marginLeft: "16px", textDecoration: "none" }}
-            >
-              <MapPin size={16} color="var(--accent-orange)" />
-              <span style={{ color: "var(--text-slate)" }}>Deliver to:</span>
-              <strong style={{ fontWeight: 600 }}>{deliveryAddress}</strong>
-            </Link>
-          </div>
-
-          {/* Desktop Search Input Bar */}
-          {isHomePage && (
-            <SearchBar
-              className="navbar-desktop-only"
-              placeholder="Search restaurants, cuisines..."
-              value={searchQuery}
-              onSearchChange={onSearchChange}
-              containerStyle={{ width: "320px" }}
-            />
-          )}
-
-          {/* Action items */}
-          <div
-            className="navbar-action-group"
-            style={{ display: "flex", alignItems: "center", gap: "24px" }}
+      <nav
+        className="navbar-container"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+          padding: "16px 32px",
+          background: "var(--glass-bg)",
+          backdropFilter: "var(--glass-blur)",
+          WebkitBackdropFilter: "var(--glass-blur)",
+          borderBottom: "1px solid var(--glass-border)",
+          position: "sticky",
+          top: 0,
+          zIndex: 90,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.02)",
+        }}
+      >
+        {/* Left Side: Address Context */}
+        <div style={{ display: "flex", alignItems: "center", minWidth: "200px" }}>
+          <Link
+            to="/addresses"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "10px",
+              textDecoration: "none",
+              background: "rgba(255,255,255,0.5)",
+              padding: "10px 16px",
+              borderRadius: "99px",
+              border: "1px solid var(--glass-border)",
+              transition: "all 0.2s ease",
+            }}
+            onMouseOver={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.9)")}
+            onMouseOut={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.5)")}
           >
-            {walletBalance !== null && (
-              <div style={{ position: "relative" }}>
-                <div
-                  onClick={() => setWalletDropdownOpen(!walletDropdownOpen)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    background: "rgba(235, 94, 40, 0.08)",
-                    border: "1px solid rgba(235, 94, 40, 0.2)",
-                    padding: "6px 12px",
-                    borderRadius: "20px",
-                    fontSize: "0.85rem",
-                    fontWeight: 600,
-                    color: "var(--accent-orange)",
-                    cursor: "pointer",
-                    transition: "all 0.2s ease",
-                  }}
-                  title="View Wallet Details"
-                >
-                  <Wallet size={16} />
-                  <span>${walletBalance.toFixed(2)}</span>
-                </div>
-
-                {walletDropdownOpen && (
-                  <div
-                    style={{
-                      position: "absolute",
-                      top: "36px",
-                      right: 0,
-                      width: "240px",
-                      background: "var(--glass-bg)",
-                      border: "1px solid var(--glass-border)",
-                      borderRadius: "var(--radius-standard)",
-                      boxShadow: "var(--glass-shadow)",
-                      padding: "16px",
-                      zIndex: 100,
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "12px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontWeight: 700,
-                        fontSize: "0.9rem",
-                        color: "var(--text-slate)",
-                      }}
-                    >
-                      Bites Wallet
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "space-between",
-                      }}
-                    >
-                      <span
-                        style={{
-                          fontSize: "0.85rem",
-                          color: "var(--text-muted)",
-                        }}
-                      >
-                        Balance:
-                      </span>
-                      <span
-                        style={{
-                          fontWeight: 800,
-                          fontSize: "1.1rem",
-                          color: "var(--accent-orange)",
-                        }}
-                      >
-                        ${walletBalance.toFixed(2)}
-                      </span>
-                    </div>
-                    <button
-                      onClick={() => {
-                        setWalletDropdownOpen(false);
-                        onDepositClick && onDepositClick();
-                      }}
-                      className="btn-premium btn-sm"
-                      style={{
-                        width: "100%",
-                        padding: "8px",
-                        fontSize: "0.85rem",
-                        fontWeight: 700,
-                        cursor: "pointer",
-                      }}
-                    >
-                      + Add Money
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-            <button onClick={onCartClick} className="navbar-cart-capsule">
-              <ShoppingBag size={18} />
-              <span>
-                {cartCount > 0
-                  ? `${cartCount} Item${cartCount > 1 ? "s" : ""}`
-                  : "My Cart"}
+            <div
+              style={{
+                background: "#fff0ec",
+                padding: "6px",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
+              <MapPin size={14} color="var(--accent-orange)" />
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
+              <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", lineHeight: "1" }}>
+                Deliver to
               </span>
-            </button>
-
-            {userEmail ? (
-              <div className="navbar-user-wrapper">
-                <div className="navbar-desktop-only navbar-desktop-nav">
-                  <Link to="/orders" className="navbar-link-text">
-                    My Orders
-                  </Link>
-                  <Link to="/addresses" className="navbar-link-text">
-                    Addresses
-                  </Link>
-                  <div className="navbar-user-badge">
-                    <User size={20} color="var(--text-slate)" />
-                    <span style={{ fontSize: "0.9rem", fontWeight: 500 }}>
-                      {userEmail}
-                    </span>
-                  </div>
-                </div>
-                <button onClick={onLogout} className="navbar-signout-btn">
-                  Sign Out
-                </button>
-              </div>
-            ) : (
-              <div>
-                <Link to="/login" className="btn-premium navbar-signin-link">
-                  Sign In
-                </Link>
-              </div>
-            )}
-          </div>
+              <span style={{ fontSize: "0.9rem", color: "var(--text-slate)", fontWeight: 700, lineHeight: "1.2", marginTop: "2px" }}>
+                {deliveryAddress.length > 20 ? deliveryAddress.substring(0, 20) + "..." : deliveryAddress}
+              </span>
+            </div>
+            <ChevronDown size={16} color="var(--text-muted)" style={{ marginLeft: "4px" }} />
+          </Link>
         </div>
 
-        {/* Mobile Address Pill (Visible on Mobile/Tablet only) */}
-        <div
-          className="navbar-mobile-only"
-          style={{ flexDirection: "column", gap: "10px", width: "100%" }}
-        >
-          {/* Mobile Address Selector */}
-          <div
-            className="navbar-address-pill"
+        {/* Center: Search */}
+        <div style={{ flex: 1, display: "flex", justifyContent: "center", maxWidth: "600px", margin: "0 24px" }}>
+          {isHomePage && (
+            <SearchBar
+              placeholder="Search premium restaurants, dishes..."
+              value={searchQuery}
+              onSearchChange={onSearchChange}
+              containerStyle={{ width: "100%", boxShadow: "0 2px 12px rgba(0,0,0,0.03)" }}
+            />
+          )}
+        </div>
+
+        {/* Right Side: Cart */}
+        <div style={{ display: "flex", alignItems: "center", gap: "16px", minWidth: "200px", justifyContent: "flex-end" }}>
+          {!userEmail && (
+            <Link
+              to="/login"
+              style={{
+                padding: "10px 20px",
+                fontSize: "0.9rem",
+                fontWeight: 700,
+                color: "var(--accent-orange)",
+                textDecoration: "none",
+                borderRadius: "99px",
+                background: "#fff0ec",
+                transition: "all 0.2s ease",
+              }}
+            >
+              Sign In
+            </Link>
+          )}
+
+          <button
+            onClick={onCartClick}
             style={{
-              width: "100%",
-              justifyContent: "flex-start",
-              background: "transparent",
-              padding: "4px 0",
-              border: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              background: cartCount > 0 ? "var(--accent-orange)" : "rgba(255,255,255,0.7)",
+              color: cartCount > 0 ? "#ffffff" : "var(--text-slate)",
+              border: cartCount > 0 ? "none" : "1px solid var(--glass-border)",
+              padding: "10px 20px",
+              borderRadius: "99px",
+              fontWeight: 700,
+              fontSize: "0.9rem",
+              cursor: "pointer",
+              transition: "all 0.2s ease",
+              boxShadow: cartCount > 0 ? "0 4px 12px rgba(255, 63, 26, 0.2)" : "none",
+            }}
+            onMouseOver={(e) => {
+              if (cartCount === 0) e.currentTarget.style.background = "rgba(255,255,255,1)";
+            }}
+            onMouseOut={(e) => {
+              if (cartCount === 0) e.currentTarget.style.background = "rgba(255,255,255,0.7)";
             }}
           >
-            <MapPin size={16} color="var(--accent-orange)" />
-            <span style={{ color: "var(--text-slate)", fontSize: "0.85rem" }}>
-              Deliver to:
-            </span>
-            <strong style={{ fontWeight: 600, fontSize: "0.85rem" }}>
-              {deliveryAddress}
-            </strong>
-          </div>
+            <ShoppingBag size={18} />
+            <span>{cartCount > 0 ? `${cartCount} Items` : "Cart"}</span>
+          </button>
         </div>
       </nav>
 
-      {/* Mobile Drawer (3-lines Sidebar) */}
-      {menuOpen && (
-        <button
-          type="button"
-          aria-label="Close navigation drawer"
-          className="drawer-backdrop"
-          onClick={() => setMenuOpen(false)}
-        />
-      )}
-
-      {menuOpen && (
-        <div className="mobile-drawer mobile-drawer--left">
-          <div className="drawer-header">
-            <span
-              style={{
-                fontFamily: "var(--font-cohere)",
-                fontWeight: 800,
-                fontSize: "1.4rem",
-              }}
-            >
-              bites
-            </span>
-            <button
-              onClick={() => setMenuOpen(false)}
-              className="drawer-close-button"
-            >
-              <X size={20} />
-            </button>
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              gap: "20px",
-              marginTop: "20px",
-            }}
-          >
-            {userEmail ? (
-              <>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    borderBottom: "1px solid var(--glass-border)",
-                    paddingBottom: "16px",
-                  }}
-                >
-                  <User size={18} />
-                  <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>
-                    {userEmail}
-                  </span>
-                </div>
-                <Link
-                  to="/orders"
-                  onClick={() => setMenuOpen(false)}
-                  style={{
-                    textDecoration: "none",
-                    color: "var(--text-slate)",
-                    fontWeight: 600,
-                  }}
-                >
-                  My Orders
-                </Link>
-                <Link
-                  to="/addresses"
-                  onClick={() => setMenuOpen(false)}
-                  style={{
-                    textDecoration: "none",
-                    color: "var(--text-slate)",
-                    fontWeight: 600,
-                  }}
-                >
-                  Addresses
-                </Link>
-                <button
-                  onClick={() => {
-                    onLogout?.();
-                    setMenuOpen(false);
-                  }}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    color: "var(--accent-orange)",
-                    textAlign: "left",
-                    fontWeight: 600,
-                    padding: 0,
-                    cursor: "pointer",
-                  }}
-                >
-                  Sign Out
-                </button>
-              </>
-            ) : (
-              <Link
-                to="/login"
-                onClick={() => setMenuOpen(false)}
-                className="btn-premium"
-                style={{ textDecoration: "none", textAlign: "center" }}
-              >
-                Sign In
-              </Link>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Mobile Address Pill (Fallback for mobile screens where the top address bar might get squished) */}
+      <div className="mobile-only" style={{ padding: "12px 16px", background: "var(--glass-bg)", display: "none" }}>
+        <Link
+          to="/addresses"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
+            textDecoration: "none",
+            color: "var(--text-slate)",
+            fontSize: "0.85rem",
+            fontWeight: 600,
+          }}
+        >
+          <MapPin size={16} color="var(--accent-orange)" />
+          Deliver to: <span style={{ color: "var(--accent-orange)" }}>{deliveryAddress}</span>
+        </Link>
+      </div>
     </>
   );
 };

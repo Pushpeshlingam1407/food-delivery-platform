@@ -15,8 +15,28 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <nav className="navbar-container">
-        <div className="navbar-row">
+      <nav
+        className="navbar-container"
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          width: "100%",
+          padding: "16px 32px",
+          background: "var(--glass-bg)",
+          backdropFilter: "var(--glass-blur)",
+          WebkitBackdropFilter: "var(--glass-blur)",
+          borderBottom: "1px solid var(--glass-border)",
+          position: "sticky",
+          top: 0,
+          zIndex: 90,
+          boxShadow: "0 4px 24px rgba(0,0,0,0.02)",
+        }}
+      >
+        <div
+          className="navbar-row"
+          style={{ display: "flex", alignItems: "center", gap: "16px" }}
+        >
           {/* Hamburger toggle */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
