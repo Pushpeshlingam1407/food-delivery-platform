@@ -30,7 +30,17 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(() => {
+    return localStorage.getItem("admin_sidebar_collapsed") === "true";
+  });
+
+  const toggleCollapse = () => {
+    setIsCollapsed((prev) => {
+      const next = !prev;
+      localStorage.setItem("admin_sidebar_collapsed", String(next));
+      return next;
+    });
+  };
 
   const isActive = (path: string) => {
     if (path === "/" && location.pathname !== "/") return false;
@@ -160,7 +170,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
               </Link>
             )}
             <button
-              onClick={() => setIsCollapsed(!isCollapsed)}
+              onClick={toggleCollapse}
               className="navbar-desktop-only"
               style={{
                 background: "none",

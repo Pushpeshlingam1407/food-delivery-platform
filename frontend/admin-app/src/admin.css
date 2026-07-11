@@ -102,8 +102,9 @@
   font-size: 1.8rem;
   text-decoration: none;
   background: linear-gradient(135deg, #ff3f1a 0%, #ff7b00 100%);
-  webkitbackgroundclip: text;
-  webkittextfillcolor: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   display: flex;
   align-items: center;
   gap: 8px;
