@@ -204,7 +204,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           className="admin-sidebar-logo"
           style={{ fontSize: "1.4rem" }}
         >
-          bites.<span>{badgeLabel}</span>
+          bites<span>{badgeLabel}</span>
         </Link>
         <button
           onClick={() => setIsMobileOpen(!isMobileOpen)}
@@ -240,7 +240,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           >
             {!isCollapsed ? (
               <Link to="/" className="admin-sidebar-logo">
-                bites.<span>{badgeLabel}</span>
+                bites<span>{badgeLabel}</span>
               </Link>
             ) : (
               <Link

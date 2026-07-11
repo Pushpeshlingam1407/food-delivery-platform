@@ -45,7 +45,7 @@ export const Navbar: React.FC<NavbarProps> = ({
               cursor: "pointer",
             }}
           >
-            bites.
+            bites
           </Link>
           <span
             className="navbar-desktop-only"
@@ -109,7 +109,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 fontSize: "1.4rem",
               }}
             >
-              bites.
+              bites
             </span>
             <button
               onClick={() => setMenuOpen(false)}

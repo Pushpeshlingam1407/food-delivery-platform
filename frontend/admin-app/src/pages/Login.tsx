@@ -77,7 +77,7 @@ export const Login: React.FC = () => {
               marginBottom: "8px",
             }}
           >
-            bites.
+            bites
           </div>
           <p style={{ color: "var(--text-muted)", fontSize: "0.95rem" }}>
             System Admin Portal

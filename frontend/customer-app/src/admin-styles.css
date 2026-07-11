@@ -160,7 +160,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 16px;
-  background: var(--glass-bg) ;
+  background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid #f0f4f8;

@@ -81,7 +81,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 textDecoration: "none",
               }}
             >
-              bites.
+              bites
             </Link>
 
             {/* Desktop Address Selector */}
@@ -294,7 +294,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 fontSize: "1.4rem",
               }}
             >
-              bites.
+              bites
             </span>
             <button
               onClick={() => setMenuOpen(false)}

@@ -226,7 +226,7 @@ export const CMS: React.FC = () => {
                 MARKDOWN CONTENT *
               </label>
               <textarea
-                placeholder="# About bites.\n\nWe deliver fresh food fast..."
+                placeholder="# About bites\n\nWe deliver fresh food fast..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
                 required
@@ -255,7 +255,7 @@ export const CMS: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="About bites. - Food Delivery"
+                  placeholder="About bites - Food Delivery"
                   value={metaTitle}
                   onChange={(e) => setMetaTitle(e.target.value)}
                   style={{
@@ -279,7 +279,7 @@ export const CMS: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Learn about the bites. platform..."
+                  placeholder="Learn about the bites platform..."
                   value={metaDesc}
                   onChange={(e) => setMetaDesc(e.target.value)}
                   style={{

@@ -153,7 +153,7 @@
 
 .input-premium:focus {
   border-color: var(--accent-orange);
-  background: var(--glass-bg) ;
+  background: var(--glass-bg);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   box-shadow: 0 0 0 4px rgba(255, 90, 31, 0.08);

@@ -399,7 +399,7 @@ export const Checkout: React.FC = () => {
                 />
                 <CreditCard size={18} color="var(--accent-violet)" />
                 <div style={{ fontSize: "0.95rem" }}>
-                  <strong>Pay via bites. Wallet</strong>
+                  <strong>Pay via bites Wallet</strong>
                   <div style={{ color: "var(--text-muted)" }}>
                     Current Balance:{" "}
                     <strong>${walletBalance.toFixed(2)}</strong>
