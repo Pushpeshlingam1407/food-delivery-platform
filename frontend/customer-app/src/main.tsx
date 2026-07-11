@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import "../../shared/themes/variables.css";
 import "./admin-styles.css";
+import "./styles/orders.css";
 import App from "./App.tsx";
 
 createRoot(document.getElementById("root")!).render(

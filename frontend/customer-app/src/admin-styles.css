@@ -54,6 +54,14 @@
   transition: all 0.2s ease;
 }
 
+.address-pill-btn:hover {
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.address-chevron {
+  margin-left: 4px;
+}
+
 .address-icon-wrapper {
   background: #fff0ec;
   padding: 6px;
@@ -84,6 +92,145 @@
   font-weight: 700;
   line-height: 1.2;
   margin-top: 2px;
+}
+
+.navbar-search-box {
+  width: 100%;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+}
+
+.navbar-signin-pill {
+  padding: 10px 20px;
+  border-radius: 99px;
+  background: #fff0ec;
+  color: var(--accent-orange);
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.navbar-signin-pill:hover {
+  background: #ffe4dc;
+}
+
+.navbar-profile-menu-wrapper {
+  position: relative;
+}
+
+.navbar-profile-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--glass-border);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--text-slate);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navbar-profile-btn:hover,
+.navbar-profile-btn--active {
+  background: var(--glass-border);
+}
+
+.navbar-profile-menu {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  width: 220px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  background: var(--glass-bg);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.navbar-profile-menu-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.navbar-profile-menu-eyebrow {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.navbar-profile-menu-email {
+  margin-top: 4px;
+  overflow: hidden;
+  color: var(--text-slate);
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navbar-profile-menu-link,
+.navbar-profile-menu-signout {
+  padding: 12px 16px;
+  background: transparent;
+  color: var(--text-slate);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: left;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.navbar-profile-menu-link:hover {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.navbar-profile-menu-signout {
+  border-top: 1px solid var(--glass-border);
+  color: var(--accent-orange);
+  font-weight: 700;
+}
+
+.navbar-profile-menu-signout:hover {
+  background: rgba(255, 63, 26, 0.05);
+}
+
+.cart-btn-capsule {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 20px;
+  border: 1px solid var(--glass-border);
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--text-slate);
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.cart-btn-capsule:hover {
+  background: #fff;
+}
+
+.cart-btn-capsule--active {
+  border-color: var(--accent-orange);
+  background: var(--accent-orange);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(255, 63, 26, 0.2);
+}
+
+.cart-btn-capsule--active:hover {
+  background: var(--accent-orange);
 }
 
 /* ZOMATO / BLINKIT RESPONSIVE MOBILE FIX */

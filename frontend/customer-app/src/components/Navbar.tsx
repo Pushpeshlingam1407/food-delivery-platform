@@ -50,12 +50,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           <Link
             to="/addresses"
             className="address-pill-btn"
-            onMouseOver={(e) =>
-              (e.currentTarget.style.background = "rgba(255,255,255,0.9)")
-            }
-            onMouseOut={(e) =>
-              (e.currentTarget.style.background = "rgba(255,255,255,0.5)")
-            }
           >
             <div className="address-icon-wrapper">
               <MapPin size={14} color="var(--accent-orange)" />
@@ -71,7 +65,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             <ChevronDown
               size={16}
               color="var(--text-muted)"
-              style={{ marginLeft: "4px" }}
+              className="address-chevron"
             />
           </Link>
         </div>
@@ -84,10 +78,6 @@ export const Navbar: React.FC<NavbarProps> = ({
               value={searchQuery}
               onSearchChange={onSearchChange}
               className="navbar-search-box"
-              containerStyle={{
-                width: "100%",
-                boxShadow: "0 2px 12px rgba(0,0,0,0.03)",
-              }}
             />
           )}
         </div>
@@ -97,155 +87,51 @@ export const Navbar: React.FC<NavbarProps> = ({
           {!userEmail ? (
             <Link
               to="/login"
-              style={{
-                padding: "10px 20px",
-                fontSize: "0.9rem",
-                fontWeight: 700,
-                color: "var(--accent-orange)",
-                textDecoration: "none",
-                borderRadius: "99px",
-                background: "#fff0ec",
-                transition: "all 0.2s ease",
-              }}
+              className="navbar-signin-pill"
             >
               Sign In
             </Link>
           ) : (
-            <div style={{ position: "relative" }}>
+            <div className="navbar-profile-menu-wrapper">
               <button
                 type="button"
                 onClick={handleProfileClick}
-                className="navbar-profile-btn"
+                className={`navbar-profile-btn ${
+                  profileDropdownOpen ? "navbar-profile-btn--active" : ""
+                }`}
                 aria-label="Open profile menu"
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: "40px",
-                  height: "40px",
-                  borderRadius: "50%",
-                  background: profileDropdownOpen
-                    ? "var(--glass-border)"
-                    : "rgba(255,255,255,0.7)",
-                  border: "1px solid var(--glass-border)",
-                  color: "var(--text-slate)",
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                }}
               >
                 <User size={20} />
               </button>
 
               {profileDropdownOpen && window.innerWidth > 1024 && (
-                <div
-                  style={{
-                    position: "absolute",
-                    top: "50px",
-                    right: 0,
-                    width: "220px",
-                    background: "var(--glass-bg)",
-                    border: "1px solid var(--glass-border)",
-                    borderRadius: "16px",
-                    boxShadow: "0 8px 32px rgba(0,0,0,0.08)",
-                    backdropFilter: "var(--glass-blur)",
-                    WebkitBackdropFilter: "var(--glass-blur)",
-                    display: "flex",
-                    flexDirection: "column",
-                    overflow: "hidden",
-                    zIndex: 100,
-                  }}
-                >
-                  <div
-                    style={{
-                      padding: "16px",
-                      borderBottom: "1px solid var(--glass-border)",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "0.85rem",
-                        color: "var(--text-muted)",
-                        fontWeight: 600,
-                      }}
-                    >
+                <div className="navbar-profile-menu">
+                  <div className="navbar-profile-menu-header">
+                    <span className="navbar-profile-menu-eyebrow">
                       Logged in as
                     </span>
-                    <div
-                      style={{
-                        fontSize: "0.95rem",
-                        fontWeight: 700,
-                        color: "var(--text-slate)",
-                        marginTop: "4px",
-                        whiteSpace: "nowrap",
-                        overflow: "hidden",
-                        textOverflow: "ellipsis",
-                      }}
-                    >
+                    <div className="navbar-profile-menu-email">
                       {userEmail}
                     </div>
                   </div>
                   <Link
                     onClick={() => setProfileDropdownOpen(false)}
                     to="/orders"
-                    style={{
-                      padding: "12px 16px",
-                      textDecoration: "none",
-                      color: "var(--text-slate)",
-                      fontWeight: 600,
-                      fontSize: "0.9rem",
-                      transition: "background 0.2s",
-                    }}
-                    onMouseOver={(e) =>
-                      (e.currentTarget.style.background = "rgba(0,0,0,0.03)")
-                    }
-                    onMouseOut={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
+                    className="navbar-profile-menu-link"
                   >
                     My Orders
                   </Link>
                   <Link
                     onClick={() => setProfileDropdownOpen(false)}
                     to="/addresses"
-                    style={{
-                      padding: "12px 16px",
-                      textDecoration: "none",
-                      color: "var(--text-slate)",
-                      fontWeight: 600,
-                      fontSize: "0.9rem",
-                      transition: "background 0.2s",
-                    }}
-                    onMouseOver={(e) =>
-                      (e.currentTarget.style.background = "rgba(0,0,0,0.03)")
-                    }
-                    onMouseOut={(e) =>
-                      (e.currentTarget.style.background = "transparent")
-                    }
+                    className="navbar-profile-menu-link"
                   >
                     Addresses
                   </Link>
                   {onLogout && (
                     <button
                       onClick={onLogout}
-                      style={{
-                        padding: "12px 16px",
-                        background: "none",
-                        border: "none",
-                        borderTop: "1px solid var(--glass-border)",
-                        textAlign: "left",
-                        color: "var(--accent-orange)",
-                        fontWeight: 700,
-                        fontSize: "0.9rem",
-                        cursor: "pointer",
-                        transition: "background 0.2s",
-                      }}
-                      onMouseOver={(e) =>
-                        (e.currentTarget.style.background =
-                          "rgba(255, 63, 26, 0.05)")
-                      }
-                      onMouseOut={(e) =>
-                        (e.currentTarget.style.background = "transparent")
-                      }
+                      className="navbar-profile-menu-signout"
                     >
                       Sign Out
                     </button>
@@ -257,34 +143,9 @@ export const Navbar: React.FC<NavbarProps> = ({
 
           <button
             onClick={onCartClick}
-            className="cart-btn-capsule"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-              background:
-                cartCount > 0
-                  ? "var(--accent-orange)"
-                  : "rgba(255,255,255,0.7)",
-              color: cartCount > 0 ? "#ffffff" : "var(--text-slate)",
-              border: cartCount > 0 ? "none" : "1px solid var(--glass-border)",
-              padding: "10px 20px",
-              borderRadius: "99px",
-              fontWeight: 700,
-              fontSize: "0.9rem",
-              cursor: "pointer",
-              transition: "all 0.2s ease",
-              boxShadow:
-                cartCount > 0 ? "0 4px 12px rgba(255, 63, 26, 0.2)" : "none",
-            }}
-            onMouseOver={(e) => {
-              if (cartCount === 0)
-                e.currentTarget.style.background = "rgba(255,255,255,1)";
-            }}
-            onMouseOut={(e) => {
-              if (cartCount === 0)
-                e.currentTarget.style.background = "rgba(255,255,255,0.7)";
-            }}
+            className={`cart-btn-capsule ${
+              cartCount > 0 ? "cart-btn-capsule--active" : ""
+            }`}
           >
             <ShoppingBag size={18} />
             <span className="cart-text">
@@ -293,35 +154,6 @@ export const Navbar: React.FC<NavbarProps> = ({
           </button>
         </div>
       </nav>
-
-      {/* Mobile Address Pill (Fallback for mobile screens where the top address bar might get squished) */}
-      <div
-        className="mobile-only"
-        style={{
-          padding: "12px 16px",
-          background: "var(--glass-bg)",
-          display: "none",
-        }}
-      >
-        <Link
-          to="/addresses"
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-            textDecoration: "none",
-            color: "var(--text-slate)",
-            fontSize: "0.85rem",
-            fontWeight: 600,
-          }}
-        >
-          <MapPin size={16} color="var(--accent-orange)" />
-          Deliver to:{" "}
-          <span style={{ color: "var(--accent-orange)" }}>
-            {deliveryAddress}
-          </span>
-        </Link>
-      </div>
     </>
   );
 };
