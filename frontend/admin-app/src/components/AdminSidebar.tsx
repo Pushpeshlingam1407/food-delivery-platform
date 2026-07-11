@@ -28,6 +28,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
 }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const isActive = (path: string) => {
     if (path === "/" && location.pathname !== "/") return false;
@@ -99,33 +100,58 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       )}
 
       {/* Main Sidebar */}
-      <aside className={`admin-sidebar ${isOpen ? "open" : ""}`}>
+      <aside className={`admin-sidebar ${isOpen ? "open" : ""} ${isCollapsed ? "collapsed" : ""}`}>
         <div>
           {/* Logo Section */}
-          <div className="admin-sidebar-header">
-            <Link to="/" className="admin-sidebar-logo">
-              bites.<span>admin</span>
-            </Link>
+          <div className="admin-sidebar-header" style={{ padding: isCollapsed ? "28px 16px" : "28px 24px" }}>
+            {!isCollapsed ? (
+              <Link to="/" className="admin-sidebar-logo">
+                bites.<span>admin</span>
+              </Link>
+            ) : (
+              <Link to="/" className="admin-sidebar-logo" style={{ fontSize: "1.2rem" }}>
+                b.
+              </Link>
+            )}
+            <button
+              onClick={() => setIsCollapsed(!isCollapsed)}
+              className="navbar-desktop-only"
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                color: "#64748b",
+                padding: "4px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center"
+              }}
+              title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
+            >
+              <Menu size={18} />
+            </button>
           </div>
 
           {/* User Profile Card */}
-          <div className="admin-sidebar-user">
+          <div className="admin-sidebar-user" style={{ padding: isCollapsed ? "12px" : "16px 20px" }}>
             <div className="admin-avatar">
               {adminName ? adminName.charAt(0).toUpperCase() : "A"}
             </div>
-            <div className="admin-user-info">
-              <span className="admin-user-name">{adminName || "Admin"}</span>
-              <span className="admin-user-role">
-                <span className="admin-status-dot" /> Active Console
-              </span>
-            </div>
+            {!isCollapsed && (
+              <div className="admin-user-info">
+                <span className="admin-user-name">{adminName || "Admin"}</span>
+                <span className="admin-user-role">
+                  <span className="admin-status-dot" /> Active Console
+                </span>
+              </div>
+            )}
           </div>
 
           {/* Navigation Links Grouped */}
-          <nav className="admin-sidebar-nav">
+          <nav className="admin-sidebar-nav" style={{ padding: isCollapsed ? "12px" : "16px" }}>
             {navGroups.map((group, groupIdx) => (
               <div key={groupIdx} className="admin-nav-group">
-                <span className="admin-nav-label">{group.label}</span>
+                {!isCollapsed && <span className="admin-nav-label">{group.label}</span>}
                 {group.items.map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.path);
@@ -135,9 +161,11 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                       to={item.path}
                       onClick={() => setIsOpen(false)}
                       className={`admin-nav-item ${active ? "active" : ""}`}
+                      title={isCollapsed ? item.label : ""}
+                      style={{ justifyContent: isCollapsed ? "center" : "flex-start", padding: isCollapsed ? "12px" : "12px 14px" }}
                     >
                       <Icon size={18} />
-                      <span>{item.label}</span>
+                      {!isCollapsed && <span>{item.label}</span>}
                     </Link>
                   );
                 })}
@@ -152,17 +180,19 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
             <button
               onClick={onLogout}
               className="admin-nav-item"
+              title={isCollapsed ? "Sign Out" : ""}
               style={{
                 width: "100%",
                 background: "none",
                 border: "none",
                 cursor: "pointer",
-                textAlign: "left",
                 color: "#ef4444",
+                justifyContent: isCollapsed ? "center" : "flex-start",
+                padding: isCollapsed ? "12px" : "12px 14px"
               }}
             >
               <LogOut size={18} />
-              <span>Sign Out</span>
+              {!isCollapsed && <span>Sign Out</span>}
             </button>
           )}
         </div>

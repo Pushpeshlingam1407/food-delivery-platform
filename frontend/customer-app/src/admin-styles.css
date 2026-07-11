@@ -36,7 +36,6 @@
   }
 }
 
-/* Sidebar Styling */
 .admin-sidebar {
   width: 280px;
   background: #ffffff;
@@ -49,7 +48,26 @@
   top: 0;
   z-index: 100;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
-  transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-sidebar.collapsed {
+  width: 80px;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-logo {
+  display: none;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-header {
+  justify-content: center;
+  padding: 24px 0 !important;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-user {
+  margin: 12px 8px;
+  padding: 8px !important;
+  justify-content: center;
 }
 
 .admin-sidebar-header {

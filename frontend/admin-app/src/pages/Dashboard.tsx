@@ -182,33 +182,16 @@ export const Dashboard: React.FC = () => {
       {/* Analytics Grid */}
       <div className="admin-grid-columns">
         {/* System Health */}
-        <div
-          className="metric-card-premium"
-          style={{ borderLeft: "4px solid #10b981" }}
-        >
+        <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Console Health</span>
-            <div
-              className="metric-card-icon-wrapper"
-              style={{ background: "#ecfdf5", color: "#10b981" }}
-            >
+            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
               <ShieldAlert size={18} />
             </div>
           </div>
-          <div
-            className="metric-card-value"
-            style={{
-              color: "#10b981",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            <span
-              className="admin-status-dot"
-              style={{ width: "12px", height: "12px" }}
-            />
-            {health?.database === "connected" ? "ONLINE" : "OFFLINE"}
+          <div className="metric-card-value" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+            <span className="admin-status-dot" style={{ width: "10px", height: "10px" }} />
+            {health?.database === "connected" ? "Online" : "Offline"}
           </div>
           <div className="metric-card-desc">
             Port {health?.server_port || 5000} · DB Status: Connected
@@ -216,82 +199,48 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Captured Revenue */}
-        <div
-          className="metric-card-premium"
-          style={{ borderLeft: "4px solid #ff3f1a" }}
-        >
+        <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Platform Revenue</span>
-            <div
-              className="metric-card-icon-wrapper"
-              style={{ background: "#fff0ec", color: "#ff3f1a" }}
-            >
+            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
               <DollarSign size={18} />
             </div>
           </div>
           <div className="metric-card-value">
-            ₹
-            {analytics
-              ? analytics.total_payments_captured.toLocaleString("en-IN", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
-              : "0.00"}
+            ₹{analytics ? analytics.total_payments_captured.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}
           </div>
           <div className="metric-card-desc">Total processed order volume</div>
         </div>
 
         {/* Completed Orders */}
-        <div
-          className="metric-card-premium"
-          style={{ borderLeft: "4px solid #7a00ff" }}
-        >
+        <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Orders Fulfilled</span>
-            <div
-              className="metric-card-icon-wrapper"
-              style={{ background: "#f5f0ff", color: "#7a00ff" }}
-            >
+            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
               <Award size={18} />
             </div>
           </div>
-          <div className="metric-card-value">
-            {analytics?.total_orders || 0}
-          </div>
+          <div className="metric-card-value">{analytics?.total_orders || 0}</div>
           <div className="metric-card-desc">Total successful deliveries</div>
         </div>
 
         {/* Active Restaurants */}
-        <div
-          className="metric-card-premium"
-          style={{ borderLeft: "4px solid #3b82f6" }}
-        >
+        <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Active Outlets</span>
-            <div
-              className="metric-card-icon-wrapper"
-              style={{ background: "#eff6ff", color: "#3b82f6" }}
-            >
+            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
               <Store size={18} />
             </div>
           </div>
-          <div className="metric-card-value">
-            {analytics?.total_restaurants || 0}
-          </div>
+          <div className="metric-card-value">{analytics?.total_restaurants || 0}</div>
           <div className="metric-card-desc">Onboarded merchant stores</div>
         </div>
 
         {/* Platform Users */}
-        <div
-          className="metric-card-premium"
-          style={{ borderLeft: "4px solid #64748b" }}
-        >
+        <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Total Users</span>
-            <div
-              className="metric-card-icon-wrapper"
-              style={{ background: "#f8fafc", color: "#64748b" }}
-            >
+            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
               <Users size={18} />
             </div>
           </div>
