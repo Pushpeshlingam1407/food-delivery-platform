@@ -69,7 +69,7 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
         style={{
           width: "100%",
           maxWidth: "480px",
-          background: "#FFF",
+          background: "var(--glass-bg)",
           border: "1px solid var(--glass-border)",
           borderRadius: "var(--radius-squircle)",
           padding: "32px",

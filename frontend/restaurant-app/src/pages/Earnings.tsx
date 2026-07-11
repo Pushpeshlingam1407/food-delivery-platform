@@ -270,7 +270,7 @@ export const Earnings: React.FC = () => {
         {/* Payout & Wallet Interactive Portal */}
         <div
           style={{
-            background: "#FFF",
+            background: "var(--glass-bg)",
             border: "1px solid var(--glass-border)",
             borderRadius: "24px",
             padding: "32px",
@@ -405,7 +405,7 @@ export const Earnings: React.FC = () => {
                   type="button"
                   onClick={() => handleQuickFill(500)}
                   style={{
-                    background: "#FFF",
+                    background: "var(--glass-bg)",
                     border: "1px solid var(--glass-border)",
                     borderRadius: "8px",
                     padding: "6px 12px",
@@ -420,7 +420,7 @@ export const Earnings: React.FC = () => {
                   type="button"
                   onClick={() => handleQuickFill(1000)}
                   style={{
-                    background: "#FFF",
+                    background: "var(--glass-bg)",
                     border: "1px solid var(--glass-border)",
                     borderRadius: "8px",
                     padding: "6px 12px",
@@ -435,7 +435,7 @@ export const Earnings: React.FC = () => {
                   type="button"
                   onClick={() => handleQuickFill(5000)}
                   style={{
-                    background: "#FFF",
+                    background: "var(--glass-bg)",
                     border: "1px solid var(--glass-border)",
                     borderRadius: "8px",
                     padding: "6px 12px",
@@ -501,7 +501,7 @@ export const Earnings: React.FC = () => {
       {/* Ledger & Transactions Display Tabs */}
       <div
         style={{
-          background: "#FFF",
+          background: "var(--glass-bg)",
           border: "1px solid var(--glass-border)",
           borderRadius: "24px",
           padding: "32px",

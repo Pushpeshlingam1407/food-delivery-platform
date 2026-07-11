@@ -21,7 +21,7 @@ export const SearchBar: React.FC<SearchBarProps> = ({
       style={{
         display: "flex",
         alignItems: "center",
-        background: "#FFF",
+        background: "var(--glass-bg)",
         border: "1px solid var(--glass-border)",
         borderRadius: "var(--radius-standard)",
         padding: "8px 16px",

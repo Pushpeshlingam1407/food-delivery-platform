@@ -95,7 +95,7 @@ export const Orders: React.FC = () => {
           <div
             key={o.id}
             style={{
-              background: "#FFF",
+              background: "var(--glass-bg)",
               border: "1px solid var(--glass-border)",
               borderRadius: "var(--radius-standard)",
               padding: "24px",

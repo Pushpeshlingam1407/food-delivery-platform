@@ -450,7 +450,7 @@ export const Dashboard: React.FC = () => {
                 type="button"
                 onClick={() => handleQuickFill(50)}
                 style={{
-                  background: "#FFF",
+                  background: "var(--glass-bg)",
                   border: "1px solid var(--glass-border)",
                   borderRadius: "6px",
                   padding: "4px 8px",
@@ -465,7 +465,7 @@ export const Dashboard: React.FC = () => {
                 type="button"
                 onClick={() => handleQuickFill(100)}
                 style={{
-                  background: "#FFF",
+                  background: "var(--glass-bg)",
                   border: "1px solid var(--glass-border)",
                   borderRadius: "6px",
                   padding: "4px 8px",
@@ -480,7 +480,7 @@ export const Dashboard: React.FC = () => {
                 type="button"
                 onClick={() => handleQuickFill(500)}
                 style={{
-                  background: "#FFF",
+                  background: "var(--glass-bg)",
                   border: "1px solid var(--glass-border)",
                   borderRadius: "6px",
                   padding: "4px 8px",
@@ -1078,7 +1078,7 @@ export const Dashboard: React.FC = () => {
       <div
         className="panel-card"
         style={{
-          background: "#FFF",
+          background: "var(--glass-bg)",
           borderRadius: "24px",
           padding: "32px",
           boxShadow: "0 10px 30px rgba(25, 25, 25, 0.02)",

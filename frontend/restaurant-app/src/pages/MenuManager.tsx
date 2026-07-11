@@ -553,7 +553,7 @@ export const MenuManager: React.FC = () => {
                     padding: "8px 12px",
                     borderRadius: "6px",
                     border: "1px solid var(--glass-border)",
-                    background: "#FFF",
+                    background: "var(--glass-bg)",
                   }}
                 >
                   <option value="">Select Category</option>

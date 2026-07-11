@@ -227,7 +227,7 @@ export const OrderTracking: React.FC = () => {
       {driverName && (
         <div
           style={{
-            background: "#FFF",
+            background: "var(--glass-bg)",
             border: "1px solid var(--glass-border)",
             borderRadius: "var(--radius-standard)",
             padding: "24px",

@@ -341,7 +341,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         border: "1px solid var(--accent-orange)",
                         borderRadius: "4px",
                         color: "var(--accent-orange)",
-                        background: "#fff",
+                        background: "var(--glass-bg)",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
@@ -428,7 +428,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  background: "#FFF",
+                  background: "var(--glass-bg)",
                   border: "1px solid var(--glass-border)",
                   borderRadius: "var(--radius-standard)",
                   padding: "6px 12px",

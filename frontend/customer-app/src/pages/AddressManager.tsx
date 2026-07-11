@@ -175,7 +175,7 @@ export const AddressManager: React.FC = () => {
               <div
                 key={a.id}
                 style={{
-                  background: "#FFF",
+                  background: "var(--glass-bg)",
                   border: "1px solid var(--glass-border)",
                   borderRadius: "var(--radius-standard)",
                   padding: "20px",

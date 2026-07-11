@@ -143,7 +143,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                       top: "36px",
                       right: 0,
                       width: "240px",
-                      background: "#FFFFFF",
+                      background: "var(--glass-bg)",
                       border: "1px solid var(--glass-border)",
                       borderRadius: "var(--radius-standard)",
                       boxShadow: "var(--glass-shadow)",

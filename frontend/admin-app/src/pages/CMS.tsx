@@ -144,7 +144,7 @@ export const CMS: React.FC = () => {
       {showForm ? (
         <div
           style={{
-            background: "#FFF",
+            background: "var(--glass-bg)",
             border: "1px solid var(--glass-border)",
             borderRadius: "var(--radius-standard)",
             padding: "32px",
@@ -332,7 +332,7 @@ export const CMS: React.FC = () => {
             <div
               key={p.id}
               style={{
-                background: "#FFF",
+                background: "var(--glass-bg)",
                 border: "1px solid var(--glass-border)",
                 borderRadius: "var(--radius-standard)",
                 padding: "24px",
