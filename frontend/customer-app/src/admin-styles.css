@@ -6,7 +6,23 @@
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background-color: #f6f8fb; /* Clean, soft light-grey background */
+  background-color: #fbf9f6; /* Anthropic warm sand */
+  background-image:
+    radial-gradient(
+      circle at 5% 10%,
+      rgba(255, 63, 26, 0.04) 0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 95% 15%,
+      rgba(122, 0, 255, 0.03) 0%,
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(255, 123, 0, 0.02) 0%,
+      transparent 50%
+    );
   font-family:
     var(--font-cohere),
     -apple-system,
@@ -48,7 +64,9 @@
   top: 0;
   z-index: 100;
   box-shadow: 4px 0 24px rgba(0, 0, 0, 0.02);
-  transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1), left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition:
+    width 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .admin-sidebar.collapsed {
@@ -225,23 +243,28 @@
 
 /* Premium Dashboard Page Customizations */
 .welcome-banner {
-  background: #ffffff;
-  border: 1px solid #e4e9f0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 20px;
   padding: 28px 32px;
   margin-bottom: 32px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.01),
+    0 10px 30px rgba(0, 0, 0, 0.02);
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
 .welcome-text h1 {
-  font-size: 1.8rem;
-  font-weight: 800;
+  font-size: 2.2rem;
+  font-weight: 700;
   color: #1e293b;
   margin-bottom: 6px;
-  font-family: var(--font-cohere);
+  font-family: var(--font-anthropic); /* Anthropic Playfair Display Serif */
+  letter-spacing: -0.02em;
 }
 
 .welcome-text p {
@@ -251,14 +274,18 @@
 
 /* Custom metrics cards */
 .metric-card-premium {
-  background: #ffffff;
-  border: 1px solid #e4e9f0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 20px;
   padding: 24px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.01),
+    0 10px 30px rgba(0, 0, 0, 0.02);
 }
 
 .metric-card-premium:hover {
@@ -326,21 +353,26 @@
 
 /* Modern Widgets */
 .admin-panel {
-  background: #ffffff;
-  border: 1px solid #e4e9f0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6);
   border-radius: 20px;
   padding: 28px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.01);
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.01),
+    0 10px 30px rgba(0, 0, 0, 0.02);
 }
 
 .admin-panel-title {
-  font-size: 1.15rem;
+  font-size: 1.25rem;
   font-weight: 700;
   color: #1e293b;
   margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
+  font-family: var(--font-anthropic); /* Anthropic Serif */
 }
 
 /* Coupon dashed cards */
@@ -414,4 +446,33 @@
   .mobile-menu-bar {
     display: flex;
   }
+}
+
+/* ============================================================================
+   Reusable Card Elements (CRED Style Glassmorphism)
+   ============================================================================ */
+.panel-card,
+.surface-card,
+.card-premium,
+.panel-card-stacked {
+  background: rgba(255, 255, 255, 0.85) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  border-radius: 20px !important;
+  padding: 28px !important;
+  box-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.01),
+    0 10px 30px rgba(0, 0, 0, 0.02) !important;
+  transition:
+    transform 0.25s cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.panel-card:hover,
+.surface-card:hover,
+.card-premium:hover,
+.panel-card-stacked:hover {
+  transform: translateY(-4px) !important;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.04) !important;
 }

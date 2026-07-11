@@ -700,26 +700,45 @@ export const AppRoutes: React.FC = () => {
   if (userEmail && userRole === "restaurant_owner") {
     return (
       <BrowserRouter>
-        <div className="main-layout-wrapper">
-          <DesktopSidebar
-            userEmail={userEmail}
-            userRole={userRole}
+        <div className="admin-layout">
+          <AdminSidebar
+            adminName={localStorage.getItem("userName")}
             onLogout={handleLogout}
-            onDepositClick={handleDeposit}
-            walletBalance={walletBalance}
+            role={userRole}
           />
-          <div className="main-content-area">
-            <div className="role-utility-header">
-              <span>Console Mode: MERCHANT View</span>
-              <button onClick={handleLogout} className="role-utility-btn">
-                ←  Back to Role Selector / Sign Out
+          <div className="admin-main-content">
+            {/* Elegant Console Switcher Header */}
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "24px",
+              paddingBottom: "16px",
+              borderBottom: "1px solid #e4e9f0"
+            }}>
+              <span style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 700, letterSpacing: "0.5px" }}>
+                CONSOLE ROOM · MERCHANT VIEW
+              </span>
+              <button
+                onClick={handleLogout}
+                style={{
+                  background: "#f1f5f9",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  color: "#475569",
+                  cursor: "pointer",
+                  transition: "background 0.2s"
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.background = "#e2e8f0")}
+                onMouseOut={(e) => (e.currentTarget.style.background = "#f1f5f9")}
+              >
+                ← Back to Selector / Sign Out
               </button>
             </div>
-            <RestaurantNavbar
-              restaurantName={localStorage.getItem("userName")}
-              onLogout={handleLogout}
-            />
-            <GlobalBackBar />
+
             <Routes>
               <Route path="/" element={<RestaurantDashboard />} />
               <Route path="/menu" element={<MenuManager />} />
@@ -735,26 +754,45 @@ export const AppRoutes: React.FC = () => {
   if (userEmail && userRole === "delivery_partner") {
     return (
       <BrowserRouter>
-        <div className="main-layout-wrapper">
-          <DesktopSidebar
-            userEmail={userEmail}
-            userRole={userRole}
+        <div className="admin-layout">
+          <AdminSidebar
+            adminName={localStorage.getItem("userName")}
             onLogout={handleLogout}
-            onDepositClick={handleDeposit}
-            walletBalance={walletBalance}
+            role={userRole}
           />
-          <div className="main-content-area">
-            <div className="role-utility-header">
-              <span>Console Mode: DRIVER View</span>
-              <button onClick={handleLogout} className="role-utility-btn">
-                ←  Back to Role Selector / Sign Out
+          <div className="admin-main-content">
+            {/* Elegant Console Switcher Header */}
+            <div style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: "24px",
+              paddingBottom: "16px",
+              borderBottom: "1px solid #e4e9f0"
+            }}>
+              <span style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 700, letterSpacing: "0.5px" }}>
+                CONSOLE ROOM · RIDER VIEW
+              </span>
+              <button
+                onClick={handleLogout}
+                style={{
+                  background: "#f1f5f9",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  color: "#475569",
+                  cursor: "pointer",
+                  transition: "background 0.2s"
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.background = "#e2e8f0")}
+                onMouseOut={(e) => (e.currentTarget.style.background = "#f1f5f9")}
+              >
+                ← Back to Selector / Sign Out
               </button>
             </div>
-            <DeliveryNavbar
-              driverName={localStorage.getItem("userName")}
-              onLogout={handleLogout}
-            />
-            <GlobalBackBar />
+
             <Routes>
               <Route path="/" element={<DeliveryDashboard />} />
               <Route path="*" element={<Navigate to="/" />} />

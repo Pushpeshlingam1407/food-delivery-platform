@@ -20,11 +20,13 @@ import {
 interface AdminSidebarProps {
   adminName?: string | null;
   onLogout?: () => void;
+  role?: string | null; // dynamic role support: admin, restaurant_owner, delivery_partner
 }
 
 export const AdminSidebar: React.FC<AdminSidebarProps> = ({
-  adminName = "System Admin",
+  adminName = "System User",
   onLogout,
+  role = "admin",
 }) => {
   const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
@@ -35,36 +37,71 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     return location.pathname.startsWith(path);
   };
 
-  const navGroups = [
-    {
-      label: "Control Room",
-      items: [
-        { path: "/", label: "Dashboard", icon: LayoutDashboard },
-        { path: "/settings", label: "System Config", icon: Settings },
-        { path: "/cms", label: "CMS Pages", icon: FileText },
-      ],
-    },
-    {
-      label: "Operations",
-      items: [
-        { path: "/restaurants", label: "Stores", icon: Store },
-        { path: "/orders", label: "Orders", icon: ShoppingBag },
-        { path: "/refunds", label: "Refunds", icon: Receipt },
-      ],
-    },
-    {
-      label: "People & Partners",
-      items: [
-        { path: "/owners", label: "Owners", icon: Briefcase },
-        { path: "/customers", label: "Customers", icon: Users },
-        { path: "/drivers", label: "Drivers", icon: Bike },
-      ],
-    },
-    {
-      label: "Assets",
-      items: [{ path: "/images", label: "Image Library", icon: Image }],
-    },
-  ];
+  // Dynamically compute links based on role
+  const getNavGroups = () => {
+    if (role === "restaurant_owner") {
+      return [
+        {
+          label: "Merchant Console",
+          items: [
+            { path: "/", label: "Dashboard", icon: LayoutDashboard },
+            { path: "/menu", label: "Menu Manager", icon: FileText },
+            { path: "/earnings", label: "Earnings", icon: Receipt },
+          ],
+        },
+      ];
+    }
+
+    if (role === "delivery_partner") {
+      return [
+        {
+          label: "Rider Console",
+          items: [{ path: "/", label: "Active Jobs", icon: Bike }],
+        },
+      ];
+    }
+
+    // Default admin groups
+    return [
+      {
+        label: "Control Room",
+        items: [
+          { path: "/", label: "Dashboard", icon: LayoutDashboard },
+          { path: "/settings", label: "System Config", icon: Settings },
+          { path: "/cms", label: "CMS Pages", icon: FileText },
+        ],
+      },
+      {
+        label: "Operations",
+        items: [
+          { path: "/restaurants", label: "Stores", icon: Store },
+          { path: "/orders", label: "Orders", icon: ShoppingBag },
+          { path: "/refunds", label: "Refunds", icon: Receipt },
+        ],
+      },
+      {
+        label: "People & Partners",
+        items: [
+          { path: "/owners", label: "Owners", icon: Briefcase },
+          { path: "/customers", label: "Customers", icon: Users },
+          { path: "/drivers", label: "Drivers", icon: Bike },
+        ],
+      },
+      {
+        label: "Assets",
+        items: [{ path: "/images", label: "Image Library", icon: Image }],
+      },
+    ];
+  };
+
+  const getBadgeLabel = () => {
+    if (role === "restaurant_owner") return "merchant";
+    if (role === "delivery_partner") return "rider";
+    return "admin";
+  };
+
+  const navGroups = getNavGroups();
+  const badgeLabel = getBadgeLabel();
 
   return (
     <>
@@ -75,7 +112,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           className="admin-sidebar-logo"
           style={{ fontSize: "1.4rem" }}
         >
-          bites.<span>admin</span>
+          bites.<span>{badgeLabel}</span>
         </Link>
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -100,16 +137,25 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
       )}
 
       {/* Main Sidebar */}
-      <aside className={`admin-sidebar ${isOpen ? "open" : ""} ${isCollapsed ? "collapsed" : ""}`}>
+      <aside
+        className={`admin-sidebar ${isOpen ? "open" : ""} ${isCollapsed ? "collapsed" : ""}`}
+      >
         <div>
           {/* Logo Section */}
-          <div className="admin-sidebar-header" style={{ padding: isCollapsed ? "28px 16px" : "28px 24px" }}>
+          <div
+            className="admin-sidebar-header"
+            style={{ padding: isCollapsed ? "28px 16px" : "28px 24px" }}
+          >
             {!isCollapsed ? (
               <Link to="/" className="admin-sidebar-logo">
-                bites.<span>admin</span>
+                bites.<span>{badgeLabel}</span>
               </Link>
             ) : (
-              <Link to="/" className="admin-sidebar-logo" style={{ fontSize: "1.2rem" }}>
+              <Link
+                to="/"
+                className="admin-sidebar-logo"
+                style={{ fontSize: "1.2rem" }}
+              >
                 b.
               </Link>
             )}
@@ -124,7 +170,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                 padding: "4px",
                 display: "flex",
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
               }}
               title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
             >
@@ -133,7 +179,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </div>
 
           {/* User Profile Card */}
-          <div className="admin-sidebar-user" style={{ padding: isCollapsed ? "12px" : "16px 20px" }}>
+          <div
+            className="admin-sidebar-user"
+            style={{ padding: isCollapsed ? "12px" : "16px 20px" }}
+          >
             <div className="admin-avatar">
               {adminName ? adminName.charAt(0).toUpperCase() : "A"}
             </div>
@@ -148,10 +197,15 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
           </div>
 
           {/* Navigation Links Grouped */}
-          <nav className="admin-sidebar-nav" style={{ padding: isCollapsed ? "12px" : "16px" }}>
+          <nav
+            className="admin-sidebar-nav"
+            style={{ padding: isCollapsed ? "12px" : "16px" }}
+          >
             {navGroups.map((group, groupIdx) => (
               <div key={groupIdx} className="admin-nav-group">
-                {!isCollapsed && <span className="admin-nav-label">{group.label}</span>}
+                {!isCollapsed && (
+                  <span className="admin-nav-label">{group.label}</span>
+                )}
                 {group.items.map((item) => {
                   const Icon = item.icon;
                   const active = isActive(item.path);
@@ -162,7 +216,10 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                       onClick={() => setIsOpen(false)}
                       className={`admin-nav-item ${active ? "active" : ""}`}
                       title={isCollapsed ? item.label : ""}
-                      style={{ justifyContent: isCollapsed ? "center" : "flex-start", padding: isCollapsed ? "12px" : "12px 14px" }}
+                      style={{
+                        justifyContent: isCollapsed ? "center" : "flex-start",
+                        padding: isCollapsed ? "12px" : "12px 14px",
+                      }}
                     >
                       <Icon size={18} />
                       {!isCollapsed && <span>{item.label}</span>}
@@ -188,7 +245,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
                 cursor: "pointer",
                 color: "#ef4444",
                 justifyContent: isCollapsed ? "center" : "flex-start",
-                padding: isCollapsed ? "12px" : "12px 14px"
+                padding: isCollapsed ? "12px" : "12px 14px",
               }}
             >
               <LogOut size={18} />

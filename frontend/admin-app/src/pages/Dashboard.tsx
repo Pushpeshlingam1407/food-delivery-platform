@@ -185,12 +185,21 @@ export const Dashboard: React.FC = () => {
         <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Console Health</span>
-            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#f1f5f9", color: "#475569" }}
+            >
               <ShieldAlert size={18} />
             </div>
           </div>
-          <div className="metric-card-value" style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-            <span className="admin-status-dot" style={{ width: "10px", height: "10px" }} />
+          <div
+            className="metric-card-value"
+            style={{ display: "flex", alignItems: "center", gap: "8px" }}
+          >
+            <span
+              className="admin-status-dot"
+              style={{ width: "10px", height: "10px" }}
+            />
             {health?.database === "connected" ? "Online" : "Offline"}
           </div>
           <div className="metric-card-desc">
@@ -202,12 +211,21 @@ export const Dashboard: React.FC = () => {
         <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Platform Revenue</span>
-            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#f1f5f9", color: "#475569" }}
+            >
               <DollarSign size={18} />
             </div>
           </div>
           <div className="metric-card-value">
-            ₹{analytics ? analytics.total_payments_captured.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}
+            ₹
+            {analytics
+              ? analytics.total_payments_captured.toLocaleString("en-IN", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              : "0.00"}
           </div>
           <div className="metric-card-desc">Total processed order volume</div>
         </div>
@@ -216,11 +234,16 @@ export const Dashboard: React.FC = () => {
         <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Orders Fulfilled</span>
-            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#f1f5f9", color: "#475569" }}
+            >
               <Award size={18} />
             </div>
           </div>
-          <div className="metric-card-value">{analytics?.total_orders || 0}</div>
+          <div className="metric-card-value">
+            {analytics?.total_orders || 0}
+          </div>
           <div className="metric-card-desc">Total successful deliveries</div>
         </div>
 
@@ -228,11 +251,16 @@ export const Dashboard: React.FC = () => {
         <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Active Outlets</span>
-            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#f1f5f9", color: "#475569" }}
+            >
               <Store size={18} />
             </div>
           </div>
-          <div className="metric-card-value">{analytics?.total_restaurants || 0}</div>
+          <div className="metric-card-value">
+            {analytics?.total_restaurants || 0}
+          </div>
           <div className="metric-card-desc">Onboarded merchant stores</div>
         </div>
 
@@ -240,7 +268,10 @@ export const Dashboard: React.FC = () => {
         <div className="metric-card-premium">
           <div className="metric-card-header">
             <span className="metric-card-title">Total Users</span>
-            <div className="metric-card-icon-wrapper" style={{ background: "#f1f5f9", color: "#475569" }}>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#f1f5f9", color: "#475569" }}
+            >
               <Users size={18} />
             </div>
           </div>
