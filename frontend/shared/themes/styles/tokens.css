@@ -46,7 +46,6 @@
 }
 
 body {
-  background-color: var(--bg-sand);
   color: var(--text-slate);
   font-family: var(--font-apple);
   -webkit-font-smoothing: antialiased;

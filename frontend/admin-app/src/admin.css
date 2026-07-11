@@ -6,23 +6,14 @@
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background-color: #fbf9f6; /* Anthropic warm sand */
+  background-color: var(--bg-sand);
   background-image:
-    radial-gradient(
-      circle at 5% 10%,
-      rgba(255, 63, 26, 0.04) 0%,
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at 95% 15%,
-      rgba(122, 0, 255, 0.03) 0%,
-      transparent 35%
-    ),
-    radial-gradient(
-      circle at 50% 50%,
-      rgba(255, 123, 0, 0.02) 0%,
-      transparent 50%
-    );
+    var(--mesh-warm),
+    var(--mesh-rose),
+    var(--mesh-lavender),
+    var(--mesh-honey),
+    var(--mesh-center);
+  background-attachment: fixed;
   font-family:
     var(--font-cohere),
     -apple-system,

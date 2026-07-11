@@ -345,7 +345,7 @@ const GlobalBackBar: React.FC = () => {
   return (
     <div className="global-back-bar">
       <button onClick={() => navigate(-1)} className="back-button-global">
-        ←  Back
+        ← Back
       </button>
     </div>
   );
