@@ -86,7 +86,9 @@ export const OrderCard: React.FC<OrderCardProps> = ({
               {active ? <Truck size={18} /> : <PackageCheck size={18} />}
             </div>
             <div>
-              <strong>{active ? "Track your delivery" : "Tap to view receipt"}</strong>
+              <strong>
+                {active ? "Track your delivery" : "Tap to view receipt"}
+              </strong>
               <span>
                 {active
                   ? "See live updates, rider movement, and order progress."

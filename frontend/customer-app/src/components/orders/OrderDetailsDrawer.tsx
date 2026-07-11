@@ -55,7 +55,8 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
           <PackageCheck size={18} />
           <div>
             <strong>
-              {statusCopy[order.status]?.label || order.status.replace(/_/g, " ")}
+              {statusCopy[order.status]?.label ||
+                order.status.replace(/_/g, " ")}
             </strong>
             <span>
               {order.delivered_at

@@ -47,10 +47,7 @@ export const Navbar: React.FC<NavbarProps> = ({
       <nav className="navbar-container premium-navbar">
         {/* Left Side: Address Context */}
         <div className="navbar-left">
-          <Link
-            to="/addresses"
-            className="address-pill-btn"
-          >
+          <Link to="/addresses" className="address-pill-btn">
             <div className="address-icon-wrapper">
               <MapPin size={14} color="var(--accent-orange)" />
             </div>
@@ -85,10 +82,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         {/* Right Side: Cart & Profile */}
         <div className="navbar-right">
           {!userEmail ? (
-            <Link
-              to="/login"
-              className="navbar-signin-pill"
-            >
+            <Link to="/login" className="navbar-signin-pill">
               Sign In
             </Link>
           ) : (
@@ -110,9 +104,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     <span className="navbar-profile-menu-eyebrow">
                       Logged in as
                     </span>
-                    <div className="navbar-profile-menu-email">
-                      {userEmail}
-                    </div>
+                    <div className="navbar-profile-menu-email">{userEmail}</div>
                   </div>
                   <Link
                     onClick={() => setProfileDropdownOpen(false)}

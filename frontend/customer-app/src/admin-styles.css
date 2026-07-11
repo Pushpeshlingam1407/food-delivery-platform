@@ -99,6 +99,31 @@
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
 }
 
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-standard);
+  background: var(--glass-bg);
+}
+
+.search-bar-icon {
+  flex-shrink: 0;
+  color: var(--text-muted);
+}
+
+.search-bar-input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-apple);
+  font-size: 0.9rem;
+}
+
 .navbar-signin-pill {
   padding: 10px 20px;
   border-radius: 99px;

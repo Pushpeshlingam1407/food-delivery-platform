@@ -1,50 +1,29 @@
-import React from "react";
 import { Search } from "lucide-react";
 
-interface SearchBarProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface SearchBarProps {
+  value?: string | number | readonly string[];
   onSearchChange?: (value: string) => void;
-  containerStyle?: React.CSSProperties;
+  placeholder?: string;
+  className?: string;
 }
 
-export const SearchBar: React.FC<SearchBarProps> = ({
+export const SearchBar = ({
   value,
   onSearchChange,
   placeholder = "Search...",
-  containerStyle,
-  style,
   className,
-  ...props
-}) => {
+}: SearchBarProps) => {
   return (
-    <div
-      className={className}
-      style={{
-        display: "flex",
-        alignItems: "center",
-        background: "var(--glass-bg)",
-        border: "1px solid var(--glass-border)",
-        borderRadius: "var(--radius-standard)",
-        padding: "8px 16px",
-        gap: "8px",
-        ...containerStyle,
-      }}
-    >
-      <Search size={16} color="var(--text-muted)" style={{ flexShrink: 0 }} />
+    <div className={`search-bar ${className || ""}`}>
+      <Search size={16} className="search-bar-icon" />
       <input
         type="text"
         placeholder={placeholder}
         value={value}
-        onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
-        style={{
-          border: "none",
-          outline: "none",
-          width: "100%",
-          fontFamily: "var(--font-apple)",
-          fontSize: "0.9rem",
-          background: "transparent",
-          ...style,
-        }}
-        {...props}
+        onChange={(event: { target: HTMLInputElement }) =>
+          onSearchChange && onSearchChange(event.target.value)
+        }
+        className="search-bar-input"
       />
     </div>
   );
