@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import {
   Truck,
@@ -388,7 +388,7 @@ export const Dashboard: React.FC = () => {
                   color: "var(--text-slate)",
                 }}
               >
-                â‚¹{walletBalance.toFixed(2)}
+                ‚¹{walletBalance.toFixed(2)}
               </span>
             </div>
             <span
@@ -459,7 +459,7 @@ export const Dashboard: React.FC = () => {
                   fontWeight: 600,
                 }}
               >
-                â‚¹50
+                ‚¹50
               </button>
               <button
                 type="button"
@@ -474,7 +474,7 @@ export const Dashboard: React.FC = () => {
                   fontWeight: 600,
                 }}
               >
-                â‚¹100
+                ‚¹100
               </button>
               <button
                 type="button"
@@ -489,7 +489,7 @@ export const Dashboard: React.FC = () => {
                   fontWeight: 600,
                 }}
               >
-                â‚¹500
+                ‚¹500
               </button>
               <button
                 type="button"
@@ -522,9 +522,7 @@ export const Dashboard: React.FC = () => {
               <TrendingUp size={20} color="var(--accent-orange)" />
             </div>
           </div>
-          <div className="stat-card__value">
-            â‚¹{totalEarningAmt.toFixed(2)}
-          </div>
+          <div className="stat-card__value">‚¹{totalEarningAmt.toFixed(2)}</div>
           <div className="stat-card__subtitle">
             Total delivery payouts earned
           </div>
@@ -539,7 +537,7 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="stat-card__value stat-card__value--green">
-            â‚¹{walletBalance.toFixed(2)}
+            ‚¹{walletBalance.toFixed(2)}
           </div>
           <div className="stat-card__subtitle">
             Available in your driver wallet
@@ -627,7 +625,7 @@ export const Dashboard: React.FC = () => {
                     borderRadius: "100px",
                   }}
                 >
-                  Payout: â‚¹
+                  Payout: ‚¹
                   {parseFloat(activeJob.delivery_charges || "0").toFixed(2)}
                 </span>
                 {deliveryStep === "picked_up" && (
@@ -640,7 +638,7 @@ export const Dashboard: React.FC = () => {
                       fontFamily: "monospace",
                     }}
                   >
-                    â±ï¸ Deliver in: {formatTime(deliveryTimer)} (GPS Progress:{" "}
+                    Deliver in: {formatTime(deliveryTimer)} (GPS Progress:{" "}
                     {gpsProgress}%)
                   </span>
                 )}
@@ -771,7 +769,7 @@ export const Dashboard: React.FC = () => {
                     >
                       <span>Items Total:</span>
                       <span>
-                        â‚¹{parseFloat(activeJobDetails.item_total).toFixed(2)}
+                        ‚¹{parseFloat(activeJobDetails.item_total).toFixed(2)}
                       </span>
                     </div>
                     <div
@@ -784,7 +782,7 @@ export const Dashboard: React.FC = () => {
                     >
                       <span>Delivery Fee:</span>
                       <span>
-                        â‚¹
+                        ‚¹
                         {parseFloat(activeJobDetails.delivery_charges).toFixed(
                           2,
                         )}
@@ -800,7 +798,7 @@ export const Dashboard: React.FC = () => {
                     >
                       <span>Taxes & Charges:</span>
                       <span>
-                        â‚¹{parseFloat(activeJobDetails.tax_amount).toFixed(2)}
+                        ‚¹{parseFloat(activeJobDetails.tax_amount).toFixed(2)}
                       </span>
                     </div>
                     {parseFloat(activeJobDetails.discount_amount) > 0 && (
@@ -815,7 +813,7 @@ export const Dashboard: React.FC = () => {
                       >
                         <span>Discount ({activeJobDetails.coupon_code}):</span>
                         <span>
-                          -â‚¹
+                          -‚¹
                           {parseFloat(activeJobDetails.discount_amount).toFixed(
                             2,
                           )}
@@ -835,7 +833,7 @@ export const Dashboard: React.FC = () => {
                     >
                       <span>Total Payable:</span>
                       <span style={{ color: "var(--accent-orange)" }}>
-                        â‚¹
+                        ‚¹
                         {parseFloat(activeJobDetails.total_payable).toFixed(2)}
                       </span>
                     </div>
@@ -1041,7 +1039,7 @@ export const Dashboard: React.FC = () => {
                   fontWeight: 700,
                 }}
               >
-                Payout: â‚¹{parseFloat(job.delivery_charges || "0").toFixed(2)}
+                Payout: ‚¹{parseFloat(job.delivery_charges || "0").toFixed(2)}
               </div>
             </div>
 
@@ -1239,7 +1237,7 @@ export const Dashboard: React.FC = () => {
                       fontSize: "1.1rem",
                     }}
                   >
-                    {tx.type === "credit" ? "+" : "-"}â‚¹
+                    {tx.type === "credit" ? "+" : "-"}‚¹
                     {Math.abs(parseFloat(tx.amount)).toFixed(2)}
                   </td>
                 </tr>

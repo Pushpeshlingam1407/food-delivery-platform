@@ -53,7 +53,7 @@ import { ImagesManagement } from "../../../admin-app/src/pages/ImagesManagement"
 import { Refunds } from "../../../admin-app/src/pages/Refunds";
 import { Settings } from "../../../admin-app/src/pages/Settings";
 import { CMS } from "../../../admin-app/src/pages/CMS";
-import { Navbar as AdminNavbar } from "../../../admin-app/src/components/Navbar";
+import { AdminSidebar } from "../../../admin-app/src/components/AdminSidebar";
 
 // Restaurant Imports
 import { Dashboard as RestaurantDashboard } from "../../../restaurant-app/src/pages/Dashboard";
@@ -172,7 +172,7 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
             });
           }
         }
-        toast.success("Items added to your cart! ðŸ›’");
+        toast.success("Items added to your cart! Ÿ›’");
       }
     } catch {
       toast.error("Could not reorder. Please try again.");
@@ -627,43 +627,70 @@ export const AppRoutes: React.FC = () => {
   if (userEmail && userRole === "admin") {
     return (
       <BrowserRouter>
-        <div className="main-layout-wrapper">
-          <DesktopSidebar
-            userEmail={userEmail}
-            userRole={userRole}
+        <div className="admin-layout">
+          <AdminSidebar
+            adminName={localStorage.getItem("userName")}
             onLogout={handleLogout}
-            onDepositClick={handleDeposit}
-            walletBalance={walletBalance}
           />
-          <div className="main-content-area">
-            <div className="role-utility-header">
-              <span>Console Mode: {userRole?.toUpperCase()} View</span>
-              <button onClick={handleLogout} className="role-utility-btn">
-                ←  Back to Role Selector / Sign Out
+          <div className="admin-main-content">
+            {/* Elegant Console Switcher Header */}
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "24px",
+                paddingBottom: "16px",
+                borderBottom: "1px solid #e4e9f0",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.85rem",
+                  color: "#64748b",
+                  fontWeight: 700,
+                  letterSpacing: "0.5px",
+                }}
+              >
+                CONSOLE ROOM · ADMIN VIEW
+              </span>
+              <button
+                onClick={handleLogout}
+                style={{
+                  background: "#f1f5f9",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "8px",
+                  fontSize: "0.8rem",
+                  fontWeight: 600,
+                  color: "#475569",
+                  cursor: "pointer",
+                  transition: "background 0.2s",
+                }}
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.background = "#e2e8f0")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.background = "#f1f5f9")
+                }
+              >
+                ← Back to Selector / Sign Out
               </button>
             </div>
-            <AdminNavbar
-              adminName={localStorage.getItem("userName")}
-              onLogout={handleLogout}
-            />
-            <div className="admin-main-content">
-              <Routes>
-                <Route path="/" element={<AdminDashboard />} />
-                <Route
-                  path="/restaurants"
-                  element={<RestaurantsManagement />}
-                />
-                <Route path="/customers" element={<CustomersManagement />} />
-                <Route path="/owners" element={<OwnersManagement />} />
-                <Route path="/drivers" element={<DriversManagement />} />
-                <Route path="/orders" element={<OrdersManagement />} />
-                <Route path="/images" element={<ImagesManagement />} />
-                <Route path="/refunds" element={<Refunds />} />
-                <Route path="/settings" element={<Settings />} />
-                <Route path="/cms" element={<CMS />} />
-                <Route path="*" element={<Navigate to="/" />} />
-              </Routes>
-            </div>
+
+            <Routes>
+              <Route path="/" element={<AdminDashboard />} />
+              <Route path="/restaurants" element={<RestaurantsManagement />} />
+              <Route path="/customers" element={<CustomersManagement />} />
+              <Route path="/owners" element={<OwnersManagement />} />
+              <Route path="/drivers" element={<DriversManagement />} />
+              <Route path="/orders" element={<OrdersManagement />} />
+              <Route path="/images" element={<ImagesManagement />} />
+              <Route path="/refunds" element={<Refunds />} />
+              <Route path="/settings" element={<Settings />} />
+              <Route path="/cms" element={<CMS />} />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
           </div>
         </div>
       </BrowserRouter>
@@ -906,8 +933,8 @@ export const AppRoutes: React.FC = () => {
             </div>
             <div className="footer-bottom">
               <div>
-                Â© {new Date().getFullYear()} Bites Internet Private Limited.
-                All rights reserved.
+                © {new Date().getFullYear()} Bites Internet Private Limited. All
+                rights reserved.
               </div>
             </div>
           </footer>

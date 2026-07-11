@@ -413,7 +413,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
                         whiteSpace: "nowrap",
                       }}
                     >
-                      ðŸ·ï¸ {c.code}
+                      {c.code}
                     </button>
                   ))}
                 </div>
