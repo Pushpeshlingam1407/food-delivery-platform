@@ -708,15 +708,24 @@ export const AppRoutes: React.FC = () => {
           />
           <div className="admin-main-content">
             {/* Elegant Console Switcher Header */}
-            <div style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "24px",
-              paddingBottom: "16px",
-              borderBottom: "1px solid #e4e9f0"
-            }}>
-              <span style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 700, letterSpacing: "0.5px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "24px",
+                paddingBottom: "16px",
+                borderBottom: "1px solid #e4e9f0",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.85rem",
+                  color: "#64748b",
+                  fontWeight: 700,
+                  letterSpacing: "0.5px",
+                }}
+              >
                 CONSOLE ROOM · MERCHANT VIEW
               </span>
               <button
@@ -730,10 +739,14 @@ export const AppRoutes: React.FC = () => {
                   fontWeight: 600,
                   color: "#475569",
                   cursor: "pointer",
-                  transition: "background 0.2s"
+                  transition: "background 0.2s",
                 }}
-                onMouseOver={(e) => (e.currentTarget.style.background = "#e2e8f0")}
-                onMouseOut={(e) => (e.currentTarget.style.background = "#f1f5f9")}
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.background = "#e2e8f0")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.background = "#f1f5f9")
+                }
               >
                 ← Back to Selector / Sign Out
               </button>
@@ -762,15 +775,24 @@ export const AppRoutes: React.FC = () => {
           />
           <div className="admin-main-content">
             {/* Elegant Console Switcher Header */}
-            <div style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "24px",
-              paddingBottom: "16px",
-              borderBottom: "1px solid #e4e9f0"
-            }}>
-              <span style={{ fontSize: "0.85rem", color: "#64748b", fontWeight: 700, letterSpacing: "0.5px" }}>
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "24px",
+                paddingBottom: "16px",
+                borderBottom: "1px solid #e4e9f0",
+              }}
+            >
+              <span
+                style={{
+                  fontSize: "0.85rem",
+                  color: "#64748b",
+                  fontWeight: 700,
+                  letterSpacing: "0.5px",
+                }}
+              >
                 CONSOLE ROOM · RIDER VIEW
               </span>
               <button
@@ -784,10 +806,14 @@ export const AppRoutes: React.FC = () => {
                   fontWeight: 600,
                   color: "#475569",
                   cursor: "pointer",
-                  transition: "background 0.2s"
+                  transition: "background 0.2s",
                 }}
-                onMouseOver={(e) => (e.currentTarget.style.background = "#e2e8f0")}
-                onMouseOut={(e) => (e.currentTarget.style.background = "#f1f5f9")}
+                onMouseOver={(e) =>
+                  (e.currentTarget.style.background = "#e2e8f0")
+                }
+                onMouseOut={(e) =>
+                  (e.currentTarget.style.background = "#f1f5f9")
+                }
               >
                 ← Back to Selector / Sign Out
               </button>
