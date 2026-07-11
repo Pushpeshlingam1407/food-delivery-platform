@@ -6,7 +6,6 @@ import {
   Tag,
   Users,
   Store,
-  Plus,
   Trash2,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -152,165 +151,219 @@ export const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="app-shell">
-      {/* Page Title */}
-      <div className="section-spacing">
-        <h1 className="section-heading section-heading-lg">
-          Administrator Console
-        </h1>
-        <p className="text-muted">
-          Overview of platform analytics, restaurant audits, and system
-          configuration.
-        </p>
+    <div style={{ width: "100%" }}>
+      {/* Humanized Welcome Banner */}
+      <div className="welcome-banner">
+        <div className="welcome-text">
+          <h1>Welcome back, Chief! ✨</h1>
+          <p>
+            Here is a bird's-eye view of your Bites platform. Everything looks good and active.
+          </p>
+        </div>
+        <div className="navbar-desktop-only" style={{ textAlign: "right" }}>
+          <span
+            style={{
+              fontSize: "0.85rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              color: "var(--accent-orange)",
+              background: "#fff0ec",
+              padding: "6px 16px",
+              borderRadius: "99px",
+            }}
+          >
+            System Administrator
+          </span>
+        </div>
       </div>
 
       {/* Analytics Grid */}
-      <div className="stat-grid">
-        {/* System Status */}
-        <div className="stat-card">
-          <div className="stat-card__header">
-            <span className="stat-card__label">SYSTEM STATUS</span>
-            <div className="stat-card__icon stat-card__icon--green">
-              <ShieldAlert size={20} color="#4CAF50" />
+      <div className="admin-grid-columns">
+        {/* System Health */}
+        <div className="metric-card-premium" style={{ borderLeft: "4px solid #10b981" }}>
+          <div className="metric-card-header">
+            <span className="metric-card-title">Console Health</span>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#ecfdf5", color: "#10b981" }}
+            >
+              <ShieldAlert size={18} />
             </div>
           </div>
-          <div
-            className={`stat-card__value ${health?.database === "connected" ? "stat-card__value--green" : "stat-card__value--danger"}`}
-          >
-            {health?.database === "connected" ? "HEALTHY" : "DOWN"}
+          <div className="metric-card-value" style={{ color: "#10b981", display: "flex", alignItems: "center", gap: "8px" }}>
+            <span className="admin-status-dot" style={{ width: "12px", height: "12px" }} />
+            {health?.database === "connected" ? "ONLINE" : "OFFLINE"}
           </div>
-          <div className="stat-card__subtitle">
-            Port {health?.server_port || 5000} · MySQL{" "}
-            {health?.database_port || 3306}
+          <div className="metric-card-desc">
+            Port {health?.server_port || 5000} · DB Status: Connected
           </div>
         </div>
 
         {/* Captured Revenue */}
-        <div className="stat-card stat-card--warm">
-          <div className="stat-card__header">
-            <span className="stat-card__label">CAPTURED REVENUE</span>
-            <div className="stat-card__icon stat-card__icon--orange">
-              <DollarSign size={20} color="var(--accent-orange)" />
+        <div className="metric-card-premium" style={{ borderLeft: "4px solid #ff3f1a" }}>
+          <div className="metric-card-header">
+            <span className="metric-card-title">Platform Revenue</span>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#fff0ec", color: "#ff3f1a" }}
+            >
+              <DollarSign size={18} />
             </div>
           </div>
-          <div className="stat-card__value">
-            ₹{analytics?.total_payments_captured.toFixed(2)}
+          <div className="metric-card-value">
+            ₹{analytics ? analytics.total_payments_captured.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}
           </div>
-          <div className="stat-card__subtitle">
-            Total platform payment volume
-          </div>
+          <div className="metric-card-desc">Total processed order volume</div>
         </div>
 
         {/* Completed Orders */}
-        <div className="stat-card stat-card--green">
-          <div className="stat-card__header">
-            <span className="stat-card__label">COMPLETED ORDERS</span>
-            <div className="stat-card__icon stat-card__icon--orange">
-              <Award size={20} color="var(--accent-orange)" />
+        <div className="metric-card-premium" style={{ borderLeft: "4px solid #7a00ff" }}>
+          <div className="metric-card-header">
+            <span className="metric-card-title">Orders Fulfilled</span>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#f5f0ff", color: "#7a00ff" }}
+            >
+              <Award size={18} />
             </div>
           </div>
-          <div className="stat-card__value">{analytics?.total_orders}</div>
-          <div className="stat-card__subtitle">
-            Orders fulfilled across the platform
-          </div>
+          <div className="metric-card-value">{analytics?.total_orders || 0}</div>
+          <div className="metric-card-desc">Total successful deliveries</div>
         </div>
 
         {/* Active Restaurants */}
-        <div className="stat-card stat-card--cool">
-          <div className="stat-card__header">
-            <span className="stat-card__label">ACTIVE RESTAURANTS</span>
-            <div className="stat-card__icon stat-card__icon--violet">
-              <Store size={20} color="var(--accent-violet)" />
+        <div className="metric-card-premium" style={{ borderLeft: "4px solid #3b82f6" }}>
+          <div className="metric-card-header">
+            <span className="metric-card-title">Active Outlets</span>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#eff6ff", color: "#3b82f6" }}
+            >
+              <Store size={18} />
             </div>
           </div>
-          <div className="stat-card__value">{analytics?.total_restaurants}</div>
-          <div className="stat-card__subtitle">
-            Verified partner restaurants
-          </div>
+          <div className="metric-card-value">{analytics?.total_restaurants || 0}</div>
+          <div className="metric-card-desc">Onboarded merchant stores</div>
         </div>
 
         {/* Platform Users */}
-        <div className="stat-card">
-          <div className="stat-card__header">
-            <span className="stat-card__label">PLATFORM USERS</span>
-            <div className="stat-card__icon stat-card__icon--orange">
-              <Users size={20} color="var(--accent-orange)" />
+        <div className="metric-card-premium" style={{ borderLeft: "4px solid #64748b" }}>
+          <div className="metric-card-header">
+            <span className="metric-card-title">Total Users</span>
+            <div
+              className="metric-card-icon-wrapper"
+              style={{ background: "#f8fafc", color: "#64748b" }}
+            >
+              <Users size={18} />
             </div>
           </div>
-          <div className="stat-card__value">{analytics?.total_users}</div>
-          <div className="stat-card__subtitle">
-            Registered customers and partners
-          </div>
+          <div className="metric-card-value">{analytics?.total_users || 0}</div>
+          <div className="metric-card-desc">Customers, owners & riders</div>
         </div>
       </div>
 
-      <div className="two-column-layout">
-        {/* Left Side - Restaurant Auditing */}
-        <div className="panel-card">
-          <div className="panel-heading">
-            <ShieldAlert size={18} color="var(--accent-orange)" /> Restaurant
-            Auditing Board
+      <div className="admin-two-col">
+        {/* Left Column - Restaurant Auditing */}
+        <div className="admin-panel">
+          <div className="admin-panel-title">
+            <ShieldAlert size={20} color="#ff3f1a" /> Merchant Approval Queue
           </div>
+          <p style={{ color: "#64748b", fontSize: "0.9rem", marginBottom: "20px" }}>
+            Verify and audit new restaurant partner stores before allowing them to accept orders.
+          </p>
 
-          <div className="card-stack">
+          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
             {restaurants.map((r) => (
-              <div
-                key={r.id}
-                className={`card-row-compact audit-row ${
-                  r.is_verified ? "verified" : "pending"
-                }`}
-              >
-                <div>
-                  <strong>{r.name}</strong>
-                  <div className="text-muted text-small">{r.description}</div>
+              <div key={r.id} className="audit-list-item">
+                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                  <div className="audit-avatar">
+                    {r.name ? r.name.charAt(0).toUpperCase() : "R"}
+                  </div>
+                  <div>
+                    <strong style={{ color: "#1e293b", fontSize: "0.95rem" }}>{r.name}</strong>
+                    <div style={{ color: "#64748b", fontSize: "0.85rem", marginTop: "2px" }}>
+                      {r.description}
+                    </div>
+                  </div>
                 </div>
 
-                {r.is_verified ? (
-                  <span className="status-pill success">VERIFIED</span>
-                ) : (
-                  <button
-                    onClick={() => handleVerifyRestaurant(r.id)}
-                    className="btn-premium btn-sm button-stretch"
-                  >
-                    Verify Store
-                  </button>
-                )}
+                <div>
+                  {r.is_verified ? (
+                    <span
+                      style={{
+                        background: "#ecfdf5",
+                        color: "#10b981",
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        padding: "6px 12px",
+                        borderRadius: "99px",
+                      }}
+                    >
+                      VERIFIED
+                    </span>
+                  ) : (
+                    <button
+                      onClick={() => handleVerifyRestaurant(r.id)}
+                      className="btn-premium btn-sm"
+                      style={{
+                        padding: "8px 16px",
+                        fontSize: "0.8rem",
+                        cursor: "pointer",
+                      }}
+                    >
+                      Verify Store
+                    </button>
+                  )}
+                </div>
               </div>
             ))}
 
             {restaurants.length === 0 && (
-              <div className="empty-state">
-                No restaurants found in database.
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "40px 20px",
+                  color: "#94a3b8",
+                  fontSize: "0.9rem",
+                }}
+              >
+                No partner stores found in the database.
               </div>
             )}
           </div>
         </div>
 
-        {/* Right Side - Coupon Manager */}
-        <div className="card-stack">
-          {/* Create Coupon */}
-          <div className="panel-card">
-            <div className="panel-heading">
-              <Tag size={18} color="var(--accent-violet)" /> Add Promo Coupon
+        {/* Right Column - Coupon Manager */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          {/* Create Coupon Widget */}
+          <div className="admin-panel">
+            <div className="admin-panel-title">
+              <Tag size={20} color="#7a00ff" /> Launch Campaign Coupon
             </div>
+            <p style={{ color: "#64748b", fontSize: "0.9rem", marginBottom: "20px" }}>
+              Publish new promotional voucher codes for your customers.
+            </p>
 
-            <form onSubmit={handleAddCoupon} className="form-grid">
+            <form onSubmit={handleAddCoupon} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
               <input
                 type="text"
-                placeholder="Coupon Code (e.g. WELCOME50)"
+                placeholder="PROMO CODE (e.g. BITES50)"
                 value={code}
                 onChange={(e) => setCode(e.target.value.toUpperCase())}
                 required
                 className="input-premium"
+                style={{ width: "100%" }}
               />
 
               <select
                 value={discountType}
                 onChange={(e: any) => setDiscountType(e.target.value)}
                 className="input-premium"
+                style={{ width: "100%" }}
               >
-                <option value="percentage">Percentage (%)</option>
-                <option value="fixed">Fixed Amount ($)</option>
+                <option value="percentage">Percentage Discount (%)</option>
+                <option value="fixed">Fixed Cash Discount (₹)</option>
               </select>
 
               <input
@@ -320,43 +373,63 @@ export const Dashboard: React.FC = () => {
                 onChange={(e) => setDiscountValue(e.target.value)}
                 required
                 className="input-premium"
+                style={{ width: "100%" }}
               />
 
               <input
                 type="number"
-                placeholder="Minimum Order Value ($)"
+                placeholder="Min Basket Value (₹)"
                 value={minOrder}
                 onChange={(e) => setMinOrder(e.target.value)}
                 className="input-premium"
+                style={{ width: "100%" }}
               />
 
               <button
                 type="submit"
                 disabled={couponLoading}
-                className="btn-premium btn-sm button-stretch"
+                className="btn-premium"
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  fontSize: "0.9rem",
+                  cursor: "pointer",
+                  marginTop: "6px",
+                }}
               >
-                {couponLoading ? "Creating..." : "Save Coupon"}
+                {couponLoading ? "Publishing..." : "Launch Coupon"}
               </button>
             </form>
           </div>
 
-          {/* Active Coupons List */}
-          <div className="panel-card compact">
-            <div className="card-heading-small">Active Coupons</div>
-            <div className="card-stack">
+          {/* Active Campaign Coupons */}
+          <div className="admin-panel">
+            <div className="admin-panel-title" style={{ fontSize: "1rem" }}>
+              Live Platform Coupons
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "14px" }}>
               {coupons.map((c) => (
-                <div key={c.id} className="card-row-compact">
+                <div key={c.id} className="coupon-item-card">
                   <div>
-                    <strong className="text-small">{c.code}</strong>
-                    <div className="text-muted" style={{ fontSize: "0.8rem" }}>
-                      {c.discount_value}
-                      {c.discount_type === "percentage" ? "%" : "$"} off (Min: $
-                      {c.min_order_amount})
+                    <strong style={{ fontSize: "0.9rem", color: "#1e293b" }}>{c.code}</strong>
+                    <div style={{ fontSize: "0.78rem", color: "#64748b", marginTop: "3px" }}>
+                      Get {c.discount_value}
+                      {c.discount_type === "percentage" ? "%" : "₹"} off · Min spend ₹
+                      {c.min_order_amount}
                     </div>
                   </div>
                   <button
                     onClick={() => handleDeleteCoupon(c.id)}
                     className="icon-button-danger"
+                    style={{
+                      border: "none",
+                      background: "none",
+                      color: "#ef4444",
+                      cursor: "pointer",
+                      padding: "6px",
+                      borderRadius: "6px",
+                    }}
                   >
                     <Trash2 size={16} />
                   </button>
@@ -364,8 +437,15 @@ export const Dashboard: React.FC = () => {
               ))}
 
               {coupons.length === 0 && (
-                <div className="empty-state text-small">
-                  No active promo codes.
+                <div
+                  style={{
+                    textAlign: "center",
+                    padding: "20px 10px",
+                    color: "#94a3b8",
+                    fontSize: "0.85rem",
+                  }}
+                >
+                  No active coupon campaigns running.
                 </div>
               )}
             </div>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { Navbar } from "../components/Navbar";
+import { AdminSidebar } from "../components/AdminSidebar";
 import { Login } from "../pages/Login";
 import { Dashboard } from "../pages/Dashboard";
 import { Refunds } from "../pages/Refunds";
@@ -17,9 +17,7 @@ export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
     localStorage.getItem("userEmail"),
   );
-  const [adminName, setAdminName] = useState<string | null>(() =>
-    localStorage.getItem("userName"),
-  );
+  const adminName = localStorage.getItem("userName");
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -33,58 +31,64 @@ export const AppRoutes: React.FC = () => {
 
   return (
     <BrowserRouter>
-      {userEmail && <Navbar adminName={adminName} onLogout={handleLogout} />}
-      <Routes>
-        <Route
-          path="/"
-          element={userEmail ? <Dashboard /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/restaurants"
-          element={
-            userEmail ? <RestaurantsManagement /> : <Navigate to="/login" />
-          }
-        />
-        <Route
-          path="/customers"
-          element={
-            userEmail ? <CustomersManagement /> : <Navigate to="/login" />
-          }
-        />
-        <Route
-          path="/owners"
-          element={userEmail ? <OwnersManagement /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/drivers"
-          element={userEmail ? <DriversManagement /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/orders"
-          element={userEmail ? <OrdersManagement /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/images"
-          element={userEmail ? <ImagesManagement /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/refunds"
-          element={userEmail ? <Refunds /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/settings"
-          element={userEmail ? <Settings /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/cms"
-          element={userEmail ? <CMS /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/login"
-          element={!userEmail ? <Login /> : <Navigate to="/" />}
-        />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
+      <div className={userEmail ? "admin-layout" : ""}>
+        {userEmail && (
+          <AdminSidebar adminName={adminName} onLogout={handleLogout} />
+        )}
+        <main className={userEmail ? "admin-main-content" : ""}>
+          <Routes>
+            <Route
+              path="/"
+              element={userEmail ? <Dashboard /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/restaurants"
+              element={
+                userEmail ? <RestaurantsManagement /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/customers"
+              element={
+                userEmail ? <CustomersManagement /> : <Navigate to="/login" />
+              }
+            />
+            <Route
+              path="/owners"
+              element={userEmail ? <OwnersManagement /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/drivers"
+              element={userEmail ? <DriversManagement /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/orders"
+              element={userEmail ? <OrdersManagement /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/images"
+              element={userEmail ? <ImagesManagement /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/refunds"
+              element={userEmail ? <Refunds /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/settings"
+              element={userEmail ? <Settings /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/cms"
+              element={userEmail ? <CMS /> : <Navigate to="/login" />}
+            />
+            <Route
+              path="/login"
+              element={!userEmail ? <Login /> : <Navigate to="/" />}
+            />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+        </main>
+      </div>
     </BrowserRouter>
   );
 };
