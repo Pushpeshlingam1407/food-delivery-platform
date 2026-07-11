@@ -9,7 +9,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
-import { DesktopSidebar } from "../../../shared/components/DesktopSidebar";
+import { AppSidebar } from "../../../shared/components/AppSidebar";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { OtpLogin } from "../pages/OtpLogin";
@@ -53,7 +53,6 @@ import { ImagesManagement } from "../../../admin-app/src/pages/ImagesManagement"
 import { Refunds } from "../../../admin-app/src/pages/Refunds";
 import { Settings } from "../../../admin-app/src/pages/Settings";
 import { CMS } from "../../../admin-app/src/pages/CMS";
-import { AdminSidebar } from "../../../admin-app/src/components/AdminSidebar";
 
 // Restaurant Imports
 import { Dashboard as RestaurantDashboard } from "../../../restaurant-app/src/pages/Dashboard";
@@ -628,8 +627,9 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="admin-layout">
-          <AdminSidebar
-            adminName={localStorage.getItem("userName")}
+          <AppSidebar
+            userName={localStorage.getItem("userName")}
+            role="admin"
             onLogout={handleLogout}
           />
           <div className="admin-main-content">
@@ -701,10 +701,10 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="admin-layout">
-          <AdminSidebar
-            adminName={localStorage.getItem("userName")}
+          <AppSidebar
+            userName={localStorage.getItem("userName")}
+            role="restaurant_owner"
             onLogout={handleLogout}
-            role={userRole}
           />
           <div className="admin-main-content">
             {/* Elegant Console Switcher Header */}
@@ -768,10 +768,10 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="admin-layout">
-          <AdminSidebar
-            adminName={localStorage.getItem("userName")}
+          <AppSidebar
+            userName={localStorage.getItem("userName")}
+            role="delivery_partner"
             onLogout={handleLogout}
-            role={userRole}
           />
           <div className="admin-main-content">
             {/* Elegant Console Switcher Header */}
@@ -833,9 +833,10 @@ export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <div className="main-layout-wrapper">
-        <DesktopSidebar
-          userEmail={userEmail}
-          userRole={userRole}
+        <AppSidebar
+          userName={userEmail}
+          role="customer"
+          isLoggedIn={!!userEmail}
           onLogout={handleLogout}
           onDepositClick={handleDeposit}
           walletBalance={walletBalance}

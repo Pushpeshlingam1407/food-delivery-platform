@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { AdminSidebar } from "../components/AdminSidebar";
+import { AppSidebar } from "../../../shared/components/AppSidebar";
 import { Login } from "../pages/Login";
 import { Dashboard } from "../pages/Dashboard";
 import { Refunds } from "../pages/Refunds";
@@ -33,7 +33,11 @@ export const AppRoutes: React.FC = () => {
     <BrowserRouter>
       <div className={userEmail ? "admin-layout" : ""}>
         {userEmail && (
-          <AdminSidebar adminName={adminName} onLogout={handleLogout} />
+          <AppSidebar
+            userName={adminName}
+            role="admin"
+            onLogout={handleLogout}
+          />
         )}
         <main className={userEmail ? "admin-main-content" : ""}>
           <Routes>
