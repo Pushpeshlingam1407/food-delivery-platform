@@ -4,6 +4,148 @@
    ============================================================================ */
 
 /* Premium Dashboard Page Customizations */
+.premium-navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  padding: 16px 32px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-bottom: 1px solid var(--glass-border);
+  position: sticky;
+  top: 0;
+  z-index: 90;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.02);
+  gap: 24px;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+  min-width: max-content;
+}
+
+.navbar-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  max-width: 600px;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: max-content;
+  justify-content: flex-end;
+}
+
+.address-pill-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  background: rgba(255,255,255,0.5);
+  padding: 10px 16px;
+  border-radius: 99px;
+  border: 1px solid var(--glass-border);
+  transition: all 0.2s ease;
+}
+
+.address-icon-wrapper {
+  background: #fff0ec;
+  padding: 6px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.address-text-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.address-label {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  line-height: 1;
+}
+
+.address-value {
+  font-size: 0.9rem;
+  color: var(--text-slate);
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 2px;
+}
+
+/* ZOMATO / BLINKIT RESPONSIVE MOBILE FIX */
+@media (max-width: 768px) {
+  .premium-navbar {
+    padding: 12px 16px;
+    gap: 12px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    /* Hide scrollbar */
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .premium-navbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .navbar-left {
+    min-width: unset;
+    flex-shrink: 0;
+  }
+  
+  .navbar-center {
+    flex: 1;
+    min-width: 150px; /* Let search bar shrink but not disappear */
+  }
+
+  .navbar-right {
+    min-width: unset;
+    flex-shrink: 0;
+  }
+
+  /* Shrink address pill on mobile */
+  .address-pill-btn {
+    padding: 8px 12px;
+    gap: 6px;
+  }
+  
+  .address-value {
+    max-width: 80px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 0.8rem;
+  }
+  
+  .address-label {
+    font-size: 0.6rem;
+  }
+  
+  /* Make cart button just an icon on mobile */
+  .cart-text {
+    display: none;
+  }
+  
+  .cart-btn-capsule {
+    padding: 10px !important;
+    border-radius: 50% !important;
+  }
+}
+
 .welcome-banner {
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(16px);

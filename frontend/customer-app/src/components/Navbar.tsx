@@ -1,6 +1,6 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ShoppingBag, MapPin, ChevronDown } from "lucide-react";
+import { ShoppingBag, MapPin, ChevronDown, User } from "lucide-react";
 import { SearchBar } from "../../../shared/components/SearchBar";
 
 interface NavbarProps {
@@ -28,59 +28,21 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <nav
-        className="navbar-container"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-          padding: "16px 32px",
-          background: "var(--glass-bg)",
-          backdropFilter: "var(--glass-blur)",
-          WebkitBackdropFilter: "var(--glass-blur)",
-          borderBottom: "1px solid var(--glass-border)",
-          position: "sticky",
-          top: 0,
-          zIndex: 90,
-          boxShadow: "0 4px 24px rgba(0,0,0,0.02)",
-        }}
-      >
+      <nav className="navbar-container premium-navbar">
         {/* Left Side: Address Context */}
-        <div style={{ display: "flex", alignItems: "center", minWidth: "200px" }}>
+        <div className="navbar-left">
           <Link
             to="/addresses"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              gap: "10px",
-              textDecoration: "none",
-              background: "rgba(255,255,255,0.5)",
-              padding: "10px 16px",
-              borderRadius: "99px",
-              border: "1px solid var(--glass-border)",
-              transition: "all 0.2s ease",
-            }}
+            className="address-pill-btn"
             onMouseOver={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.9)")}
             onMouseOut={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.5)")}
           >
-            <div
-              style={{
-                background: "#fff0ec",
-                padding: "6px",
-                borderRadius: "50%",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
-            >
+            <div className="address-icon-wrapper">
               <MapPin size={14} color="var(--accent-orange)" />
             </div>
-            <div style={{ display: "flex", flexDirection: "column", justifyContent: "center" }}>
-              <span style={{ fontSize: "0.7rem", color: "var(--text-muted)", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.5px", lineHeight: "1" }}>
-                Deliver to
-              </span>
-              <span style={{ fontSize: "0.9rem", color: "var(--text-slate)", fontWeight: 700, lineHeight: "1.2", marginTop: "2px" }}>
+            <div className="address-text-wrapper">
+              <span className="address-label">Deliver to</span>
+              <span className="address-value">
                 {deliveryAddress.length > 20 ? deliveryAddress.substring(0, 20) + "..." : deliveryAddress}
               </span>
             </div>
@@ -89,7 +51,7 @@ export const Navbar: React.FC<NavbarProps> = ({
         </div>
 
         {/* Center: Search */}
-        <div style={{ flex: 1, display: "flex", justifyContent: "center", maxWidth: "600px", margin: "0 24px" }}>
+        <div className="navbar-center">
           {isHomePage && (
             <SearchBar
               placeholder="Search premium restaurants, dishes..."
@@ -100,9 +62,9 @@ export const Navbar: React.FC<NavbarProps> = ({
           )}
         </div>
 
-        {/* Right Side: Cart */}
-        <div style={{ display: "flex", alignItems: "center", gap: "16px", minWidth: "200px", justifyContent: "flex-end" }}>
-          {!userEmail && (
+        {/* Right Side: Cart & Profile */}
+        <div className="navbar-right">
+          {!userEmail ? (
             <Link
               to="/login"
               style={{
@@ -118,10 +80,31 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               Sign In
             </Link>
+          ) : (
+            <button
+              onClick={() => window.dispatchEvent(new Event("open-app-sidebar"))}
+              className="navbar-profile-btn"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "40px",
+                height: "40px",
+                borderRadius: "50%",
+                background: "rgba(255,255,255,0.7)",
+                border: "1px solid var(--glass-border)",
+                color: "var(--text-slate)",
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+            >
+              <User size={20} />
+            </button>
           )}
 
           <button
             onClick={onCartClick}
+            className="cart-btn-capsule"
             style={{
               display: "flex",
               alignItems: "center",
@@ -145,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({
             }}
           >
             <ShoppingBag size={18} />
-            <span>{cartCount > 0 ? `${cartCount} Items` : "Cart"}</span>
+            <span className="cart-text">{cartCount > 0 ? `${cartCount} Items` : "Cart"}</span>
           </button>
         </div>
       </nav>

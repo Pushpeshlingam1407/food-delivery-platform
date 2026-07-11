@@ -168,6 +168,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     return localStorage.getItem("app_sidebar_collapsed") === "true";
   });
 
+  React.useEffect(() => {
+    const handleOpenSidebar = () => setIsMobileOpen(true);
+    window.addEventListener("open-app-sidebar", handleOpenSidebar);
+    return () => window.removeEventListener("open-app-sidebar", handleOpenSidebar);
+  }, []);
+
   const toggleCollapse = () => {
     setIsCollapsed((prev) => {
       const next = !prev;
@@ -193,31 +199,29 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           : getCustomerGroups(isLoggedIn, walletBalance, onDepositClick));
 
   const badgeLabel = getBadge(role);
-  const showUserCard = isLoggedIn && role !== "customer";
+  const showUserCard = isLoggedIn;
 
   return (
     <>
-      {/* Mobile Top Bar */}
-      <div className="mobile-menu-bar">
-        <Link
-          to="/"
-          className="admin-sidebar-logo"
-          style={{ fontSize: "1.4rem" }}
-        >
-          bites<span>{badgeLabel}</span>
-        </Link>
-        <button
-          onClick={() => setIsMobileOpen(!isMobileOpen)}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            color: "#1e293b",
-          }}
-        >
-          {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </div>
+      {/* Mobile Top Bar (Hidden for Customers, handled by Navbar) */}
+      {role !== "customer" && (
+        <div className="mobile-menu-bar">
+          <Link to="/" className="admin-sidebar-logo" style={{ fontSize: "1.4rem" }}>
+            bites<span>{badgeLabel}</span>
+          </Link>
+          <button
+            onClick={() => setIsMobileOpen(!isMobileOpen)}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              color: "#1e293b",
+            }}
+          >
+            {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
+          </button>
+        </div>
+      )}
 
       {/* Mobile Backdrop */}
       {isMobileOpen && (
@@ -344,7 +348,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                       }}
                     >
                       <Icon size={18} />
-                      {!isCollapsed && <span>{item.label}</span>}
+                      <span>{item.label}</span>
                     </Link>
                   );
                 })}
