@@ -304,7 +304,9 @@ export const Dashboard: React.FC = () => {
         </div>
         <div style={{ textAlign: "right" }}>
           <div className="earnings-strip-label">Wallet</div>
-          <div className="earnings-strip-amount">${walletBalance.toFixed(2)}</div>
+          <div className="earnings-strip-amount">
+            ${walletBalance.toFixed(2)}
+          </div>
           <div className="earnings-strip-sub">Available balance</div>
         </div>
       </div>
@@ -520,7 +522,9 @@ export const Dashboard: React.FC = () => {
               <TrendingUp size={20} color="var(--accent-orange)" />
             </div>
           </div>
-          <div className="stat-card__value">â‚¹{totalEarningAmt.toFixed(2)}</div>
+          <div className="stat-card__value">
+            â‚¹{totalEarningAmt.toFixed(2)}
+          </div>
           <div className="stat-card__subtitle">
             Total delivery payouts earned
           </div>
@@ -831,7 +835,8 @@ export const Dashboard: React.FC = () => {
                     >
                       <span>Total Payable:</span>
                       <span style={{ color: "var(--accent-orange)" }}>
-                        â‚¹{parseFloat(activeJobDetails.total_payable).toFixed(2)}
+                        â‚¹
+                        {parseFloat(activeJobDetails.total_payable).toFixed(2)}
                       </span>
                     </div>
                   </div>
@@ -1262,4 +1267,3 @@ export const Dashboard: React.FC = () => {
     </div>
   );
 };
-

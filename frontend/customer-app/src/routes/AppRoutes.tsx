@@ -203,7 +203,9 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
             >
               <div className="delivery-active-dot" />
               <div className="active-order-banner-info">
-                <div className="active-order-banner-name">{o.restaurant_name}</div>
+                <div className="active-order-banner-name">
+                  {o.restaurant_name}
+                </div>
                 <div className="active-order-banner-status">
                   {o.status
                     .replace(/_/g, " ")
@@ -900,8 +902,8 @@ export const AppRoutes: React.FC = () => {
             </div>
             <div className="footer-bottom">
               <div>
-                Â© {new Date().getFullYear()} Bites Internet Private Limited. All
-                rights reserved.
+                Â© {new Date().getFullYear()} Bites Internet Private Limited.
+                All rights reserved.
               </div>
             </div>
           </footer>
@@ -924,5 +926,3 @@ export const AppRoutes: React.FC = () => {
     </BrowserRouter>
   );
 };
-
-

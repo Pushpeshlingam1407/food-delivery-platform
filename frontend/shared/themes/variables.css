@@ -3936,29 +3936,63 @@ h3 {
 }
 
 /* Animation delay utilities for staggered card reveal */
-.anim-delay-0  { animation-delay: 0s; }
-.anim-delay-1  { animation-delay: 0.05s; }
-.anim-delay-2  { animation-delay: 0.10s; }
-.anim-delay-3  { animation-delay: 0.15s; }
-.anim-delay-4  { animation-delay: 0.20s; }
-.anim-delay-5  { animation-delay: 0.25s; }
-.anim-delay-6  { animation-delay: 0.30s; }
-.anim-delay-7  { animation-delay: 0.35s; }
-.anim-delay-8  { animation-delay: 0.40s; }
-.anim-delay-9  { animation-delay: 0.45s; }
-.anim-delay-10 { animation-delay: 0.50s; }
-.anim-delay-11 { animation-delay: 0.55s; }
-.anim-delay-12 { animation-delay: 0.60s; }
+.anim-delay-0 {
+  animation-delay: 0s;
+}
+.anim-delay-1 {
+  animation-delay: 0.05s;
+}
+.anim-delay-2 {
+  animation-delay: 0.1s;
+}
+.anim-delay-3 {
+  animation-delay: 0.15s;
+}
+.anim-delay-4 {
+  animation-delay: 0.2s;
+}
+.anim-delay-5 {
+  animation-delay: 0.25s;
+}
+.anim-delay-6 {
+  animation-delay: 0.3s;
+}
+.anim-delay-7 {
+  animation-delay: 0.35s;
+}
+.anim-delay-8 {
+  animation-delay: 0.4s;
+}
+.anim-delay-9 {
+  animation-delay: 0.45s;
+}
+.anim-delay-10 {
+  animation-delay: 0.5s;
+}
+.anim-delay-11 {
+  animation-delay: 0.55s;
+}
+.anim-delay-12 {
+  animation-delay: 0.6s;
+}
 
 /* =============================================
    STAT TILE ACCENT VARIANTS
    (replaces CSS custom property inline style)
    ============================================= */
 
-.stat-tile--green  { --stat-accent: #0c8040; }
-.stat-tile--orange { --stat-accent: #ff3f1a; }
-.stat-tile--violet { --stat-accent: #7a00ff; }
-.stat-tile--blue   { --stat-accent: #2563eb; }
+.stat-tile--green {
+  --stat-accent: #0c8040;
+}
+.stat-tile--orange {
+  --stat-accent: #ff3f1a;
+}
+.stat-tile--violet {
+  --stat-accent: #7a00ff;
+}
+.stat-tile--blue {
+  --stat-accent: #2563eb;
+}
 
 /* =============================================
    EARNINGS STRIP INNER LAYOUT
@@ -4345,5 +4379,3 @@ h3 {
   font-size: 0.9rem !important;
   box-shadow: 0 10px 30px -5px rgba(146, 64, 14, 0.15) !important;
 }
-
-

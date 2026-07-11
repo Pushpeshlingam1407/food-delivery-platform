@@ -47,5 +47,5 @@ export const toast = {
     } else {
       sonnerToast.warning(message);
     }
-  }
+  },
 };
