@@ -646,20 +646,24 @@ export const AppRoutes: React.FC = () => {
               adminName={localStorage.getItem("userName")}
               onLogout={handleLogout}
             />
-            <GlobalBackBar />
-            <Routes>
-              <Route path="/" element={<AdminDashboard />} />
-              <Route path="/restaurants" element={<RestaurantsManagement />} />
-              <Route path="/customers" element={<CustomersManagement />} />
-              <Route path="/owners" element={<OwnersManagement />} />
-              <Route path="/drivers" element={<DriversManagement />} />
-              <Route path="/orders" element={<OrdersManagement />} />
-              <Route path="/images" element={<ImagesManagement />} />
-              <Route path="/refunds" element={<Refunds />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/cms" element={<CMS />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
+            <div className="admin-main-content">
+              <Routes>
+                <Route path="/" element={<AdminDashboard />} />
+                <Route
+                  path="/restaurants"
+                  element={<RestaurantsManagement />}
+                />
+                <Route path="/customers" element={<CustomersManagement />} />
+                <Route path="/owners" element={<OwnersManagement />} />
+                <Route path="/drivers" element={<DriversManagement />} />
+                <Route path="/orders" element={<OrdersManagement />} />
+                <Route path="/images" element={<ImagesManagement />} />
+                <Route path="/refunds" element={<Refunds />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/cms" element={<CMS />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </div>
           </div>
         </div>
       </BrowserRouter>

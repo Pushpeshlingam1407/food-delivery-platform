@@ -61,9 +61,7 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     },
     {
       label: "Assets",
-      items: [
-        { path: "/images", label: "Image Library", icon: Image },
-      ],
+      items: [{ path: "/images", label: "Image Library", icon: Image }],
     },
   ];
 
@@ -71,12 +69,21 @@ export const AdminSidebar: React.FC<AdminSidebarProps> = ({
     <>
       {/* Mobile Top Navigation Bar */}
       <div className="mobile-menu-bar">
-        <Link to="/" className="admin-sidebar-logo" style={{ fontSize: "1.4rem" }}>
+        <Link
+          to="/"
+          className="admin-sidebar-logo"
+          style={{ fontSize: "1.4rem" }}
+        >
           bites.<span>admin</span>
         </Link>
         <button
           onClick={() => setIsOpen(!isOpen)}
-          style={{ background: "none", border: "none", cursor: "pointer", color: "#1e293b" }}
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "#1e293b",
+          }}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>

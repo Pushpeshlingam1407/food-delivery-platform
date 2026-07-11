@@ -157,7 +157,8 @@ export const Dashboard: React.FC = () => {
         <div className="welcome-text">
           <h1>Welcome back, Chief! ✨</h1>
           <p>
-            Here is a bird's-eye view of your Bites platform. Everything looks good and active.
+            Here is a bird's-eye view of your Bites platform. Everything looks
+            good and active.
           </p>
         </div>
         <div className="navbar-desktop-only" style={{ textAlign: "right" }}>
@@ -181,7 +182,10 @@ export const Dashboard: React.FC = () => {
       {/* Analytics Grid */}
       <div className="admin-grid-columns">
         {/* System Health */}
-        <div className="metric-card-premium" style={{ borderLeft: "4px solid #10b981" }}>
+        <div
+          className="metric-card-premium"
+          style={{ borderLeft: "4px solid #10b981" }}
+        >
           <div className="metric-card-header">
             <span className="metric-card-title">Console Health</span>
             <div
@@ -191,8 +195,19 @@ export const Dashboard: React.FC = () => {
               <ShieldAlert size={18} />
             </div>
           </div>
-          <div className="metric-card-value" style={{ color: "#10b981", display: "flex", alignItems: "center", gap: "8px" }}>
-            <span className="admin-status-dot" style={{ width: "12px", height: "12px" }} />
+          <div
+            className="metric-card-value"
+            style={{
+              color: "#10b981",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <span
+              className="admin-status-dot"
+              style={{ width: "12px", height: "12px" }}
+            />
             {health?.database === "connected" ? "ONLINE" : "OFFLINE"}
           </div>
           <div className="metric-card-desc">
@@ -201,7 +216,10 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Captured Revenue */}
-        <div className="metric-card-premium" style={{ borderLeft: "4px solid #ff3f1a" }}>
+        <div
+          className="metric-card-premium"
+          style={{ borderLeft: "4px solid #ff3f1a" }}
+        >
           <div className="metric-card-header">
             <span className="metric-card-title">Platform Revenue</span>
             <div
@@ -212,13 +230,22 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="metric-card-value">
-            ₹{analytics ? analytics.total_payments_captured.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 }) : "0.00"}
+            ₹
+            {analytics
+              ? analytics.total_payments_captured.toLocaleString("en-IN", {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 2,
+                })
+              : "0.00"}
           </div>
           <div className="metric-card-desc">Total processed order volume</div>
         </div>
 
         {/* Completed Orders */}
-        <div className="metric-card-premium" style={{ borderLeft: "4px solid #7a00ff" }}>
+        <div
+          className="metric-card-premium"
+          style={{ borderLeft: "4px solid #7a00ff" }}
+        >
           <div className="metric-card-header">
             <span className="metric-card-title">Orders Fulfilled</span>
             <div
@@ -228,12 +255,17 @@ export const Dashboard: React.FC = () => {
               <Award size={18} />
             </div>
           </div>
-          <div className="metric-card-value">{analytics?.total_orders || 0}</div>
+          <div className="metric-card-value">
+            {analytics?.total_orders || 0}
+          </div>
           <div className="metric-card-desc">Total successful deliveries</div>
         </div>
 
         {/* Active Restaurants */}
-        <div className="metric-card-premium" style={{ borderLeft: "4px solid #3b82f6" }}>
+        <div
+          className="metric-card-premium"
+          style={{ borderLeft: "4px solid #3b82f6" }}
+        >
           <div className="metric-card-header">
             <span className="metric-card-title">Active Outlets</span>
             <div
@@ -243,12 +275,17 @@ export const Dashboard: React.FC = () => {
               <Store size={18} />
             </div>
           </div>
-          <div className="metric-card-value">{analytics?.total_restaurants || 0}</div>
+          <div className="metric-card-value">
+            {analytics?.total_restaurants || 0}
+          </div>
           <div className="metric-card-desc">Onboarded merchant stores</div>
         </div>
 
         {/* Platform Users */}
-        <div className="metric-card-premium" style={{ borderLeft: "4px solid #64748b" }}>
+        <div
+          className="metric-card-premium"
+          style={{ borderLeft: "4px solid #64748b" }}
+        >
           <div className="metric-card-header">
             <span className="metric-card-title">Total Users</span>
             <div
@@ -269,20 +306,39 @@ export const Dashboard: React.FC = () => {
           <div className="admin-panel-title">
             <ShieldAlert size={20} color="#ff3f1a" /> Merchant Approval Queue
           </div>
-          <p style={{ color: "#64748b", fontSize: "0.9rem", marginBottom: "20px" }}>
-            Verify and audit new restaurant partner stores before allowing them to accept orders.
+          <p
+            style={{
+              color: "#64748b",
+              fontSize: "0.9rem",
+              marginBottom: "20px",
+            }}
+          >
+            Verify and audit new restaurant partner stores before allowing them
+            to accept orders.
           </p>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "14px" }}
+          >
             {restaurants.map((r) => (
               <div key={r.id} className="audit-list-item">
-                <div style={{ display: "flex", alignItems: "center", gap: "14px" }}>
+                <div
+                  style={{ display: "flex", alignItems: "center", gap: "14px" }}
+                >
                   <div className="audit-avatar">
                     {r.name ? r.name.charAt(0).toUpperCase() : "R"}
                   </div>
                   <div>
-                    <strong style={{ color: "#1e293b", fontSize: "0.95rem" }}>{r.name}</strong>
-                    <div style={{ color: "#64748b", fontSize: "0.85rem", marginTop: "2px" }}>
+                    <strong style={{ color: "#1e293b", fontSize: "0.95rem" }}>
+                      {r.name}
+                    </strong>
+                    <div
+                      style={{
+                        color: "#64748b",
+                        fontSize: "0.85rem",
+                        marginTop: "2px",
+                      }}
+                    >
                       {r.description}
                     </div>
                   </div>
@@ -341,11 +397,20 @@ export const Dashboard: React.FC = () => {
             <div className="admin-panel-title">
               <Tag size={20} color="#7a00ff" /> Launch Campaign Coupon
             </div>
-            <p style={{ color: "#64748b", fontSize: "0.9rem", marginBottom: "20px" }}>
+            <p
+              style={{
+                color: "#64748b",
+                fontSize: "0.9rem",
+                marginBottom: "20px",
+              }}
+            >
               Publish new promotional voucher codes for your customers.
             </p>
 
-            <form onSubmit={handleAddCoupon} style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+            <form
+              onSubmit={handleAddCoupon}
+              style={{ display: "flex", flexDirection: "column", gap: "14px" }}
+            >
               <input
                 type="text"
                 placeholder="PROMO CODE (e.g. BITES50)"
@@ -408,15 +473,30 @@ export const Dashboard: React.FC = () => {
               Live Platform Coupons
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginTop: "14px" }}>
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "12px",
+                marginTop: "14px",
+              }}
+            >
               {coupons.map((c) => (
                 <div key={c.id} className="coupon-item-card">
                   <div>
-                    <strong style={{ fontSize: "0.9rem", color: "#1e293b" }}>{c.code}</strong>
-                    <div style={{ fontSize: "0.78rem", color: "#64748b", marginTop: "3px" }}>
+                    <strong style={{ fontSize: "0.9rem", color: "#1e293b" }}>
+                      {c.code}
+                    </strong>
+                    <div
+                      style={{
+                        fontSize: "0.78rem",
+                        color: "#64748b",
+                        marginTop: "3px",
+                      }}
+                    >
                       Get {c.discount_value}
-                      {c.discount_type === "percentage" ? "%" : "₹"} off · Min spend ₹
-                      {c.min_order_amount}
+                      {c.discount_type === "percentage" ? "%" : "₹"} off · Min
+                      spend ₹{c.min_order_amount}
                     </div>
                   </div>
                   <button
