@@ -353,7 +353,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                       }}
                     >
                       <Icon size={18} />
-                      <span>{item.label}</span>
+                      {!isCollapsed && <span>{item.label}</span>}
                     </Link>
                   );
                 })}

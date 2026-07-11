@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { ShoppingBag, MapPin, ChevronDown, User } from "lucide-react";
 import { SearchBar } from "../../../shared/components/SearchBar";
 
@@ -18,14 +18,29 @@ interface NavbarProps {
 export const Navbar: React.FC<NavbarProps> = ({
   cartCount = 0,
   userEmail = null,
+  onLogout,
   onCartClick,
   searchQuery = "",
   onSearchChange,
   deliveryAddress = "Bengaluru, IND",
 }) => {
   const location = useLocation();
+  const navigate = useNavigate();
   const isHomePage = location.pathname === "/";
   const [profileDropdownOpen, setProfileDropdownOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    setProfileDropdownOpen(false);
+  }, [location.pathname]);
+
+  const handleProfileClick = () => {
+    if (window.innerWidth <= 1024) {
+      navigate(userEmail ? "/profile" : "/login");
+      return;
+    }
+
+    setProfileDropdownOpen((open) => !open);
+  };
 
   return (
     <>
@@ -97,14 +112,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           ) : (
             <div style={{ position: "relative" }}>
               <button
-                onClick={() => {
-                  if (window.innerWidth <= 1024) {
-                    window.dispatchEvent(new Event("open-app-sidebar"));
-                  } else {
-                    setProfileDropdownOpen(!profileDropdownOpen);
-                  }
-                }}
+                type="button"
+                onClick={handleProfileClick}
                 className="navbar-profile-btn"
+                aria-label="Open profile menu"
                 style={{
                   display: "flex",
                   alignItems: "center",
@@ -173,6 +184,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     </div>
                   </div>
                   <Link
+                    onClick={() => setProfileDropdownOpen(false)}
                     to="/orders"
                     style={{
                       padding: "12px 16px",
@@ -192,6 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                     My Orders
                   </Link>
                   <Link
+                    onClick={() => setProfileDropdownOpen(false)}
                     to="/addresses"
                     style={{
                       padding: "12px 16px",

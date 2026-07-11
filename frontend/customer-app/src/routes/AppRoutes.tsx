@@ -892,7 +892,13 @@ export const AppRoutes: React.FC = () => {
             <Route path="/page/:slug" element={<CmsPage />} />
             <Route
               path="/orders"
-              element={userEmail ? <Orders /> : <Navigate to="/login" />}
+              element={
+                userEmail ? (
+                  <Orders addToCart={addToCart} />
+                ) : (
+                  <Navigate to="/login" />
+                )
+              }
             />
             <Route
               path="/addresses"
