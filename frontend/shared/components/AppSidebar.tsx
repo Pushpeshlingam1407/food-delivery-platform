@@ -171,7 +171,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   React.useEffect(() => {
     const handleOpenSidebar = () => setIsMobileOpen(true);
     window.addEventListener("open-app-sidebar", handleOpenSidebar);
-    return () => window.removeEventListener("open-app-sidebar", handleOpenSidebar);
+    return () =>
+      window.removeEventListener("open-app-sidebar", handleOpenSidebar);
   }, []);
 
   const toggleCollapse = () => {
@@ -206,7 +207,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       {/* Mobile Top Bar (Hidden for Customers, handled by Navbar) */}
       {role !== "customer" && (
         <div className="mobile-menu-bar">
-          <Link to="/" className="admin-sidebar-logo" style={{ fontSize: "1.4rem" }}>
+          <Link
+            to="/"
+            className="admin-sidebar-logo"
+            style={{ fontSize: "1.4rem" }}
+          >
             bites<span>{badgeLabel}</span>
           </Link>
           <button

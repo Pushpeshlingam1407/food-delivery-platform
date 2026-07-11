@@ -17,7 +17,7 @@
   position: sticky;
   top: 0;
   z-index: 90;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.02);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
   gap: 24px;
 }
 
@@ -47,7 +47,7 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  background: rgba(255,255,255,0.5);
+  background: rgba(255, 255, 255, 0.5);
   padding: 10px 16px;
   border-radius: 99px;
   border: 1px solid var(--glass-border);
@@ -97,7 +97,7 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
   }
-  
+
   .premium-navbar::-webkit-scrollbar {
     display: none;
   }
@@ -106,7 +106,7 @@
     min-width: unset;
     flex-shrink: 0;
   }
-  
+
   .navbar-center {
     flex: 1;
     min-width: 150px; /* Let search bar shrink but not disappear */
@@ -122,7 +122,7 @@
     padding: 8px 12px;
     gap: 6px;
   }
-  
+
   .address-value {
     max-width: 80px;
     white-space: nowrap;
@@ -130,16 +130,16 @@
     text-overflow: ellipsis;
     font-size: 0.8rem;
   }
-  
+
   .address-label {
     font-size: 0.6rem;
   }
-  
+
   /* Make cart button just an icon on mobile */
   .cart-text {
     display: none;
   }
-  
+
   .cart-btn-capsule {
     padding: 10px !important;
     border-radius: 50% !important;

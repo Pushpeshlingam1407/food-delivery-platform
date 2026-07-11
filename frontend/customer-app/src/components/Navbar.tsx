@@ -35,8 +35,12 @@ export const Navbar: React.FC<NavbarProps> = ({
           <Link
             to="/addresses"
             className="address-pill-btn"
-            onMouseOver={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.9)")}
-            onMouseOut={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.5)")}
+            onMouseOver={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.9)")
+            }
+            onMouseOut={(e) =>
+              (e.currentTarget.style.background = "rgba(255,255,255,0.5)")
+            }
           >
             <div className="address-icon-wrapper">
               <MapPin size={14} color="var(--accent-orange)" />
@@ -44,10 +48,16 @@ export const Navbar: React.FC<NavbarProps> = ({
             <div className="address-text-wrapper">
               <span className="address-label">Deliver to</span>
               <span className="address-value">
-                {deliveryAddress.length > 20 ? deliveryAddress.substring(0, 20) + "..." : deliveryAddress}
+                {deliveryAddress.length > 20
+                  ? deliveryAddress.substring(0, 20) + "..."
+                  : deliveryAddress}
               </span>
             </div>
-            <ChevronDown size={16} color="var(--text-muted)" style={{ marginLeft: "4px" }} />
+            <ChevronDown
+              size={16}
+              color="var(--text-muted)"
+              style={{ marginLeft: "4px" }}
+            />
           </Link>
         </div>
 
@@ -58,7 +68,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               placeholder="Search premium restaurants, dishes..."
               value={searchQuery}
               onSearchChange={onSearchChange}
-              containerStyle={{ width: "100%", boxShadow: "0 2px 12px rgba(0,0,0,0.03)" }}
+              containerStyle={{
+                width: "100%",
+                boxShadow: "0 2px 12px rgba(0,0,0,0.03)",
+              }}
             />
           )}
         </div>
@@ -99,7 +112,9 @@ export const Navbar: React.FC<NavbarProps> = ({
                   width: "40px",
                   height: "40px",
                   borderRadius: "50%",
-                  background: profileDropdownOpen ? "var(--glass-border)" : "rgba(255,255,255,0.7)",
+                  background: profileDropdownOpen
+                    ? "var(--glass-border)"
+                    : "rgba(255,255,255,0.7)",
                   border: "1px solid var(--glass-border)",
                   color: "var(--text-slate)",
                   cursor: "pointer",
@@ -128,24 +143,95 @@ export const Navbar: React.FC<NavbarProps> = ({
                     zIndex: 100,
                   }}
                 >
-                  <div style={{ padding: "16px", borderBottom: "1px solid var(--glass-border)" }}>
-                    <span style={{ fontSize: "0.85rem", color: "var(--text-muted)", fontWeight: 600 }}>Logged in as</span>
-                    <div style={{ fontSize: "0.95rem", fontWeight: 700, color: "var(--text-slate)", marginTop: "4px", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                  <div
+                    style={{
+                      padding: "16px",
+                      borderBottom: "1px solid var(--glass-border)",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "0.85rem",
+                        color: "var(--text-muted)",
+                        fontWeight: 600,
+                      }}
+                    >
+                      Logged in as
+                    </span>
+                    <div
+                      style={{
+                        fontSize: "0.95rem",
+                        fontWeight: 700,
+                        color: "var(--text-slate)",
+                        marginTop: "4px",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
                       {userEmail}
                     </div>
                   </div>
-                  <Link to="/orders" style={{ padding: "12px 16px", textDecoration: "none", color: "var(--text-slate)", fontWeight: 600, fontSize: "0.9rem", transition: "background 0.2s" }} onMouseOver={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.03)")} onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}>
+                  <Link
+                    to="/orders"
+                    style={{
+                      padding: "12px 16px",
+                      textDecoration: "none",
+                      color: "var(--text-slate)",
+                      fontWeight: 600,
+                      fontSize: "0.9rem",
+                      transition: "background 0.2s",
+                    }}
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.background = "rgba(0,0,0,0.03)")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
+                  >
                     My Orders
                   </Link>
-                  <Link to="/addresses" style={{ padding: "12px 16px", textDecoration: "none", color: "var(--text-slate)", fontWeight: 600, fontSize: "0.9rem", transition: "background 0.2s" }} onMouseOver={(e) => (e.currentTarget.style.background = "rgba(0,0,0,0.03)")} onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}>
+                  <Link
+                    to="/addresses"
+                    style={{
+                      padding: "12px 16px",
+                      textDecoration: "none",
+                      color: "var(--text-slate)",
+                      fontWeight: 600,
+                      fontSize: "0.9rem",
+                      transition: "background 0.2s",
+                    }}
+                    onMouseOver={(e) =>
+                      (e.currentTarget.style.background = "rgba(0,0,0,0.03)")
+                    }
+                    onMouseOut={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
+                  >
                     Addresses
                   </Link>
                   {onLogout && (
                     <button
                       onClick={onLogout}
-                      style={{ padding: "12px 16px", background: "none", border: "none", borderTop: "1px solid var(--glass-border)", textAlign: "left", color: "var(--accent-orange)", fontWeight: 700, fontSize: "0.9rem", cursor: "pointer", transition: "background 0.2s" }}
-                      onMouseOver={(e) => (e.currentTarget.style.background = "rgba(255, 63, 26, 0.05)")}
-                      onMouseOut={(e) => (e.currentTarget.style.background = "transparent")}
+                      style={{
+                        padding: "12px 16px",
+                        background: "none",
+                        border: "none",
+                        borderTop: "1px solid var(--glass-border)",
+                        textAlign: "left",
+                        color: "var(--accent-orange)",
+                        fontWeight: 700,
+                        fontSize: "0.9rem",
+                        cursor: "pointer",
+                        transition: "background 0.2s",
+                      }}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.background =
+                          "rgba(255, 63, 26, 0.05)")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.background = "transparent")
+                      }
                     >
                       Sign Out
                     </button>
@@ -162,7 +248,10 @@ export const Navbar: React.FC<NavbarProps> = ({
               display: "flex",
               alignItems: "center",
               gap: "8px",
-              background: cartCount > 0 ? "var(--accent-orange)" : "rgba(255,255,255,0.7)",
+              background:
+                cartCount > 0
+                  ? "var(--accent-orange)"
+                  : "rgba(255,255,255,0.7)",
               color: cartCount > 0 ? "#ffffff" : "var(--text-slate)",
               border: cartCount > 0 ? "none" : "1px solid var(--glass-border)",
               padding: "10px 20px",
@@ -171,23 +260,35 @@ export const Navbar: React.FC<NavbarProps> = ({
               fontSize: "0.9rem",
               cursor: "pointer",
               transition: "all 0.2s ease",
-              boxShadow: cartCount > 0 ? "0 4px 12px rgba(255, 63, 26, 0.2)" : "none",
+              boxShadow:
+                cartCount > 0 ? "0 4px 12px rgba(255, 63, 26, 0.2)" : "none",
             }}
             onMouseOver={(e) => {
-              if (cartCount === 0) e.currentTarget.style.background = "rgba(255,255,255,1)";
+              if (cartCount === 0)
+                e.currentTarget.style.background = "rgba(255,255,255,1)";
             }}
             onMouseOut={(e) => {
-              if (cartCount === 0) e.currentTarget.style.background = "rgba(255,255,255,0.7)";
+              if (cartCount === 0)
+                e.currentTarget.style.background = "rgba(255,255,255,0.7)";
             }}
           >
             <ShoppingBag size={18} />
-            <span className="cart-text">{cartCount > 0 ? `${cartCount} Items` : "Cart"}</span>
+            <span className="cart-text">
+              {cartCount > 0 ? `${cartCount} Items` : "Cart"}
+            </span>
           </button>
         </div>
       </nav>
 
       {/* Mobile Address Pill (Fallback for mobile screens where the top address bar might get squished) */}
-      <div className="mobile-only" style={{ padding: "12px 16px", background: "var(--glass-bg)", display: "none" }}>
+      <div
+        className="mobile-only"
+        style={{
+          padding: "12px 16px",
+          background: "var(--glass-bg)",
+          display: "none",
+        }}
+      >
         <Link
           to="/addresses"
           style={{
@@ -201,7 +302,10 @@ export const Navbar: React.FC<NavbarProps> = ({
           }}
         >
           <MapPin size={16} color="var(--accent-orange)" />
-          Deliver to: <span style={{ color: "var(--accent-orange)" }}>{deliveryAddress}</span>
+          Deliver to:{" "}
+          <span style={{ color: "var(--accent-orange)" }}>
+            {deliveryAddress}
+          </span>
         </Link>
       </div>
     </>
