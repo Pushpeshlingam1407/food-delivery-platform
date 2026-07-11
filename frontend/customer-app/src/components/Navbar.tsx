@@ -80,9 +80,10 @@ export const Navbar: React.FC<NavbarProps> = ({
         <div className="navbar-center">
           {isHomePage && (
             <SearchBar
-              placeholder="Search premium restaurants, dishes..."
+              placeholder="Search restaurants or dishes"
               value={searchQuery}
               onSearchChange={onSearchChange}
+              className="navbar-search-box"
               containerStyle={{
                 width: "100%",
                 boxShadow: "0 2px 12px rgba(0,0,0,0.03)",

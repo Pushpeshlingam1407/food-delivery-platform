@@ -14,6 +14,7 @@ import {
   Star,
   Store,
   Truck,
+  X,
 } from "lucide-react";
 import { toast } from "sonner";
 import api from "../../../shared/services/api";
@@ -53,7 +54,11 @@ interface Order {
 }
 
 interface OrdersProps {
-  addToCart?: (item: { id: string; name: string; price: number }) => void;
+  addToCart?: (item: {
+    id: string;
+    name: string;
+    price: number;
+  }) => void | Promise<void>;
 }
 
 type OrderFilter = "all" | "active" | "past";
@@ -113,6 +118,12 @@ const isActive = (status: string) => ACTIVE_STATUSES.includes(status);
 const getItemName = (item: OrderItem) =>
   item.item_name || item.name || "Menu item";
 
+const filterOptions: Array<[OrderFilter, string]> = [
+  ["all", "All"],
+  ["active", "Active"],
+  ["past", "Past"],
+];
+
 export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
@@ -120,6 +131,7 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
   const [query, setQuery] = useState("");
   const [filter, setFilter] = useState<OrderFilter>("all");
   const [reorderingId, setReorderingId] = useState<string | null>(null);
+  const [selectedOrder, setSelectedOrder] = useState<Order | null>(null);
   const navigate = useNavigate();
 
   const fetchOrderHistory = async () => {
@@ -196,7 +208,7 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
       for (const item of items) {
         const quantity = Math.max(1, Number(item.quantity || 1));
         for (let i = 0; i < quantity; i += 1) {
-          addToCart?.({
+          await addToCart?.({
             id: item.menu_id,
             name: getItemName(item),
             price: parseFloat(item.unit_price.toString()),
@@ -211,6 +223,21 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
     } finally {
       setReorderingId(null);
     }
+  };
+
+  const handleHelp = (order: Order) => {
+    toast.info("Support is ready for this order.", {
+      description: `Order #${order.order_number}`,
+    });
+  };
+
+  const openOrderDetails = (order: Order) => {
+    if (isActive(order.status)) {
+      navigate(`/track/${order.id}`);
+      return;
+    }
+
+    setSelectedOrder(order);
   };
 
   if (loading) {
@@ -259,19 +286,21 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
           />
         </div>
         <div className="orders-tabs" aria-label="Filter orders">
-          {[
-            ["all", "All", orders.length],
-            ["active", "Active", activeCount],
-            ["past", "Past", pastCount],
-          ].map(([key, label, count]) => (
+          {filterOptions.map(([key, label]) => (
             <button
               key={key}
               type="button"
               className={filter === key ? "active" : ""}
-              onClick={() => setFilter(key as OrderFilter)}
+              onClick={() => setFilter(key)}
             >
               {label}
-              <span>{count}</span>
+              <span>
+                {key === "all"
+                  ? orders.length
+                  : key === "active"
+                    ? activeCount
+                    : pastCount}
+              </span>
             </button>
           ))}
         </div>
@@ -288,7 +317,11 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
           const hiddenItemCount = Math.max(0, items.length - previewItems.length);
 
           return (
-            <article key={order.id} className="order-card">
+            <article
+              key={order.id}
+              className={`order-card ${!isActive(order.status) ? "order-card--clickable" : ""}`}
+              onClick={() => openOrderDetails(order)}
+            >
               <div className="order-card-top">
                 <div className="order-store-mark">
                   <Store size={20} />
@@ -298,7 +331,7 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
                     <div>
                       <h2>{order.restaurant_name}</h2>
                       <p>
-                        #{order.order_number} · {formatDate(order.placed_at)} at{" "}
+                        #{order.order_number} - {formatDate(order.placed_at)} at{" "}
                         {formatTime(order.placed_at)}
                       </p>
                     </div>
@@ -375,7 +408,10 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
                 {order.status === "delivered" && (
                   <button
                     type="button"
-                    onClick={() => handleReorder(order)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      handleReorder(order);
+                    }}
                     className="btn-reorder"
                     disabled={reorderingId === order.id}
                   >
@@ -386,17 +422,33 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
                 {order.status === "delivered" && (
                   <button
                     type="button"
-                    onClick={() => setFeedbackOrderId(order.id)}
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setFeedbackOrderId(order.id);
+                    }}
                     className="order-ghost-action"
                   >
                     <Star size={15} />
                     Rate
                   </button>
                 )}
-                <button type="button" className="order-ghost-action">
+                <button
+                  type="button"
+                  className="order-ghost-action"
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    handleHelp(order);
+                  }}
+                >
                   <Headphones size={15} />
                   Help
                 </button>
+                {!isActive(order.status) && (
+                  <button type="button" className="order-ghost-action">
+                    <ReceiptText size={15} />
+                    View details
+                  </button>
+                )}
               </div>
             </article>
           );
@@ -423,6 +475,133 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
         onClose={() => setFeedbackOrderId(null)}
         orderId={feedbackOrderId || ""}
       />
+
+      {selectedOrder && (
+        <div
+          className="order-details-overlay"
+          onClick={() => setSelectedOrder(null)}
+        >
+          <aside
+            className="order-details-panel"
+            onClick={(event) => event.stopPropagation()}
+            aria-label={`Order ${selectedOrder.order_number} details`}
+          >
+            <div className="order-details-header">
+              <div>
+                <p>Order #{selectedOrder.order_number}</p>
+                <h2>{selectedOrder.restaurant_name}</h2>
+                <span>
+                  {formatDate(selectedOrder.placed_at)} at{" "}
+                  {formatTime(selectedOrder.placed_at)}
+                </span>
+              </div>
+              <button
+                type="button"
+                className="order-details-close"
+                onClick={() => setSelectedOrder(null)}
+                aria-label="Close order details"
+              >
+                <X size={19} />
+              </button>
+            </div>
+
+            <div className="order-details-status">
+              <PackageCheck size={18} />
+              <div>
+                <strong>
+                  {statusCopy[selectedOrder.status]?.label ||
+                    selectedOrder.status.replace(/_/g, " ")}
+                </strong>
+                <span>
+                  {selectedOrder.delivered_at
+                    ? `Delivered on ${formatDate(selectedOrder.delivered_at)}`
+                    : statusCopy[selectedOrder.status]?.detail}
+                </span>
+              </div>
+            </div>
+
+            <section className="order-details-section">
+              <h3>Items</h3>
+              <div className="order-details-items">
+                {(selectedOrder.items || []).map((item) => (
+                  <div key={item.id} className="order-details-item">
+                    <div>
+                      <strong>{getItemName(item)}</strong>
+                      <span>
+                        {item.quantity} x {formatMoney(item.unit_price)}
+                      </span>
+                    </div>
+                    <b>{formatMoney(item.total_price)}</b>
+                  </div>
+                ))}
+                {(selectedOrder.items || []).length === 0 && (
+                  <p className="order-details-muted">
+                    Item details are not available for this order.
+                  </p>
+                )}
+              </div>
+            </section>
+
+            <section className="order-details-section">
+              <h3>Bill summary</h3>
+              <div className="order-bill-row">
+                <span>Item total</span>
+                <b>{formatMoney(selectedOrder.item_total)}</b>
+              </div>
+              <div className="order-bill-row">
+                <span>Delivery fee</span>
+                <b>{formatMoney(selectedOrder.delivery_charges)}</b>
+              </div>
+              <div className="order-bill-row">
+                <span>Taxes</span>
+                <b>{formatMoney(selectedOrder.tax_amount)}</b>
+              </div>
+              <div className="order-bill-row order-bill-row--discount">
+                <span>Discount</span>
+                <b>-{formatMoney(selectedOrder.discount_amount)}</b>
+              </div>
+              <div className="order-bill-row order-bill-row--total">
+                <span>Paid</span>
+                <b>{formatMoney(selectedOrder.total_payable)}</b>
+              </div>
+            </section>
+
+            {selectedOrder.street_address && (
+              <section className="order-details-section">
+                <h3>Delivered to</h3>
+                <p className="order-details-address">
+                  {selectedOrder.street_address}
+                  {selectedOrder.city ? `, ${selectedOrder.city}` : ""}
+                </p>
+              </section>
+            )}
+
+            <div className="order-details-actions">
+              {selectedOrder.status === "delivered" && (
+                <button
+                  type="button"
+                  className="btn-reorder"
+                  onClick={() => handleReorder(selectedOrder)}
+                  disabled={reorderingId === selectedOrder.id}
+                >
+                  <RotateCcw size={15} />
+                  {reorderingId === selectedOrder.id
+                    ? "Adding..."
+                    : "Order again"}
+                </button>
+              )}
+              <button
+                type="button"
+                className="order-ghost-action"
+                onClick={() => handleHelp(selectedOrder)}
+              >
+                <Headphones size={15} />
+                Help
+              </button>
+            </div>
+          </aside>
+        </div>
+      )}
     </div>
   );
 };
