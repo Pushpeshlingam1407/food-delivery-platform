@@ -8,10 +8,7 @@
   min-height: 100vh;
   background-color: var(--bg-sand);
   background-image:
-    var(--mesh-warm),
-    var(--mesh-rose),
-    var(--mesh-lavender),
-    var(--mesh-honey),
+    var(--mesh-warm), var(--mesh-rose), var(--mesh-lavender), var(--mesh-honey),
     var(--mesh-center);
   background-attachment: fixed;
   font-family:
