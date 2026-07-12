@@ -10,15 +10,21 @@
   align-items: center;
   width: 100%;
   padding: 16px 32px;
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border-bottom: 1px solid var(--glass-border);
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
   position: sticky;
   top: 0;
   z-index: 90;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05), inset 0 -1px 0 rgba(255, 255, 255, 0.5);
   gap: 24px;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.premium-navbar:hover {
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 -1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .navbar-left {
@@ -47,15 +53,18 @@
   align-items: center;
   gap: 10px;
   text-decoration: none;
-  background: rgba(255, 255, 255, 0.5);
-  padding: 10px 16px;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 8px 16px;
   border-radius: 99px;
-  border: 1px solid var(--glass-border);
-  transition: all 0.2s ease;
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .address-pill-btn:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 1);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
 .address-chevron {
@@ -233,85 +242,85 @@
   align-items: center;
   gap: 8px;
   padding: 10px 20px;
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.8);
   border-radius: 99px;
-  background: rgba(255, 255, 255, 0.7);
+  background: rgba(255, 255, 255, 0.6);
   color: var(--text-slate);
   font-size: 0.9rem;
   font-weight: 700;
   cursor: pointer;
-  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.03);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .cart-btn-capsule:hover {
   background: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
 }
 
 .cart-btn-capsule--active {
   border-color: var(--accent-orange);
   background: var(--accent-orange);
   color: #fff;
-  box-shadow: 0 4px 12px rgba(255, 63, 26, 0.2);
+  box-shadow: 0 4px 16px rgba(255, 63, 26, 0.3);
 }
 
 .cart-btn-capsule--active:hover {
-  background: var(--accent-orange);
+  background: #ff5733;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 63, 26, 0.4);
 }
 
 /* Mobile navigation reworked for a calmer, more tactile app feel */
 @media (max-width: 768px) {
   .premium-navbar {
-    display: grid;
-    grid-template-columns: 1fr;
-    justify-items: stretch;
-    align-items: stretch;
-    padding: 14px 12px 12px;
-    gap: 12px;
-    overflow: visible;
-    background: linear-gradient(
-      180deg,
-      rgba(255, 255, 255, 0.97),
-      rgba(248, 244, 238, 0.96)
-    );
-    box-shadow: 0 14px 36px rgba(21, 21, 21, 0.07);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 16px;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
   }
 
   .navbar-left {
     order: 1;
-    width: 100%;
-    justify-content: flex-start;
-    min-width: unset;
-  }
-
-  .navbar-center {
-    order: 2;
-    width: 100%;
-    max-width: 520px;
+    width: auto;
+    flex: 1;
     min-width: 0;
-    justify-content: center;
   }
 
   .navbar-right {
+    order: 2;
+    width: auto;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  .navbar-center {
     order: 3;
     width: 100%;
-    justify-content: space-between;
-    gap: 10px;
-    min-width: unset;
+    max-width: 100%;
   }
 
   .address-pill-btn {
-    width: 100%;
-    justify-content: flex-start;
-    padding: 12px 14px;
-    gap: 10px;
-    border-radius: 20px;
-    background: rgba(255, 255, 255, 0.92) !important;
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
+    width: auto;
+    max-width: 100%;
+    padding: 8px 12px 8px 8px;
+    gap: 8px;
+    border-radius: 99px;
+    background: #fff !important;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
   }
 
   .address-icon-wrapper {
-    width: 38px;
-    height: 38px;
+    width: 32px;
+    height: 32px;
     padding: 0;
     flex: 0 0 auto;
   }
@@ -327,48 +336,54 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 0.94rem;
+    font-size: 0.9rem;
     line-height: 1.15;
   }
 
   .address-label {
-    font-size: 0.68rem;
+    font-size: 0.65rem;
     letter-spacing: 0.04em;
   }
 
   .navbar-search-box {
     width: 100% !important;
-    min-height: 50px;
-    padding: 0 14px !important;
-    border-radius: 20px !important;
-    background: rgba(255, 255, 255, 0.94) !important;
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06) !important;
+    min-height: 48px;
+    padding: 0 16px !important;
+    border-radius: 24px !important;
+    background: #f8fafc !important;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+    border: 1px solid #e2e8f0;
+    transition: all 0.3s ease;
+  }
+
+  .navbar-search-box:focus-within {
+    background: #fff !important;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
+    border-color: var(--accent-orange);
   }
 
   .navbar-search-box input {
     min-width: 0;
-    font-size: 0.92rem !important;
+    font-size: 0.95rem !important;
     text-overflow: ellipsis;
   }
 
   .cart-text {
-    display: inline;
-    font-size: 0.78rem;
+    display: none; /* Hide text on mobile for cleaner look */
   }
 
   .navbar-profile-btn,
   .cart-btn-capsule {
-    min-width: 48px !important;
-    height: 48px !important;
-    padding: 0 14px !important;
-    border-radius: 18px !important;
-    background: rgba(255, 255, 255, 0.94) !important;
-    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06) !important;
-  }
-
-  .cart-btn-capsule {
-    justify-content: center !important;
-    gap: 8px !important;
+    min-width: 44px !important;
+    height: 44px !important;
+    padding: 0 !important;
+    border-radius: 50% !important;
+    background: #fff !important;
+    border: 1px solid #f1f5f9;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
