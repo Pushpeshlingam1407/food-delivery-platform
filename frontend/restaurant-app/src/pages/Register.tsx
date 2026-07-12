@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 export const Register: React.FC = () => {
@@ -15,7 +15,7 @@ export const Register: React.FC = () => {
   const handleRegister = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName || !lastName || !email || !phone || !password) {
-      toast.error("All registration fields are required.");
+      notify.warning("Please fill out all fields to register.");
       return;
     }
 
@@ -31,7 +31,7 @@ export const Register: React.FC = () => {
       });
 
       if (response.data.status === "success") {
-        toast.success("Registration successful!", {
+        notify.success("Account created successfully!", {
           description: "You can now log in to the merchant portal.",
         });
         navigate("/login");
@@ -40,7 +40,7 @@ export const Register: React.FC = () => {
       console.error(error);
       const errMsg =
         error.response?.data?.message || "Registration failed. Try again.";
-      toast.error(errMsg);
+      notify.error(errMsg);
     } finally {
       setLoading(false);
     }

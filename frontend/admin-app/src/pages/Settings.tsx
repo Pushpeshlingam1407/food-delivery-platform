@@ -50,9 +50,7 @@ export const Settings: React.FC = () => {
         fetchSettings();
       }
     } catch (err: any) {
-      notify.error(
-        err.response?.data?.message || "Couldn't update settings.",
-      );
+      notify.error(err.response?.data?.message || "Couldn't update settings.");
     } finally {
       setSaving(false);
     }

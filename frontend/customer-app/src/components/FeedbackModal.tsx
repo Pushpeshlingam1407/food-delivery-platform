@@ -43,7 +43,10 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
       }
     } catch (err: any) {
       console.error(err);
-      notify.error(err.response?.data?.message || "We couldn't submit your rating right now.");
+      notify.error(
+        err.response?.data?.message ||
+          "We couldn't submit your rating right now.",
+      );
     } finally {
       setLoading(false);
     }

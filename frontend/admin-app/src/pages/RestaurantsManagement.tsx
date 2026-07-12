@@ -118,7 +118,9 @@ export const RestaurantsManagement: React.FC = () => {
         fetchRestaurants();
       }
     } catch (err: any) {
-      notify.error(err.response?.data?.message || "Couldn't create this store.");
+      notify.error(
+        err.response?.data?.message || "Couldn't create this store.",
+      );
     }
   };
 
@@ -147,7 +149,9 @@ export const RestaurantsManagement: React.FC = () => {
         fetchRestaurants();
       }
     } catch (err: any) {
-      notify.error(err.response?.data?.message || "Couldn't update this store.");
+      notify.error(
+        err.response?.data?.message || "Couldn't update this store.",
+      );
     }
   };
 

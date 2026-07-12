@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 export const Login: React.FC = () => {
@@ -12,7 +12,7 @@ export const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      toast.error("Please enter both email and password.");
+      notify.warning("Please enter your email and password.");
       return;
     }
 
@@ -24,8 +24,8 @@ export const Login: React.FC = () => {
 
         // Strict role validation
         if (user.role !== "delivery_partner" && user.role !== "admin") {
-          toast.error(
-            "Access Denied: Only delivery partners can sign in here.",
+          notify.error(
+            "Access Denied: You must be a delivery partner to sign in here.",
           );
           setLoading(false);
           return;
@@ -40,10 +40,17 @@ export const Login: React.FC = () => {
           `${user.first_name} ${user.last_name}`,
         );
 
-        window.location.href = "/";
+        notify.authSuccess(
+          "Ready to hit the road?",
+          "Signing into your driver account.",
+        );
+        setTimeout(() => {
+          window.location.href = "/";
+        }, 800);
       }
     } catch (error: any) {
       console.error(error);
+      notify.error("Login failed. Please check your credentials.");
     } finally {
       setLoading(false);
     }

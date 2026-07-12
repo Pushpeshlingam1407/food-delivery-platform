@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 import { Check, Navigation, Power, Truck, Wallet } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Order {
@@ -161,12 +161,14 @@ export const Dashboard: React.FC = () => {
         setIsOnline(nextOnlineState);
         localStorage.setItem("driverOnline", String(nextOnlineState));
         window.dispatchEvent(new Event("driver-shift-change"));
-        toast.success(
-          nextOnlineState ? "You are now online." : "You are now offline.",
-        );
+        if (nextOnlineState) {
+          notify.success("You are now online and ready to accept orders.");
+        } else {
+          notify.error("You are now offline.");
+        }
       }
     } catch {
-      toast.error("Could not update your shift status.");
+      notify.error("We couldn't change your status.");
     }
   };
 
@@ -179,10 +181,10 @@ export const Dashboard: React.FC = () => {
         localStorage.setItem(`delivery_step_${orderId}`, "accepted");
         setDeliveryStep("accepted");
         await fetchDriverStats();
-        toast.success("Delivery accepted. Head to the restaurant.");
+        notify.success("Delivery accepted! Head to the restaurant.");
       }
     } catch {
-      toast.error("Could not accept this delivery.");
+      notify.error("We couldn't accept this delivery right now.");
     }
   };
 
@@ -196,10 +198,10 @@ export const Dashboard: React.FC = () => {
         localStorage.removeItem(`delivery_step_${activeJob.id}`);
         setActiveJob(null);
         await fetchDriverStats();
-        toast.success("Delivery marked as complete.");
+        notify.success("Delivery complete! Great job.");
       }
     } catch {
-      toast.error("Could not complete this delivery.");
+      notify.error("We couldn't complete this delivery.");
     }
   };
 
@@ -207,7 +209,7 @@ export const Dashboard: React.FC = () => {
     event.preventDefault();
     const amount = parseFloat(payoutAmount);
     if (!amount || amount <= 0 || amount > walletBalance) {
-      toast.error("Enter an amount available in your wallet.");
+      notify.warning("Please enter a valid amount from your balance.");
       return;
     }
     setPayoutLoading(true);
@@ -216,10 +218,13 @@ export const Dashboard: React.FC = () => {
       if (response.data.status === "success") {
         setPayoutAmount("");
         await fetchDriverStats();
-        toast.success("Payout requested.");
+        notify.success("Payout requested successfully.");
       }
     } catch (error: any) {
-      toast.error(error.response?.data?.message || "Could not request payout.");
+      notify.error(
+        error.response?.data?.message ||
+          "We couldn't request your payout right now.",
+      );
     } finally {
       setPayoutLoading(false);
     }

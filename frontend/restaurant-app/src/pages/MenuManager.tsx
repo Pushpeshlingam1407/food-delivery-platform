@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Plus, Trash2, Edit2, Globe, FileImage } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { MenuCard } from "../../../shared/components/MenuCard";
 
@@ -84,17 +84,17 @@ export const MenuManager: React.FC = () => {
         const newCat = response.data.data;
         setCategories((prev) => [...prev, newCat]);
         setNewCatName("");
-        toast.success("Category added successfully!");
+        notify.success("New category created.");
       }
     } catch (err) {
-      toast.error("Failed to create category.");
+      notify.error("We couldn't create this category.");
     }
   };
 
   const handleSaveMenuItem = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newItemName || !newItemPrice || !newItemCategoryId || !restaurantId) {
-      toast.error("All fields are required.");
+      notify.warning("Please fill out all fields.");
       return;
     }
 
@@ -117,7 +117,7 @@ export const MenuManager: React.FC = () => {
         });
 
         if (response.data.status === "success") {
-          toast.success("Dish updated successfully!");
+          notify.success("Dish updated.");
           resetForm();
           fetchMenuAndCategories();
         }
@@ -136,13 +136,13 @@ export const MenuManager: React.FC = () => {
         });
 
         if (response.data.status === "success") {
-          toast.success("Menu item added successfully!");
+          notify.success("New dish added.");
           resetForm();
           fetchMenuAndCategories();
         }
       }
     } catch (err) {
-      toast.error("Failed to save menu item.");
+      notify.error("We couldn't save this dish.");
     }
   };
 
@@ -184,10 +184,10 @@ export const MenuManager: React.FC = () => {
             item.id === itemId ? { ...item, is_available: !currentVal } : item,
           ),
         );
-        toast.success("Availability status updated.");
+        notify.info("Availability updated.");
       }
     } catch (err) {
-      toast.error("Failed to toggle availability.");
+      notify.error("We couldn't update the availability.");
     }
   };
 
@@ -197,10 +197,10 @@ export const MenuManager: React.FC = () => {
       const response = await api.delete(`/restaurants/items/${itemId}`);
       if (response.data.status === "success") {
         setMenuItems((prev) => prev.filter((item) => item.id !== itemId));
-        toast.success("Dish removed from catalog.");
+        notify.info("Dish removed.");
       }
     } catch (err) {
-      toast.error("Failed to delete menu item.");
+      notify.error("We couldn't remove this dish.");
     }
   };
 
@@ -526,10 +526,10 @@ export const MenuManager: React.FC = () => {
                           });
                           if (res.data.status === "success") {
                             setNewItemImageUrl(res.data.url);
-                            toast.success("Image uploaded successfully!");
+                            notify.success("Image uploaded!");
                           }
                         } catch (err) {
-                          toast.error("Failed to upload image.");
+                          notify.error("We couldn't upload this image.");
                         }
                       };
                       reader.readAsDataURL(file);

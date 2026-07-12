@@ -8,7 +8,7 @@ import {
   Plus,
   Store,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Order {
@@ -120,10 +120,7 @@ export const Dashboard: React.FC = () => {
     socket.on("newOrderReceived", (newOrder: Order) => {
       setOrders((prev) => [newOrder, ...prev]);
       playOrderChime();
-      toast.success("Incoming Order Received!", {
-        description: `Order #${newOrder.order_number} for $${newOrder.item_total} placed.`,
-        duration: 10000,
-      });
+      notify.success(`New Order Received! Order #${newOrder.order_number} for $${newOrder.item_total} placed.`);
     });
 
     return () => {
@@ -142,12 +139,12 @@ export const Dashboard: React.FC = () => {
             o.id === orderId ? { ...o, status: newStatus as any } : o,
           ),
         );
-        toast.success(
-          `Order status updated to ${newStatus.replace("_", " ").toUpperCase()}`,
+        notify.success(
+          `Order is now ${newStatus.replace("_", " ").toUpperCase()}`,
         );
       }
     } catch (err) {
-      toast.error("Failed to update order status.");
+      notify.error("We couldn't update this order.");
     }
   };
 
@@ -160,10 +157,14 @@ export const Dashboard: React.FC = () => {
       });
       if (response.data.status === "success") {
         setRestaurantStatus(nextStatus);
-        toast.success(`Restaurant is now ${nextStatus.toUpperCase()}`);
+        if (nextStatus === "open") {
+          notify.success("Your restaurant is online and ready for orders.");
+        } else {
+          notify.error("Your restaurant is offline.");
+        }
       }
     } catch (err) {
-      toast.error("Failed to toggle restaurant status.");
+      notify.error("We couldn't change your status right now.");
     }
   };
 
@@ -176,7 +177,7 @@ export const Dashboard: React.FC = () => {
       !restState ||
       !restPostalCode
     ) {
-      toast.error("Please fill in all required fields.");
+      notify.warning("Please fill out all fields.");
       return;
     }
     setCreateLoading(true);
@@ -193,13 +194,13 @@ export const Dashboard: React.FC = () => {
         closing_time: restCloseTime,
       });
       if (response.data.status === "success") {
-        toast.success("Restaurant profile created successfully!");
+        notify.success("Restaurant profile created.");
         fetchRestaurantAndOrders();
       }
     } catch (error: any) {
       console.error(error);
-      toast.error(
-        error.response?.data?.message || "Failed to create restaurant profile.",
+      notify.error(
+        error.response?.data?.message || "We couldn't create your profile.",
       );
     } finally {
       setCreateLoading(false);

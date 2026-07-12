@@ -11,7 +11,7 @@ import {
   ArrowDownLeft,
   ArrowUpRight as ArrowUpRightIcon,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Summary {
@@ -73,7 +73,7 @@ export const Earnings: React.FC = () => {
       }
     } catch (err) {
       console.error("Failed to load financial details:", err);
-      toast.error("Failed to load financial details.");
+      notify.error("We couldn't load your financial details.");
     } finally {
       setLoading(false);
     }
@@ -87,11 +87,11 @@ export const Earnings: React.FC = () => {
     e.preventDefault();
     const amt = parseFloat(payoutAmount);
     if (isNaN(amt) || amt <= 0) {
-      toast.error("Please enter a valid payout amount.");
+      notify.warning("Please enter a valid payout amount.");
       return;
     }
     if (amt > walletBalance) {
-      toast.error("Insufficient balance for withdrawal.");
+      notify.warning("You don't have enough funds for this withdrawal.");
       return;
     }
 
@@ -99,12 +99,12 @@ export const Earnings: React.FC = () => {
     try {
       const response = await api.post("/wallets/payout", { amount: amt });
       if (response.data.status === "success") {
-        toast.success("Payout transfer completed successfully!");
+        notify.success("Payout requested successfully!");
         setPayoutAmount("");
         await fetchEarningsAndWallet();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to initiate payout.");
+      notify.error(err.response?.data?.message || "We couldn't process this payout.");
     } finally {
       setPayoutLoading(false);
     }

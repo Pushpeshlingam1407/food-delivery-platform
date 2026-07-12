@@ -134,7 +134,10 @@ export const Checkout: React.FC = () => {
       }
     } catch (err: any) {
       console.error(err);
-      notify.error(err.response?.data?.message || "We couldn't place your order. Please try again.");
+      notify.error(
+        err.response?.data?.message ||
+          "We couldn't place your order. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
