@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { toast } from "../utils/toast";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { PremiumCard } from "../../../shared/components/PremiumCard";
 import { PremiumInput } from "../../../shared/components/PremiumInput";
@@ -15,7 +15,7 @@ export const Login: React.FC = () => {
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
-      toast.error("Please enter both email and password.");
+      notify.error("Please enter both email and password.");
       return;
     }
 

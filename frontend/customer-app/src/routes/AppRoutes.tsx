@@ -32,7 +32,7 @@ import {
   Home as HomeIcon,
   ClipboardList,
 } from "lucide-react";
-import { toast } from "../utils/toast";
+import notify from "../../../shared/utils/toast";
 
 // Admin Imports
 import { Dashboard as AdminDashboard } from "../../../admin-app/src/pages/Dashboard";
@@ -160,10 +160,10 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
             });
           }
         }
-        toast.success("Items added to your cart! Ÿ›’");
+        notify.success("Items added to your cart! Ÿ›’");
       }
     } catch {
-      toast.error("Could not reorder. Please try again.");
+      notify.error("Could not reorder. Please try again.");
     } finally {
       setReordering(null);
     }
@@ -434,7 +434,7 @@ export const AppRoutes: React.FC = () => {
     if (!amountStr) return;
     const amount = parseFloat(amountStr);
     if (isNaN(amount) || amount <= 0) {
-      toast.error("Please enter a valid deposit amount.");
+      notify.error("Please enter a valid deposit amount.");
       return;
     }
     try {
@@ -443,11 +443,11 @@ export const AppRoutes: React.FC = () => {
         description: "Wallet Top-up",
       });
       if (res.data.status === "success") {
-        toast.success("Wallet funds added successfully!");
+        notify.success("Wallet funds added successfully!");
         fetchWallet();
       }
     } catch (err) {
-      toast.error("Failed to deposit funds.");
+      notify.error("Failed to deposit funds.");
     }
   };
 
