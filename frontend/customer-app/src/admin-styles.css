@@ -276,118 +276,130 @@
   box-shadow: 0 6px 20px rgba(255, 63, 26, 0.4);
 }
 
-/* Mobile navigation reworked for a calmer, more tactile app feel */
+/* Mobile navigation reworked for an ultra-minimal CRED-style floating pill */
 @media (max-width: 768px) {
   .premium-navbar {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
-    gap: 16px;
-    background: rgba(255, 255, 255, 0.92);
+    padding: 6px 8px;
+    margin: 16px;
+    width: auto;
+    border-radius: 100px;
+    background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(24px);
     -webkit-backdrop-filter: blur(24px);
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+    gap: 8px;
   }
 
   .navbar-left {
     order: 1;
-    width: auto;
-    flex: 1;
-    min-width: 0;
-  }
-
-  .navbar-right {
-    order: 2;
-    width: auto;
-    justify-content: flex-end;
-    gap: 12px;
-  }
-
-  .navbar-center {
-    order: 3;
-    width: 100%;
-    max-width: 100%;
+    flex: 0 0 auto;
   }
 
   .address-pill-btn {
-    width: auto;
-    max-width: 100%;
-    padding: 8px 12px 8px 8px;
-    gap: 8px;
-    border-radius: 99px;
-    background: #fff !important;
-    border: 1px solid #f1f5f9;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 4px;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    gap: 6px;
   }
 
   .address-icon-wrapper {
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    background: #f1f5f9;
   }
 
   .address-text-wrapper {
     min-width: 0;
-    flex: 1;
+  }
+
+  .address-label {
+    display: none;
   }
 
   .address-value {
     display: block;
-    max-width: 100%;
+    max-width: 60px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     line-height: 1.15;
   }
 
-  .address-label {
-    font-size: 0.65rem;
-    letter-spacing: 0.04em;
+  .address-chevron {
+    display: none;
+  }
+
+  .navbar-center {
+    order: 2;
+    flex: 1;
+    min-width: 0;
   }
 
   .navbar-search-box {
     width: 100% !important;
-    min-height: 48px;
-    padding: 0 16px !important;
-    border-radius: 24px !important;
-    background: #f8fafc !important;
-    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02) !important;
-    border: 1px solid #e2e8f0;
+    min-height: 40px !important;
+    padding: 0 12px !important;
+    border-radius: 99px !important;
+    background: rgba(0, 0, 0, 0.04) !important;
+    border: none !important;
+    box-shadow: none !important;
     transition: all 0.3s ease;
   }
 
   .navbar-search-box:focus-within {
     background: #fff !important;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
-    border-color: var(--accent-orange);
+    border: 1px solid var(--accent-orange) !important;
   }
 
   .navbar-search-box input {
     min-width: 0;
-    font-size: 0.95rem !important;
+    font-size: 0.9rem !important;
     text-overflow: ellipsis;
   }
 
+  .navbar-right {
+    order: 3;
+    flex: 0 0 auto;
+    gap: 4px;
+  }
+
   .cart-text {
-    display: none; /* Hide text on mobile for cleaner look */
+    display: none; /* Hide text on mobile */
   }
 
   .navbar-profile-btn,
   .cart-btn-capsule {
-    min-width: 44px !important;
-    height: 44px !important;
+    min-width: 40px !important;
+    height: 40px !important;
     padding: 0 !important;
     border-radius: 50% !important;
-    background: #fff !important;
-    border: 1px solid #f1f5f9;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
     display: flex;
     align-items: center;
     justify-content: center;
+  }
+
+  .navbar-profile-btn:hover,
+  .cart-btn-capsule:hover {
+    background: rgba(0, 0, 0, 0.04) !important;
+  }
+
+  .cart-btn-capsule--active {
+    background: var(--accent-orange) !important;
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(255, 63, 26, 0.3) !important;
   }
 }
 
