@@ -31,7 +31,10 @@ api.interceptors.response.use(
       if (url.endsWith("/auth/login")) {
         notify.authSuccess("Welcome back!", "You're successfully logged in.");
       } else if (url.endsWith("/auth/register")) {
-        notify.authSuccess("Account Created", "Welcome aboard! Your account is ready.");
+        notify.authSuccess(
+          "Account Created",
+          "Welcome aboard! Your account is ready.",
+        );
       } else if (url.endsWith("/auth/verify-otp")) {
         notify.success("Your identity has been verified.");
       } else if (url.endsWith("/auth/send-otp")) {

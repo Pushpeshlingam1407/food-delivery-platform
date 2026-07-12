@@ -1,18 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
-import {
-  MobileBottomNav,
-} from "../../../shared/components/MobileBottomNav";
-import {
-  ResponsiveFooter,
-} from "../../../shared/components/ResponsiveFooter";
-import type {
-  MobileBottomNavItem,
-} from "../../../shared/components/MobileBottomNav";
-import type {
-  FooterSection,
-} from "../../../shared/components/ResponsiveFooter";
+import { DeliverySidebar } from "../components/DeliverySidebar";
+import { MobileBottomNav } from "../../../shared/components/MobileBottomNav";
+import { ResponsiveFooter } from "../../../shared/components/ResponsiveFooter";
+import type { MobileBottomNavItem } from "../../../shared/components/MobileBottomNav";
+import type { FooterSection } from "../../../shared/components/ResponsiveFooter";
 import { Truck, Wallet, ClipboardList, LogOut } from "lucide-react";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
@@ -22,7 +15,18 @@ export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
     localStorage.getItem("userEmail"),
   );
-  const driverName = localStorage.getItem("userName");
+  const [isOnline, setIsOnline] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const driverName = localStorage.getItem("userName") || "Driver";
+
+  useEffect(() => {
+    const syncShiftState = () =>
+      setIsOnline(localStorage.getItem("driverOnline") === "true");
+    syncShiftState();
+    window.addEventListener("driver-shift-change", syncShiftState);
+    return () =>
+      window.removeEventListener("driver-shift-change", syncShiftState);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -95,30 +99,72 @@ export const AppRoutes: React.FC = () => {
 
   return (
     <BrowserRouter>
-      {userEmail && <Navbar driverName={driverName} onLogout={handleLogout} />}
-      <Routes>
-        <Route
-          path="/"
-          element={userEmail ? <Dashboard /> : <Navigate to="/login" />}
-        />
-        <Route
-          path="/login"
-          element={!userEmail ? <Login /> : <Navigate to="/" />}
-        />
-        <Route
-          path="/register"
-          element={!userEmail ? <Register /> : <Navigate to="/" />}
-        />
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-      {userEmail && (
-        <>
-          <ResponsiveFooter
-            sections={footerSections}
-            bottomText={`© ${new Date().getFullYear()} Bites Logistics Private Limited. All rights reserved.`}
+      {userEmail ? (
+        <div className="delivery-layout">
+          <div
+            className={`delivery-sidebar-shell ${sidebarCollapsed ? "is-collapsed" : ""}`}
+          >
+            <DeliverySidebar
+              driverName={driverName}
+              isOnline={isOnline}
+              collapsed={sidebarCollapsed}
+              onToggleCollapsed={() =>
+                setSidebarCollapsed((collapsed) => !collapsed)
+              }
+              onLogout={handleLogout}
+              onWalletJump={() => {
+                document
+                  .getElementById("driver-wallet-section")
+                  ?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
+              }}
+              onJobsJump={() => {
+                document.getElementById("driver-job-section")?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }}
+            />
+          </div>
+
+          <div className="delivery-main-shell">
+            <Navbar driverName={driverName} onLogout={handleLogout} />
+            <Routes>
+              <Route
+                path="/"
+                element={userEmail ? <Dashboard /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/login"
+                element={!userEmail ? <Login /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/register"
+                element={!userEmail ? <Register /> : <Navigate to="/" />}
+              />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+            <ResponsiveFooter
+              sections={footerSections}
+              bottomText={`© ${new Date().getFullYear()} Bites Logistics Private Limited. All rights reserved.`}
+            />
+            <MobileBottomNav items={bottomNavItems} />
+          </div>
+        </div>
+      ) : (
+        <Routes>
+          <Route
+            path="/login"
+            element={!userEmail ? <Login /> : <Navigate to="/" />}
           />
-          <MobileBottomNav items={bottomNavItems} />
-        </>
+          <Route
+            path="/register"
+            element={!userEmail ? <Register /> : <Navigate to="/" />}
+          />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
       )}
     </BrowserRouter>
   );

@@ -1,17 +1,17 @@
-import React from 'react';
-import { Toaster as SonnerToaster, toast as sonner } from 'sonner';
-import { Toaster as HotToaster, toast as hotToast } from 'react-hot-toast';
-import { CheckCircle2, AlertCircle, TriangleAlert, Info } from 'lucide-react';
+import React from "react";
+import { Toaster as SonnerToaster, toast as sonner } from "sonner";
+import { Toaster as HotToaster, toast as hotToast } from "react-hot-toast";
+import { CheckCircle2, AlertCircle, TriangleAlert, Info } from "lucide-react";
 
 const commonStyle = {
-  borderRadius: '100px',
-  padding: '12px 24px',
-  fontSize: '0.95rem',
+  borderRadius: "100px",
+  padding: "12px 24px",
+  fontSize: "0.95rem",
   fontWeight: 600,
-  boxShadow: '0 12px 40px rgba(0,0,0,0.15)',
-  backdropFilter: 'blur(20px)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  margin: '12px',
+  boxShadow: "0 12px 40px rgba(0,0,0,0.15)",
+  backdropFilter: "blur(20px)",
+  border: "1px solid rgba(255, 255, 255, 0.1)",
+  margin: "12px",
 };
 
 /**
@@ -27,38 +27,38 @@ export const ToastProvider = () => {
         toastOptions={{
           style: {
             ...commonStyle,
-            background: 'rgba(20, 20, 20, 0.95)',
-            color: '#fff',
+            background: "rgba(20, 20, 20, 0.95)",
+            color: "#fff",
           },
           success: {
             style: {
               ...commonStyle,
-              background: 'rgba(22, 163, 74, 0.95)', // Rich Green
-              color: '#fff',
+              background: "rgba(22, 163, 74, 0.95)", // Rich Green
+              color: "#fff",
             },
             icon: <CheckCircle2 size={20} color="#fff" />,
           },
           error: {
             style: {
               ...commonStyle,
-              background: 'rgba(220, 38, 38, 0.95)', // Rich Red
-              color: '#fff',
+              background: "rgba(220, 38, 38, 0.95)", // Rich Red
+              color: "#fff",
             },
             icon: <AlertCircle size={20} color="#fff" />,
           },
           warning: {
             style: {
               ...commonStyle,
-              background: 'rgba(245, 158, 11, 0.95)', // Warm Amber
-              color: '#fff',
+              background: "rgba(245, 158, 11, 0.95)", // Warm Amber
+              color: "#fff",
             },
             icon: <TriangleAlert size={20} color="#fff" />,
           },
           info: {
             style: {
               ...commonStyle,
-              background: 'rgba(59, 130, 246, 0.95)', // Deep Blue
-              color: '#fff',
+              background: "rgba(59, 130, 246, 0.95)", // Deep Blue
+              color: "#fff",
             },
             icon: <Info size={20} color="#fff" />,
           },
@@ -69,24 +69,30 @@ export const ToastProvider = () => {
         toastOptions={{
           style: {
             ...commonStyle,
-            background: 'rgba(20, 20, 20, 0.95)',
-            color: '#fff',
+            background: "rgba(20, 20, 20, 0.95)",
+            color: "#fff",
           },
           success: {
             style: {
               ...commonStyle,
-              background: 'rgba(22, 163, 74, 0.95)',
-              color: '#fff',
+              background: "rgba(22, 163, 74, 0.95)",
+              color: "#fff",
             },
-            iconTheme: { primary: '#fff', secondary: 'rgba(22, 163, 74, 0.95)' },
+            iconTheme: {
+              primary: "#fff",
+              secondary: "rgba(22, 163, 74, 0.95)",
+            },
           },
           error: {
             style: {
               ...commonStyle,
-              background: 'rgba(220, 38, 38, 0.95)',
-              color: '#fff',
+              background: "rgba(220, 38, 38, 0.95)",
+              color: "#fff",
             },
-            iconTheme: { primary: '#fff', secondary: 'rgba(220, 38, 38, 0.95)' },
+            iconTheme: {
+              primary: "#fff",
+              secondary: "rgba(220, 38, 38, 0.95)",
+            },
           },
         }}
       />
@@ -111,64 +117,83 @@ export const notify = {
     sonner.info(message, { description, duration: 3000 });
   },
   authSuccess: (title: string, subtitle?: string) => {
-    sonner.custom((t) => (
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '16px',
-          padding: '16px 24px',
-          borderRadius: '100px',
-          background: 'linear-gradient(135deg, rgba(20,20,20,0.9) 0%, rgba(40,40,40,0.95) 100%)',
-          border: '1px solid rgba(255, 255, 255, 0.15)',
-          boxShadow: '0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(30px)',
-          color: '#fff',
-          width: 'max-content',
-          maxWidth: '90vw',
-          margin: '0 auto',
-          position: 'relative',
-          overflow: 'hidden',
-          animation: 'toast-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1)',
-        }}
-      >
+    sonner.custom(
+      (t) => (
         <div
           style={{
-            position: 'absolute',
-            top: 0,
-            left: 0,
-            right: 0,
-            height: '2px',
-            background: 'linear-gradient(90deg, transparent, #22c55e, transparent)',
-            opacity: 0.8,
-          }}
-        />
-        <div
-          style={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            background: 'rgba(34, 197, 94, 0.15)',
-            border: '1px solid rgba(34, 197, 94, 0.3)',
+            display: "flex",
+            alignItems: "center",
+            gap: "16px",
+            padding: "16px 24px",
+            borderRadius: "100px",
+            background:
+              "linear-gradient(135deg, rgba(20,20,20,0.9) 0%, rgba(40,40,40,0.95) 100%)",
+            border: "1px solid rgba(255, 255, 255, 0.15)",
+            boxShadow:
+              "0 20px 60px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.1)",
+            backdropFilter: "blur(30px)",
+            color: "#fff",
+            width: "max-content",
+            maxWidth: "90vw",
+            margin: "0 auto",
+            position: "relative",
+            overflow: "hidden",
+            animation: "toast-enter 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
           }}
         >
-          <CheckCircle2 size={22} color="#4ade80" />
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <span style={{ fontSize: '1rem', fontWeight: 700, letterSpacing: '0.02em', color: '#fff' }}>
-            {title}
-          </span>
-          {subtitle && (
-            <span style={{ fontSize: '0.85rem', fontWeight: 500, color: 'rgba(255, 255, 255, 0.6)' }}>
-              {subtitle}
+          <div
+            style={{
+              position: "absolute",
+              top: 0,
+              left: 0,
+              right: 0,
+              height: "2px",
+              background:
+                "linear-gradient(90deg, transparent, #22c55e, transparent)",
+              opacity: 0.8,
+            }}
+          />
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              width: "40px",
+              height: "40px",
+              borderRadius: "50%",
+              background: "rgba(34, 197, 94, 0.15)",
+              border: "1px solid rgba(34, 197, 94, 0.3)",
+            }}
+          >
+            <CheckCircle2 size={22} color="#4ade80" />
+          </div>
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span
+              style={{
+                fontSize: "1rem",
+                fontWeight: 700,
+                letterSpacing: "0.02em",
+                color: "#fff",
+              }}
+            >
+              {title}
             </span>
-          )}
+            {subtitle && (
+              <span
+                style={{
+                  fontSize: "0.85rem",
+                  fontWeight: 500,
+                  color: "rgba(255, 255, 255, 0.6)",
+                }}
+              >
+                {subtitle}
+              </span>
+            )}
+          </div>
         </div>
-      </div>
-    ), { duration: 4000 });
+      ),
+      { duration: 4000 },
+    );
   },
   loading: (message: string) => {
     return hotToast.loading(message);
@@ -184,7 +209,7 @@ export const notify = {
   },
   promise: <T,>(
     promise: Promise<T>,
-    msgs: { loading: string; success: string; error: string }
+    msgs: { loading: string; success: string; error: string },
   ) => {
     return hotToast.promise(promise, msgs);
   },

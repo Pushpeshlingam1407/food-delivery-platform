@@ -9,15 +9,9 @@ import {
 } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { AppSidebar } from "../../../shared/components/AppSidebar";
-import {
-  MobileBottomNav,
-} from "../../../shared/components/MobileBottomNav";
-import {
-  ResponsiveFooter,
-} from "../../../shared/components/ResponsiveFooter";
-import type {
-  FooterSection,
-} from "../../../shared/components/ResponsiveFooter";
+import { MobileBottomNav } from "../../../shared/components/MobileBottomNav";
+import { ResponsiveFooter } from "../../../shared/components/ResponsiveFooter";
+import type { FooterSection } from "../../../shared/components/ResponsiveFooter";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { OtpLogin } from "../pages/OtpLogin";
@@ -60,6 +54,10 @@ import { MenuManager } from "../../../restaurant-app/src/pages/MenuManager";
 import { Earnings } from "../../../restaurant-app/src/pages/Earnings";
 // Delivery Imports
 import { Dashboard as DeliveryDashboard } from "../../../delivery-app/src/pages/Dashboard";
+import { Navbar as DeliveryNavbar } from "../../../delivery-app/src/components/Navbar";
+import { DeliverySidebar } from "../../../delivery-app/src/components/DeliverySidebar";
+import type { MobileBottomNavItem } from "../../../shared/components/MobileBottomNav";
+import { Truck, Wallet, LogOut } from "lucide-react";
 
 interface HomeProps {
   searchQuery: string;
@@ -187,7 +185,19 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
         );
 
   return (
-    <div className="app-shell">
+    <div className="app-shell customer-home">
+      <section className="customer-home__hero">
+        <div>
+          <span className="customer-home__eyebrow">Bites select</span>
+          <h1>Good food, <em>thoughtfully</em> delivered.</h1>
+          <p>Find the restaurants worth making time for, from comfort-food favourites to your next obsession.</p>
+        </div>
+        <div className="customer-home__hero-note">
+          <span>YOUR LOCAL EDIT</span>
+          <strong>{restaurants.length || "—"} places to explore</strong>
+          <small>Fresh picks, updated daily</small>
+        </div>
+      </section>
       {/* Active order live banner */}
       {localStorage.getItem("accessToken") && activeOrders.length > 0 && (
         <div className="feature-section">
@@ -383,6 +393,9 @@ export const AppRoutes: React.FC = () => {
   const [userRole, setUserRole] = useState<string | null>(() =>
     localStorage.getItem("userRole"),
   );
+  const [driverOnline, setDriverOnline] = useState(false);
+  const [deliverySidebarCollapsed, setDeliverySidebarCollapsed] =
+    useState(false);
   const [cart, setCart] = useState<{
     [itemId: string]: { name: string; price: number; qty: number };
   }>({});
@@ -391,6 +404,15 @@ export const AppRoutes: React.FC = () => {
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [deliveryAddress, setDeliveryAddress] =
     useState<string>("Select Address");
+
+  useEffect(() => {
+    const syncShiftState = () =>
+      setDriverOnline(localStorage.getItem("driverOnline") === "true");
+    syncShiftState();
+    window.addEventListener("driver-shift-change", syncShiftState);
+    return () =>
+      window.removeEventListener("driver-shift-change", syncShiftState);
+  }, []);
 
   const fetchDeliveryAddress = async () => {
     if (localStorage.getItem("accessToken")) {
@@ -730,66 +752,109 @@ export const AppRoutes: React.FC = () => {
   }
 
   if (userEmail && userRole === "delivery_partner") {
+    const DELIVERY_FOOTER_SECTIONS: FooterSection[] = [
+      {
+        title: "Driver Tools",
+        links: [
+          { label: "Active Deliveries", to: "/" },
+          {
+            label: "Wallet",
+            onClick: () => {
+              document.getElementById("driver-wallet-section")?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            },
+          },
+          {
+            label: "Job Details",
+            onClick: () => {
+              document.getElementById("driver-job-section")?.scrollIntoView({
+                behavior: "smooth",
+                block: "start",
+              });
+            },
+          },
+        ],
+      },
+      {
+        title: "Support",
+        links: [
+          { label: "Shift Safety", to: "/" },
+          { label: "Payment Help", to: "/" },
+          { label: "Logout", onClick: handleLogout },
+        ],
+      },
+    ];
+
+    const DELIVERY_BOTTOM_NAV_ITEMS: MobileBottomNavItem[] = [
+      { icon: <Truck size={22} />, label: "Jobs", route: "/" },
+      {
+        icon: <HomeIcon size={22} />,
+        label: "Top",
+        onClick: () => window.scrollTo({ top: 0, behavior: "smooth" }),
+      },
+      {
+        icon: <Wallet size={22} />,
+        label: "Wallet",
+        onClick: () => {
+          document.getElementById("driver-wallet-section")?.scrollIntoView({
+            behavior: "smooth",
+            block: "start",
+          });
+        },
+      },
+      { icon: <LogOut size={22} />, label: "Exit", onClick: handleLogout },
+    ];
+
     return (
       <BrowserRouter>
-        <div className="admin-layout">
-          <AppSidebar
-            userName={localStorage.getItem("userName")}
-            role="delivery_partner"
-            onLogout={handleLogout}
-          />
-          <div className="admin-main-content">
-            {/* Elegant Console Switcher Header */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "24px",
-                paddingBottom: "16px",
-                borderBottom: "1px solid #e4e9f0",
+        <div className="delivery-layout">
+          <div
+            className={`delivery-sidebar-shell ${deliverySidebarCollapsed ? "is-collapsed" : ""}`}
+          >
+            <DeliverySidebar
+              driverName={localStorage.getItem("userName") || "Driver"}
+              isOnline={driverOnline}
+              collapsed={deliverySidebarCollapsed}
+              onToggleCollapsed={() =>
+                setDeliverySidebarCollapsed((collapsed) => !collapsed)
+              }
+              onLogout={handleLogout}
+              onWalletJump={() => {
+                document
+                  .getElementById("driver-wallet-section")
+                  ?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start",
+                  });
               }}
-            >
-              <span
-                style={{
-                  fontSize: "0.85rem",
-                  color: "#64748b",
-                  fontWeight: 700,
-                  letterSpacing: "0.5px",
-                }}
-              >
-                CONSOLE ROOM · RIDER VIEW
-              </span>
-              <button
-                onClick={handleLogout}
-                style={{
-                  background: "#f1f5f9",
-                  border: "none",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  color: "#475569",
-                  cursor: "pointer",
-                  transition: "background 0.2s",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.background = "#e2e8f0")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.background = "#f1f5f9")
-                }
-              >
-                ← Back to Selector / Sign Out
-              </button>
-            </div>
+              onJobsJump={() => {
+                document.getElementById("driver-job-section")?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                });
+              }}
+            />
+          </div>
+          <div className="delivery-main-shell">
+            <DeliveryNavbar
+              driverName={localStorage.getItem("userName") || "Driver"}
+              onLogout={handleLogout}
+            />
 
             <Routes>
               <Route path="/" element={<DeliveryDashboard />} />
               <Route path="*" element={<Navigate to="/" />} />
             </Routes>
+
+            <ResponsiveFooter
+              sections={DELIVERY_FOOTER_SECTIONS}
+              bottomText={`© ${new Date().getFullYear()} Bites Logistics Private Limited. All rights reserved.`}
+            />
           </div>
         </div>
+        <MobileBottomNav items={DELIVERY_BOTTOM_NAV_ITEMS} />
       </BrowserRouter>
     );
   }
@@ -898,7 +963,11 @@ export const AppRoutes: React.FC = () => {
       <MobileBottomNav
         items={[
           { icon: <HomeIcon size={22} />, label: "Home", route: "/" },
-          { icon: <ClipboardList size={22} />, label: "Orders", route: "/orders" },
+          {
+            icon: <ClipboardList size={22} />,
+            label: "Orders",
+            route: "/orders",
+          },
           {
             icon: <ShoppingBag size={22} />,
             label: "Cart",
