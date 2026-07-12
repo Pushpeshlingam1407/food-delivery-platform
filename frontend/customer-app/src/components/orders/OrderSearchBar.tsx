@@ -24,7 +24,7 @@ export const OrderSearchBar: React.FC<OrderSearchBarProps> = ({
         <input
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
-              placeholder="Search restaurant, item, or order number"
+          placeholder="Search restaurant, item, or order number"
         />
       </label>
       <div className="orders-tabs order-filter-tabs" aria-label="Filter orders">

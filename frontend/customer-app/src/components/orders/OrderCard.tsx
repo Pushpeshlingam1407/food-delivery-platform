@@ -73,8 +73,8 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             <div>
               <h2>{order.restaurant_name}</h2>
               <p>
-                {formatOrderNumber(order.order_number)} - {formatDate(order.placed_at)} at{" "}
-                {formatTime(order.placed_at)}
+                {formatOrderNumber(order.order_number)} -{" "}
+                {formatDate(order.placed_at)} at {formatTime(order.placed_at)}
               </p>
             </div>
             <span className={`order-status-chip ${statusClass}`}>
@@ -136,7 +136,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <button
             type="button"
             onClick={stopAndRun(() => onTrack(order))}
-              className="order-action-button order-action-button--primary"
+            className="order-action-button order-action-button--primary"
           >
             Track live <ChevronRight size={16} />
           </button>
@@ -146,7 +146,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <button
             type="button"
             onClick={stopAndRun(() => onReorder(order))}
-              className="order-action-button order-action-button--reorder"
+            className="order-action-button order-action-button--reorder"
             disabled={reordering}
           >
             <RotateCcw size={15} />
@@ -158,7 +158,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <button
             type="button"
             onClick={stopAndRun(() => onRate(order))}
-              className="order-action-button order-action-button--ghost"
+            className="order-action-button order-action-button--ghost"
           >
             <Star size={15} />
             Rate

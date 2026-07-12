@@ -268,7 +268,11 @@
     padding: 14px 12px 12px;
     gap: 12px;
     overflow: visible;
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(248, 244, 238, 0.96));
+    background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.97),
+      rgba(248, 244, 238, 0.96)
+    );
     box-shadow: 0 14px 36px rgba(21, 21, 21, 0.07);
   }
 
