@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
-import { toast } from "sonner";
+import notify from "../utils/toast";
 
 const API_BASE_URL = "http://localhost:5000/api";
 
@@ -29,13 +29,13 @@ api.interceptors.response.use(
     const url = response.config.url;
     if (url) {
       if (url.endsWith("/auth/login")) {
-        toast.success("Logged in successfully.");
+        notify.authSuccess("Welcome back!", "You're successfully logged in.");
       } else if (url.endsWith("/auth/register")) {
-        toast.success("Account created successfully.");
+        notify.authSuccess("Account Created", "Welcome aboard! Your account is ready.");
       } else if (url.endsWith("/auth/verify-otp")) {
-        toast.success("OTP verified successfully.");
+        notify.success("Your identity has been verified.");
       } else if (url.endsWith("/auth/send-otp")) {
-        toast.success("OTP sent successfully.");
+        notify.success("A verification code has been sent.");
       }
     }
     return response;
@@ -56,9 +56,9 @@ api.interceptors.response.use(
 
         // Map specific error messages from the table
         if (message === "Incorrect password") {
-          message = "Incorrect password.";
+          message = "Incorrect password. Please try again.";
         } else if (message === "User does not exist") {
-          message = "User didn't exist, go register";
+          message = "Account not found. Please register first.";
         } else if (
           message.includes("disabled") ||
           message.includes("inactive")
@@ -73,7 +73,7 @@ api.interceptors.response.use(
           message.includes("Too many attempts") ||
           message.includes("Rate limit")
         ) {
-          toast.warning(
+          notify.warning(
             "Too many login attempts. Please wait before trying again.",
           );
           return Promise.reject(error);
@@ -85,11 +85,11 @@ api.interceptors.response.use(
         } else if (message.includes("Passwords do not match")) {
           message = "Passwords do not match.";
         } else if (message.includes("Invalid OTP")) {
-          message = "Invalid OTP.";
+          message = "Invalid code. Please check and try again.";
         } else if (message.includes("OTP expired")) {
-          message = "OTP has expired. Request a new one.";
+          message = "Your code has expired. Please request a new one.";
         } else if (status >= 500) {
-          message = "Something went wrong. Please try again later.";
+          message = "Our servers are currently unreachable. Please try again.";
         }
 
         if (Array.isArray(validationErrors) && validationErrors.length > 0) {
@@ -98,15 +98,15 @@ api.interceptors.response.use(
             if (valMsg.toLowerCase().includes("email")) {
               valMsg = "Please enter a valid email address.";
             }
-            toast.error(valMsg);
+            notify.error(valMsg);
           });
         } else {
-          toast.error(message);
+          notify.error(message);
         }
       }
     } else {
       // Network errors
-      toast.error("Unable to connect. Check your internet connection.");
+      notify.error("You're offline. Please check your connection.");
     }
 
     if (
