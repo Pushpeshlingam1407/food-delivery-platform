@@ -16,7 +16,12 @@ export const Navbar: React.FC<NavbarProps> = ({
 
   return (
     <>
-      <BitesNavbar variant="driver" driverName={driverName} onLogout={onLogout} onOpenMenu={() => setMenuOpen(true)} />
+      <BitesNavbar
+        variant="driver"
+        driverName={driverName}
+        onLogout={onLogout}
+        onOpenMenu={() => setMenuOpen(true)}
+      />
 
       {menuOpen && (
         <button

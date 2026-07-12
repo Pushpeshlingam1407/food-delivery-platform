@@ -13,6 +13,8 @@ interface NavbarProps {
   deliveryAddress?: string;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ walletBalance: _walletBalance, onDepositClick: _onDepositClick, ...props }) => (
-  <BitesNavbar variant="customer" {...props} />
-);
+export const Navbar: React.FC<NavbarProps> = ({
+  walletBalance: _walletBalance,
+  onDepositClick: _onDepositClick,
+  ...props
+}) => <BitesNavbar variant="customer" {...props} />;

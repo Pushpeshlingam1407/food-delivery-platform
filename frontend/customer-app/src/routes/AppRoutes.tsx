@@ -189,8 +189,13 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
       <section className="customer-home__hero">
         <div>
           <span className="customer-home__eyebrow">Bites select</span>
-          <h1>Good food, <em>thoughtfully</em> delivered.</h1>
-          <p>Find the restaurants worth making time for, from comfort-food favourites to your next obsession.</p>
+          <h1>
+            Good food, <em>thoughtfully</em> delivered.
+          </h1>
+          <p>
+            Find the restaurants worth making time for, from comfort-food
+            favourites to your next obsession.
+          </p>
         </div>
         <div className="customer-home__hero-note">
           <span>YOUR LOCAL EDIT</span>
