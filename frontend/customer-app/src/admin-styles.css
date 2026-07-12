@@ -17,14 +17,18 @@
   position: sticky;
   top: 0;
   z-index: 90;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05), inset 0 -1px 0 rgba(255, 255, 255, 0.5);
+  box-shadow:
+    0 4px 30px rgba(0, 0, 0, 0.05),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.5);
   gap: 24px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .premium-navbar:hover {
   background: rgba(255, 255, 255, 0.85);
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08), inset 0 -1px 0 rgba(255, 255, 255, 0.8);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.08),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.8);
 }
 
 .navbar-left {
@@ -351,14 +355,14 @@
     padding: 0 16px !important;
     border-radius: 24px !important;
     background: #f8fafc !important;
-    box-shadow: inset 0 2px 4px rgba(0,0,0,0.02) !important;
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.02) !important;
     border: 1px solid #e2e8f0;
     transition: all 0.3s ease;
   }
 
   .navbar-search-box:focus-within {
     background: #fff !important;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.06) !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06) !important;
     border-color: var(--accent-orange);
   }
 
