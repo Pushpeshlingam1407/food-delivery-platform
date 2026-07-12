@@ -521,7 +521,7 @@ export const AppRoutes: React.FC = () => {
       ...prev,
       [item.id]: {
         name: item.name,
-        price: parseFloat(item.price.toString()),
+        price: item.price != null ? parseFloat(item.price.toString()) : 0,
         qty: newQty,
       },
     }));

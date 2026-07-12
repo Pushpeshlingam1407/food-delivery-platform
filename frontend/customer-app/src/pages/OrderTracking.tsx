@@ -8,7 +8,7 @@ import {
   Utensils,
   CheckCircle,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { FeedbackModal } from "../components/FeedbackModal";
 
@@ -77,8 +77,8 @@ export const OrderTracking: React.FC = () => {
           );
           setDriverPhone(data.driver.phone);
         }
-        toast.info(
-          `Order Status Update: ${data.status.replace("_", " ").toUpperCase()}`,
+        notify.info(
+          `Order Status: ${data.status.replace("_", " ").toUpperCase()}`,
         );
       },
     );

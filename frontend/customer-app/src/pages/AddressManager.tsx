@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import { MapPin, Plus, Trash2, Edit2, Check } from "lucide-react";
 import api from "../../../shared/services/api";
 
@@ -36,7 +36,7 @@ export const AddressManager: React.FC = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to load addresses.");
+      notify.error("We couldn't load your saved addresses.");
     } finally {
       setLoading(false);
     }
@@ -49,7 +49,7 @@ export const AddressManager: React.FC = () => {
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!streetAddress || !city || !state || !postalCode) {
-      toast.error("Please fill in all required fields.");
+      notify.warning("Please fill out all address fields.");
       return;
     }
 
@@ -65,7 +65,7 @@ export const AddressManager: React.FC = () => {
           isDefault,
         });
         if (response.data.status === "success") {
-          toast.success("Address updated successfully!");
+          notify.success("Address updated.");
           resetForm();
           fetchAddresses();
         }
@@ -80,14 +80,14 @@ export const AddressManager: React.FC = () => {
           isDefault,
         });
         if (response.data.status === "success") {
-          toast.success("Address added successfully!");
+          notify.success("Address added.");
           resetForm();
           fetchAddresses();
         }
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to save address.");
+      notify.error("We couldn't save your address.");
     }
   };
 
@@ -106,12 +106,12 @@ export const AddressManager: React.FC = () => {
     try {
       const response = await api.delete(`/addresses/${id}`);
       if (response.data.status === "success") {
-        toast.success("Address deleted successfully!");
+        notify.info("Address removed.");
         fetchAddresses();
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to delete address.");
+      notify.error("We couldn't remove this address.");
     }
   };
 

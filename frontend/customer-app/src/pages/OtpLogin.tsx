@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 export const OtpLogin: React.FC = () => {
@@ -13,7 +13,7 @@ export const OtpLogin: React.FC = () => {
   const handleSendOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone) {
-      toast.error("Please enter a valid phone number.");
+      notify.error("Please enter a valid phone number to continue.");
       return;
     }
 
@@ -22,14 +22,16 @@ export const OtpLogin: React.FC = () => {
       const response = await api.post("/auth/otp/send", { phone });
       if (response.data.status === "success") {
         setOtpSent(true);
-        toast.success("OTP Sent!", {
-          description: `Simulated Code: ${response.data.code || "Check console/backend logs."}`,
-          duration: 8000,
-        });
+        notify.success(
+          "Verification code sent!",
+          `Check your phone for the code.`,
+        );
       }
     } catch (error: any) {
       console.error(error);
-      toast.error("Failed to send OTP. Please check parameters.");
+      notify.error(
+        "We couldn't send the code. Please check your number and try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -38,7 +40,7 @@ export const OtpLogin: React.FC = () => {
   const handleVerifyOTP = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!phone || !otpCode) {
-      toast.error("Please input the received 6-digit OTP code.");
+      notify.warning("Please enter the 6-digit code we sent you.");
       return;
     }
 
@@ -64,14 +66,17 @@ export const OtpLogin: React.FC = () => {
           `${user.first_name} ${user.last_name || ""}`,
         );
 
-        toast.success("OTP Verified successfully!", {
-          description: `Logged in as ${user.first_name}.`,
-        });
+        notify.authSuccess(
+          "Welcome to Bites!",
+          `You're signed in as ${user.first_name}.`,
+        );
         navigate("/");
       }
     } catch (error: any) {
       console.error(error);
-      toast.error("Invalid or expired OTP code.");
+      notify.error(
+        "That code didn't work. Please try again or request a new one.",
+      );
     } finally {
       setLoading(false);
     }

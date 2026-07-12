@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { X, ShoppingCart, Percent, Trash2, Plus } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface CartItem {
@@ -107,13 +107,13 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
           const startDate = new Date(coupon.start_date);
           const endDate = new Date(coupon.end_date);
           if (now < startDate || now > endDate) {
-            toast.error("This coupon has expired or is not active yet.");
+            notify.warning("This coupon is no longer active.");
             return;
           }
 
           if (subtotal < parseFloat(coupon.min_order_amount.toString())) {
-            toast.error(
-              `Minimum order amount of $${parseFloat(
+            notify.warning(
+              `Add a bit more! Minimum order of $${parseFloat(
                 coupon.min_order_amount.toString(),
               ).toFixed(2)} required for this coupon.`,
             );
@@ -145,16 +145,16 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
               ? `${coupon.discount_value}% discount applied.`
               : `$${parseFloat(coupon.discount_value.toString()).toFixed(2)} discount applied.`;
 
-          toast.success("Coupon applied successfully!", {
+          notify.success("Coupon applied!", {
             description: discountMsg,
           });
         } else {
-          toast.error("Invalid or expired coupon code.");
+          notify.error("That coupon code doesn't look quite right.");
         }
       }
     } catch (error) {
       console.error(error);
-      toast.error("Failed to validate coupon.");
+      notify.error("We couldn't apply that coupon right now.");
     }
   };
 
@@ -165,7 +165,7 @@ export const CartDrawer: React.FC<CartDrawerProps> = ({
 
   const handleCheckout = () => {
     if (cartItems.length === 0) {
-      toast.error("Your cart is empty.");
+      notify.warning("Your cart is looking a bit empty!");
       return;
     }
     const appliedCoupon = appliedCouponId ? couponCode : null;

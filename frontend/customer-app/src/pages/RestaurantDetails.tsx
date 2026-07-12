@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Heart, ArrowLeft } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { MenuCard } from "../../../shared/components/MenuCard";
 
@@ -92,14 +92,14 @@ export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
       if (isFavorite) {
         await api.post("/favorites/remove", { restaurant_id: id });
         setIsFavorite(false);
-        toast.success("Removed from favorites.");
+        notify.info("Removed from favorites.");
       } else {
         await api.post("/favorites/add", { restaurant_id: id });
         setIsFavorite(true);
-        toast.success("Added to favorites!");
+        notify.success("Saved to your favorites!");
       }
     } catch (err) {
-      toast.error("Log in to save favorites.");
+      notify.warning("Please sign in to save your favorite spots.");
     }
   };
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Settings as SettingsIcon, Save } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface SettingItem {
@@ -22,7 +22,7 @@ export const Settings: React.FC = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to load system settings.");
+      notify.error("Couldn't load system settings.");
     } finally {
       setLoading(false);
     }
@@ -46,12 +46,12 @@ export const Settings: React.FC = () => {
     try {
       const response = await api.put("/admin/settings", { settings });
       if (response.data.status === "success") {
-        toast.success("System configurations updated successfully!");
+        notify.success("Settings updated.");
         fetchSettings();
       }
     } catch (err: any) {
-      toast.error(
-        err.response?.data?.message || "Failed to update configurations.",
+      notify.error(
+        err.response?.data?.message || "Couldn't update settings.",
       );
     } finally {
       setSaving(false);

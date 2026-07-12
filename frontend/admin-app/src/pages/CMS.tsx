@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FileText, Plus, Trash2, Globe } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface CmsPage {
@@ -35,7 +35,7 @@ export const CMS: React.FC = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to load CMS pages.");
+      notify.error("Couldn't load CMS pages.");
     } finally {
       setLoading(false);
     }
@@ -61,7 +61,7 @@ export const CMS: React.FC = () => {
       });
 
       if (response.data.status === "success") {
-        toast.success("CMS Page published successfully!");
+        notify.success("Page published!");
         setSlug("");
         setTitle("");
         setContent("");
@@ -72,7 +72,7 @@ export const CMS: React.FC = () => {
         fetchPages();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to publish page.");
+      notify.error(err.response?.data?.message || "Couldn't publish page.");
     } finally {
       setSubmitting(false);
     }
@@ -82,11 +82,11 @@ export const CMS: React.FC = () => {
     try {
       const response = await api.delete(`/cms/${id}`);
       if (response.data.status === "success") {
-        toast.success("CMS page deleted successfully.");
+        notify.info("Page deleted.");
         setPages((prev) => prev.filter((p) => p.id !== id));
       }
     } catch (err) {
-      toast.error("Failed to delete page.");
+      notify.error("Couldn't delete page.");
     }
   };
 

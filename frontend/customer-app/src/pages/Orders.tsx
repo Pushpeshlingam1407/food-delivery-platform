@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ShoppingBag } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { FeedbackModal } from "../components/FeedbackModal";
 import { OrderCard } from "../components/orders/OrderCard";
@@ -54,7 +54,7 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to load your order history.");
+      notify.error("Couldn't load your order history right now.");
     } finally {
       setLoading(false);
     }
@@ -106,7 +106,7 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
       }
 
       if (!items.length) {
-        toast.error("Could not find items for this order.");
+        notify.warning("Couldn't retrieve items for reordering.");
         return;
       }
 
@@ -121,17 +121,17 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
         }
       }
 
-      toast.success("Added previous order to your cart.");
+      notify.success("Items added to your cart!");
     } catch (err) {
       console.error("Reorder failed:", err);
-      toast.error("Could not reorder. Please try again.");
+      notify.error("We couldn't reorder these items. Please try again.");
     } finally {
       setReorderingId(null);
     }
   };
 
   const handleHelp = (order: Order) => {
-    toast.info("Support is ready for this order.", {
+    notify.info("Support is ready to help.", {
       description: formatOrderNumber(order.order_number),
     });
   };

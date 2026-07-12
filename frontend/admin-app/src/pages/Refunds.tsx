@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { CreditCard, ShieldAlert, Award, FileText } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Order {
@@ -27,7 +27,7 @@ export const Refunds: React.FC = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to load platform orders.");
+      notify.error("Couldn't load platform orders.");
     } finally {
       setLoading(false);
     }
@@ -49,13 +49,15 @@ export const Refunds: React.FC = () => {
       });
 
       if (response.data.status === "success") {
-        toast.success("Refund processed and credited to customer wallet!");
+        notify.success("Refund processed to customer wallet.");
         setRefundOrderId(null);
         setRefundReason("");
         fetchOrders();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to process refund.");
+      notify.error(
+        err.response?.data?.message || "Couldn't process the refund.",
+      );
     } finally {
       setProcessing(false);
     }

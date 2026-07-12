@@ -8,7 +8,7 @@ import {
   Store,
   Trash2,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Analytics {
@@ -75,7 +75,7 @@ export const Dashboard: React.FC = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to load analytics data.");
+      notify.error("Couldn't load dashboard data right now.");
     } finally {
       setLoading(false);
     }
@@ -89,13 +89,13 @@ export const Dashboard: React.FC = () => {
     try {
       const response = await api.put(`/admin/restaurants/${id}/verify`);
       if (response.data.status === "success") {
-        toast.success("Restaurant verified successfully!");
+        notify.success("Restaurant has been verified.");
         setRestaurants((prev) =>
           prev.map((r) => (r.id === id ? { ...r, is_verified: true } : r)),
         );
       }
     } catch (err) {
-      toast.error("Failed to verify restaurant.");
+      notify.error("We couldn't verify this restaurant. Please try again.");
     }
   };
 
@@ -117,14 +117,16 @@ export const Dashboard: React.FC = () => {
       });
 
       if (response.data.status === "success") {
-        toast.success("Promo coupon created successfully!");
+        notify.success("New promo code is live!");
         setCode("");
         setDiscountValue("");
         setMinOrder("");
         fetchDashboardData();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to create coupon.");
+      notify.error(
+        err.response?.data?.message || "We couldn't create the promo code.",
+      );
     } finally {
       setCouponLoading(false);
     }
@@ -134,11 +136,11 @@ export const Dashboard: React.FC = () => {
     try {
       const response = await api.delete(`/admin/coupons/${id}`);
       if (response.data.status === "success") {
-        toast.success("Coupon code deleted.");
+        notify.info("Promo code removed.");
         setCoupons((prev) => prev.filter((c) => c.id !== id));
       }
     } catch (err) {
-      toast.error("Failed to delete coupon.");
+      notify.error("We couldn't delete the promo code.");
     }
   };
 

@@ -9,7 +9,7 @@ import {
   Globe,
   FileImage,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface MenuImage {
@@ -85,7 +85,7 @@ export const ImagesManagement: React.FC = () => {
         setRestaurants(restRes.data.data);
       }
     } catch (err) {
-      toast.error("Failed to load images or stores library.");
+      notify.error("Couldn't load images right now.");
     } finally {
       setLoading(false);
     }
@@ -110,7 +110,7 @@ export const ImagesManagement: React.FC = () => {
           setMenuItems(res.data.data || []);
         }
       } catch (err) {
-        toast.error("Failed to fetch menu items for this store.");
+        notify.error("Couldn't load the menu items.");
       }
     };
 
@@ -120,7 +120,7 @@ export const ImagesManagement: React.FC = () => {
   const handleAssociateImage = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!selectedMenuItemId || !imageUrl) {
-      toast.error("Menu item and Image URL are required");
+      notify.warning("Please provide a menu item and an image URL.");
       return;
     }
 
@@ -132,12 +132,12 @@ export const ImagesManagement: React.FC = () => {
       });
 
       if (res.data.status === "success") {
-        toast.success("Image successfully associated with menu item!");
+        notify.success("Image linked to menu item.");
         resetForm();
         fetchInitialData();
       }
     } catch (err) {
-      toast.error("Failed to associate image.");
+      notify.error("We couldn't save this image link.");
     }
   };
 
@@ -147,11 +147,11 @@ export const ImagesManagement: React.FC = () => {
     try {
       const res = await api.delete(`/admin/menu-images/${id}`);
       if (res.data.status === "success") {
-        toast.success("Image deleted.");
+        notify.info("Image removed.");
         fetchInitialData();
       }
     } catch (err) {
-      toast.error("Failed to delete menu image mapping.");
+      notify.error("Couldn't remove this image.");
     }
   };
 
@@ -301,10 +301,10 @@ export const ImagesManagement: React.FC = () => {
                         });
                         if (res.data.status === "success") {
                           setImageUrl(res.data.url);
-                          toast.success("Image uploaded successfully!");
+                          notify.success("Image uploaded!");
                         }
                       } catch (err) {
-                        toast.error("Failed to upload image.");
+                        notify.error("Upload failed. Please try again.");
                       }
                     };
                     reader.readAsDataURL(file);
@@ -330,7 +330,7 @@ export const ImagesManagement: React.FC = () => {
                     type="button"
                     onClick={() => {
                       setImageUrl(preset.url);
-                      toast.success(`Selected preset image: ${preset.name}`);
+                      notify.success(`Selected ${preset.name}`);
                     }}
                     style={{
                       padding: "6px 12px",

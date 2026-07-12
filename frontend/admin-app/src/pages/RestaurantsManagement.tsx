@@ -11,7 +11,7 @@ import {
   Globe,
   FileImage,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Restaurant {
@@ -82,7 +82,7 @@ export const RestaurantsManagement: React.FC = () => {
         setRestaurants(res.data.data);
       }
     } catch (err) {
-      toast.error("Failed to load stores data.");
+      notify.error("Couldn't load stores data.");
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,7 @@ export const RestaurantsManagement: React.FC = () => {
   const handleCreateRestaurant = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !ownerId) {
-      toast.error("Name and Owner ID are required");
+      notify.warning("Please provide a name and owner ID.");
       return;
     }
 
@@ -113,12 +113,12 @@ export const RestaurantsManagement: React.FC = () => {
       });
 
       if (res.data.status === "success") {
-        toast.success("Store created successfully!");
+        notify.success("Store created successfully.");
         resetForm();
         fetchRestaurants();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to create store.");
+      notify.error(err.response?.data?.message || "Couldn't create this store.");
     }
   };
 
@@ -142,12 +142,12 @@ export const RestaurantsManagement: React.FC = () => {
       });
 
       if (res.data.status === "success") {
-        toast.success("Store details updated successfully!");
+        notify.success("Store details updated.");
         resetForm();
         fetchRestaurants();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to update store.");
+      notify.error(err.response?.data?.message || "Couldn't update this store.");
     }
   };
 
@@ -157,11 +157,11 @@ export const RestaurantsManagement: React.FC = () => {
     try {
       const res = await api.delete(`/admin/restaurants/${id}`);
       if (res.data.status === "success") {
-        toast.success("Store deactivated.");
+        notify.info("Store deactivated.");
         fetchRestaurants();
       }
     } catch (err) {
-      toast.error("Failed to deactivate store.");
+      notify.error("Couldn't deactivate this store.");
     }
   };
 
@@ -205,11 +205,11 @@ export const RestaurantsManagement: React.FC = () => {
         is_verified: !store.is_verified,
       });
       if (res.data.status === "success") {
-        toast.success("Store verification updated.");
+        notify.success("Verification status changed.");
         fetchRestaurants();
       }
     } catch (err) {
-      toast.error("Failed to toggle verification status.");
+      notify.error("Couldn't change verification status.");
     }
   };
 
@@ -363,10 +363,10 @@ export const RestaurantsManagement: React.FC = () => {
                           });
                           if (res.data.status === "success") {
                             setLogoUrl(res.data.url);
-                            toast.success("Logo uploaded successfully!");
+                            notify.success("Logo uploaded!");
                           }
                         } catch (err) {
-                          toast.error("Failed to upload logo.");
+                          notify.error("Couldn't upload logo.");
                         }
                       };
                       reader.readAsDataURL(file);
@@ -433,10 +433,10 @@ export const RestaurantsManagement: React.FC = () => {
                           });
                           if (res.data.status === "success") {
                             setBannerUrl(res.data.url);
-                            toast.success("Banner uploaded successfully!");
+                            notify.success("Banner uploaded!");
                           }
                         } catch (err) {
-                          toast.error("Failed to upload banner.");
+                          notify.error("Couldn't upload banner.");
                         }
                       };
                       reader.readAsDataURL(file);
@@ -464,7 +464,7 @@ export const RestaurantsManagement: React.FC = () => {
                     onClick={() => {
                       setBannerUrl(preset.url);
                       setLogoUrl(preset.url);
-                      toast.success(`Selected preset: ${preset.name}`);
+                      notify.success(`Selected ${preset.name}`);
                     }}
                     style={{
                       padding: "6px 12px",

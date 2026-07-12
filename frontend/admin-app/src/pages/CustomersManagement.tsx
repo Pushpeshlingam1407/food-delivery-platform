@@ -8,7 +8,7 @@ import {
   Plus,
   DollarSign,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Customer {
@@ -48,7 +48,9 @@ export const CustomersManagement: React.FC = () => {
         setCustomers(res.data.data);
       }
     } catch (err) {
-      toast.error("Failed to load customer profiles.");
+      notify.error(
+        "We couldn't load the customer list. Please refresh the page.",
+      );
     } finally {
       setLoading(false);
     }
@@ -74,12 +76,15 @@ export const CustomersManagement: React.FC = () => {
       });
 
       if (res.data.status === "success") {
-        toast.success("Customer profile updated!");
+        notify.success("Changes saved successfully.");
         resetForm();
         fetchCustomers();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to update profile.");
+      notify.error(
+        err.response?.data?.message ||
+          "We couldn't save your changes. Please try again.",
+      );
     }
   };
 
@@ -89,11 +94,11 @@ export const CustomersManagement: React.FC = () => {
     try {
       const res = await api.delete(`/admin/customers/${id}`);
       if (res.data.status === "success") {
-        toast.success("Customer suspended.");
+        notify.success("Customer account suspended.");
         fetchCustomers();
       }
     } catch (err) {
-      toast.error("Failed to suspend customer.");
+      notify.error("We couldn't suspend this account right now.");
     }
   };
 

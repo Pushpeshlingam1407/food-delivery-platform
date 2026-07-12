@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CreditCard, MapPin, DollarSign, ArrowLeft } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Address {
@@ -95,21 +95,21 @@ export const Checkout: React.FC = () => {
         setAddresses((prev) => [...prev, newAddr]);
         setSelectedAddressId(newAddr.id);
         setShowNewAddressForm(false);
-        toast.success("Address added successfully!");
+        notify.success("New address saved.");
       }
     } catch (err) {
-      toast.error("Failed to save address.");
+      notify.error("We couldn't save your address.");
     }
   };
 
   const handlePlaceOrder = async () => {
     if (!selectedAddressId) {
-      toast.error("Please select a delivery address.");
+      notify.warning("Where should we deliver this?");
       return;
     }
 
     if (paymentMethod === "wallet" && walletBalance < total) {
-      toast.error("Insufficient wallet balance. Please choose COD.");
+      notify.error("Not enough funds in your wallet. Please select COD.");
       return;
     }
 
@@ -126,7 +126,7 @@ export const Checkout: React.FC = () => {
       });
 
       if (response.data.status === "success") {
-        toast.success("Order placed successfully!", {
+        notify.success("Order confirmed!", {
           description: "Forwarding to live tracking dashboard.",
         });
         const orderId = response.data.data.orderId;
@@ -134,7 +134,7 @@ export const Checkout: React.FC = () => {
       }
     } catch (err: any) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to place order.");
+      notify.error(err.response?.data?.message || "We couldn't place your order. Please try again.");
     } finally {
       setLoading(false);
     }

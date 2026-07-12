@@ -7,7 +7,7 @@ import {
   Clock,
   ShoppingBag,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Order {
@@ -69,7 +69,7 @@ export const OrdersManagement: React.FC = () => {
         setDrivers(driversRes.data.data.filter((d: Driver) => d.is_online));
       }
     } catch (err) {
-      toast.error("Failed to load orders or driver list.");
+      notify.error("Couldn't load the active orders list.");
     } finally {
       setLoading(false);
     }
@@ -91,12 +91,14 @@ export const OrdersManagement: React.FC = () => {
       });
 
       if (res.data.status === "success") {
-        toast.success("Order parameters updated successfully!");
+        notify.success("Order updated.");
         resetForm();
         fetchData();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to update order.");
+      notify.error(
+        err.response?.data?.message || "We couldn't update this order.",
+      );
     }
   };
 
@@ -110,11 +112,11 @@ export const OrdersManagement: React.FC = () => {
     try {
       const res = await api.delete(`/admin/orders/${id}`);
       if (res.data.status === "success") {
-        toast.success("Order deleted.");
+        notify.info("Order deleted.");
         fetchData();
       }
     } catch (err) {
-      toast.error("Failed to delete order.");
+      notify.error("We couldn't delete this order.");
     }
   };
 

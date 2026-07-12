@@ -8,7 +8,7 @@ import {
   Plus,
   Check,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface Driver {
@@ -59,7 +59,7 @@ export const DriversManagement: React.FC = () => {
         setDrivers(res.data.data);
       }
     } catch (err) {
-      toast.error("Failed to load driver partners.");
+      notify.error("Couldn't load the driver list right now.");
     } finally {
       setLoading(false);
     }
@@ -89,13 +89,14 @@ export const DriversManagement: React.FC = () => {
       });
 
       if (res.data.status === "success") {
-        toast.success("Driver details updated successfully!");
+        notify.success("Driver profile updated.");
         resetForm();
         fetchDrivers();
       }
     } catch (err: any) {
-      toast.error(
-        err.response?.data?.message || "Failed to update driver details.",
+      notify.error(
+        err.response?.data?.message ||
+          "We couldn't update this driver's details.",
       );
     }
   };
@@ -106,11 +107,11 @@ export const DriversManagement: React.FC = () => {
     try {
       const res = await api.delete(`/admin/drivers/${id}`);
       if (res.data.status === "success") {
-        toast.success("Driver profile deactivated.");
+        notify.success("Driver account deactivated.");
         fetchDrivers();
       }
     } catch (err) {
-      toast.error("Failed to suspend driver.");
+      notify.error("Couldn't deactivate this driver right now.");
     }
   };
 
@@ -152,11 +153,11 @@ export const DriversManagement: React.FC = () => {
         is_verified: !d.is_verified,
       });
       if (res.data.status === "success") {
-        toast.success("Driver verification updated.");
+        notify.success("Driver verification status changed.");
         fetchDrivers();
       }
     } catch (err) {
-      toast.error("Failed to toggle driver verification.");
+      notify.error("Couldn't update verification status.");
     }
   };
 

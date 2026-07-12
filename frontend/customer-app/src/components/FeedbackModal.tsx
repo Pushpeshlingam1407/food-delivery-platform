@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Star, X } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
 interface FeedbackModalProps {
@@ -37,13 +37,13 @@ export const FeedbackModal: React.FC<FeedbackModalProps> = ({
       });
 
       if (response.data.status === "success") {
-        toast.success("Thank you for your feedback!");
+        notify.success("Thanks for sharing your feedback!");
         if (onSubmitted) onSubmitted();
         onClose();
       }
     } catch (err: any) {
       console.error(err);
-      toast.error(err.response?.data?.message || "Failed to submit rating.");
+      notify.error(err.response?.data?.message || "We couldn't submit your rating right now.");
     } finally {
       setLoading(false);
     }

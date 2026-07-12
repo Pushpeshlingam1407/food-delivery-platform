@@ -8,7 +8,7 @@ import {
   Plus,
   Store,
 } from "lucide-react";
-import { toast } from "sonner";
+import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { PremiumButton } from "../../../shared/components/PremiumButton";
 import { PremiumInput } from "../../../shared/components/PremiumInput";
@@ -52,7 +52,7 @@ export const OwnersManagement: React.FC = () => {
         setOwners(res.data.data);
       }
     } catch (err) {
-      toast.error("Failed to load restaurant owners data.");
+      notify.error("Couldn't load the merchants list.");
     } finally {
       setLoading(false);
     }
@@ -65,7 +65,7 @@ export const OwnersManagement: React.FC = () => {
   const handleCreateOwner = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!firstName || !lastName || !email || !phone || !password) {
-      toast.error("All fields are required to register an owner.");
+      notify.warning("Please fill out all fields to continue.");
       return;
     }
 
@@ -79,13 +79,13 @@ export const OwnersManagement: React.FC = () => {
       });
 
       if (res.data.status === "success") {
-        toast.success("Merchant owner account created successfully!");
+        notify.success("Merchant account created.");
         resetForm();
         fetchOwners();
       }
     } catch (err: any) {
-      toast.error(
-        err.response?.data?.message || "Failed to create owner account.",
+      notify.error(
+        err.response?.data?.message || "Couldn't create the merchant account.",
       );
     }
   };
@@ -105,12 +105,14 @@ export const OwnersManagement: React.FC = () => {
       });
 
       if (res.data.status === "success") {
-        toast.success("Merchant owner profile updated!");
+        notify.success("Merchant profile updated.");
         resetForm();
         fetchOwners();
       }
     } catch (err: any) {
-      toast.error(err.response?.data?.message || "Failed to update profile.");
+      notify.error(
+        err.response?.data?.message || "Couldn't update this profile.",
+      );
     }
   };
 
@@ -122,11 +124,11 @@ export const OwnersManagement: React.FC = () => {
     try {
       const res = await api.delete(`/admin/owners/${id}`);
       if (res.data.status === "success") {
-        toast.success("Owner account deactivated.");
+        notify.info("Account deactivated.");
         fetchOwners();
       }
     } catch (err) {
-      toast.error("Failed to deactivate owner.");
+      notify.error("Couldn't deactivate this account.");
     }
   };
 
