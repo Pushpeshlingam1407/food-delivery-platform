@@ -258,22 +258,24 @@
   background: var(--accent-orange);
 }
 
-/* ZOMATO / BLINKIT RESPONSIVE MOBILE FIX */
+/* Mobile navigation reworked for a calmer, more tactile app feel */
 @media (max-width: 768px) {
   .premium-navbar {
     display: grid;
     grid-template-columns: 1fr;
-    justify-items: center;
-    align-items: center;
-    padding: 12px 14px 14px;
+    justify-items: stretch;
+    align-items: stretch;
+    padding: 14px 12px 12px;
     gap: 12px;
     overflow: visible;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.97), rgba(248, 244, 238, 0.96));
+    box-shadow: 0 14px 36px rgba(21, 21, 21, 0.07);
   }
 
   .navbar-left {
     order: 1;
     width: 100%;
-    justify-content: center;
+    justify-content: flex-start;
     min-width: unset;
   }
 
@@ -288,24 +290,24 @@
   .navbar-right {
     order: 3;
     width: 100%;
-    justify-content: center;
-    gap: 16px;
+    justify-content: space-between;
+    gap: 10px;
     min-width: unset;
   }
 
   .address-pill-btn {
-    width: min(320px, 82vw);
-    justify-content: center;
-    padding: 10px 14px;
-    gap: 9px;
-    border-radius: 999px;
-    background: rgba(255, 255, 255, 0.76) !important;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    width: 100%;
+    justify-content: flex-start;
+    padding: 12px 14px;
+    gap: 10px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.92) !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
   }
 
   .address-icon-wrapper {
-    width: 42px;
-    height: 42px;
+    width: 38px;
+    height: 38px;
     padding: 0;
     flex: 0 0 auto;
   }
@@ -331,37 +333,38 @@
   }
 
   .navbar-search-box {
-    width: min(520px, 100%) !important;
-    min-height: 48px;
+    width: 100% !important;
+    min-height: 50px;
     padding: 0 14px !important;
-    border-radius: 18px !important;
-    background: rgba(255, 255, 255, 0.82) !important;
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.07) !important;
+    border-radius: 20px !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06) !important;
   }
 
   .navbar-search-box input {
     min-width: 0;
-    font-size: 0.95rem !important;
+    font-size: 0.92rem !important;
     text-overflow: ellipsis;
   }
 
   .cart-text {
-    display: none;
+    display: inline;
+    font-size: 0.78rem;
   }
 
   .navbar-profile-btn,
   .cart-btn-capsule {
-    width: 48px !important;
+    min-width: 48px !important;
     height: 48px !important;
-    padding: 0 !important;
-    border-radius: 50% !important;
-    background: rgba(255, 255, 255, 0.82) !important;
-    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.06) !important;
+    padding: 0 14px !important;
+    border-radius: 18px !important;
+    background: rgba(255, 255, 255, 0.94) !important;
+    box-shadow: 0 10px 24px rgba(15, 23, 42, 0.06) !important;
   }
 
   .cart-btn-capsule {
     justify-content: center !important;
-    gap: 0 !important;
+    gap: 8px !important;
   }
 }
 
@@ -372,11 +375,20 @@
   }
 
   .address-pill-btn {
-    width: min(310px, 88vw);
+    padding: 11px 12px;
   }
 
   .navbar-search-box input {
-    font-size: 0.88rem !important;
+    font-size: 0.86rem !important;
+  }
+
+  .navbar-right {
+    gap: 8px;
+  }
+
+  .navbar-profile-btn,
+  .cart-btn-capsule {
+    border-radius: 16px !important;
   }
 }
 

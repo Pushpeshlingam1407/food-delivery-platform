@@ -291,9 +291,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               {!isCollapsed && (
                 <div className="admin-user-info">
                   <span className="admin-user-name">{userName || "User"}</span>
-                  <span className="admin-user-role">
-                    <span className="admin-status-dot" /> Active Console
-                  </span>
                 </div>
               )}
             </div>

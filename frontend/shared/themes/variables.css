@@ -3582,10 +3582,10 @@ h3 {
 }
 
 .foodie-restaurant-card {
-  background: var(--glass-bg);
+  background: rgba(255, 255, 255, 0.84);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  border-radius: 20px;
+  border-radius: 18px;
   overflow: hidden;
   border: 1.5px solid var(--glass-border);
   text-decoration: none;
@@ -3596,16 +3596,56 @@ h3 {
   animation: cardReveal 0.4s ease both;
   position: relative;
 }
+
+.foodie-restaurant-card:nth-child(1) {
+  animation-delay: 0.02s;
+}
+
+.foodie-restaurant-card:nth-child(2) {
+  animation-delay: 0.05s;
+}
+
+.foodie-restaurant-card:nth-child(3) {
+  animation-delay: 0.08s;
+}
+
+.foodie-restaurant-card:nth-child(4) {
+  animation-delay: 0.11s;
+}
+
+.foodie-restaurant-card:nth-child(5) {
+  animation-delay: 0.14s;
+}
+
+.foodie-restaurant-card:nth-child(6) {
+  animation-delay: 0.17s;
+}
+
+.foodie-restaurant-card:nth-child(7) {
+  animation-delay: 0.2s;
+}
+
+.foodie-restaurant-card:nth-child(8) {
+  animation-delay: 0.23s;
+}
+
+.foodie-restaurant-card:nth-child(9) {
+  animation-delay: 0.26s;
+}
+
+.foodie-restaurant-card:nth-child(10) {
+  animation-delay: 0.29s;
+}
 .foodie-restaurant-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 20px 48px rgba(21, 21, 21, 0.12);
-  border-color: rgba(21, 21, 21, 0.12);
+  box-shadow: 0 18px 42px rgba(21, 21, 21, 0.1);
+  border-color: rgba(21, 21, 21, 0.1);
 }
 
 .foodie-card-image-wrapper {
   width: 100%;
   height: 160px;
-  background: linear-gradient(135deg, #f5f5f0, #ede8e0);
+  background: linear-gradient(135deg, #f5f2ed, #eee7de);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -3705,7 +3745,7 @@ h3 {
   left: 0;
   right: 0;
   height: 64px;
-  background: rgba(255, 255, 255, 0.95);
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(20px);
   border-top: 1px solid var(--glass-border);
   z-index: 900;
@@ -3716,6 +3756,14 @@ h3 {
 @media (max-width: 768px) {
   .mobile-bottom-nav {
     display: flex;
+    left: 10px;
+    right: 10px;
+    bottom: 10px;
+    height: 70px;
+    border: 1px solid rgba(21, 21, 21, 0.07);
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 16px 36px rgba(21, 21, 21, 0.08);
   }
 }
 
@@ -3742,10 +3790,10 @@ h3 {
   color: var(--text-slate);
 }
 .mobile-bottom-nav-item.active {
-  color: var(--accent-orange);
+  color: var(--text-slate);
 }
 .mobile-bottom-nav-item.active svg {
-  stroke: var(--accent-orange);
+  stroke: var(--text-slate);
 }
 .mobile-bottom-nav-badge {
   position: absolute;
@@ -3766,7 +3814,53 @@ h3 {
 @media (max-width: 768px) {
   .app-shell,
   .main-content-area {
-    padding-bottom: 80px;
+    padding-bottom: 96px;
+  }
+
+  .feature-section {
+    margin-bottom: 24px;
+  }
+
+  .category-pills-scroll {
+    gap: 8px;
+  }
+
+  .category-pill {
+    padding: 8px 14px;
+    border-radius: 16px;
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(21, 21, 21, 0.08);
+  }
+
+  .category-pill.active {
+    background: #1f2937;
+    border-color: #1f2937;
+  }
+
+  .order-again-header {
+    margin-bottom: 12px;
+  }
+
+  .order-again-card {
+    width: 182px;
+  }
+
+  .foodie-restaurant-grid {
+    grid-template-columns: 1fr;
+    gap: 14px;
+  }
+
+  .foodie-restaurant-card {
+    border-radius: 18px;
+  }
+
+  .foodie-card-image-wrapper {
+    height: 150px;
+  }
+
+  .active-order-banner-card {
+    padding: 14px 16px;
+    border-radius: 14px;
   }
 }
 

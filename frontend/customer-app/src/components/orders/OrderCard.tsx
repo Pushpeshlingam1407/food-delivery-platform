@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import {
   formatDate,
+  formatOrderNumber,
   formatMoney,
   formatTime,
   getItemName,
@@ -59,7 +60,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
 
   return (
     <article
-      className={`order-card ${!active ? "order-card--clickable" : ""}`}
+      className={`order-surface order-card ${!active ? "order-card--clickable" : ""}`}
       onClick={() => onOpen(order)}
     >
       <div className="order-card-top">
@@ -72,7 +73,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             <div>
               <h2>{order.restaurant_name}</h2>
               <p>
-                #{order.order_number} - {formatDate(order.placed_at)} at{" "}
+                {formatOrderNumber(order.order_number)} - {formatDate(order.placed_at)} at{" "}
                 {formatTime(order.placed_at)}
               </p>
             </div>
@@ -135,7 +136,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <button
             type="button"
             onClick={stopAndRun(() => onTrack(order))}
-            className="btn-premium order-primary-action"
+              className="order-action-button order-action-button--primary"
           >
             Track live <ChevronRight size={16} />
           </button>
@@ -145,7 +146,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <button
             type="button"
             onClick={stopAndRun(() => onReorder(order))}
-            className="btn-reorder"
+              className="order-action-button order-action-button--reorder"
             disabled={reordering}
           >
             <RotateCcw size={15} />
@@ -157,7 +158,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
           <button
             type="button"
             onClick={stopAndRun(() => onRate(order))}
-            className="order-ghost-action"
+              className="order-action-button order-action-button--ghost"
           >
             <Star size={15} />
             Rate
@@ -166,7 +167,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
 
         <button
           type="button"
-          className="order-ghost-action"
+          className="order-action-button order-action-button--ghost"
           onClick={stopAndRun(() => onHelp(order))}
         >
           <Headphones size={15} />
@@ -176,7 +177,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
         {!active && (
           <button
             type="button"
-            className="order-ghost-action"
+            className="order-action-button order-action-button--ghost"
             onClick={stopAndRun(() => onOpen(order))}
           >
             <ReceiptText size={15} />

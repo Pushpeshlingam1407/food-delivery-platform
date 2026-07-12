@@ -2,6 +2,7 @@ import React from "react";
 import { Headphones, PackageCheck, RotateCcw, X } from "lucide-react";
 import {
   formatDate,
+  formatOrderNumber,
   formatMoney,
   formatTime,
   getItemName,
@@ -29,13 +30,13 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
   return (
     <div className="order-details-overlay" onClick={onClose}>
       <aside
-        className="order-details-panel"
+        className="order-surface order-details-panel"
         onClick={(event) => event.stopPropagation()}
         aria-label={`Order ${order.order_number} details`}
       >
         <div className="order-details-header">
           <div>
-            <p>Order #{order.order_number}</p>
+            <p>{formatOrderNumber(order.order_number)}</p>
             <h2>{order.restaurant_name}</h2>
             <span>
               {formatDate(order.placed_at)} at {formatTime(order.placed_at)}
@@ -126,7 +127,7 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
           {order.status === "delivered" && (
             <button
               type="button"
-              className="btn-reorder"
+              className="order-action-button order-action-button--reorder"
               onClick={() => onReorder(order)}
               disabled={reordering}
             >
@@ -136,7 +137,7 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
           )}
           <button
             type="button"
-            className="order-ghost-action"
+            className="order-action-button order-action-button--ghost"
             onClick={() => onHelp(order)}
           >
             <Headphones size={15} />

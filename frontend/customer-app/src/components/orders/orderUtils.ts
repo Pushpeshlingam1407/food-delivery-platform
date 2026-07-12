@@ -89,6 +89,8 @@ export const formatTime = (value: string) =>
     minute: "2-digit",
   });
 
+export const formatOrderNumber = (value: string) => `Order No. ${value}`;
+
 export const isActive = (status: string) => ACTIVE_STATUSES.includes(status);
 
 export const getItemName = (item: OrderItem) =>

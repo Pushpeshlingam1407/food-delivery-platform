@@ -18,21 +18,21 @@ export const OrderSearchBar: React.FC<OrderSearchBarProps> = ({
   onFilterChange,
 }) => {
   return (
-    <div className="orders-toolbar">
-      <label className="orders-search">
+    <div className="orders-toolbar order-toolbar">
+      <label className="orders-search order-search-field">
         <Search size={17} />
         <input
           value={query}
           onChange={(event) => onQueryChange(event.target.value)}
-          placeholder="Search restaurant, item, or order ID"
+              placeholder="Search restaurant, item, or order number"
         />
       </label>
-      <div className="orders-tabs" aria-label="Filter orders">
+      <div className="orders-tabs order-filter-tabs" aria-label="Filter orders">
         {filterOptions.map(([key, label]) => (
           <button
             key={key}
             type="button"
-            className={activeFilter === key ? "active" : ""}
+            className={`order-filter-tab${activeFilter === key ? " active" : ""}`}
             onClick={() => onFilterChange(key)}
           >
             {label}

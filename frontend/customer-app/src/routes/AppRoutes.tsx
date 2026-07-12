@@ -24,17 +24,9 @@ import { Profile } from "../pages/Profile";
 import { ShimmerList } from "../components/Shimmer";
 import api from "../../../shared/services/api";
 import {
-  DollarSign,
-  Truck,
   ArrowRight,
-  Compass,
-  MapPin,
-  Wallet,
-  LogOut,
-  LogIn,
   User,
   ShoppingBag,
-  Menu,
   Clock,
   RotateCcw,
   Home as HomeIcon,
@@ -58,11 +50,8 @@ import { CMS } from "../../../admin-app/src/pages/CMS";
 import { Dashboard as RestaurantDashboard } from "../../../restaurant-app/src/pages/Dashboard";
 import { MenuManager } from "../../../restaurant-app/src/pages/MenuManager";
 import { Earnings } from "../../../restaurant-app/src/pages/Earnings";
-import { Navbar as RestaurantNavbar } from "../../../restaurant-app/src/components/Navbar";
-
 // Delivery Imports
 import { Dashboard as DeliveryDashboard } from "../../../delivery-app/src/pages/Dashboard";
-import { Navbar as DeliveryNavbar } from "../../../delivery-app/src/components/Navbar";
 
 interface HomeProps {
   searchQuery: string;
@@ -282,12 +271,11 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
         <ShimmerList />
       ) : (
         <div className="foodie-restaurant-grid">
-          {filteredRestaurants.map((r, i) => (
+          {filteredRestaurants.map((r) => (
             <Link
               to={`/restaurant/${r.id}`}
               key={r.id}
               className="foodie-restaurant-card"
-              style={{ animationDelay: `${i * 0.05}s` }}
             >
               <div className="foodie-card-image-wrapper">
                 {getRestEmoji(r.description)}
@@ -329,23 +317,6 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
           )}
         </div>
       )}
-    </div>
-  );
-};
-
-const GlobalBackBar: React.FC = () => {
-  const location = useLocation();
-  const navigate = useNavigate();
-
-  if (location.pathname === "/" || location.pathname === "") {
-    return null;
-  }
-
-  return (
-    <div className="global-back-bar">
-      <button onClick={() => navigate(-1)} className="back-button-global">
-        ← Back
-      </button>
     </div>
   );
 };
@@ -853,7 +824,6 @@ export const AppRoutes: React.FC = () => {
             onDepositClick={handleDeposit}
             deliveryAddress={deliveryAddress}
           />
-          <GlobalBackBar />
           <Routes>
             <Route
               path="/"

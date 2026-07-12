@@ -8,6 +8,7 @@ import { OrderCard } from "../components/orders/OrderCard";
 import { OrderDetailsDrawer } from "../components/orders/OrderDetailsDrawer";
 import { OrderSearchBar } from "../components/orders/OrderSearchBar";
 import {
+  formatOrderNumber,
   getItemName,
   isActive,
   type Order,
@@ -131,7 +132,7 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
 
   const handleHelp = (order: Order) => {
     toast.info("Support is ready for this order.", {
-      description: `Order #${order.order_number}`,
+      description: formatOrderNumber(order.order_number),
     });
   };
 
@@ -211,7 +212,7 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
             <p>
               {orders.length === 0
                 ? "Your first delivery will show up here with tracking, reorder, rating, and support options."
-                : "Try searching another restaurant, item, or order ID."}
+                : "Try searching another restaurant, item, or order number."}
             </p>
             <button onClick={() => navigate("/")} className="btn-premium">
               Explore stores
