@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { CreditCard, MapPin, DollarSign, ArrowLeft } from "lucide-react";
 import notify from "../../../shared/utils/toast";
+import { PremiumCard } from "../../../shared/components/PremiumCard";
 import api from "../../../shared/services/api";
 
 interface Address {
@@ -409,14 +410,13 @@ export const Checkout: React.FC = () => {
                   </div>
                 </div>
               </label>
-            </div>
+            </PremiumCard>
           </div>
         </div>
 
         {/* Order details checklist card */}
         <div>
-          <div
-            className="card-premium"
+          <PremiumCard
             style={{
               position: "sticky",
               top: "100px",

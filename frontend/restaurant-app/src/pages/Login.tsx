@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import notify from "../../../shared/utils/toast";
+import { PremiumCard } from "../../../shared/components/PremiumCard";
 import api from "../../../shared/services/api";
 
 export const Login: React.FC = () => {
@@ -63,8 +64,7 @@ export const Login: React.FC = () => {
         padding: "20px",
       }}
     >
-      <div
-        className="card-premium"
+      <PremiumCard
         style={{
           width: "100%",
           maxWidth: "440px",
@@ -172,7 +172,7 @@ export const Login: React.FC = () => {
             Create one
           </Link>
         </div>
-      </div>
+      </PremiumCard>
     </div>
   );
 };

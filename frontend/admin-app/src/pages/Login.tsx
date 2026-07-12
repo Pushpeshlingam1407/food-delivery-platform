@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import notify from "../../../shared/utils/toast";
+import { PremiumCard } from "../../../shared/components/PremiumCard";
 import api from "../../../shared/services/api";
 
 export const Login: React.FC = () => {
@@ -60,14 +61,18 @@ export const Login: React.FC = () => {
         minHeight: "90vh",
       }}
     >
-      <div
-        className="card-premium"
+      <PremiumCard
         style={{
           width: "100%",
           maxWidth: "400px",
+          display: "flex",
+          flexDirection: "column",
+          gap: "24px",
+          position: "relative",
+          zIndex: 10,
         }}
       >
-        <div style={{ textAlign: "center", marginBottom: "32px" }}>
+        <div style={{ textAlign: "center", marginBottom: "8px" }}>
           <div
             style={{
               fontFamily: "var(--font-cohere)",
@@ -139,7 +144,7 @@ export const Login: React.FC = () => {
             {loading ? "Verifying..." : "Access Console"}
           </button>
         </form>
-      </div>
+      </PremiumCard>
     </div>
   );
 };

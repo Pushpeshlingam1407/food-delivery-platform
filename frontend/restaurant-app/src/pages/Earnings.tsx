@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import { LoadingSpinner } from "../../../shared/components/LoadingSpinner";
+import { StatCard } from "../../../shared/components/StatCard";
 
 interface Summary {
   total_orders: number;
@@ -104,7 +106,9 @@ export const Earnings: React.FC = () => {
         await fetchEarningsAndWallet();
       }
     } catch (err: any) {
-      notify.error(err.response?.data?.message || "We couldn't process this payout.");
+      notify.error(
+        err.response?.data?.message || "We couldn't process this payout.",
+      );
     } finally {
       setPayoutLoading(false);
     }
@@ -203,68 +207,47 @@ export const Earnings: React.FC = () => {
       >
         {/* Main Financial Cards Row */}
         <div className="stat-grid">
-          {/* Gross Sales */}
-          <div className="stat-card stat-card--warm">
-            <div className="stat-card__header">
-              <span className="stat-card__label">GROSS REVENUE</span>
-              <div className="stat-card__icon stat-card__icon--orange">
-                <TrendingUp size={20} color="var(--accent-orange)" />
-              </div>
-            </div>
-            <div className="stat-card__value">
-              ₹{parseFloat(summary?.gross_sales?.toString() || "0").toFixed(2)}
-            </div>
-            <div className="stat-card__subtitle">
-              Before commissions & deductions
-            </div>
-          </div>
+          <StatCard
+            theme="restaurant"
+            title="GROSS REVENUE"
+            icon={<TrendingUp size={20} color="var(--accent-orange)" />}
+            value={`₹${parseFloat(summary?.gross_sales?.toString() || "0").toFixed(2)}`}
+            subtitle="Before commissions & deductions"
+            restContainerVariant="warm"
+            restIconVariant="orange"
+          />
 
-          {/* Commissions */}
-          <div className="stat-card stat-card--cool">
-            <div className="stat-card__header">
-              <span className="stat-card__label">PLATFORM COMMISSIONS</span>
-              <div className="stat-card__icon stat-card__icon--violet">
-                <DollarSign size={20} color="var(--accent-violet)" />
-              </div>
-            </div>
-            <div className="stat-card__value">
-              ₹
-              {parseFloat(
-                summary?.total_commissions?.toString() || "0",
-              ).toFixed(2)}
-            </div>
-            <div className="stat-card__subtitle stat-card__subtitle--danger">
-              Deducted at source (avg 10%)
-            </div>
-          </div>
+          <StatCard
+            theme="restaurant"
+            title="PLATFORM COMMISSIONS"
+            icon={<DollarSign size={20} color="var(--accent-violet)" />}
+            value={`₹${parseFloat(summary?.total_commissions?.toString() || "0").toFixed(2)}`}
+            subtitle="Deducted at source (avg 10%)"
+            restContainerVariant="cool"
+            restIconVariant="violet"
+            restSubtitleVariant="danger"
+          />
 
-          {/* Net Earnings */}
-          <div className="stat-card stat-card--green">
-            <div className="stat-card__header">
-              <span className="stat-card__label">NET EARNINGS</span>
-              <div className="stat-card__icon stat-card__icon--green">
-                <CheckCircle size={20} color="#4CAF50" />
-              </div>
-            </div>
-            <div className="stat-card__value stat-card__value--green">
-              ₹{parseFloat(summary?.net_earnings?.toString() || "0").toFixed(2)}
-            </div>
-            <div className="stat-card__subtitle">
-              Credited directly to owner wallet
-            </div>
-          </div>
+          <StatCard
+            theme="restaurant"
+            title="NET EARNINGS"
+            icon={<CheckCircle size={20} color="#4CAF50" />}
+            value={`₹${parseFloat(summary?.net_earnings?.toString() || "0").toFixed(2)}`}
+            subtitle="Credited directly to owner wallet"
+            restContainerVariant="green"
+            restIconVariant="green"
+            restValueVariant="green"
+          />
 
-          {/* Total Orders */}
-          <div className="stat-card">
-            <div className="stat-card__header">
-              <span className="stat-card__label">TOTAL ORDERS</span>
-              <div className="stat-card__icon stat-card__icon--muted">
-                <FileText size={20} color="var(--text-slate)" />
-              </div>
-            </div>
-            <div className="stat-card__value">{summary?.total_orders || 0}</div>
-            <div className="stat-card__subtitle">Completed deliveries</div>
-          </div>
+          <StatCard
+            theme="restaurant"
+            title="TOTAL ORDERS"
+            icon={<FileText size={20} color="var(--text-slate)" />}
+            value={summary?.total_orders || 0}
+            subtitle="Completed deliveries"
+            restContainerVariant="default"
+            restIconVariant="muted"
+          />
         </div>
 
         {/* Payout & Wallet Interactive Portal */}

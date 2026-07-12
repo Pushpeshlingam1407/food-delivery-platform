@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import notify from "../../../shared/utils/toast";
+import { PremiumCard } from "../../../shared/components/PremiumCard";
 import { MapPin, Plus, Trash2, Edit2, Check } from "lucide-react";
 import api from "../../../shared/services/api";
 
@@ -279,7 +280,7 @@ export const AddressManager: React.FC = () => {
         </div>
 
         {/* Address Form */}
-        <div className="card-premium">
+        <PremiumCard>
           <h3 style={{ fontSize: "1.2rem", marginBottom: "20px" }}>
             {editingId ? "Edit Address" : "Add New Address"}
           </h3>
@@ -433,7 +434,7 @@ export const AddressManager: React.FC = () => {
               )}
             </div>
           </form>
-        </div>
+        </PremiumCard>
       </div>
     </div>
   );

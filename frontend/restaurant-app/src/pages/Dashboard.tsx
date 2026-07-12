@@ -120,7 +120,9 @@ export const Dashboard: React.FC = () => {
     socket.on("newOrderReceived", (newOrder: Order) => {
       setOrders((prev) => [newOrder, ...prev]);
       playOrderChime();
-      notify.success(`New Order Received! Order #${newOrder.order_number} for $${newOrder.item_total} placed.`);
+      notify.success(
+        `New Order Received! Order #${newOrder.order_number} for $${newOrder.item_total} placed.`,
+      );
     });
 
     return () => {
