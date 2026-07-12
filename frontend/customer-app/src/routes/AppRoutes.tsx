@@ -5,11 +5,19 @@ import {
   Route,
   Navigate,
   Link,
-  useLocation,
   useNavigate,
 } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
 import { AppSidebar } from "../../../shared/components/AppSidebar";
+import {
+  MobileBottomNav,
+} from "../../../shared/components/MobileBottomNav";
+import {
+  ResponsiveFooter,
+} from "../../../shared/components/ResponsiveFooter";
+import type {
+  FooterSection,
+} from "../../../shared/components/ResponsiveFooter";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { OtpLogin } from "../pages/OtpLogin";
@@ -321,66 +329,52 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
   );
 };
 
-interface MobileBottomNavProps {
-  cartCount: number;
-  userEmail: string | null;
-  onCartClick: () => void;
-}
-
-const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
-  cartCount,
-  userEmail,
-  onCartClick,
-}) => {
-  const location = useLocation();
-  const path = location.pathname;
-
-  const items = [
-    { icon: <HomeIcon size={22} />, label: "Home", route: "/" },
-    { icon: <ClipboardList size={22} />, label: "Orders", route: "/orders" },
-    {
-      icon: <ShoppingBag size={22} />,
-      label: "Cart",
-      action: onCartClick,
-      badge: cartCount > 0 ? cartCount : null,
-    },
-    {
-      icon: <User size={22} />,
-      label: "Profile",
-      route: userEmail ? "/profile" : "/login",
-    },
-  ];
-
-  return (
-    <nav className="mobile-bottom-nav">
-      {items.map((item, i) => {
-        const isActive = item.route ? path === item.route : false;
-        return item.action ? (
-          <button
-            key={i}
-            className={`mobile-bottom-nav-item${isActive ? " active" : ""}`}
-            onClick={item.action}
-          >
-            {item.badge != null && (
-              <span className="mobile-bottom-nav-badge">{item.badge}</span>
-            )}
-            {item.icon}
-            <span>{item.label}</span>
-          </button>
-        ) : (
-          <Link
-            key={i}
-            to={item.route!}
-            className={`mobile-bottom-nav-item${isActive ? " active" : ""}`}
-          >
-            {item.icon}
-            <span>{item.label}</span>
-          </Link>
-        );
-      })}
-    </nav>
-  );
-};
+const CUSTOMER_FOOTER_SECTIONS: FooterSection[] = [
+  {
+    title: "Popular Categories",
+    links: [
+      { label: "Vegetables & Fruits", to: "/" },
+      { label: "Cold Drinks & Juices", to: "/" },
+      { label: "Bakery & Biscuits", to: "/" },
+      { label: "Chicken, Meat & Fish", to: "/" },
+    ],
+  },
+  {
+    title: "Company",
+    links: [
+      { label: "About Us", to: "/page/about-us" },
+      { label: "Terms & Conditions", to: "/page/terms-of-service" },
+      { label: "Privacy Policy", to: "/page/privacy-policy" },
+      { label: "FAQs", to: "/page/faqs" },
+    ],
+  },
+  {
+    title: "For Partners",
+    links: [
+      {
+        label: "Merchant Console",
+        onClick: () => {
+          localStorage.setItem("userRole", "restaurant_owner");
+          window.location.href = "/login";
+        },
+      },
+      {
+        label: "Rider Partner Portal",
+        onClick: () => {
+          localStorage.setItem("userRole", "delivery_partner");
+          window.location.href = "/login";
+        },
+      },
+      {
+        label: "Admin Operations Console",
+        onClick: () => {
+          localStorage.setItem("userRole", "admin");
+          window.location.href = "/login";
+        },
+      },
+    ],
+  },
+];
 
 export const AppRoutes: React.FC = () => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
@@ -894,98 +888,29 @@ export const AppRoutes: React.FC = () => {
             />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
-          <footer className="footer-container">
-            <div className="footer-grid">
-              <div className="footer-column">
-                <h4>Popular Categories</h4>
-                <ul>
-                  <li>
-                    <Link to="/">Vegetables & Fruits</Link>
-                  </li>
-                  <li>
-                    <Link to="/">Cold Drinks & Juices</Link>
-                  </li>
-                  <li>
-                    <Link to="/">Bakery & Biscuits</Link>
-                  </li>
-                  <li>
-                    <Link to="/">Chicken, Meat & Fish</Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="footer-column">
-                <h4>Company</h4>
-                <ul>
-                  <li>
-                    <Link to="/page/about-us">About Us</Link>
-                  </li>
-                  <li>
-                    <Link to="/page/terms-of-service">Terms & Conditions</Link>
-                  </li>
-                  <li>
-                    <Link to="/page/privacy-policy">Privacy Policy</Link>
-                  </li>
-                  <li>
-                    <Link to="/page/faqs">FAQs</Link>
-                  </li>
-                </ul>
-              </div>
-              <div className="footer-column">
-                <h4>For Partners</h4>
-                <ul>
-                  <li>
-                    <a
-                      href="/login"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        localStorage.setItem("userRole", "restaurant_owner");
-                        window.location.href = "/login";
-                      }}
-                    >
-                      Merchant Console
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/login"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        localStorage.setItem("userRole", "delivery_partner");
-                        window.location.href = "/login";
-                      }}
-                    >
-                      Rider Partner Portal
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="/login"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        localStorage.setItem("userRole", "admin");
-                        window.location.href = "/login";
-                      }}
-                    >
-                      Admin Operations Console
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div className="footer-bottom">
-              <div>
-                © {new Date().getFullYear()} Bites Internet Private Limited. All
-                rights reserved.
-              </div>
-            </div>
-          </footer>
+          <ResponsiveFooter
+            sections={CUSTOMER_FOOTER_SECTIONS}
+            bottomText={`© ${new Date().getFullYear()} Bites Internet Private Limited. All rights reserved.`}
+          />
         </div>
       </div>
       {/* Mobile bottom navigation */}
       <MobileBottomNav
-        cartCount={cartCount}
-        userEmail={userEmail}
-        onCartClick={() => setCartOpen(true)}
+        items={[
+          { icon: <HomeIcon size={22} />, label: "Home", route: "/" },
+          { icon: <ClipboardList size={22} />, label: "Orders", route: "/orders" },
+          {
+            icon: <ShoppingBag size={22} />,
+            label: "Cart",
+            onClick: () => setCartOpen(true),
+            badge: cartCount > 0 ? cartCount : null,
+          },
+          {
+            icon: <User size={22} />,
+            label: "Profile",
+            route: userEmail ? "/profile" : "/login",
+          },
+        ]}
       />
       <CartDrawer
         isOpen={cartOpen}

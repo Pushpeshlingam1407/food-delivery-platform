@@ -292,7 +292,7 @@ export const Dashboard: React.FC = () => {
   return (
     <div className="app-shell">
       {/* Earnings Highlight Strip */}
-      <div className="earnings-highlight-strip">
+      <div className="earnings-highlight-strip" id="driver-wallet-section">
         <div>
           <div className="earnings-strip-label">Today's Earnings</div>
           <div className="earnings-strip-amount">
@@ -581,6 +581,7 @@ export const Dashboard: React.FC = () => {
       {activeJob && (
         <div
           className="panel-card accent-panel"
+          id="driver-job-section"
           style={{
             marginBottom: "40px",
             borderLeft: "5px solid var(--accent-orange)",

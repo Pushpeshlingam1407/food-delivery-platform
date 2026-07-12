@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { User, LogOut, Menu, X } from "lucide-react";
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Menu, X, LogOut, Truck } from "lucide-react";
 
 interface NavbarProps {
   driverName?: string | null;
@@ -11,42 +11,30 @@ export const Navbar: React.FC<NavbarProps> = ({
   driverName = "Logistics Portal",
   onLogout,
 }) => {
-  const [menuOpen, setMenuOpen] = useState(false);
+  const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = React.useState(false);
+
+  React.useEffect(() => {
+    setMenuOpen(false);
+  }, []);
 
   return (
     <>
-      <nav
-        className="navbar-container"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          width: "100%",
-          padding: "16px 32px",
-          background: "var(--glass-bg)",
-          backdropFilter: "var(--glass-blur)",
-          WebkitBackdropFilter: "var(--glass-blur)",
-          borderBottom: "1px solid var(--glass-border)",
-          position: "sticky",
-          top: 0,
-          zIndex: 90,
-          boxShadow: "0 4px 24px rgba(0,0,0,0.02)",
-        }}
-      >
-        <div
-          className="navbar-row"
-          style={{ display: "flex", alignItems: "center", gap: "16px" }}
-        >
-          {/* Hamburger toggle */}
+      <nav className="navbar-container premium-navbar">
+        <div className="navbar-left">
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
-            className="mobile-menu-toggle"
+            onClick={() => setMenuOpen((open) => !open)}
+            className="mobile-menu-toggle navbar-mobile-only"
+            type="button"
+            aria-label="Open delivery menu"
             style={{
               background: "none",
               border: "none",
               cursor: "pointer",
               color: "var(--text-slate)",
-              padding: "4px",
+              padding: 0,
+              display: "flex",
+              alignItems: "center",
             }}
           >
             <Menu size={24} />
@@ -67,6 +55,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           >
             bites
           </Link>
+
           <span
             className="navbar-desktop-only"
             style={{
@@ -83,6 +72,20 @@ export const Navbar: React.FC<NavbarProps> = ({
           </span>
         </div>
 
+        <div className="navbar-center navbar-mobile-only" style={{ justifyContent: "center" }}>
+          <div
+            style={{
+              fontSize: "0.82rem",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "1px",
+              color: "var(--accent-orange)",
+            }}
+          >
+            Driver Console
+          </div>
+        </div>
+
         <div
           className="navbar-action-group navbar-desktop-only"
           style={{ alignItems: "center", gap: "24px" }}
@@ -97,7 +100,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 display: "flex",
                 alignItems: "center",
                 gap: "6px",
-                fontWeight: 600,
+                fontWeight: 700,
                 fontSize: "0.95rem",
                 cursor: "pointer",
               }}
@@ -107,9 +110,21 @@ export const Navbar: React.FC<NavbarProps> = ({
             </button>
           )}
         </div>
+
+        <div className="navbar-right navbar-mobile-only">
+          {onLogout && (
+            <button
+              onClick={onLogout}
+              className="navbar-signin-pill"
+              type="button"
+              style={{ border: "none" }}
+            >
+              Sign Out
+            </button>
+          )}
+        </div>
       </nav>
 
-      {/* Mobile Drawer (3-lines Sidebar) */}
       {menuOpen && (
         <button
           type="button"
@@ -134,6 +149,8 @@ export const Navbar: React.FC<NavbarProps> = ({
             <button
               onClick={() => setMenuOpen(false)}
               className="drawer-close-button"
+              type="button"
+              aria-label="Close menu"
             >
               <X size={20} />
             </button>
@@ -156,7 +173,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                 paddingBottom: "16px",
               }}
             >
-              <User size={18} />
+              <Truck size={18} />
               <span style={{ fontWeight: 600, fontSize: "0.95rem" }}>
                 {driverName || "Logistics Partner"}
               </span>
@@ -187,6 +204,7 @@ export const Navbar: React.FC<NavbarProps> = ({
                   padding: 0,
                   cursor: "pointer",
                 }}
+                type="button"
               >
                 Sign Out
               </button>
