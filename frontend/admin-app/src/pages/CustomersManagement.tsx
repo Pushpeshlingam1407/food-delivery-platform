@@ -154,12 +154,9 @@ export const CustomersManagement: React.FC = () => {
   }
 
   return (
-    <div className="app-shell" style={{ position: "relative" }}>
+    <div className="app-shell app-shell-relative">
       <div className="section-spacing">
-        <h1
-          className="section-heading section-heading-lg"
-          style={{ margin: 0 }}
-        >
+        <h1 className="section-heading section-heading-lg margin-zero">
           Customers Management
         </h1>
         <p className="text-muted">
@@ -172,13 +169,12 @@ export const CustomersManagement: React.FC = () => {
         {customers.map((c) => (
           <div
             key={c.id}
-            className="panel-card panel-card-stacked"
+            className="panel-card panel-card-stacked clickable-card-wrapper"
             onClick={() => handleInspectCustomer(c)}
-            style={{ cursor: "pointer" }}
           >
             <div>
               <div className="panel-row">
-                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
+                <h3 className="margin-zero bold-font-11">
                   {c.first_name} {c.last_name}
                 </h3>
                 <span
@@ -188,73 +184,28 @@ export const CustomersManagement: React.FC = () => {
                 </span>
               </div>
 
-              <p
-                className="card-subtitle"
-                style={{
-                  fontSize: "0.85rem",
-                  marginTop: "4px",
-                  color: "var(--text-muted)",
-                }}
-              >
+              <p className="card-subtitle customer-meta-muted">
                 {c.email} | {c.phone}
               </p>
 
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  background: "#f8fafc",
-                  padding: "10px 14px",
-                  borderRadius: "8px",
-                  marginTop: "16px",
-                  border: "1px solid var(--cred-border, rgba(0,0,0,0.06))",
-                }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    fontSize: "0.85rem",
-                    fontWeight: 700,
-                  }}
-                >
+              <div className="card-total-row">
+                <div className="flex-center-gap-6 bold-font-600">
                   <DollarSign size={16} color="var(--accent-violet)" /> Balance:
                 </div>
-                <strong style={{ fontSize: "1.1rem" }}>
+                <strong className="bold-font-11">
                   ${parseFloat(c.wallet_balance.toString()).toFixed(2)}
                 </strong>
               </div>
             </div>
 
-            <div
-              className="panel-row"
-              style={{
-                marginTop: "20px",
-                borderTop: "1px solid var(--glass-border)",
-                paddingTop: "12px",
-              }}
-            >
-              <button
-                className="btn-premium btn-sm"
-                style={{
-                  padding: "6px 12px",
-                  fontSize: "0.75rem",
-                  boxShadow: "none",
-                }}
-              >
+            <div className="panel-row panel-card-footer-row">
+              <button className="btn-premium btn-sm btn-sm-flat">
                 Inspect Account
               </button>
 
               <button
                 onClick={(e) => handleDeleteCustomer(c.id, e)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "#F44336",
-                }}
+                className="trash-btn"
               >
                 <Trash2 size={16} />
               </button>
@@ -278,38 +229,15 @@ export const CustomersManagement: React.FC = () => {
         {selectedCustomer && (
           <>
             {/* Account summary header */}
-            <div
-              style={{
-                display: "flex",
-                gap: "12px",
-                alignItems: "center",
-                borderBottom: "1px solid #f1f5f9",
-                paddingBottom: "20px",
-              }}
-            >
-              <div
-                style={{
-                  width: "48px",
-                  height: "48px",
-                  borderRadius: "50%",
-                  background: "rgba(139,92,246,0.1)",
-                  color: "#8b5cf6",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  fontWeight: 800,
-                  fontSize: "1.2rem",
-                }}
-              >
+            <div className="avatar-badge-info-col">
+              <div className="avatar-badge-wrapper">
                 {selectedCustomer.first_name.charAt(0).toUpperCase()}
               </div>
               <div>
-                <h4 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 800 }}>
+                <h4 className="avatar-badge-title">
                   {selectedCustomer.first_name} {selectedCustomer.last_name}
                 </h4>
-                <span
-                  style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
-                >
+                <span className="customer-meta-muted">
                   Registered on{" "}
                   {new Date(selectedCustomer.created_at).toLocaleDateString()}
                 </span>
@@ -319,15 +247,9 @@ export const CustomersManagement: React.FC = () => {
             {/* Edit forms */}
             <form
               onSubmit={handleUpdateCustomer}
-              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+              className="flex-column-gap-16"
             >
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "12px",
-                }}
-              >
+              <div className="grid-2col-gap-12">
                 <div className="premium-form-group">
                   <label>First Name</label>
                   <input
@@ -374,14 +296,13 @@ export const CustomersManagement: React.FC = () => {
 
               <div className="premium-form-group">
                 <label>Adjust Wallet Balance ($)</label>
-                <div style={{ display: "flex", gap: "10px" }}>
+                <div className="adjust-wallet-flex">
                   <input
                     type="number"
                     step="0.01"
                     value={walletBalance}
                     onChange={(e) => setWalletBalance(e.target.value)}
-                    className="premium-form-input"
-                    style={{ flexGrow: 1 }}
+                    className="premium-form-input flex-grow-input"
                   />
                   <button
                     type="button"
@@ -389,12 +310,7 @@ export const CustomersManagement: React.FC = () => {
                       const current = parseFloat(walletBalance || "0");
                       setWalletBalance((current + 10).toString());
                     }}
-                    className="premium-badge neutral"
-                    style={{
-                      cursor: "pointer",
-                      border: "1px solid var(--cred-border)",
-                      padding: "8px 12px",
-                    }}
+                    className="premium-badge neutral quick-wallet-btn"
                   >
                     +$10
                   </button>
@@ -404,33 +320,20 @@ export const CustomersManagement: React.FC = () => {
                       const current = parseFloat(walletBalance || "0");
                       setWalletBalance((current + 50).toString());
                     }}
-                    className="premium-badge neutral"
-                    style={{
-                      cursor: "pointer",
-                      border: "1px solid var(--cred-border)",
-                      padding: "8px 12px",
-                    }}
+                    className="premium-badge neutral quick-wallet-btn"
                   >
                     +$50
                   </button>
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "12px",
-                  alignItems: "center",
-                }}
-              >
+              <div className="grid-2col-gap-12 items-center-helper">
                 <div className="premium-form-group">
                   <label>Account Status</label>
                   <select
                     value={status}
                     onChange={(e: any) => setStatus(e.target.value)}
-                    className="premium-form-input"
-                    style={{ padding: "8px 10px" }}
+                    className="premium-form-input select-input-padding"
                   >
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
@@ -438,28 +341,14 @@ export const CustomersManagement: React.FC = () => {
                   </select>
                 </div>
 
-                <label
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    cursor: "pointer",
-                    marginTop: "18px",
-                  }}
-                >
+                <label className="active-toggle-wrapper-mt18">
                   <input
                     type="checkbox"
                     checked={isVerified}
                     onChange={(e) => setIsVerified(e.target.checked)}
-                    style={{ width: "16px", height: "16px" }}
+                    className="checkbox-dimensions"
                   />
-                  <span
-                    style={{
-                      fontSize: "0.85rem",
-                      fontWeight: 700,
-                      color: "var(--cred-text-secondary)",
-                    }}
-                  >
+                  <span className="verified-badge-label-text">
                     Verified Account
                   </span>
                 </label>
@@ -468,13 +357,7 @@ export const CustomersManagement: React.FC = () => {
               <button
                 type="submit"
                 disabled={saveLoading}
-                className="neo-btn neo-btn-primary"
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  fontSize: "0.95rem",
-                  marginTop: "12px",
-                }}
+                className="neo-btn neo-btn-primary save-configurations-btn"
               >
                 {saveLoading
                   ? "Saving Changes..."

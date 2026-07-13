@@ -291,9 +291,7 @@ export const RestaurantsManagement: React.FC = () => {
         <div className="preview-drawer open">
           <div className="preview-drawer-header">
             <div>
-              <h3 className="margin-zero">
-                Register New Merchant
-              </h3>
+              <h3 className="margin-zero">Register New Merchant</h3>
             </div>
             <button
               onClick={() => setShowAddForm(false)}
@@ -541,21 +539,33 @@ export const RestaurantsManagement: React.FC = () => {
               </button>
             </div>
 
+            {/* verification switch */}
+            <div className="avatar-badge-info-col">
+              <span
+                className={`premium-badge ${
+                  selectedStore.is_verified ? "success" : "danger"
+                }`}
+              >
+                {selectedStore.is_verified
+                  ? "VERIFIED"
+                  : "PENDING VERIFICATION"}
+              </span>
+              <button
+                type="button"
+                onClick={(e) => toggleVerify(selectedStore, e)}
+                className="premium-badge neutral toggle-verify-badge-btn"
+              >
+                Toggle Verification
+              </button>
+            </div>
+
             {/* Banner visual */}
             {selectedStore.banner_image_url && (
-              <div
-                style={{
-                  width: "100%",
-                  height: "130px",
-                  borderRadius: "10px",
-                  overflow: "hidden",
-                  border: "1px solid rgba(0,0,0,0.05)",
-                }}
-              >
+              <div className="drawer-banner-preview-box">
                 <img
                   src={selectedStore.banner_image_url}
                   alt={selectedStore.name}
-                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                  className="drawer-banner-preview-img"
                 />
               </div>
             )}
@@ -563,7 +573,7 @@ export const RestaurantsManagement: React.FC = () => {
             {/* Form editing details */}
             <form
               onSubmit={handleUpdateRestaurant}
-              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+              className="flex-column-gap-16"
             >
               <div className="premium-form-group">
                 <label>Restaurant Name</label>
@@ -581,8 +591,7 @@ export const RestaurantsManagement: React.FC = () => {
                 <textarea
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
-                  className="premium-form-input"
-                  style={{ height: "60px", resize: "none" }}
+                  className="premium-form-input textarea-height-60"
                 />
               </div>
 
@@ -596,13 +605,7 @@ export const RestaurantsManagement: React.FC = () => {
                 />
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "12px",
-                }}
-              >
+              <div className="grid-2col-gap-12">
                 <div className="premium-form-group">
                   <label>Commission (%)</label>
                   <input
@@ -625,13 +628,7 @@ export const RestaurantsManagement: React.FC = () => {
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "12px",
-                }}
-              >
+              <div className="grid-2col-gap-12">
                 <div className="premium-form-group">
                   <label>Opens</label>
                   <input
@@ -653,37 +650,15 @@ export const RestaurantsManagement: React.FC = () => {
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "12px",
-                  alignItems: "center",
-                }}
-              >
-                <label
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "8px",
-                    cursor: "pointer",
-                  }}
-                >
+              <div className="grid-2col-gap-12 items-center-helper">
+                <label className="active-toggle-label">
                   <input
                     type="checkbox"
                     checked={isActive}
                     onChange={(e) => setIsActive(e.target.checked)}
-                    style={{ width: "16px", height: "16px" }}
+                    className="checkbox-dimensions"
                   />
-                  <span
-                    style={{
-                      fontSize: "0.85rem",
-                      fontWeight: 700,
-                      color: "var(--cred-text-secondary)",
-                    }}
-                  >
-                    Active
-                  </span>
+                  <span className="verified-badge-label-text">Active</span>
                 </label>
 
                 <div className="premium-form-group">
@@ -691,8 +666,7 @@ export const RestaurantsManagement: React.FC = () => {
                   <select
                     value={status}
                     onChange={(e: any) => setStatus(e.target.value)}
-                    className="premium-form-input"
-                    style={{ padding: "8px 10px" }}
+                    className="premium-form-input select-input-padding"
                   >
                     <option value="open">Open</option>
                     <option value="closed">Closed</option>
@@ -704,13 +678,7 @@ export const RestaurantsManagement: React.FC = () => {
               <button
                 type="submit"
                 disabled={saveLoading}
-                className="neo-btn neo-btn-primary"
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  fontSize: "0.95rem",
-                  marginTop: "10px",
-                }}
+                className="neo-btn neo-btn-primary save-configurations-btn"
               >
                 {saveLoading
                   ? "Saving Changes..."

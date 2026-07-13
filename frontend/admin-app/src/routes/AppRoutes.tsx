@@ -34,80 +34,86 @@ export const AppRoutes: React.FC = () => {
     <BrowserRouter>
       <div className={userEmail ? "admin-layout" : ""}>
         {userEmail && (
-          <BitesNavbar
-            variant="admin"
-            userName={adminName}
-            onLogout={handleLogout}
-          />
-        )}
-        {userEmail && (
           <AppSidebar
             userName={adminName}
             role="admin"
             onLogout={handleLogout}
           />
         )}
-        <main className={userEmail ? "admin-main-content" : ""}>
-          <Routes>
-            <Route
-              path="/"
-              element={userEmail ? <Dashboard /> : <Navigate to="/login" />}
+        <div className={userEmail ? "main-content-area" : ""}>
+          {userEmail && (
+            <BitesNavbar
+              variant="admin"
+              userName={adminName}
+              onLogout={handleLogout}
             />
-            <Route
-              path="/restaurants"
-              element={
-                userEmail ? <RestaurantsManagement /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/customers"
-              element={
-                userEmail ? <CustomersManagement /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/owners"
-              element={
-                userEmail ? <OwnersManagement /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/drivers"
-              element={
-                userEmail ? <DriversManagement /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/orders"
-              element={
-                userEmail ? <OrdersManagement /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/images"
-              element={
-                userEmail ? <ImagesManagement /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/refunds"
-              element={userEmail ? <Refunds /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/settings"
-              element={userEmail ? <Settings /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/cms"
-              element={userEmail ? <CMS /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/login"
-              element={!userEmail ? <Login /> : <Navigate to="/" />}
-            />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </main>
+          )}
+          <main className={userEmail ? "admin-main-content" : ""}>
+            <Routes>
+              <Route
+                path="/"
+                element={userEmail ? <Dashboard /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/restaurants"
+                element={
+                  userEmail ? (
+                    <RestaurantsManagement />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+              <Route
+                path="/customers"
+                element={
+                  userEmail ? <CustomersManagement /> : <Navigate to="/login" />
+                }
+              />
+              <Route
+                path="/owners"
+                element={
+                  userEmail ? <OwnersManagement /> : <Navigate to="/login" />
+                }
+              />
+              <Route
+                path="/drivers"
+                element={
+                  userEmail ? <DriversManagement /> : <Navigate to="/login" />
+                }
+              />
+              <Route
+                path="/orders"
+                element={
+                  userEmail ? <OrdersManagement /> : <Navigate to="/login" />
+                }
+              />
+              <Route
+                path="/images"
+                element={
+                  userEmail ? <ImagesManagement /> : <Navigate to="/login" />
+                }
+              />
+              <Route
+                path="/refunds"
+                element={userEmail ? <Refunds /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/settings"
+                element={userEmail ? <Settings /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/cms"
+                element={userEmail ? <CMS /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/login"
+                element={!userEmail ? <Login /> : <Navigate to="/" />}
+              />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+          </main>
+        </div>
       </div>
     </BrowserRouter>
   );
