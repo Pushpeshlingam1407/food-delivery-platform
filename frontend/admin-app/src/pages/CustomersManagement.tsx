@@ -12,6 +12,7 @@ import {
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import { PreviewDrawer } from "../../../shared/components/PreviewDrawer";
 import "../admin.css";
 
 interface Customer {
@@ -31,7 +32,9 @@ export const CustomersManagement: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   // Inspector & Edit Drawer State
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(
+    null,
+  );
 
   // Edit form states
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -160,7 +163,8 @@ export const CustomersManagement: React.FC = () => {
           Customers Management
         </h1>
         <p className="text-muted">
-          Click any customer card to audit history, adjust wallet balances, and manage account statuses.
+          Click any customer card to audit history, adjust wallet balances, and
+          manage account statuses.
         </p>
       </div>
 
@@ -186,7 +190,11 @@ export const CustomersManagement: React.FC = () => {
 
               <p
                 className="card-subtitle"
-                style={{ fontSize: "0.85rem", marginTop: "4px", color: "var(--text-muted)" }}
+                style={{
+                  fontSize: "0.85rem",
+                  marginTop: "4px",
+                  color: "var(--text-muted)",
+                }}
               >
                 {c.email} | {c.phone}
               </p>
@@ -261,175 +269,221 @@ export const CustomersManagement: React.FC = () => {
         )}
       </div>
 
-      {/* Inspect Backdrop */}
-      {selectedCustomer && (
-        <div
-          className="preview-drawer-backdrop"
-          onClick={() => setSelectedCustomer(null)}
-        />
-      )}
-
-      {/* Inspect/Edit Drawer */}
-      <div className={`preview-drawer ${selectedCustomer ? "open" : ""}`}>
+      <PreviewDrawer
+        isOpen={!!selectedCustomer}
+        onClose={() => setSelectedCustomer(null)}
+        title="Inspect Customer"
+        subtitle={selectedCustomer ? `ID: #${selectedCustomer.id}` : undefined}
+      >
         {selectedCustomer && (
           <>
-            <div className="preview-drawer-header">
+            {/* Account summary header */}
+            <div
+              style={{
+                display: "flex",
+                gap: "12px",
+                alignItems: "center",
+                borderBottom: "1px solid #f1f5f9",
+                paddingBottom: "20px",
+              }}
+            >
+              <div
+                style={{
+                  width: "48px",
+                  height: "48px",
+                  borderRadius: "50%",
+                  background: "rgba(139,92,246,0.1)",
+                  color: "#8b5cf6",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontWeight: 800,
+                  fontSize: "1.2rem",
+                }}
+              >
+                {selectedCustomer.first_name.charAt(0).toUpperCase()}
+              </div>
               <div>
-                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
-                  Inspect Customer
-                </h3>
-                <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                  ID: #{selectedCustomer.id}
+                <h4 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 800 }}>
+                  {selectedCustomer.first_name} {selectedCustomer.last_name}
+                </h4>
+                <span
+                  style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
+                >
+                  Registered on{" "}
+                  {new Date(selectedCustomer.created_at).toLocaleDateString()}
                 </span>
               </div>
-              <button
-                onClick={() => setSelectedCustomer(null)}
-                style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}
-              >
-                <X size={20} />
-              </button>
             </div>
 
-            <div className="preview-drawer-body">
-              {/* Account summary header */}
-              <div style={{ display: "flex", gap: "12px", alignItems: "center", borderBottom: "1px solid #f1f5f9", paddingBottom: "20px" }}>
-                <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "rgba(139,92,246,0.1)", color: "#8b5cf6", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "1.2rem" }}>
-                  {selectedCustomer.first_name.charAt(0).toUpperCase()}
+            {/* Edit forms */}
+            <form
+              onSubmit={handleUpdateCustomer}
+              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "12px",
+                }}
+              >
+                <div className="premium-form-group">
+                  <label>First Name</label>
+                  <input
+                    type="text"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    required
+                    className="premium-form-input"
+                  />
                 </div>
-                <div>
-                  <h4 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 800 }}>
-                    {selectedCustomer.first_name} {selectedCustomer.last_name}
-                  </h4>
-                  <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                    Registered on {new Date(selectedCustomer.created_at).toLocaleDateString()}
-                  </span>
+                <div className="premium-form-group">
+                  <label>Last Name</label>
+                  <input
+                    type="text"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    required
+                    className="premium-form-input"
+                  />
                 </div>
               </div>
 
-              {/* Edit forms */}
-              <form onSubmit={handleUpdateCustomer} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                  <div className="premium-form-group">
-                    <label>First Name</label>
-                    <input
-                      type="text"
-                      value={firstName}
-                      onChange={(e) => setFirstName(e.target.value)}
-                      required
-                      className="premium-form-input"
-                    />
-                  </div>
-                  <div className="premium-form-group">
-                    <label>Last Name</label>
-                    <input
-                      type="text"
-                      value={lastName}
-                      onChange={(e) => setLastName(e.target.value)}
-                      required
-                      className="premium-form-input"
-                    />
-                  </div>
-                </div>
+              <div className="premium-form-group">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="premium-form-input"
+                />
+              </div>
 
-                <div className="premium-form-group">
-                  <label>Email Address</label>
+              <div className="premium-form-group">
+                <label>Phone Number</label>
+                <input
+                  type="text"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  required
+                  className="premium-form-input"
+                />
+              </div>
+
+              <div className="premium-form-group">
+                <label>Adjust Wallet Balance ($)</label>
+                <div style={{ display: "flex", gap: "10px" }}>
                   <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
+                    type="number"
+                    step="0.01"
+                    value={walletBalance}
+                    onChange={(e) => setWalletBalance(e.target.value)}
                     className="premium-form-input"
+                    style={{ flexGrow: 1 }}
                   />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const current = parseFloat(walletBalance || "0");
+                      setWalletBalance((current + 10).toString());
+                    }}
+                    className="premium-badge neutral"
+                    style={{
+                      cursor: "pointer",
+                      border: "1px solid var(--cred-border)",
+                      padding: "8px 12px",
+                    }}
+                  >
+                    +$10
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const current = parseFloat(walletBalance || "0");
+                      setWalletBalance((current + 50).toString());
+                    }}
+                    className="premium-badge neutral"
+                    style={{
+                      cursor: "pointer",
+                      border: "1px solid var(--cred-border)",
+                      padding: "8px 12px",
+                    }}
+                  >
+                    +$50
+                  </button>
                 </div>
+              </div>
 
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "12px",
+                  alignItems: "center",
+                }}
+              >
                 <div className="premium-form-group">
-                  <label>Phone Number</label>
-                  <input
-                    type="text"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    required
+                  <label>Account Status</label>
+                  <select
+                    value={status}
+                    onChange={(e: any) => setStatus(e.target.value)}
                     className="premium-form-input"
-                  />
+                    style={{ padding: "8px 10px" }}
+                  >
+                    <option value="active">Active</option>
+                    <option value="inactive">Inactive</option>
+                    <option value="suspended">Suspended</option>
+                  </select>
                 </div>
 
-                <div className="premium-form-group">
-                  <label>Adjust Wallet Balance ($)</label>
-                  <div style={{ display: "flex", gap: "10px" }}>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={walletBalance}
-                      onChange={(e) => setWalletBalance(e.target.value)}
-                      className="premium-form-input"
-                      style={{ flexGrow: 1 }}
-                    />
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const current = parseFloat(walletBalance || "0");
-                        setWalletBalance((current + 10).toString());
-                      }}
-                      className="premium-badge neutral"
-                      style={{ cursor: "pointer", border: "1px solid var(--cred-border)", padding: "8px 12px" }}
-                    >
-                      +$10
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => {
-                        const current = parseFloat(walletBalance || "0");
-                        setWalletBalance((current + 50).toString());
-                      }}
-                      className="premium-badge neutral"
-                      style={{ cursor: "pointer", border: "1px solid var(--cred-border)", padding: "8px 12px" }}
-                    >
-                      +$50
-                    </button>
-                  </div>
-                </div>
-
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", alignItems: "center" }}>
-                  <div className="premium-form-group">
-                    <label>Account Status</label>
-                    <select
-                      value={status}
-                      onChange={(e: any) => setStatus(e.target.value)}
-                      className="premium-form-input"
-                      style={{ padding: "8px 10px" }}
-                    >
-                      <option value="active">Active</option>
-                      <option value="inactive">Inactive</option>
-                      <option value="suspended">Suspended</option>
-                    </select>
-                  </div>
-
-                  <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", marginTop: "18px" }}>
-                    <input
-                      type="checkbox"
-                      checked={isVerified}
-                      onChange={(e) => setIsVerified(e.target.checked)}
-                      style={{ width: "16px", height: "16px" }}
-                    />
-                    <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cred-text-secondary)" }}>
-                      Verified Account
-                    </span>
-                  </label>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={saveLoading}
-                  className="neo-btn neo-btn-primary"
-                  style={{ width: "100%", padding: "12px", fontSize: "0.95rem", marginTop: "12px" }}
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    cursor: "pointer",
+                    marginTop: "18px",
+                  }}
                 >
-                  {saveLoading ? "Saving Changes..." : "Save Customer Modifications"}
-                </button>
-              </form>
-            </div>
+                  <input
+                    type="checkbox"
+                    checked={isVerified}
+                    onChange={(e) => setIsVerified(e.target.checked)}
+                    style={{ width: "16px", height: "16px" }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      color: "var(--cred-text-secondary)",
+                    }}
+                  >
+                    Verified Account
+                  </span>
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                disabled={saveLoading}
+                className="neo-btn neo-btn-primary"
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  fontSize: "0.95rem",
+                  marginTop: "12px",
+                }}
+              >
+                {saveLoading
+                  ? "Saving Changes..."
+                  : "Save Customer Modifications"}
+              </button>
+            </form>
           </>
         )}
-      </div>
+      </PreviewDrawer>
     </div>
   );
 };

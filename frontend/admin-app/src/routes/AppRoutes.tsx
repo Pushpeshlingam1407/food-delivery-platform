@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppSidebar } from "../../../shared/components/AppSidebar";
+import { BitesNavbar } from "../../../shared/components/BitesNavbar";
 import { Login } from "../pages/Login";
 import { Dashboard } from "../pages/Dashboard";
 import { Refunds } from "../pages/Refunds";
@@ -32,6 +33,13 @@ export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <div className={userEmail ? "admin-layout" : ""}>
+        {userEmail && (
+          <BitesNavbar
+            variant="admin"
+            userName={adminName}
+            onLogout={handleLogout}
+          />
+        )}
         {userEmail && (
           <AppSidebar
             userName={adminName}

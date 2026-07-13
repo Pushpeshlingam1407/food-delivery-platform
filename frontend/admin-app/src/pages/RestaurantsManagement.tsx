@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import { PreviewDrawer } from "../../../shared/components/PreviewDrawer";
 import "../admin.css";
 
 interface Restaurant {
@@ -232,7 +233,9 @@ export const RestaurantsManagement: React.FC = () => {
       const res = await api.put(endpoint);
       if (res.data.status === "success") {
         notify.success(
-          store.is_verified ? "Store unverified." : "Store verified successfully.",
+          store.is_verified
+            ? "Store unverified."
+            : "Store verified successfully.",
         );
         fetchRestaurants();
         if (selectedStore?.id === store.id) {
@@ -253,23 +256,15 @@ export const RestaurantsManagement: React.FC = () => {
   }
 
   return (
-    <div className="app-shell" style={{ position: "relative" }}>
-      <div
-        className="section-spacing"
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "16px",
-        }}
-      >
+    <div className="app-shell app-shell-relative">
+      <div className="section-spacing flex-wrap-gap-16">
         <div>
-          <h1 className="section-heading section-heading-lg" style={{ margin: 0 }}>
+          <h1 className="section-heading section-heading-lg margin-zero">
             Merchant Outlets
           </h1>
           <p className="text-muted">
-            Click any partner store to view item details, configure commission plans, and audit details.
+            Click any partner store to view item details, configure commission
+            plans, and audit details.
           </p>
         </div>
 
@@ -278,8 +273,7 @@ export const RestaurantsManagement: React.FC = () => {
             resetForm();
             setShowAddForm(true);
           }}
-          className="neo-btn neo-btn-primary"
-          style={{ padding: "10px 20px", fontSize: "0.9rem" }}
+          className="neo-btn neo-btn-primary form-input-register"
         >
           <Plus size={18} /> Register Store
         </button>
@@ -294,23 +288,26 @@ export const RestaurantsManagement: React.FC = () => {
       )}
 
       {showAddForm && (
-        <div className="preview-drawer open" style={{ zIndex: 1600 }}>
+        <div className="preview-drawer open">
           <div className="preview-drawer-header">
             <div>
-              <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
+              <h3 className="margin-zero">
                 Register New Merchant
               </h3>
             </div>
             <button
               onClick={() => setShowAddForm(false)}
-              style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}
+              className="btn-header-close"
             >
               <X size={20} />
             </button>
           </div>
 
           <div className="preview-drawer-body">
-            <form onSubmit={handleCreateRestaurant} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <form
+              onSubmit={handleCreateRestaurant}
+              className="flex-column-gap-16"
+            >
               <div className="premium-form-group">
                 <label>Restaurant Name *</label>
                 <input
@@ -341,21 +338,19 @@ export const RestaurantsManagement: React.FC = () => {
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                   placeholder="Delicious freshly baked pizzas..."
-                  className="premium-form-input"
-                  style={{ height: "70px", resize: "none" }}
+                  className="premium-form-input textarea-height-70"
                 />
               </div>
 
               <div className="premium-form-group">
                 <label>Preset Banner Preset</label>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                <div className="preset-banner-container">
                   {PRESET_IMAGES.map((img, idx) => (
                     <button
                       key={idx}
                       type="button"
                       onClick={() => setBannerUrl(img.url)}
-                      className="premium-badge neutral"
-                      style={{ cursor: "pointer", fontSize: "0.7rem", padding: "6px" }}
+                      className="premium-badge neutral preset-banner-btn"
                     >
                       {img.name}
                     </button>
@@ -385,7 +380,7 @@ export const RestaurantsManagement: React.FC = () => {
                 />
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <div className="commission-time-grid">
                 <div className="premium-form-group">
                   <label>Commission Rate (%)</label>
                   <input
@@ -407,7 +402,7 @@ export const RestaurantsManagement: React.FC = () => {
                 </div>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <div className="hours-grid">
                 <div className="premium-form-group">
                   <label>Opening Time</label>
                   <input
@@ -433,8 +428,7 @@ export const RestaurantsManagement: React.FC = () => {
               <button
                 type="submit"
                 disabled={saveLoading}
-                className="neo-btn neo-btn-primary"
-                style={{ width: "100%", marginTop: "10px" }}
+                className="neo-btn neo-btn-primary save-configurations-btn"
               >
                 {saveLoading ? "Saving..." : "Register Store"}
               </button>
@@ -448,93 +442,50 @@ export const RestaurantsManagement: React.FC = () => {
         {restaurants.map((store) => (
           <div
             key={store.id}
-            className="panel-card panel-card-stacked"
+            className="panel-card panel-card-stacked clickable-card-wrapper"
             onClick={() => handleInspectStore(store)}
-            style={{ cursor: "pointer" }}
           >
             <div>
               {store.banner_image_url && (
-                <div
-                  style={{
-                    width: "100%",
-                    height: "120px",
-                    borderRadius: "8px",
-                    overflow: "hidden",
-                    marginBottom: "12px",
-                  }}
-                >
+                <div className="card-banner-wrapper">
                   <img
                     src={store.banner_image_url}
                     alt={store.name}
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "cover",
-                    }}
+                    className="card-banner-img"
                   />
                 </div>
               )}
               <div className="panel-row">
-                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
-                  {store.name}
-                </h3>
-                <span className={`premium-badge ${store.is_verified ? "success" : "danger"}`}>
+                <h3 className="card-title-h3">{store.name}</h3>
+                <span
+                  className={`premium-badge ${store.is_verified ? "success" : "danger"}`}
+                >
                   {store.is_verified ? "Verified" : "Pending"}
                 </span>
               </div>
-              <p
-                className="card-subtitle"
-                style={{ fontSize: "0.85rem", marginTop: "6px", color: "var(--text-muted)" }}
-              >
+              <p className="card-desc-p">
                 {store.description || "No description provided."}
               </p>
 
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "6px",
-                  fontSize: "0.8rem",
-                  color: "var(--text-muted)",
-                  marginTop: "12px",
-                }}
-              >
+              <div className="card-vertical-info">
                 <div>
                   Commission: <strong>{store.commission_rate}%</strong>
                 </div>
-                <div style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                  <Clock size={12} /> {store.opening_time} - {store.closing_time}
+                <div className="flex-center-gap-4-mt8">
+                  <Clock size={12} /> {store.opening_time} -{" "}
+                  {store.closing_time}
                 </div>
               </div>
             </div>
 
-            <div
-              className="panel-row"
-              style={{
-                marginTop: "20px",
-                borderTop: "1px solid var(--glass-border)",
-                paddingTop: "12px",
-              }}
-            >
-              <button
-                className="btn-premium btn-sm"
-                style={{
-                  padding: "6px 12px",
-                  fontSize: "0.75rem",
-                  boxShadow: "none",
-                }}
-              >
+            <div className="panel-row panel-card-footer-row">
+              <button className="btn-premium btn-sm btn-sm-flat">
                 Inspect Merchant
               </button>
 
               <button
                 onClick={(e) => handleDeleteRestaurant(store.id, e)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "#F44336",
-                }}
+                className="trash-btn"
               >
                 <Trash2 size={16} />
               </button>
@@ -549,181 +500,226 @@ export const RestaurantsManagement: React.FC = () => {
         )}
       </div>
 
-      {/* Inspect/Edit Backdrop */}
-      {selectedStore && (
-        <div
-          className="preview-drawer-backdrop"
-          onClick={() => setSelectedStore(null)}
-        />
-      )}
-
-      {/* Inspect/Edit Drawer */}
-      <div className={`preview-drawer ${selectedStore ? "open" : ""}`}>
+      <PreviewDrawer
+        isOpen={!!selectedStore}
+        onClose={() => setSelectedStore(null)}
+        title="Inspect Merchant"
+        subtitle={selectedStore ? `ID: #${selectedStore.id}` : undefined}
+      >
         {selectedStore && (
           <>
-            <div className="preview-drawer-header">
-              <div>
-                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
-                  Inspect Merchant
-                </h3>
-                <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                  ID: #{selectedStore.id}
-                </span>
-              </div>
-              <button
-                onClick={() => setSelectedStore(null)}
-                style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}
+            {/* verification switch */}
+            <div
+              style={{
+                display: "flex",
+                gap: "10px",
+                alignItems: "center",
+                borderBottom: "1px solid #f1f5f9",
+                paddingBottom: "16px",
+              }}
+            >
+              <span
+                className={`premium-badge ${
+                  selectedStore.is_verified ? "success" : "danger"
+                }`}
               >
-                <X size={20} />
+                {selectedStore.is_verified
+                  ? "VERIFIED"
+                  : "PENDING VERIFICATION"}
+              </span>
+              <button
+                type="button"
+                onClick={(e) => toggleVerify(selectedStore, e)}
+                className="premium-badge neutral"
+                style={{
+                  cursor: "pointer",
+                  border: "1px solid var(--cred-border)",
+                  padding: "6px 12px",
+                }}
+              >
+                Toggle Verification
               </button>
             </div>
 
-            <div className="preview-drawer-body">
-              {/* verification switch */}
-              <div style={{ display: "flex", gap: "10px", alignItems: "center", borderBottom: "1px solid #f1f5f9", paddingBottom: "16px" }}>
-                <span className={`premium-badge ${selectedStore.is_verified ? "success" : "danger"}`}>
-                  {selectedStore.is_verified ? "VERIFIED" : "PENDING VERIFICATION"}
-                </span>
-                <button
-                  type="button"
-                  onClick={(e) => toggleVerify(selectedStore, e)}
-                  className="premium-badge neutral"
-                  style={{ cursor: "pointer", border: "1px solid var(--cred-border)", padding: "6px 12px" }}
-                >
-                  Toggle Verification
-                </button>
+            {/* Banner visual */}
+            {selectedStore.banner_image_url && (
+              <div
+                style={{
+                  width: "100%",
+                  height: "130px",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  border: "1px solid rgba(0,0,0,0.05)",
+                }}
+              >
+                <img
+                  src={selectedStore.banner_image_url}
+                  alt={selectedStore.name}
+                  style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                />
+              </div>
+            )}
+
+            {/* Form editing details */}
+            <form
+              onSubmit={handleUpdateRestaurant}
+              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
+            >
+              <div className="premium-form-group">
+                <label>Restaurant Name</label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  className="premium-form-input"
+                />
               </div>
 
-              {/* Banner visual */}
-              {selectedStore.banner_image_url && (
-                <div style={{ width: "100%", height: "130px", borderRadius: "10px", overflow: "hidden", border: "1px solid rgba(0,0,0,0.05)" }}>
-                  <img
-                    src={selectedStore.banner_image_url}
-                    alt={selectedStore.name}
-                    style={{ width: "100%", height: "100%", objectFit: "cover" }}
+              <div className="premium-form-group">
+                <label>Description</label>
+                <textarea
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="premium-form-input"
+                  style={{ height: "60px", resize: "none" }}
+                />
+              </div>
+
+              <div className="premium-form-group">
+                <label>Banner URL</label>
+                <input
+                  type="url"
+                  value={bannerUrl}
+                  onChange={(e) => setBannerUrl(e.target.value)}
+                  className="premium-form-input"
+                />
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "12px",
+                }}
+              >
+                <div className="premium-form-group">
+                  <label>Commission (%)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={commissionRate}
+                    onChange={(e) => setCommissionRate(e.target.value)}
+                    className="premium-form-input"
                   />
                 </div>
-              )}
 
-              {/* Form editing details */}
-              <form onSubmit={handleUpdateRestaurant} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
                 <div className="premium-form-group">
-                  <label>Restaurant Name</label>
+                  <label>Time (Mins)</label>
+                  <input
+                    type="number"
+                    value={deliveryTime}
+                    onChange={(e) => setDeliveryTime(e.target.value)}
+                    className="premium-form-input"
+                  />
+                </div>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "12px",
+                }}
+              >
+                <div className="premium-form-group">
+                  <label>Opens</label>
                   <input
                     type="text"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    required
+                    value={openingTime}
+                    onChange={(e) => setOpeningTime(e.target.value)}
                     className="premium-form-input"
                   />
                 </div>
 
                 <div className="premium-form-group">
-                  <label>Description</label>
-                  <textarea
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                    className="premium-form-input"
-                    style={{ height: "60px", resize: "none" }}
-                  />
-                </div>
-
-                <div className="premium-form-group">
-                  <label>Banner URL</label>
+                  <label>Closes</label>
                   <input
-                    type="url"
-                    value={bannerUrl}
-                    onChange={(e) => setBannerUrl(e.target.value)}
+                    type="text"
+                    value={closingTime}
+                    onChange={(e) => setClosingTime(e.target.value)}
                     className="premium-form-input"
                   />
                 </div>
+              </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                  <div className="premium-form-group">
-                    <label>Commission (%)</label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      value={commissionRate}
-                      onChange={(e) => setCommissionRate(e.target.value)}
-                      className="premium-form-input"
-                    />
-                  </div>
-
-                  <div className="premium-form-group">
-                    <label>Time (Mins)</label>
-                    <input
-                      type="number"
-                      value={deliveryTime}
-                      onChange={(e) => setDeliveryTime(e.target.value)}
-                      className="premium-form-input"
-                    />
-                  </div>
-                </div>
-
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
-                  <div className="premium-form-group">
-                    <label>Opens</label>
-                    <input
-                      type="text"
-                      value={openingTime}
-                      onChange={(e) => setOpeningTime(e.target.value)}
-                      className="premium-form-input"
-                    />
-                  </div>
-
-                  <div className="premium-form-group">
-                    <label>Closes</label>
-                    <input
-                      type="text"
-                      value={closingTime}
-                      onChange={(e) => setClosingTime(e.target.value)}
-                      className="premium-form-input"
-                    />
-                  </div>
-                </div>
-
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", alignItems: "center" }}>
-                  <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
-                    <input
-                      type="checkbox"
-                      checked={isActive}
-                      onChange={(e) => setIsActive(e.target.checked)}
-                      style={{ width: "16px", height: "16px" }}
-                    />
-                    <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cred-text-secondary)" }}>
-                      Active
-                    </span>
-                  </label>
-
-                  <div className="premium-form-group">
-                    <label>Status</label>
-                    <select
-                      value={status}
-                      onChange={(e: any) => setStatus(e.target.value)}
-                      className="premium-form-input"
-                      style={{ padding: "8px 10px" }}
-                    >
-                      <option value="open">Open</option>
-                      <option value="closed">Closed</option>
-                      <option value="busy">Busy</option>
-                    </select>
-                  </div>
-                </div>
-
-                <button
-                  type="submit"
-                  disabled={saveLoading}
-                  className="neo-btn neo-btn-primary"
-                  style={{ width: "100%", padding: "12px", fontSize: "0.95rem", marginTop: "10px" }}
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "12px",
+                  alignItems: "center",
+                }}
+              >
+                <label
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    cursor: "pointer",
+                  }}
                 >
-                  {saveLoading ? "Saving Changes..." : "Save Merchant Configurations"}
-                </button>
-              </form>
-            </div>
+                  <input
+                    type="checkbox"
+                    checked={isActive}
+                    onChange={(e) => setIsActive(e.target.checked)}
+                    style={{ width: "16px", height: "16px" }}
+                  />
+                  <span
+                    style={{
+                      fontSize: "0.85rem",
+                      fontWeight: 700,
+                      color: "var(--cred-text-secondary)",
+                    }}
+                  >
+                    Active
+                  </span>
+                </label>
+
+                <div className="premium-form-group">
+                  <label>Status</label>
+                  <select
+                    value={status}
+                    onChange={(e: any) => setStatus(e.target.value)}
+                    className="premium-form-input"
+                    style={{ padding: "8px 10px" }}
+                  >
+                    <option value="open">Open</option>
+                    <option value="closed">Closed</option>
+                    <option value="busy">Busy</option>
+                  </select>
+                </div>
+              </div>
+
+              <button
+                type="submit"
+                disabled={saveLoading}
+                className="neo-btn neo-btn-primary"
+                style={{
+                  width: "100%",
+                  padding: "12px",
+                  fontSize: "0.95rem",
+                  marginTop: "10px",
+                }}
+              >
+                {saveLoading
+                  ? "Saving Changes..."
+                  : "Save Merchant Configurations"}
+              </button>
+            </form>
           </>
         )}
-      </div>
+      </PreviewDrawer>
     </div>
   );
 };

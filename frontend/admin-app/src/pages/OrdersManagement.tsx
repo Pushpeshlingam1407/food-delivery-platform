@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import { PreviewDrawer } from "../../../shared/components/PreviewDrawer";
 import "../admin.css";
 
 interface Order {
@@ -160,12 +161,9 @@ export const OrdersManagement: React.FC = () => {
   }
 
   return (
-    <div className="app-shell" style={{ position: "relative" }}>
+    <div className="app-shell app-shell-relative">
       <div className="section-spacing">
-        <h1
-          className="section-heading section-heading-lg"
-          style={{ margin: 0 }}
-        >
+        <h1 className="section-heading section-heading-lg margin-zero">
           Orders Console
         </h1>
         <p className="text-muted">
@@ -178,17 +176,14 @@ export const OrdersManagement: React.FC = () => {
         {orders.map((o) => (
           <div
             key={o.id}
-            className="panel-card panel-card-stacked"
+            className="panel-card panel-card-stacked clickable-card-wrapper"
             onClick={() => handlePreviewOrder(o)}
-            style={{ cursor: "pointer", position: "relative" }}
           >
             <div>
               <div className="panel-row">
-                <div
-                  style={{ display: "flex", alignItems: "center", gap: "6px" }}
-                >
+                <div className="flex-center-gap-6">
                   <ShoppingBag size={18} color="var(--accent-violet)" />
-                  <strong style={{ fontSize: "1.1rem" }}>
+                  <strong className="bold-font-11">
                     Order #{o.id.substring(0, 8)}
                   </strong>
                 </div>
@@ -205,13 +200,7 @@ export const OrdersManagement: React.FC = () => {
                 </span>
               </div>
 
-              <div
-                style={{
-                  margin: "14px 0",
-                  fontSize: "0.85rem",
-                  color: "var(--text-muted)",
-                }}
-              >
+              <div className="card-meta-spacing">
                 <div>
                   Merchant Store:{" "}
                   <strong style={{ color: "var(--text-slate)" }}>
@@ -221,65 +210,28 @@ export const OrdersManagement: React.FC = () => {
                 <div>
                   Customer: <strong>{o.customer_name}</strong>
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "4px",
-                    marginTop: "8px",
-                  }}
-                >
+                <div className="flex-center-gap-4-mt8">
                   <Clock size={12} /> Placed:{" "}
                   {new Date(o.placed_at).toLocaleString()}
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                  background: "#f8fafc",
-                  padding: "10px 14px",
-                  borderRadius: "8px",
-                  border: "1px solid var(--cred-border, rgba(0,0,0,0.06))",
-                  fontSize: "0.9rem",
-                }}
-              >
-                <div style={{ fontWeight: 600 }}>Total Payable:</div>
-                <strong style={{ fontSize: "1.1rem" }}>
+              <div className="card-total-row">
+                <div className="bold-font-600">Total Payable:</div>
+                <strong className="bold-font-11">
                   ${parseFloat(o.total_payable.toString()).toFixed(2)}
                 </strong>
               </div>
             </div>
 
-            <div
-              className="panel-row"
-              style={{
-                marginTop: "20px",
-                borderTop: "1px solid var(--glass-border)",
-                paddingTop: "12px",
-              }}
-            >
-              <button
-                className="btn-premium btn-sm"
-                style={{
-                  padding: "6px 12px",
-                  fontSize: "0.75rem",
-                  boxShadow: "none",
-                }}
-              >
+            <div className="panel-row panel-card-footer-row">
+              <button className="btn-premium btn-sm btn-sm-flat">
                 Inspect & Dispatch
               </button>
 
               <button
                 onClick={(e) => handleDeleteOrder(o.id, e)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  color: "#F44336",
-                }}
+                className="trash-btn"
               >
                 <Trash2 size={16} />
               </button>
@@ -294,350 +246,215 @@ export const OrdersManagement: React.FC = () => {
         )}
       </div>
 
-      {/* Backdrop for preview drawer */}
-      {selectedDetailedOrder && (
-        <div
-          className="preview-drawer-backdrop"
-          onClick={() => setSelectedDetailedOrder(null)}
-        />
-      )}
-
-      {/* Slide-out inspect drawer */}
-      <div className={`preview-drawer ${selectedDetailedOrder ? "open" : ""}`}>
-        {selectedDetailedOrder && (
-          <>
-            <div className="preview-drawer-header">
-              <div>
-                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
-                  Order Details
-                </h3>
-                <span
-                  style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
-                >
-                  ID: #{selectedDetailedOrder.id}
-                </span>
-              </div>
-              <button
-                onClick={() => setSelectedDetailedOrder(null)}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "4px",
-                }}
-              >
-                <X size={20} />
-              </button>
-            </div>
-
-            <div className="preview-drawer-body">
-              {/* Timeline/Status */}
+      <PreviewDrawer
+        isOpen={!!selectedDetailedOrder}
+        onClose={() => setSelectedDetailedOrder(null)}
+        title="Order Details"
+        subtitle={
+          selectedDetailedOrder ? `ID: #${selectedDetailedOrder.id}` : undefined
+        }
+        footer={
+          selectedDetailedOrder ? (
+            <form
+              onSubmit={handleUpdateOrder}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "16px",
+              }}
+            >
               <div
                 style={{
-                  borderBottom: "1px solid #f1f5f9",
-                  paddingBottom: "16px",
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "12px",
                 }}
               >
-                <span
-                  className="premium-badge success"
-                  style={{ textTransform: "uppercase", fontSize: "0.75rem" }}
-                >
-                  {selectedDetailedOrder.status.replace(/_/g, " ")}
-                </span>
-                <div
-                  style={{
-                    marginTop: "8px",
-                    fontSize: "0.85rem",
-                    color: "var(--text-muted)",
-                  }}
-                >
-                  Placed on{" "}
-                  {new Date(selectedDetailedOrder.placed_at).toLocaleString()}
-                </div>
-              </div>
-
-              {/* Merchant Details */}
-              <div
-                style={{ display: "flex", gap: "10px", alignItems: "center" }}
-              >
-                <Store size={18} color="var(--accent-orange)" />
-                <div>
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      textTransform: "uppercase",
-                      color: "var(--text-muted)",
-                      fontWeight: 700,
-                    }}
+                <div className="premium-form-group">
+                  <label>Order Status</label>
+                  <select
+                    value={status}
+                    onChange={(e: any) => setStatus(e.target.value)}
+                    className="premium-form-input"
+                    style={{ fontSize: "0.85rem", padding: "10px" }}
                   >
-                    Restaurant
-                  </div>
-                  <strong style={{ fontSize: "0.95rem" }}>
-                    {selectedDetailedOrder.restaurant_name}
-                  </strong>
-                </div>
-              </div>
-
-              {/* Client details */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  alignItems: "flex-start",
-                }}
-              >
-                <User size={18} color="var(--accent-violet)" />
-                <div>
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      textTransform: "uppercase",
-                      color: "var(--text-muted)",
-                      fontWeight: 700,
-                    }}
-                  >
-                    Customer Info
-                  </div>
-                  <div style={{ fontSize: "0.95rem", fontWeight: 700 }}>
-                    {selectedDetailedOrder.customer_first_name}{" "}
-                    {selectedDetailedOrder.customer_last_name}
-                  </div>
-                  <div
-                    style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}
-                  >
-                    Phone: {selectedDetailedOrder.customer_phone || "N/A"}
-                  </div>
-                </div>
-              </div>
-
-              {/* Delivery Destination */}
-              <div
-                style={{
-                  display: "flex",
-                  gap: "10px",
-                  alignItems: "flex-start",
-                }}
-              >
-                <MapPin size={18} color="var(--cred-accent)" />
-                <div>
-                  <div
-                    style={{
-                      fontSize: "0.75rem",
-                      textTransform: "uppercase",
-                      color: "var(--text-muted)",
-                      fontWeight: 700,
-                    }}
-                  >
-                    Delivery Destination
-                  </div>
-                  <div
-                    style={{ fontSize: "0.9rem", color: "var(--text-slate)" }}
-                  >
-                    {selectedDetailedOrder.street_address}
-                    {selectedDetailedOrder.landmark &&
-                      `, Near ${selectedDetailedOrder.landmark}`}
-                    {`, ${selectedDetailedOrder.city}, ${selectedDetailedOrder.state} - ${selectedDetailedOrder.postal_code}`}
-                  </div>
-                </div>
-              </div>
-
-              {/* Itemized Recipe */}
-              <div>
-                <h4
-                  style={{
-                    fontSize: "0.85rem",
-                    textTransform: "uppercase",
-                    color: "var(--text-muted)",
-                    marginBottom: "12px",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  Items Ordered
-                </h4>
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  {selectedDetailedOrder.items &&
-                    selectedDetailedOrder.items.map(
-                      (item: any, idx: number) => (
-                        <div key={idx} className="preview-item-row">
-                          <div>
-                            <strong style={{ fontSize: "0.9rem" }}>
-                              {item.item_name}
-                            </strong>
-                            <span
-                              style={{
-                                fontSize: "0.85rem",
-                                color: "var(--text-muted)",
-                                marginLeft: "8px",
-                              }}
-                            >
-                              x{item.quantity}
-                            </span>
-                          </div>
-                          <span style={{ fontSize: "0.9rem", fontWeight: 700 }}>
-                            $
-                            {(parseFloat(item.price) * item.quantity).toFixed(
-                              2,
-                            )}
-                          </span>
-                        </div>
-                      ),
-                    )}
-                </div>
-              </div>
-
-              {/* Financial Bill */}
-              <div>
-                <h4
-                  style={{
-                    fontSize: "0.85rem",
-                    textTransform: "uppercase",
-                    color: "var(--text-muted)",
-                    marginBottom: "12px",
-                    letterSpacing: "0.5px",
-                  }}
-                >
-                  Billing Details
-                </h4>
-                <div
-                  style={{
-                    background: "#f8fafc",
-                    padding: "16px",
-                    borderRadius: "12px",
-                    border: "1px dashed #cbd5e1",
-                  }}
-                >
-                  <div className="preview-receipt-line">
-                    <span>Items Subtotal</span>
-                    <span>
-                      ${parseFloat(selectedDetailedOrder.item_total).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="preview-receipt-line">
-                    <span>Delivery Charges</span>
-                    <span>
-                      $
-                      {parseFloat(
-                        selectedDetailedOrder.delivery_charges,
-                      ).toFixed(2)}
-                    </span>
-                  </div>
-                  <div className="preview-receipt-line">
-                    <span>Taxes</span>
-                    <span>
-                      ${parseFloat(selectedDetailedOrder.tax_amount).toFixed(2)}
-                    </span>
-                  </div>
-                  {parseFloat(selectedDetailedOrder.discount_amount) > 0 && (
-                    <div
-                      className="preview-receipt-line"
-                      style={{ color: "var(--cred-success)" }}
-                    >
-                      <span>Discount Saved</span>
-                      <span>
-                        -$
-                        {parseFloat(
-                          selectedDetailedOrder.discount_amount,
-                        ).toFixed(2)}
-                      </span>
-                    </div>
-                  )}
-                  <div className="preview-receipt-line total">
-                    <span>Total Payable</span>
-                    <span>
-                      $
-                      {parseFloat(selectedDetailedOrder.total_payable).toFixed(
-                        2,
-                      )}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Action dispatch panel inside drawer */}
-            <div className="preview-drawer-footer">
-              <form
-                onSubmit={handleUpdateOrder}
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "16px",
-                }}
-              >
-                <div
-                  style={{
-                    display: "grid",
-                    gridTemplateColumns: "1fr 1fr",
-                    gap: "12px",
-                  }}
-                >
-                  <div className="premium-form-group">
-                    <label>Order Status</label>
-                    <select
-                      value={status}
-                      onChange={(e: any) => setStatus(e.target.value)}
-                      className="premium-form-input"
-                      style={{ fontSize: "0.85rem", padding: "10px" }}
-                    >
-                      <option value="placed">Placed</option>
-                      <option value="accepted">Accepted</option>
-                      <option value="preparing">Preparing</option>
-                      <option value="ready_for_pickup">Ready For Pickup</option>
-                      <option value="out_for_delivery">Out For Delivery</option>
-                      <option value="delivered">Delivered</option>
-                      <option value="cancelled">Cancelled</option>
-                    </select>
-                  </div>
-
-                  <div className="premium-form-group">
-                    <label>Assign Rider</label>
-                    <select
-                      value={deliveryPartnerId}
-                      onChange={(e) => setDeliveryPartnerId(e.target.value)}
-                      className="premium-form-input"
-                      style={{ fontSize: "0.85rem", padding: "10px" }}
-                    >
-                      <option value="">Unassigned</option>
-                      {drivers.map((d) => (
-                        <option key={d.id} value={d.id}>
-                          {d.first_name} {d.last_name}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
+                    <option value="placed">Placed</option>
+                    <option value="accepted">Accepted</option>
+                    <option value="preparing">Preparing</option>
+                    <option value="ready_for_pickup">Ready For Pickup</option>
+                    <option value="out_for_delivery">Out For Delivery</option>
+                    <option value="delivered">Delivered</option>
+                    <option value="cancelled">Cancelled</option>
+                  </select>
                 </div>
 
                 <div className="premium-form-group">
-                  <label>Override Total Payable ($)</label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={totalPayable}
-                    onChange={(e) => setTotalPayable(e.target.value)}
-                    className="premium-form-input"
-                    style={{ fontSize: "0.85rem", padding: "10px" }}
-                  />
+                  <label>Assign Rider</label>
+                  <select
+                    value={deliveryPartnerId}
+                    onChange={(e) => setDeliveryPartnerId(e.target.value)}
+                    className="premium-form-input select-input-sm"
+                  >
+                    <option value="">Unassigned</option>
+                    {drivers.map((d) => (
+                      <option key={d.id} value={d.id}>
+                        {d.first_name} {d.last_name}
+                      </option>
+                    ))}
+                  </select>
                 </div>
+              </div>
 
-                <button
-                  type="submit"
-                  disabled={dispatchLoading}
-                  className="neo-btn neo-btn-primary"
-                  style={{
-                    width: "100%",
-                    padding: "12px",
-                    fontSize: "0.95rem",
-                  }}
-                >
-                  {dispatchLoading
-                    ? "Updating Dispatch..."
-                    : "Apply Dispatch Actions"}
-                </button>
-              </form>
+              <div className="premium-form-group">
+                <label>Override Total Payable ($)</label>
+                <input
+                  type="number"
+                  step="0.01"
+                  value={totalPayable}
+                  onChange={(e) => setTotalPayable(e.target.value)}
+                  className="premium-form-input select-input-sm"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={dispatchLoading}
+                className="neo-btn neo-btn-primary btn-submit-drawer"
+              >
+                {dispatchLoading
+                  ? "Updating Dispatch..."
+                  : "Apply Dispatch Actions"}
+              </button>
+            </form>
+          ) : null
+        }
+      >
+        {selectedDetailedOrder && (
+          <>
+            {/* Timeline/Status */}
+            <div className="border-bottom-pb16">
+              <span className="premium-badge success">
+                {selectedDetailedOrder.status.replace(/_/g, " ")}
+              </span>
+              <div className="margin-top-8-fs085">
+                Placed on{" "}
+                {new Date(selectedDetailedOrder.placed_at).toLocaleString()}
+              </div>
+            </div>
+
+            {/* Merchant Details */}
+            <div className="flex-center-gap-10">
+              <Store size={18} color="var(--accent-orange)" />
+              <div>
+                <div className="badge-label-uppercase">Restaurant</div>
+                <strong className="font-size-095">
+                  {selectedDetailedOrder.restaurant_name}
+                </strong>
+              </div>
+            </div>
+
+            {/* Client details */}
+            <div className="flex-start-gap-10">
+              <User size={18} color="var(--accent-violet)" />
+              <div>
+                <div className="badge-label-uppercase">Customer Info</div>
+                <div className="customer-name-bold">
+                  {selectedDetailedOrder.customer_first_name}{" "}
+                  {selectedDetailedOrder.customer_last_name}
+                </div>
+                <div className="customer-meta-muted">
+                  Phone: {selectedDetailedOrder.customer_phone || "N/A"}
+                </div>
+              </div>
+            </div>
+
+            {/* Delivery Destination */}
+            <div className="flex-start-gap-10">
+              <MapPin size={18} color="var(--cred-accent)" />
+              <div>
+                <div className="badge-label-uppercase">
+                  Delivery Destination
+                </div>
+                <div className="destination-address-text">
+                  {selectedDetailedOrder.street_address}
+                  {selectedDetailedOrder.landmark &&
+                    `, Near ${selectedDetailedOrder.landmark}`}
+                  {`, ${selectedDetailedOrder.city}, ${selectedDetailedOrder.state} - ${selectedDetailedOrder.postal_code}`}
+                </div>
+              </div>
+            </div>
+
+            {/* Itemized Recipe */}
+            <div>
+              <h4 className="recipe-header">Items Ordered</h4>
+              <div className="flex-column">
+                {selectedDetailedOrder.items &&
+                  selectedDetailedOrder.items.map((item: any, idx: number) => (
+                    <div key={idx} className="preview-item-row">
+                      <div>
+                        <strong className="recipe-item-name">
+                          {item.item_name}
+                        </strong>
+                        <span className="recipe-item-quantity">
+                          x{item.quantity}
+                        </span>
+                      </div>
+                      <span className="recipe-item-price">
+                        ${(parseFloat(item.price) * item.quantity).toFixed(2)}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+            </div>
+
+            {/* Financial Bill */}
+            <div>
+              <h4 className="recipe-header">Billing Details</h4>
+              <div className="bill-summary-box">
+                <div className="preview-receipt-line">
+                  <span>Items Subtotal</span>
+                  <span>
+                    ${parseFloat(selectedDetailedOrder.item_total).toFixed(2)}
+                  </span>
+                </div>
+                <div className="preview-receipt-line">
+                  <span>Delivery Charges</span>
+                  <span>
+                    $
+                    {parseFloat(selectedDetailedOrder.delivery_charges).toFixed(
+                      2,
+                    )}
+                  </span>
+                </div>
+                <div className="preview-receipt-line">
+                  <span>Taxes</span>
+                  <span>
+                    ${parseFloat(selectedDetailedOrder.tax_amount).toFixed(2)}
+                  </span>
+                </div>
+                {parseFloat(selectedDetailedOrder.discount_amount) > 0 && (
+                  <div className="preview-receipt-line discount-savings-text">
+                    <span>Discount Saved</span>
+                    <span>
+                      -$
+                      {parseFloat(
+                        selectedDetailedOrder.discount_amount,
+                      ).toFixed(2)}
+                    </span>
+                  </div>
+                )}
+                <div className="preview-receipt-line total">
+                  <span>Total Payable</span>
+                  <span>
+                    $
+                    {parseFloat(selectedDetailedOrder.total_payable).toFixed(2)}
+                  </span>
+                </div>
+              </div>
             </div>
           </>
         )}
-      </div>
+      </PreviewDrawer>
     </div>
   );
 };
