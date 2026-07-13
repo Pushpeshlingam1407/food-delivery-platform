@@ -58,7 +58,14 @@ import { Dashboard as DeliveryDashboard } from "../../../delivery-app/src/pages/
 import { Navbar as DeliveryNavbar } from "../../../delivery-app/src/components/Navbar";
 import { DeliverySidebar } from "../../../delivery-app/src/components/DeliverySidebar";
 import type { MobileBottomNavItem } from "../../../shared/components/MobileBottomNav";
-import { Truck, Wallet, LogOut } from "lucide-react";
+import {
+  Truck,
+  Wallet,
+  LogOut,
+  Store,
+  Users,
+  LayoutDashboard,
+} from "lucide-react";
 
 interface HomeProps {
   searchQuery: string;
@@ -638,10 +645,14 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="main-layout-wrapper">
-          <div
-            className="main-content-area"
-            style={{ width: "100%", marginLeft: 0, padding: 0 }}
-          >
+          <AppSidebar
+            userName={localStorage.getItem("userName")}
+            role="admin"
+            isLoggedIn={!!userEmail}
+            onLogout={handleLogout}
+            walletBalance={walletBalance}
+          />
+          <div className="main-content-area">
             <BitesNavbar
               variant="admin"
               userName={localStorage.getItem("userName")}
@@ -671,6 +682,27 @@ export const AppRoutes: React.FC = () => {
             />
           </div>
         </div>
+        {/* Mobile bottom navigation tailored for Admin */}
+        <MobileBottomNav
+          items={[
+            { icon: <HomeIcon size={22} />, label: "Dashboard", route: "/" },
+            {
+              icon: <Store size={22} />,
+              label: "Restaurants",
+              route: "/restaurants",
+            },
+            {
+              icon: <Users size={22} />,
+              label: "Customers",
+              route: "/customers",
+            },
+            {
+              icon: <User size={22} />,
+              label: "Logout",
+              onClick: handleLogout,
+            },
+          ]}
+        />
       </BrowserRouter>
     );
   }
@@ -696,10 +728,14 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="main-layout-wrapper">
-          <div
-            className="main-content-area"
-            style={{ width: "100%", marginLeft: 0, padding: 0 }}
-          >
+          <AppSidebar
+            userName={localStorage.getItem("userName")}
+            role="restaurant_owner"
+            isLoggedIn={!!userEmail}
+            onLogout={handleLogout}
+            walletBalance={walletBalance}
+          />
+          <div className="main-content-area">
             <BitesNavbar
               variant="restaurant"
               userName={localStorage.getItem("userName")}
@@ -719,6 +755,27 @@ export const AppRoutes: React.FC = () => {
             />
           </div>
         </div>
+        {/* Mobile bottom navigation tailored for Merchant */}
+        <MobileBottomNav
+          items={[
+            { icon: <HomeIcon size={22} />, label: "Dashboard", route: "/" },
+            {
+              icon: <ClipboardList size={22} />,
+              label: "Menu",
+              route: "/menu",
+            },
+            {
+              icon: <Wallet size={22} />,
+              label: "Earnings",
+              route: "/earnings",
+            },
+            {
+              icon: <LogOut size={22} />,
+              label: "Exit",
+              onClick: handleLogout,
+            },
+          ]}
+        />
       </BrowserRouter>
     );
   }
@@ -813,10 +870,15 @@ export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <div className="main-layout-wrapper">
-        <div
-          className="main-content-area"
-          style={{ width: "100%", marginLeft: 0 }}
-        >
+        <AppSidebar
+          userName={userEmail}
+          role="customer"
+          isLoggedIn={!!userEmail}
+          onLogout={handleLogout}
+          onDepositClick={handleDeposit}
+          walletBalance={walletBalance}
+        />
+        <div className="main-content-area">
           <Navbar
             cartCount={cartCount}
             userEmail={userEmail}

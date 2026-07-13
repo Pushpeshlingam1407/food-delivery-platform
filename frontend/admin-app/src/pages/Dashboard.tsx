@@ -263,7 +263,7 @@ export const Dashboard: React.FC = () => {
       >
         Quick Navigation
       </h2>
-      <div className="admin-grid-columns" style={{ marginBottom: "32px" }}>
+      <div className="quick-nav-grid" style={{ marginBottom: "32px" }}>
         {[
           {
             label: "Restaurants",
