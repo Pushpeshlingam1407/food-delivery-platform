@@ -403,7 +403,7 @@ export const Dashboard: React.FC = () => {
               <div key={o.id} className="cred-stat-card" style={{ minHeight: "auto", padding: "24px" }}>
                 <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
                   <div>
-                    <h4 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 800 }}>Order #{o.order_number.slice(-6)}</h4>
+                    <h4 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 800 }}>Order #{String(o.order_number || o.id || "").slice(-6)}</h4>
                     <span style={{ fontSize: "0.8rem", color: "var(--cred-text-secondary)" }}>
                       {new Date(o.created_at).toLocaleTimeString()}
                     </span>

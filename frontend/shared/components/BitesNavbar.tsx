@@ -185,7 +185,7 @@ export const BitesNavbar: React.FC<
               type="button"
               className="delivery-navbar__menu navbar-mobile-only"
               aria-label="Open navigation"
-              onClick={props.onOpenMenu}
+              onClick={() => window.dispatchEvent(new CustomEvent("open-app-sidebar"))}
             >
               <Menu size={20} />
             </button>
@@ -238,24 +238,41 @@ export const BitesNavbar: React.FC<
   return (
     <PlatformNavbar
       left={
-        <Link to="/addresses" className="address-pill-btn">
-          <div className="address-icon-wrapper">
-            <MapPin size={14} color="var(--accent-orange)" />
-          </div>
-          <div className="address-text-wrapper">
-            <span className="address-label">Deliver to</span>
-            <span className="address-value">
-              {deliveryAddress.length > 20
-                ? `${deliveryAddress.slice(0, 20)}...`
-                : deliveryAddress}
-            </span>
-          </div>
-          <ChevronDown
-            size={16}
-            color="var(--text-muted)"
-            className="address-chevron"
-          />
-        </Link>
+        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("open-app-sidebar"))}
+            style={{
+              background: "none",
+              border: "none",
+              cursor: "pointer",
+              padding: "4px",
+              display: "flex",
+              alignItems: "center",
+              color: "var(--text-slate)",
+            }}
+            className="navbar-mobile-only"
+          >
+            <Menu size={24} />
+          </button>
+          <Link to="/addresses" className="address-pill-btn">
+            <div className="address-icon-wrapper">
+              <MapPin size={14} color="var(--accent-orange)" />
+            </div>
+            <div className="address-text-wrapper">
+              <span className="address-label">Deliver to</span>
+              <span className="address-value">
+                {deliveryAddress.length > 20
+                  ? `${deliveryAddress.slice(0, 20)}...`
+                  : deliveryAddress}
+              </span>
+            </div>
+            <ChevronDown
+              size={16}
+              color="var(--text-muted)"
+              className="address-chevron"
+            />
+          </Link>
+        </div>
       }
       center={
         location.pathname === "/" ? (

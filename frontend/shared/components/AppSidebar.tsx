@@ -204,30 +204,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
   return (
     <>
-      {/* Mobile Top Bar (Hidden for Customers, handled by Navbar) */}
-      {role !== "customer" && (
-        <div className="mobile-menu-bar">
-          <Link
-            to="/"
-            className="admin-sidebar-logo"
-            style={{ fontSize: "1.4rem" }}
-          >
-            bites<span>{badgeLabel}</span>
-          </Link>
-          <button
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
-            style={{
-              background: "none",
-              border: "none",
-              cursor: "pointer",
-              color: "#1e293b",
-            }}
-          >
-            {isMobileOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      )}
-
       {/* Mobile Backdrop */}
       {isMobileOpen && (
         <div

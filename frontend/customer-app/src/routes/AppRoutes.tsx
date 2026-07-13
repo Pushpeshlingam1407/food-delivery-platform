@@ -839,15 +839,18 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="main-layout-wrapper">
-          <div
-            className="main-content-area"
-            style={{ width: "100%", marginLeft: 0, padding: 0 }}
-          >
+          <AppSidebar
+            userName={localStorage.getItem("userName")}
+            role="delivery_partner"
+            isLoggedIn={!!userEmail}
+            onLogout={handleLogout}
+            walletBalance={walletBalance}
+          />
+          <div className="main-content-area">
             <BitesNavbar
               variant="driver"
               driverName={localStorage.getItem("userName")}
               onLogout={handleLogout}
-              onOpenMenu={() => {}} // No sidebar, menu can be repurposed if needed
             />
             <div style={{ minHeight: "calc(100vh - 350px)" }}>
               <Routes>
