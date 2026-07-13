@@ -8,7 +8,6 @@ import {
   Store,
   Trash2,
   Settings,
-  FileText,
   Image as ImageIcon,
   Bike,
   ClipboardList,
@@ -17,7 +16,6 @@ import { Link } from "react-router-dom";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import "../admin.css";
-import { StatCard } from "../../../shared/components/StatCard";
 
 interface Analytics {
   total_users: number;
@@ -160,230 +158,300 @@ export const Dashboard: React.FC = () => {
     );
   }
 
+  // Analytics Sparkline Render
+  const renderSparkline = (color: string, path: string) => (
+    <svg viewBox="0 0 100 30" width="70" height="22" className="sparkline-svg">
+      <path
+        d={path}
+        fill="none"
+        stroke={color}
+        strokeWidth="2.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+
   return (
-    <div style={{ width: "100%" }}>
-      {/* Humanized Welcome Banner */}
-      <div className="welcome-banner">
+    <div className="admin-dashboard-container premium-animate-in">
+      {/* Welcome Banner */}
+      <div className="welcome-banner-premium">
         <div className="welcome-text">
-          <h1>Welcome back, Chief! ✨</h1>
-          <p>
-            Here is a bird's-eye view of your Bites platform. Everything looks
-            good and active.
+          <h1 className="welcome-title-premium">Console Operations Panel ✨</h1>
+          <p className="welcome-desc-premium">
+            Audit stores, manage voucher campaigns, and monitor platform metrics.
           </p>
         </div>
-        <div className="navbar-desktop-only" style={{ textAlign: "right" }}>
-          <span
-            style={{
-              fontSize: "0.85rem",
-              fontWeight: 700,
-              textTransform: "uppercase",
-              letterSpacing: "1px",
-              color: "var(--accent-orange)",
-              background: "#fff0ec",
-              padding: "6px 16px",
-              borderRadius: "99px",
-            }}
-          >
-            System Administrator
+        <div className="navbar-desktop-only">
+          <span className="premium-badge neutral">
+            <span className="badge-status-dot" /> System Status: Online
           </span>
         </div>
       </div>
 
       {/* Analytics Grid */}
       <div className="admin-grid-columns">
-        <StatCard
-          theme="admin"
-          title="Console Health"
-          icon={<ShieldAlert size={18} />}
-          value={
-            <>
-              <span
-                className="admin-status-dot"
-                style={{ width: "10px", height: "10px" }}
-              />
-              {health?.database === "connected" ? "Online" : "Offline"}
-            </>
-          }
-          adminValueStyle={{
-            display: "flex",
-            alignItems: "center",
-            gap: "8px",
-          }}
-          subtitle={`Port ${health?.server_port || 5000} · DB Status: Connected`}
-        />
+        {/* Card 1: Console Health */}
+        <div className="metric-card-premium">
+          <div className="metric-inner-header">
+            <span className="metric-badge-label">Console Health</span>
+            <div
+              className="metric-icon-box"
+              style={{
+                color: "#3b82f6",
+                background: "rgba(59,130,246,0.08)",
+              }}
+            >
+              <ShieldAlert size={18} />
+            </div>
+          </div>
+          <div
+            className="metric-value-display"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
+            <span
+              className="badge-status-dot"
+              style={{ width: "10px", height: "10px" }}
+            />
+            {health?.database === "connected" ? "Stable" : "Offline"}
+          </div>
+          <div className="metric-footer-row">
+            <span className="metric-footer-text">
+              Port {health?.server_port || 5000}
+            </span>
+            {renderSparkline(
+              "#10b981",
+              "M0,15 L20,15 L40,10 L60,18 L80,5 L100,12",
+            )}
+          </div>
+        </div>
 
-        <StatCard
-          theme="admin"
-          title="Platform Revenue"
-          icon={<DollarSign size={18} />}
-          value={`₹${
-            analytics
-              ? analytics.total_payments_captured.toLocaleString("en-IN", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })
-              : "0.00"
-          }`}
-          subtitle="Total processed order volume"
-        />
+        {/* Card 2: Revenue */}
+        <div className="metric-card-premium">
+          <div className="metric-inner-header">
+            <span className="metric-badge-label">Total Revenue</span>
+            <div
+              className="metric-icon-box"
+              style={{
+                color: "#10b981",
+                background: "rgba(16,185,129,0.08)",
+              }}
+            >
+              <DollarSign size={18} />
+            </div>
+          </div>
+          <div className="metric-value-display">
+            ₹
+            {analytics
+              ? analytics.total_payments_captured.toLocaleString("en-IN")
+              : "0"}
+          </div>
+          <div className="metric-footer-row">
+            <span className="metric-footer-text">Gross Payments</span>
+            {renderSparkline(
+              "#10b981",
+              "M0,20 Q15,5 30,15 T60,5 T90,12 L100,2",
+            )}
+          </div>
+        </div>
 
-        <StatCard
-          theme="admin"
-          title="Orders Fulfilled"
-          icon={<Award size={18} />}
-          value={analytics?.total_orders || 0}
-          subtitle="Total successful deliveries"
-        />
+        {/* Card 3: Orders */}
+        <div className="metric-card-premium">
+          <div className="metric-inner-header">
+            <span className="metric-badge-label">Orders Fulfilled</span>
+            <div
+              className="metric-icon-box"
+              style={{
+                color: "#8b5cf6",
+                background: "rgba(139,92,246,0.08)",
+              }}
+            >
+              <Award size={18} />
+            </div>
+          </div>
+          <div className="metric-value-display">
+            {analytics?.total_orders || 0}
+          </div>
+          <div className="metric-footer-row">
+            <span className="metric-footer-text">Deliveries Completed</span>
+            {renderSparkline(
+              "#8b5cf6",
+              "M0,18 Q15,8 30,12 T60,18 T90,5 L100,8",
+            )}
+          </div>
+        </div>
 
-        <StatCard
-          theme="admin"
-          title="Active Outlets"
-          icon={<Store size={18} />}
-          value={analytics?.total_restaurants || 0}
-          subtitle="Onboarded merchant stores"
-        />
+        {/* Card 4: Outlets */}
+        <div className="metric-card-premium">
+          <div className="metric-inner-header">
+            <span className="metric-badge-label">Outlets Onboarded</span>
+            <div
+              className="metric-icon-box"
+              style={{
+                color: "#f59e0b",
+                background: "rgba(245,158,11,0.08)",
+              }}
+            >
+              <Store size={18} />
+            </div>
+          </div>
+          <div className="metric-value-display">
+            {analytics?.total_restaurants || 0}
+          </div>
+          <div className="metric-footer-row">
+            <span className="metric-footer-text">Active Partner Stores</span>
+            {renderSparkline(
+              "#f59e0b",
+              "M0,15 L20,10 L40,15 L60,8 L80,12 L100,5",
+            )}
+          </div>
+        </div>
 
-        <StatCard
-          theme="admin"
-          title="Total Users"
-          icon={<Users size={18} />}
-          value={analytics?.total_users || 0}
-          subtitle="Customers, owners & riders"
-        />
+        {/* Card 5: Users */}
+        <div className="metric-card-premium">
+          <div className="metric-inner-header">
+            <span className="metric-badge-label">Total Users</span>
+            <div
+              className="metric-icon-box"
+              style={{
+                color: "#ec4899",
+                background: "rgba(236,72,153,0.08)",
+              }}
+            >
+              <Users size={18} />
+            </div>
+          </div>
+          <div className="metric-value-display">
+            {analytics?.total_users || 0}
+          </div>
+          <div className="metric-footer-row">
+            <span className="metric-footer-text">Registered Accounts</span>
+            {renderSparkline("#ec4899", "M0,22 Q20,10 40,18 T80,5 L100,10")}
+          </div>
+        </div>
       </div>
 
-      {/* Premium Quick Navigation Grid */}
+      {/* Quick Navigation */}
       <h2
-        style={{
-          fontSize: "1.2rem",
-          fontWeight: 700,
-          margin: "32px 0 16px 0",
-          color: "#1e293b",
-          fontFamily: "var(--font-anthropic)",
-        }}
+        className="section-heading section-heading-md"
+        style={{ margin: "40px 0 20px 0", textTransform: "uppercase" }}
       >
         Quick Navigation
       </h2>
-      <div className="quick-nav-grid" style={{ marginBottom: "32px" }}>
+      <div className="quick-nav-grid">
         {[
           {
             label: "Restaurants",
-            icon: <Store size={20} />,
+            icon: <Store size={18} />,
             to: "/restaurants",
             color: "#f59e0b",
           },
           {
             label: "Customers",
-            icon: <Users size={20} />,
+            icon: <Users size={18} />,
             to: "/customers",
             color: "#3b82f6",
           },
           {
-            label: "Delivery Partners",
-            icon: <Bike size={20} />,
+            label: "Riders",
+            icon: <Bike size={18} />,
             to: "/drivers",
             color: "#10b981",
           },
           {
-            label: "Orders",
-            icon: <ClipboardList size={20} />,
+            label: "Orders Log",
+            icon: <ClipboardList size={18} />,
             to: "/orders",
             color: "#8b5cf6",
           },
           {
-            label: "Images",
-            icon: <ImageIcon size={20} />,
-            to: "/images",
+            label: "Voucher CMS",
+            icon: <Tag size={18} />,
+            to: "/cms",
             color: "#ec4899",
           },
           {
             label: "Settings",
-            icon: <Settings size={20} />,
+            icon: <Settings size={18} />,
             to: "/settings",
             color: "#64748b",
           },
         ].map((nav) => (
-          <Link key={nav.to} to={nav.to} className="premium-nav-card">
+          <Link
+            key={nav.to}
+            to={nav.to}
+            className="premium-nav-card-container"
+          >
             <div
-              className="premium-nav-icon"
-              style={{ backgroundColor: `${nav.color}15`, color: nav.color }}
+              className="premium-nav-card-icon"
+              style={{
+                backgroundColor: `${nav.color}12`,
+                color: nav.color,
+              }}
             >
               {nav.icon}
             </div>
-            <span className="premium-nav-label">{nav.label}</span>
+            <span className="premium-nav-card-label">{nav.label}</span>
           </Link>
         ))}
       </div>
 
+      {/* Two Column Section */}
       <div className="admin-two-col">
-        {/* Left Column - Restaurant Auditing */}
+        {/* Left Column: Approvals */}
         <div className="admin-panel">
           <div className="admin-panel-title">
-            <ShieldAlert size={20} color="#ff3f1a" /> Merchant Approval Queue
+            <ShieldAlert size={20} color="var(--cred-accent, #f43f5e)" />{" "}
+            Merchant Approval Queue
           </div>
           <p
             style={{
               color: "#64748b",
-              fontSize: "0.9rem",
-              marginBottom: "20px",
+              fontSize: "0.85rem",
+              marginBottom: "24px",
             }}
           >
-            Verify and audit new restaurant partner stores before allowing them
-            to accept orders.
+            Verify onboarded restaurant profile submissions before admitting
+            them online.
           </p>
 
           <div
-            style={{ display: "flex", flexDirection: "column", gap: "14px" }}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "14px",
+            }}
           >
             {restaurants.map((r) => (
               <div key={r.id} className="audit-list-item">
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "14px" }}
                 >
-                  <div className="audit-avatar">
+                  <div className="audit-item-logo">
                     {r.name ? r.name.charAt(0).toUpperCase() : "R"}
                   </div>
                   <div>
                     <strong style={{ color: "#1e293b", fontSize: "0.95rem" }}>
                       {r.name}
                     </strong>
-                    <div
-                      style={{
-                        color: "#64748b",
-                        fontSize: "0.85rem",
-                        marginTop: "2px",
-                      }}
-                    >
-                      {r.description}
-                    </div>
+                    <div className="audit-item-desc">{r.description}</div>
                   </div>
                 </div>
 
                 <div>
                   {r.is_verified ? (
-                    <span
-                      style={{
-                        background: "#ecfdf5",
-                        color: "#10b981",
-                        fontSize: "0.75rem",
-                        fontWeight: 700,
-                        padding: "6px 12px",
-                        borderRadius: "99px",
-                      }}
-                    >
-                      VERIFIED
-                    </span>
+                    <span className="premium-badge success">Verified</span>
                   ) : (
                     <button
                       onClick={() => handleVerifyRestaurant(r.id)}
-                      className="btn-premium btn-sm"
-                      style={{
-                        padding: "8px 16px",
-                        fontSize: "0.8rem",
-                        cursor: "pointer",
-                      }}
+                      className="neo-btn neo-btn-primary"
+                      style={{ padding: "8px 16px", fontSize: "0.85rem" }}
                     >
-                      Verify Store
+                      Approve
                     </button>
                   )}
                 </div>
@@ -399,93 +467,104 @@ export const Dashboard: React.FC = () => {
                   fontSize: "0.9rem",
                 }}
               >
-                No partner stores found in the database.
+                No active approvals pending.
               </div>
             )}
           </div>
         </div>
 
-        {/* Right Column - Coupon Manager */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-          {/* Create Coupon Widget */}
+        {/* Right Column: Campaigns */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+          {/* Form */}
           <div className="admin-panel">
             <div className="admin-panel-title">
-              <Tag size={20} color="#7a00ff" /> Launch Campaign Coupon
+              <Tag size={20} color="#ec4899" /> Create Promo Code
             </div>
             <p
               style={{
                 color: "#64748b",
-                fontSize: "0.9rem",
-                marginBottom: "20px",
+                fontSize: "0.85rem",
+                marginBottom: "24px",
               }}
             >
-              Publish new promotional voucher codes for your customers.
+              Configure active coupon campaigns for customer checkout discounts.
             </p>
 
             <form
               onSubmit={handleAddCoupon}
-              style={{ display: "flex", flexDirection: "column", gap: "14px" }}
+              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
             >
-              <input
-                type="text"
-                placeholder="PROMO CODE (e.g. BITES50)"
-                value={code}
-                onChange={(e) => setCode(e.target.value.toUpperCase())}
-                required
-                className="input-premium"
-                style={{ width: "100%" }}
-              />
+              <div className="premium-form-group">
+                <label>Promo Voucher Code</label>
+                <input
+                  type="text"
+                  placeholder="e.g. BITES50"
+                  value={code}
+                  onChange={(e) => setCode(e.target.value.toUpperCase())}
+                  required
+                  className="premium-form-input"
+                />
+              </div>
 
-              <select
-                value={discountType}
-                onChange={(e: any) => setDiscountType(e.target.value)}
-                className="input-premium"
-                style={{ width: "100%" }}
+              <div className="premium-form-group">
+                <label>Discount Type</label>
+                <select
+                  value={discountType}
+                  onChange={(e: any) => setDiscountType(e.target.value)}
+                  className="premium-form-input"
+                >
+                  <option value="percentage">Percentage Discount (%)</option>
+                  <option value="fixed">Fixed Flat Discount (₹)</option>
+                </select>
+              </div>
+
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                }}
               >
-                <option value="percentage">Percentage Discount (%)</option>
-                <option value="fixed">Fixed Cash Discount (₹)</option>
-              </select>
-
-              <input
-                type="number"
-                placeholder="Discount Value"
-                value={discountValue}
-                onChange={(e) => setDiscountValue(e.target.value)}
-                required
-                className="input-premium"
-                style={{ width: "100%" }}
-              />
-
-              <input
-                type="number"
-                placeholder="Min Basket Value (₹)"
-                value={minOrder}
-                onChange={(e) => setMinOrder(e.target.value)}
-                className="input-premium"
-                style={{ width: "100%" }}
-              />
+                <div className="premium-form-group">
+                  <label>Value</label>
+                  <input
+                    type="number"
+                    placeholder="e.g. 50"
+                    value={discountValue}
+                    onChange={(e) => setDiscountValue(e.target.value)}
+                    required
+                    className="premium-form-input"
+                  />
+                </div>
+                <div className="premium-form-group">
+                  <label>Min Spend (₹)</label>
+                  <input
+                    type="number"
+                    placeholder="e.g. 299"
+                    value={minOrder}
+                    onChange={(e) => setMinOrder(e.target.value)}
+                    className="premium-form-input"
+                  />
+                </div>
+              </div>
 
               <button
                 type="submit"
                 disabled={couponLoading}
-                className="btn-premium"
-                style={{
-                  width: "100%",
-                  padding: "12px",
-                  fontSize: "0.9rem",
-                  cursor: "pointer",
-                  marginTop: "6px",
-                }}
+                className="neo-btn neo-btn-primary"
+                style={{ width: "100%", marginTop: "8px" }}
               >
                 {couponLoading ? "Publishing..." : "Launch Coupon"}
               </button>
             </form>
           </div>
 
-          {/* Active Campaign Coupons */}
+          {/* List */}
           <div className="admin-panel">
-            <div className="admin-panel-title" style={{ fontSize: "1rem" }}>
-              Live Platform Coupons
+            <div
+              style={{ fontSize: "1rem", fontWeight: 800, color: "#0f172a" }}
+            >
+              Live Coupons ({coupons.length})
             </div>
 
             <div
@@ -493,18 +572,30 @@ export const Dashboard: React.FC = () => {
                 display: "flex",
                 flexDirection: "column",
                 gap: "12px",
-                marginTop: "14px",
+                marginTop: "16px",
               }}
             >
               {coupons.map((c) => (
-                <div key={c.id} className="coupon-item-card">
+                <div
+                  key={c.id}
+                  className="coupon-item-card"
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    padding: "16px",
+                    background: "#f8fafc",
+                    borderRadius: "12px",
+                    border: "1px dashed rgba(15, 23, 42, 0.12)",
+                  }}
+                >
                   <div>
-                    <strong style={{ fontSize: "0.9rem", color: "#1e293b" }}>
+                    <strong style={{ fontSize: "0.9rem", color: "#0f172a" }}>
                       {c.code}
                     </strong>
                     <div
                       style={{
-                        fontSize: "0.78rem",
+                        fontSize: "0.75rem",
                         color: "#64748b",
                         marginTop: "3px",
                       }}
@@ -516,14 +607,12 @@ export const Dashboard: React.FC = () => {
                   </div>
                   <button
                     onClick={() => handleDeleteCoupon(c.id)}
-                    className="icon-button-danger"
                     style={{
                       border: "none",
                       background: "none",
                       color: "#ef4444",
                       cursor: "pointer",
                       padding: "6px",
-                      borderRadius: "6px",
                     }}
                   >
                     <Trash2 size={16} />
@@ -540,7 +629,7 @@ export const Dashboard: React.FC = () => {
                     fontSize: "0.85rem",
                   }}
                 >
-                  No active coupon campaigns running.
+                  No promo codes currently active.
                 </div>
               )}
             </div>

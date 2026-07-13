@@ -210,19 +210,27 @@ export const MenuManager: React.FC = () => {
   return (
     <div className="restaurant-premium-layout" style={{ padding: "40px 20px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        <PremiumPageHeader 
+        <PremiumPageHeader
           title="Menu Catalog Manager"
           subtitle="Organize restaurant offering categories, add custom items, upload photos, and update availability."
         />
 
         <div className="menu-manager-grid premium-animate-in">
-          
           {/* Dishes list */}
           <div>
-            <h2 style={{ fontSize: "1.4rem", fontWeight: 800, marginBottom: "24px", color: "var(--cred-text-primary)" }}>
+            <h2
+              style={{
+                fontSize: "1.4rem",
+                fontWeight: 800,
+                marginBottom: "24px",
+                color: "var(--cred-text-primary)",
+              }}
+            >
               Dishes Catalog
             </h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div
+              style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+            >
               {menuItems.map((item) => {
                 const cardItem = {
                   ...item,
@@ -237,29 +245,74 @@ export const MenuManager: React.FC = () => {
                     key={item.id}
                     item={cardItem}
                     renderFooterActions={() => (
-                      <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "12px", borderTop: "1px solid var(--cred-border)", paddingTop: "12px" }}>
-                        <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "16px",
+                          marginTop: "12px",
+                          borderTop: "1px solid var(--cred-border)",
+                          paddingTop: "12px",
+                        }}
+                      >
+                        <label
+                          style={{
+                            display: "flex",
+                            alignItems: "center",
+                            gap: "8px",
+                            cursor: "pointer",
+                          }}
+                        >
                           <input
                             type="checkbox"
                             checked={!!item.is_available}
-                            onChange={() => toggleItemAvailability(item.id, !!item.is_available)}
-                            style={{ width: "16px", height: "16px", accentColor: "var(--cred-success)" }}
+                            onChange={() =>
+                              toggleItemAvailability(
+                                item.id,
+                                !!item.is_available,
+                              )
+                            }
+                            style={{
+                              width: "16px",
+                              height: "16px",
+                              accentColor: "var(--cred-success)",
+                            }}
                           />
-                          <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cred-text-secondary)" }}>
+                          <span
+                            style={{
+                              fontSize: "0.85rem",
+                              fontWeight: 700,
+                              color: "var(--cred-text-secondary)",
+                            }}
+                          >
                             Available
                           </span>
                         </label>
 
                         <button
                           onClick={() => startEdit(item)}
-                          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--cred-text-secondary)", display: "flex", alignItems: "center" }}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            color: "var(--cred-text-secondary)",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
                         >
                           <Edit2 size={16} />
                         </button>
 
                         <button
                           onClick={() => handleDeleteItem(item.id)}
-                          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--cred-accent)", display: "flex", alignItems: "center" }}
+                          style={{
+                            background: "none",
+                            border: "none",
+                            cursor: "pointer",
+                            color: "var(--cred-accent)",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
                         >
                           <Trash2 size={16} />
                         </button>
@@ -280,21 +333,36 @@ export const MenuManager: React.FC = () => {
                     border: "1px solid var(--cred-border)",
                   }}
                 >
-                  No dishes found in menu catalog. Use the right form panels to start building.
+                  No dishes found in menu catalog. Use the right form panels to
+                  start building.
                 </div>
               )}
             </div>
           </div>
 
           {/* Creation panels */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
-            
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "32px" }}
+          >
             {/* Category CRUD Form */}
-            <div className="cred-stat-card" style={{ minHeight: "auto", padding: "28px" }}>
-              <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "16px" }}>
+            <div
+              className="cred-stat-card"
+              style={{ minHeight: "auto", padding: "28px" }}
+            >
+              <h3
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 800,
+                  color: "var(--cred-text-primary)",
+                  marginBottom: "16px",
+                }}
+              >
                 Add New Category
               </h3>
-              <form onSubmit={handleAddCategory} style={{ display: "flex", alignItems: "flex-end", gap: "12px" }}>
+              <form
+                onSubmit={handleAddCategory}
+                style={{ display: "flex", alignItems: "flex-end", gap: "12px" }}
+              >
                 <div className="premium-form-group">
                   <label>Category Name</label>
                   <input
@@ -306,20 +374,40 @@ export const MenuManager: React.FC = () => {
                     className="premium-form-input"
                   />
                 </div>
-                <button type="submit" className="neo-btn neo-btn-primary" style={{ padding: "12px 20px", height: "46px" }}>
+                <button
+                  type="submit"
+                  className="neo-btn neo-btn-primary"
+                  style={{ padding: "12px 20px", height: "46px" }}
+                >
                   <Plus size={20} />
                 </button>
               </form>
             </div>
 
             {/* Dish CRUD Form */}
-            <div className="cred-stat-card" style={{ minHeight: "auto", padding: "28px" }}>
-              <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "20px" }}>
+            <div
+              className="cred-stat-card"
+              style={{ minHeight: "auto", padding: "28px" }}
+            >
+              <h3
+                style={{
+                  fontSize: "1.15rem",
+                  fontWeight: 800,
+                  color: "var(--cred-text-primary)",
+                  marginBottom: "20px",
+                }}
+              >
                 {editingId ? "Edit Dish Properties" : "Add New Dish"}
               </h3>
-              
-              <form onSubmit={handleSaveMenuItem} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-                
+
+              <form
+                onSubmit={handleSaveMenuItem}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "20px",
+                }}
+              >
                 <div className="premium-form-group">
                   <label>Select Category *</label>
                   <select
@@ -328,9 +416,15 @@ export const MenuManager: React.FC = () => {
                     required
                     className="premium-form-input"
                   >
-                    <option value="" disabled hidden>Choose a category</option>
+                    <option value="" disabled hidden>
+                      Choose a category
+                    </option>
                     {categories.map((c) => (
-                      <option key={c.id} value={c.id} style={{ color: "black" }}>
+                      <option
+                        key={c.id}
+                        value={c.id}
+                        style={{ color: "black" }}
+                      >
                         {c.name}
                       </option>
                     ))}
@@ -360,7 +454,13 @@ export const MenuManager: React.FC = () => {
                   />
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "16px",
+                  }}
+                >
                   <div className="premium-form-group">
                     <label>Price ($) *</label>
                     <input
@@ -379,7 +479,9 @@ export const MenuManager: React.FC = () => {
                     <label>Food Type</label>
                     <select
                       value={newItemIsVeg ? "true" : "false"}
-                      onChange={(e) => setNewItemIsVeg(e.target.value === "true")}
+                      onChange={(e) =>
+                        setNewItemIsVeg(e.target.value === "true")
+                      }
                       className="premium-form-input"
                     >
                       <option value="true">Vegetarian</option>
@@ -399,15 +501,34 @@ export const MenuManager: React.FC = () => {
                   />
                 </div>
 
-                <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-                  <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+                <div
+                  style={{ display: "flex", gap: "16px", alignItems: "center" }}
+                >
+                  <label
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      cursor: "pointer",
+                    }}
+                  >
                     <input
                       type="checkbox"
                       checked={newItemUnlimited}
                       onChange={(e) => setNewItemUnlimited(e.target.checked)}
-                      style={{ width: "16px", height: "16px", accentColor: "var(--cred-success)" }}
+                      style={{
+                        width: "16px",
+                        height: "16px",
+                        accentColor: "var(--cred-success)",
+                      }}
                     />
-                    <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cred-text-secondary)" }}>
+                    <span
+                      style={{
+                        fontSize: "0.85rem",
+                        fontWeight: 700,
+                        color: "var(--cred-text-secondary)",
+                      }}
+                    >
                       Unlimited stock
                     </span>
                   </label>
@@ -425,22 +546,30 @@ export const MenuManager: React.FC = () => {
                   )}
                 </div>
 
-                <div style={{ display: "flex", gap: "12px", marginTop: "10px" }}>
-                  <button type="submit" className="neo-btn neo-btn-primary" style={{ flex: 2 }}>
+                <div
+                  style={{ display: "flex", gap: "12px", marginTop: "10px" }}
+                >
+                  <button
+                    type="submit"
+                    className="neo-btn neo-btn-primary"
+                    style={{ flex: 2 }}
+                  >
                     {editingId ? "Save Changes" : "Add to Catalog"}
                   </button>
                   {editingId && (
-                    <button type="button" onClick={resetForm} className="neo-btn neo-btn-outline" style={{ flex: 1 }}>
+                    <button
+                      type="button"
+                      onClick={resetForm}
+                      className="neo-btn neo-btn-outline"
+                      style={{ flex: 1 }}
+                    >
                       Cancel
                     </button>
                   )}
                 </div>
-
               </form>
             </div>
-
           </div>
-
         </div>
       </div>
     </div>

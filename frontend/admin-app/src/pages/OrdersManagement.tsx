@@ -6,9 +6,14 @@ import {
   ShieldAlert,
   Clock,
   ShoppingBag,
+  X,
+  MapPin,
+  User,
+  Store,
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import "../admin.css";
 
 interface Order {
   id: string;
@@ -49,13 +54,16 @@ export const OrdersManagement: React.FC = () => {
   const [drivers, setDrivers] = useState<Driver[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Editing state
-  const [editingId, setEditingId] = useState<string | null>(null);
+  // Detailed view state (Myntra-style side drawer)
+  const [selectedDetailedOrder, setSelectedDetailedOrder] = useState<
+    any | null
+  >(null);
+
+  // Dispatch fields inside drawer
   const [status, setStatus] = useState<Order["status"]>("placed");
   const [deliveryPartnerId, setDeliveryPartnerId] = useState("");
   const [totalPayable, setTotalPayable] = useState("0.00");
-
-  const [showEditForm, setShowEditForm] = useState(false);
+  const [dispatchLoading, setDispatchLoading] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -79,30 +87,50 @@ export const OrdersManagement: React.FC = () => {
     fetchData();
   }, []);
 
+  const handlePreviewOrder = async (order: Order) => {
+    try {
+      const res = await api.get(`/orders/${order.id}`);
+      if (res.data.status === "success") {
+        const detailedData = res.data.data;
+        setSelectedDetailedOrder(detailedData);
+        // Sync dispatch controls with this order
+        setStatus(detailedData.status);
+        setDeliveryPartnerId(detailedData.delivery_partner_id || "");
+        setTotalPayable(detailedData.total_payable.toString());
+      }
+    } catch (err) {
+      notify.error("Could not fetch itemized details for this order.");
+    }
+  };
+
   const handleUpdateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!editingId) return;
+    if (!selectedDetailedOrder) return;
 
+    setDispatchLoading(true);
     try {
-      const res = await api.put(`/admin/orders/${editingId}`, {
+      const res = await api.put(`/admin/orders/${selectedDetailedOrder.id}`, {
         status,
         delivery_partner_id: deliveryPartnerId,
         total_payable: parseFloat(totalPayable || "0"),
       });
 
       if (res.data.status === "success") {
-        notify.success("Order updated.");
-        resetForm();
+        notify.success("Dispatch status and rider updated.");
+        setSelectedDetailedOrder(null);
         fetchData();
       }
     } catch (err: any) {
       notify.error(
         err.response?.data?.message || "We couldn't update this order.",
       );
+    } finally {
+      setDispatchLoading(false);
     }
   };
 
-  const handleDeleteOrder = async (id: string) => {
+  const handleDeleteOrder = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation(); // Avoid triggering card preview click
     if (
       !confirm(
         "Are you sure you want to permanently delete this order from the system?",
@@ -113,27 +141,14 @@ export const OrdersManagement: React.FC = () => {
       const res = await api.delete(`/admin/orders/${id}`);
       if (res.data.status === "success") {
         notify.info("Order deleted.");
+        if (selectedDetailedOrder?.id === id) {
+          setSelectedDetailedOrder(null);
+        }
         fetchData();
       }
     } catch (err) {
       notify.error("We couldn't delete this order.");
     }
-  };
-
-  const startEdit = (order: Order) => {
-    setEditingId(order.id);
-    setStatus(order.status);
-    setDeliveryPartnerId(order.delivery_partner_id || "");
-    setTotalPayable(order.total_payable.toString());
-    setShowEditForm(true);
-  };
-
-  const resetForm = () => {
-    setEditingId(null);
-    setStatus("placed");
-    setDeliveryPartnerId("");
-    setTotalPayable("0.00");
-    setShowEditForm(false);
   };
 
   if (loading) {
@@ -145,7 +160,7 @@ export const OrdersManagement: React.FC = () => {
   }
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" style={{ position: "relative" }}>
       <div className="section-spacing">
         <h1
           className="section-heading section-heading-lg"
@@ -154,95 +169,19 @@ export const OrdersManagement: React.FC = () => {
           Orders Console
         </h1>
         <p className="text-muted">
-          Manually dispatch delivery riders, update order state transitions, and
-          audit system transactions.
+          Click any card to inspect itemized recipes, track deliveries, and
+          dispatch riders.
         </p>
       </div>
 
-      {showEditForm && (
-        <div
-          className="panel-card section-spacing"
-          style={{ maxWidth: "600px" }}
-        >
-          <div className="panel-heading">
-            <Edit2 size={18} color="var(--accent-orange)" /> Dispatch & Edit
-            Order
-          </div>
-
-          <form onSubmit={handleUpdateOrder} className="form-grid">
-            <div className="form-field">
-              <label>Order Status Flow</label>
-              <select
-                value={status}
-                onChange={(e: any) => setStatus(e.target.value)}
-                className="input-premium"
-              >
-                <option value="placed">Placed</option>
-                <option value="accepted">Accepted</option>
-                <option value="preparing">Preparing</option>
-                <option value="ready_for_pickup">Ready For Pickup</option>
-                <option value="out_for_delivery">Out For Delivery</option>
-                <option value="delivered">Delivered</option>
-                <option value="cancelled">Cancelled</option>
-              </select>
-            </div>
-
-            <div className="form-field">
-              <label>Manual Delivery Rider Assignment</label>
-              <select
-                value={deliveryPartnerId}
-                onChange={(e) => setDeliveryPartnerId(e.target.value)}
-                className="input-premium"
-              >
-                <option value="">-- Select Rider / Unassign --</option>
-                {drivers.map((d) => (
-                  <option key={d.id} value={d.id}>
-                    {d.first_name} {d.last_name} (ONLINE)
-                  </option>
-                ))}
-              </select>
-              <small
-                style={{
-                  color: "var(--text-muted)",
-                  marginTop: "4px",
-                  display: "block",
-                }}
-              >
-                Only active, online riders are displayed here.
-              </small>
-            </div>
-
-            <div className="form-field">
-              <label>Total Order Value ($)</label>
-              <input
-                type="number"
-                step="0.01"
-                value={totalPayable}
-                onChange={(e) => setTotalPayable(e.target.value)}
-                className="input-premium"
-              />
-            </div>
-
-            <div style={{ display: "flex", gap: "12px", marginTop: "12px" }}>
-              <button type="submit" className="btn-premium" style={{ flex: 1 }}>
-                Save Dispatch Modifications
-              </button>
-              <button
-                type="button"
-                onClick={resetForm}
-                className="btn-premium"
-                style={{ background: "var(--text-slate)", flex: 1 }}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
       <div className="panel-grid">
         {orders.map((o) => (
-          <div key={o.id} className="panel-card panel-card-stacked">
+          <div
+            key={o.id}
+            className="panel-card panel-card-stacked"
+            onClick={() => handlePreviewOrder(o)}
+            style={{ cursor: "pointer", position: "relative" }}
+          >
             <div>
               <div className="panel-row">
                 <div
@@ -280,8 +219,7 @@ export const OrdersManagement: React.FC = () => {
                   </strong>
                 </div>
                 <div>
-                  Customer: <strong>{o.customer_name}</strong> (
-                  {o.customer_email})
+                  Customer: <strong>{o.customer_name}</strong>
                 </div>
                 <div
                   style={{
@@ -301,10 +239,10 @@ export const OrdersManagement: React.FC = () => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  background: "rgba(255,255,255,0.4)",
+                  background: "#f8fafc",
                   padding: "10px 14px",
                   borderRadius: "8px",
-                  border: "1px solid var(--glass-border)",
+                  border: "1px solid var(--cred-border, rgba(0,0,0,0.06))",
                   fontSize: "0.9rem",
                 }}
               >
@@ -312,29 +250,6 @@ export const OrdersManagement: React.FC = () => {
                 <strong style={{ fontSize: "1.1rem" }}>
                   ${parseFloat(o.total_payable.toString()).toFixed(2)}
                 </strong>
-              </div>
-
-              <div
-                style={{
-                  marginTop: "14px",
-                  padding: "10px",
-                  background: o.delivery_partner_id
-                    ? "rgba(76,175,80,0.08)"
-                    : "rgba(244,67,54,0.08)",
-                  borderRadius: "8px",
-                  border: "1px solid var(--glass-border)",
-                  fontSize: "0.8rem",
-                }}
-              >
-                {o.delivery_partner_id ? (
-                  <div>
-                    Rider: <strong>{o.driver_name}</strong> ({o.driver_phone})
-                  </div>
-                ) : (
-                  <div style={{ color: "#F44336", fontWeight: 700 }}>
-                    ⚠️ No Delivery Rider Assigned
-                  </div>
-                )}
               </div>
             </div>
 
@@ -347,7 +262,6 @@ export const OrdersManagement: React.FC = () => {
               }}
             >
               <button
-                onClick={() => startEdit(o)}
                 className="btn-premium btn-sm"
                 style={{
                   padding: "6px 12px",
@@ -355,22 +269,20 @@ export const OrdersManagement: React.FC = () => {
                   boxShadow: "none",
                 }}
               >
-                Dispatch Order
+                Inspect & Dispatch
               </button>
 
-              <div style={{ display: "flex", gap: "12px" }}>
-                <button
-                  onClick={() => handleDeleteOrder(o.id)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "#F44336",
-                  }}
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
+              <button
+                onClick={(e) => handleDeleteOrder(o.id, e)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "#F44336",
+                }}
+              >
+                <Trash2 size={16} />
+              </button>
             </div>
           </div>
         ))}
@@ -379,6 +291,351 @@ export const OrdersManagement: React.FC = () => {
           <div className="full-span-card">
             <p className="text-muted">No orders found in the database logs.</p>
           </div>
+        )}
+      </div>
+
+      {/* Backdrop for preview drawer */}
+      {selectedDetailedOrder && (
+        <div
+          className="preview-drawer-backdrop"
+          onClick={() => setSelectedDetailedOrder(null)}
+        />
+      )}
+
+      {/* Slide-out inspect drawer */}
+      <div className={`preview-drawer ${selectedDetailedOrder ? "open" : ""}`}>
+        {selectedDetailedOrder && (
+          <>
+            <div className="preview-drawer-header">
+              <div>
+                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
+                  Order Details
+                </h3>
+                <span
+                  style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
+                >
+                  ID: #{selectedDetailedOrder.id}
+                </span>
+              </div>
+              <button
+                onClick={() => setSelectedDetailedOrder(null)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  padding: "4px",
+                }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="preview-drawer-body">
+              {/* Timeline/Status */}
+              <div
+                style={{
+                  borderBottom: "1px solid #f1f5f9",
+                  paddingBottom: "16px",
+                }}
+              >
+                <span
+                  className="premium-badge success"
+                  style={{ textTransform: "uppercase", fontSize: "0.75rem" }}
+                >
+                  {selectedDetailedOrder.status.replace(/_/g, " ")}
+                </span>
+                <div
+                  style={{
+                    marginTop: "8px",
+                    fontSize: "0.85rem",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  Placed on{" "}
+                  {new Date(selectedDetailedOrder.placed_at).toLocaleString()}
+                </div>
+              </div>
+
+              {/* Merchant Details */}
+              <div
+                style={{ display: "flex", gap: "10px", alignItems: "center" }}
+              >
+                <Store size={18} color="var(--accent-orange)" />
+                <div>
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      textTransform: "uppercase",
+                      color: "var(--text-muted)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Restaurant
+                  </div>
+                  <strong style={{ fontSize: "0.95rem" }}>
+                    {selectedDetailedOrder.restaurant_name}
+                  </strong>
+                </div>
+              </div>
+
+              {/* Client details */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "flex-start",
+                }}
+              >
+                <User size={18} color="var(--accent-violet)" />
+                <div>
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      textTransform: "uppercase",
+                      color: "var(--text-muted)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Customer Info
+                  </div>
+                  <div style={{ fontSize: "0.95rem", fontWeight: 700 }}>
+                    {selectedDetailedOrder.customer_first_name}{" "}
+                    {selectedDetailedOrder.customer_last_name}
+                  </div>
+                  <div
+                    style={{ fontSize: "0.85rem", color: "var(--text-muted)" }}
+                  >
+                    Phone: {selectedDetailedOrder.customer_phone || "N/A"}
+                  </div>
+                </div>
+              </div>
+
+              {/* Delivery Destination */}
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                  alignItems: "flex-start",
+                }}
+              >
+                <MapPin size={18} color="var(--cred-accent)" />
+                <div>
+                  <div
+                    style={{
+                      fontSize: "0.75rem",
+                      textTransform: "uppercase",
+                      color: "var(--text-muted)",
+                      fontWeight: 700,
+                    }}
+                  >
+                    Delivery Destination
+                  </div>
+                  <div
+                    style={{ fontSize: "0.9rem", color: "var(--text-slate)" }}
+                  >
+                    {selectedDetailedOrder.street_address}
+                    {selectedDetailedOrder.landmark &&
+                      `, Near ${selectedDetailedOrder.landmark}`}
+                    {`, ${selectedDetailedOrder.city}, ${selectedDetailedOrder.state} - ${selectedDetailedOrder.postal_code}`}
+                  </div>
+                </div>
+              </div>
+
+              {/* Itemized Recipe */}
+              <div>
+                <h4
+                  style={{
+                    fontSize: "0.85rem",
+                    textTransform: "uppercase",
+                    color: "var(--text-muted)",
+                    marginBottom: "12px",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  Items Ordered
+                </h4>
+                <div style={{ display: "flex", flexDirection: "column" }}>
+                  {selectedDetailedOrder.items &&
+                    selectedDetailedOrder.items.map(
+                      (item: any, idx: number) => (
+                        <div key={idx} className="preview-item-row">
+                          <div>
+                            <strong style={{ fontSize: "0.9rem" }}>
+                              {item.item_name}
+                            </strong>
+                            <span
+                              style={{
+                                fontSize: "0.85rem",
+                                color: "var(--text-muted)",
+                                marginLeft: "8px",
+                              }}
+                            >
+                              x{item.quantity}
+                            </span>
+                          </div>
+                          <span style={{ fontSize: "0.9rem", fontWeight: 700 }}>
+                            $
+                            {(parseFloat(item.price) * item.quantity).toFixed(
+                              2,
+                            )}
+                          </span>
+                        </div>
+                      ),
+                    )}
+                </div>
+              </div>
+
+              {/* Financial Bill */}
+              <div>
+                <h4
+                  style={{
+                    fontSize: "0.85rem",
+                    textTransform: "uppercase",
+                    color: "var(--text-muted)",
+                    marginBottom: "12px",
+                    letterSpacing: "0.5px",
+                  }}
+                >
+                  Billing Details
+                </h4>
+                <div
+                  style={{
+                    background: "#f8fafc",
+                    padding: "16px",
+                    borderRadius: "12px",
+                    border: "1px dashed #cbd5e1",
+                  }}
+                >
+                  <div className="preview-receipt-line">
+                    <span>Items Subtotal</span>
+                    <span>
+                      ${parseFloat(selectedDetailedOrder.item_total).toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="preview-receipt-line">
+                    <span>Delivery Charges</span>
+                    <span>
+                      $
+                      {parseFloat(
+                        selectedDetailedOrder.delivery_charges,
+                      ).toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="preview-receipt-line">
+                    <span>Taxes</span>
+                    <span>
+                      ${parseFloat(selectedDetailedOrder.tax_amount).toFixed(2)}
+                    </span>
+                  </div>
+                  {parseFloat(selectedDetailedOrder.discount_amount) > 0 && (
+                    <div
+                      className="preview-receipt-line"
+                      style={{ color: "var(--cred-success)" }}
+                    >
+                      <span>Discount Saved</span>
+                      <span>
+                        -$
+                        {parseFloat(
+                          selectedDetailedOrder.discount_amount,
+                        ).toFixed(2)}
+                      </span>
+                    </div>
+                  )}
+                  <div className="preview-receipt-line total">
+                    <span>Total Payable</span>
+                    <span>
+                      $
+                      {parseFloat(selectedDetailedOrder.total_payable).toFixed(
+                        2,
+                      )}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Action dispatch panel inside drawer */}
+            <div className="preview-drawer-footer">
+              <form
+                onSubmit={handleUpdateOrder}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "16px",
+                }}
+              >
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr 1fr",
+                    gap: "12px",
+                  }}
+                >
+                  <div className="premium-form-group">
+                    <label>Order Status</label>
+                    <select
+                      value={status}
+                      onChange={(e: any) => setStatus(e.target.value)}
+                      className="premium-form-input"
+                      style={{ fontSize: "0.85rem", padding: "10px" }}
+                    >
+                      <option value="placed">Placed</option>
+                      <option value="accepted">Accepted</option>
+                      <option value="preparing">Preparing</option>
+                      <option value="ready_for_pickup">Ready For Pickup</option>
+                      <option value="out_for_delivery">Out For Delivery</option>
+                      <option value="delivered">Delivered</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </div>
+
+                  <div className="premium-form-group">
+                    <label>Assign Rider</label>
+                    <select
+                      value={deliveryPartnerId}
+                      onChange={(e) => setDeliveryPartnerId(e.target.value)}
+                      className="premium-form-input"
+                      style={{ fontSize: "0.85rem", padding: "10px" }}
+                    >
+                      <option value="">Unassigned</option>
+                      {drivers.map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.first_name} {d.last_name}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+
+                <div className="premium-form-group">
+                  <label>Override Total Payable ($)</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    value={totalPayable}
+                    onChange={(e) => setTotalPayable(e.target.value)}
+                    className="premium-form-input"
+                    style={{ fontSize: "0.85rem", padding: "10px" }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={dispatchLoading}
+                  className="neo-btn neo-btn-primary"
+                  style={{
+                    width: "100%",
+                    padding: "12px",
+                    fontSize: "0.95rem",
+                  }}
+                >
+                  {dispatchLoading
+                    ? "Updating Dispatch..."
+                    : "Apply Dispatch Actions"}
+                </button>
+              </form>
+            </div>
+          </>
         )}
       </div>
     </div>
