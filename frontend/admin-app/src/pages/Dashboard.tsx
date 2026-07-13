@@ -16,6 +16,7 @@ import {
 import { Link } from "react-router-dom";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import "../admin.css";
 import { StatCard } from "../../../shared/components/StatCard";
 
 interface Analytics {

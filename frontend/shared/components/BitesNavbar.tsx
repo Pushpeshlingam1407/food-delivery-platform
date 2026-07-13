@@ -54,7 +54,7 @@ export const BitesNavbar: React.FC<
       props.userName || (props.variant === "admin" ? "Admin" : "Merchant");
     return (
       <PlatformNavbar
-        className="premium-admin-navbar"
+        className="premium-navbar"
         left={
           <Link
             to="/"
