@@ -1,35 +1,46 @@
 # 🍔 Bites: The Ultimate Enterprise Food Delivery Platform
 ## 🛠️ Complete Technical Manual, Core Architecture Specifications, and Operational Runbook
 > [!IMPORTANT]  
-> This document acts as the definitive 1,000+ line technical blueprint for the **Bites** food delivery ecosystem. It details every routing layer, database table schema, security middleware validation, frontend component property, CSS utility, and real-time operational socket channel present in the codebase.
+> This document acts as the definitive 1,200+ line technical blueprint for the **Bites** food delivery ecosystem. It details every routing layer, database table schema, security middleware validation, frontend component property, CSS utility, and real-time operational socket channel present in the codebase.
 
 ---
 
 # 📖 Table of Contents
 1. [Project Overview & Business Logic](#1-project-overview--business-logic)
-2. [Monorepo Architecture & Directory Atlas](#2-monorepo-architecture--directory-atlas)
-3. [Unified Design Token System & Global Styles](#3-unified-design-token-system--global-styles)
-4. [Database Schema & Data Model Reference](#4-database-schema--data-model-reference)
-5. [Complete Backend Request Lifecycle & Controller Layer](#5-complete-backend-request-lifecycle--controller-layer)
-6. [Security Architecture & Authentication Flows](#6-security-architecture--authentication-flows)
-7. [Comprehensive API Endpoint Registry](#7-comprehensive-api-endpoint-registry)
-8. [Real-time WebSocket Coordination System](#8-real-time-websocket-coordination-system)
-9. [Shared Component Library Specifications](#9-shared-component-library-specifications)
-10. [Frontend Portals Deep Dive](#10-frontend-portals-deep-dive)
-11. [State Management & Data Synchronization Flow](#11-state-management--data-synchronization-flow)
-12. [System Performance & Optimization Log](#12-system-performance--optimization-log)
-13. [Comprehensive Error Handling & Resiliency Guide](#13-comprehensive-error-handling--resiliency-guide)
-14. [Local Development, Seed Hydration, & Deploy Runbook](#14-local-development-seed-hydration--deploy-runbook)
-15. [Project Metrics & Statistics Ledger](#15-project-metrics--statistics-ledger)
-16. [Key Engineering Decisions & Trade-Offs](#16-key-engineering-decisions--trade-offs)
-17. [Future Enhancements Roadmap](#17-future-enhancements-roadmap)
-18. [End-to-End Operational Walkthrough (Launch to Payout)](#18-end-to-end-operational-walkthrough-launch-to-payout)
-19. [API Request and Response Payloads Reference Directory](#19-api-request-and-response-payloads-reference-directory)
-20. [Full Codebase Walkthrough and User Journey Verification Scripts](#20-full-codebase-walkthrough-and-user-journey-verification-scripts)
-21. [Seed Data Directory & Initial Database Hydration Log](#21-seed-data-directory--initial-database-hydration-log)
-22. [Comprehensive CSS Selector Map & Custom Overrides Atlas](#22-comprehensive-css-selector-map--custom-overrides-atlas)
-23. [Expanded API Payload Samples Directory (Rider, Coupons, and Addresses)](#23-expanded-api-payload-samples-directory-rider-coupons-and-addresses)
-24. [Exhaustive Controller Implementation Breakdowns](#24-exhaustive-controller-implementation-breakdowns)
+2. [Project Journey & Milestones](#2-project-journey--milestones)
+3. [Technology Stack](#3-technology-stack)
+4. [Folder Structure & Component Responsibilities](#4-folder-structure--component-responsibilities)
+5. [Frontend Architecture](#5-frontend-architecture)
+6. [Backend Architecture](#6-backend-architecture)
+7. [Database Schema & Data Model Reference](#7-database-schema--data-model-reference)
+8. [Authentication System](#8-authentication-system)
+9. [API Documentation Reference](#9-api-documentation-reference)
+10. [Features Documentation](#10-features-documentation)
+11. [Core Business Logic & Workflows](#11-core-business-logic--workflows)
+12. [System Data Flow](#12-system-data-flow)
+13. [State Management & Context Providers](#13-state-management--context-providers)
+14. [Security Policies & Hardening](#14-security-policies--hardening)
+15. [Performance Optimizations](#15-performance-optimizations)
+16. [Error Handling & Resiliency Guide](#16-error-handling--resiliency-guide)
+17. [Deployment & Configuration Runbook](#17-deployment--configuration-runbook)
+18. [Third-Party Integrations](#18-third-party-integrations)
+19. [Project Statistics Ledger](#19-project-statistics-ledger)
+20. [Key Engineering Decisions & Trade-Offs](#20-key-engineering-decisions--trade-offs)
+21. [Future Enhancements Roadmap](#21-future-enhancements-roadmap)
+22. [Complete Staging & User Walkthrough Guides](#22-complete-staging--user-walkthrough-guides)
+23. [Conclusion & Platform Assessment](#23-conclusion--platform-assessment)
+24. [API Request and Response Payloads Reference Directory](#24-api-request-and-response-payloads-reference-directory)
+25. [Full Codebase Walkthrough and User Journey Verification Scripts](#25-full-codebase-walkthrough-and-user-journey-verification-scripts)
+26. [Seed Data Directory & Initial Database Hydration Log](#26-seed-data-directory--initial-database-hydration-log)
+27. [Comprehensive CSS Selector Map & Custom Overrides Atlas](#27-comprehensive-css-selector-map--custom-overrides-atlas)
+28. [Expanded API Payload Samples Directory (Rider, Coupons, and Addresses)](#28-expanded-api-payload-samples-directory-rider-coupons-and-addresses)
+29. [Exhaustive Controller Implementation Breakdowns](#29-exhaustive-controller-implementation-breakdowns)
+30. [Appendices - Production Checklist & Compliance Protocols](#30-appendices---production-checklist--compliance-protocols)
+31. [Exhaustive API Router Specifications Manual](#31-exhaustive-api-router-specifications-manual)
+32. [Expanded Database Model Configurations](#32-expanded-database-model-configurations)
+33. [Detailed Frontend Context Providers](#33-detailed-frontend-context-providers)
+34. [Exhaustive Custom Hooks Walkthrough](#34-exhaustive-custom-hooks-walkthrough)
+35. [Comprehensive System Troubleshooting Guide](#35-comprehensive-system-troubleshooting-guide)
 
 ---
 
@@ -70,43 +81,69 @@ sequenceDiagram
 
 ---
 
-## 2. Monorepo Architecture & Directory Atlas
+## 2. Project Journey & Milestones
 
-The project uses a clean monorepo architecture separating the Node.js backend from the 4 frontend React portals, while routing common elements (such as themes, utilities, and components) to a shared path:
+### 2.1 Timeline & Architectural Milestones
+The development story of Bites is organized into three major phases:
+
+```
++------------------------------------+      +------------------------------------+      +------------------------------------+
+| Phase 1: Setup & Initialization   | ---> | Phase 2: Real-time Dispatch Sync   | ---> | Phase 3: Premium UI & Refactoring  |
+| - Express.js backend & DB pools    |      | - Socket.IO real-time pipelines    |      | - Cleaned layouts, swipable side   |
+| - Custom Auth routes and hashing   |      | - Order pipelines, location tracking|      |   drawers, and CSS refactoring     |
++------------------------------------+      +------------------------------------+      +------------------------------------+
+```
+
+1. **Initial Monorepo Setup**: Unifying the admin, customer, rider, and restaurant portals into a single monorepo sharing common dependencies under `/frontend/shared/`.
+2. **Real-time Synchronization Engine**: Integrating Socket.IO to coordinate rider location tracks and notify merchant dashboards of new orders.
+3. **Refactoring & UI System Overhaul**: Removing inline style fragments (`style={{ ... }}`) from components, shifting variables into `variables.css`, and building the neobrutalist theme.
+
+---
+
+## 3. Technology Stack
+
+### 3.1 Frontend Stack
+* **Framework**: React 18 (TypeScript compiling to ESNext).
+* **Router**: React Router DOM (v6 layout-nested routers).
+* **Styling**: Pure CSS Variables system with neobrutalist accent rules.
+* **Notifications**: Sonner + React Hot Toast with capsule layouts.
+* **Icons**: Lucide React.
+* **API Integration**: Axios connection clients with middleware interceptors.
+
+### 3.2 Backend Stack
+* **Runtime**: Node.js v20 (ESModules configuration).
+* **Framework**: Express.js.
+* **Database Driver**: `mysql2` connection pool setup.
+* **Security Headers**: `helmet`, `cors`, and `express.json` upload limits.
+* **Encryption**: `bcryptjs` for credentials hashing.
+* **Token Layer**: `jsonwebtoken` (JWT payload verification).
+
+---
+
+## 4. Folder Structure & Component Responsibilities
+
+The codebase layout is separated into backend and frontend directories:
 
 ```
 food-delivery-platform/
 ├── backend/
 │   ├── src/
-│   │   ├── config/
-│   │   │   └── db.js            # Connection pool setup using mysql2
-│   │   ├── controllers/
-│   │   │   ├── adminController.js       # Admin approvals, auditing, and campaigns
-│   │   │   ├── authController.js        # bcrypt-based login & registration
-│   │   │   ├── restaurantController.js  # Store configurations and schedules
-│   │   │   ├── orderController.js       # Order pipelines & items processing
-│   │   │   └── walletController.js      # Ledger operations & balance deposits
-│   │   ├── middlewares/
-│   │   │   ├── auth.js          # JWT extractor & Role check guard
-│   │   │   └── upload.js        # File limits & multer disk storage config
-│   │   ├── routes/
-│   │   │   ├── adminRoutes.js   # Admin-only router mapping
-│   │   │   ├── authRoutes.js    # Registration and Login bindings
-│   │   │   ├── orderRoutes.js   # Client and Driver checkout routes
-│   │   │   └── walletRoutes.js  # Ledger adjustments endpoints
-│   │   ├── utils/
-│   │   │   └── jwt.js           # JWT Sign and Verify helper utilities
-│   │   ├── app.js               # Express middleware configuration
-│   │   └── server.js            # Socket.IO WebSocket server launch
-│   ├── schema.sql               # SQLite / MySQL schema definition
-│   └── seed.sql                 # Sample profiles & initial data hydration
+│   │   ├── config/          # db.js connection pool
+│   │   ├── controllers/     # Controller Layer (Business logic triggers)
+│   │   ├── middlewares/     # Auth and role guards
+│   │   ├── routes/          # Express route bindings
+│   │   ├── utils/           # JWT signature modules
+│   │   ├── app.js           # Express main server bindings
+│   │   └── server.js        # Socket.IO WebSocket initialization
+│   ├── schema.sql           # Database schema definitions
+│   └── seed.sql             # Hydration script with sample profiles
 ├── frontend/
-│   ├── shared/                  # Common library shared across portals
-│   │   ├── components/          # BitesNavbar, AppSidebar, PreviewDrawer
-│   │   ├── services/            # Axios configurations (api.ts)
-│   │   ├── themes/              # variables.css, components.css, layout.css
+│   ├── shared/              # Reusable modules shared across portals
+│   │   ├── components/      # BitesNavbar, AppSidebar, PreviewDrawer
+│   │   ├── services/        # Axios configurations (api.ts)
+│   │   ├── themes/          # variables.css, components.css, layout.css
 │   │   └── utils/               # Sonner & Hot-Toast notify helper wrapper
-│   ├── admin-app/               # Platform operations React portal
+│   ├── admin-app/           # Platform operations React portal
 │   │   ├── src/
 │   │   │   ├── pages/
 │   │   │   │   ├── Dashboard.tsx            # Operations metrics console
@@ -115,55 +152,66 @@ food-delivery-platform/
 │   │   │   │   └── CustomersManagement.tsx   # User profile verification desk
 │   │   │   └── admin.css                    # Dashboard stylesheet overrides
 │   ├── customer-app/            # B2C customer ordering React portal
-│   ├── delivery-app/            # Rider dispatch coordination React portal
+│   ├── delivery-app/            # Rider routing app
 │   └── restaurant-app/          # Merchant kitchen manager React portal
 ```
 
 ---
 
-## 3. Unified Design Token System & Global Styles
+## 5. Frontend Architecture
 
-### 3.1 Design Variables Schema (`variables.css`)
-We maintain a clean, consistent styling system using CSS variables, avoiding ad-hoc tailwind imports. This ensures a uniform light theme across all portals:
-
-```css
-:root {
-  /* Premium Light Theme Color Palette */
-  --bg-primary: #f8fafc;
-  --bg-secondary: #ffffff;
-  --text-main: #0f172a;
-  --text-muted: #64748b;
-  --text-slate: #334155;
-
-  /* Accent Colors */
-  --accent-violet: #8b5cf6;
-  --accent-violet-hover: #7c3aed;
-  --accent-orange: #f97316;
-  --accent-orange-hover: #ea580c;
-
-  /* Brand Accents */
-  --cred-accent: #e11d48;
-  --cred-success: #10b981;
-  --cred-border: rgba(0, 0, 0, 0.08);
-
-  /* Shadows and Borders */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.7);
-
-  /* Fonts */
-  --font-family: "Outfit", sans-serif;
-  --font-apple: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica;
-}
+### 5.1 Nested Layout Structure
+Portals mount side layout structures to handle navigation:
 ```
++--------------------------------------------------------+
+|                      BitesNavbar                       |
++-------------------+------------------------------------+
+|                   |                                    |
+|    AppSidebar     |         Main Router View           |
+|    (Left-pinned)  |         (admin-main-content)       |
+|                   |                                    |
++-------------------+------------------------------------+
+```
+
+### 5.2 Routing & Route Guards
+Protected layouts inspect local storage flags. If tokens are missing, requests are redirected to `/login`.
 
 ---
 
-## 4. Database Schema & Data Model Reference
+## 6. Backend Architecture
 
-### 4.1 SQL Schema Definitions
-The MySQL 8.0 tables are defined with cascade rules and relational constraints to avoid orphaned database records:
+### 6.1 Request Lifecycle Flow
+```
+[HTTP Request Client]
+       │
+       ▼
+[Middlewares: Security Headers (Helmet) & CORS Config]
+       │
+       ▼
+[Route Guard Middleware: Token verification]
+       │
+       ▼
+[Validation Middleware: Request payload parsing]
+       │
+       ▼
+[Controller Layer: Execute SQL Queries & Transaction Blocks]
+       │
+       ▼
+[Database Engine: MySQL Query Execution]
+       │
+       ▼
+[HTTP Response / Custom Exception Handler]
+```
+
+### 6.2 Service & Controller Decoupling
+Controllers parse inputs, query database pools, and update connected clients via WebSockets when status fields change.
+
+---
+
+## 7. Database Schema & Data Model Reference
+
+### 7.1 Schema Specifications
+MySQL 8.0 tables are defined with cascade rules and relational constraints to avoid orphaned database records:
 
 ```sql
 -- 1. Users Table
@@ -262,359 +310,89 @@ CREATE TABLE coupons (
 
 ---
 
-## 5. Complete Backend Request Lifecycle & Controller Layer
+## 8. Authentication System
 
-### 5.1 Request Architecture Diagram
-```
-[HTTP Request Client]
-       │
-       ▼
-[Middlewares: Security Headers (Helmet) & CORS Config]
-       │
-       ▼
-[Route Guard Middleware: Token verification]
-       │
-       ▼
-[Validation Middleware: Request payload parsing]
-       │
-       ▼
-[Controller Layer: Execute SQL Queries & Transaction Blocks]
-       │
-       ▼
-[Database Engine: MySQL Query Execution]
-       │
-       ▼
-[HTTP Response / Custom Exception Handler]
+During registration, user credentials are encrypted using Bcrypt and JWT session cookies are issued:
+
+```mermaid
+sequenceDiagram
+    participant User
+    participant Frontend
+    participant AuthMiddleware
+    participant Database
+
+    User->>Frontend: Input Email & Password
+    Frontend->>AuthMiddleware: POST /api/auth/login
+    AuthMiddleware->>Database: Query User Record
+    Database-->>AuthMiddleware: Return Hashed Password & Role
+    AuthMiddleware->>AuthMiddleware: Verify Hash (bcrypt)
+    AuthMiddleware-->>Frontend: Return JWT Access Token
+    Frontend->>Frontend: Save to LocalStorage
 ```
 
-### 5.2 Controller Implementations (`orderController.js` snippet)
-This segment processes checkout transaction logs while maintaining safety boundaries:
-
-```javascript
-import pool from "../config/db.js";
-
-export const createOrder = async (req, res) => {
-  const connection = await pool.getConnection();
-  try {
-    await connection.beginTransaction();
-
-    const { restaurant_id, items, street_address, city, state, postal_code, discount_amount } = req.body;
-    const userId = req.userId;
-
-    // 1. Fetch user wallet balance
-    const [userRows] = await connection.query("SELECT wallet_balance FROM users WHERE id = ?", [userId]);
-    if (userRows.length === 0) {
-      throw new Error("User record not found.");
-    }
-    const currentBalance = parseFloat(userRows[0].wallet_balance);
-
-    // 2. Calculate totals
-    let itemTotal = 0;
-    for (const item of items) {
-      const [menuRows] = await connection.query("SELECT price FROM menu_items WHERE id = ?", [item.menu_item_id]);
-      if (menuRows.length === 0) {
-        throw new Error(`Menu item not found: ${item.menu_item_id}`);
-      }
-      itemTotal += parseFloat(menuRows[0].price) * item.quantity;
-    }
-
-    const deliveryCharges = 5.00;
-    const taxAmount = parseFloat((itemTotal * 0.05).toFixed(2)); // 5% tax
-    const totalPayable = parseFloat((itemTotal + deliveryCharges + taxAmount - (discount_amount || 0)).toFixed(2));
-
-    // 3. Confirm wallet funds
-    if (currentBalance < totalPayable) {
-      return res.status(400).json({ status: "error", message: "Insufficient wallet funds." });
-    }
-
-    // 4. Debit user wallet
-    const newBalance = currentBalance - totalPayable;
-    await connection.query("UPDATE users SET wallet_balance = ? WHERE id = ?", [newBalance, userId]);
-
-    // 5. Insert order record
-    const orderId = crypto.randomUUID();
-    await connection.query(
-      `INSERT INTO orders (id, user_id, restaurant_id, item_total, delivery_charges, tax_amount, discount_amount, total_payable, street_address, city, state, postal_code)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-      [orderId, userId, restaurant_id, itemTotal, deliveryCharges, taxAmount, discount_amount || 0, totalPayable, street_address, city, state, postal_code]
-    );
-
-    // 6. Insert sub-items list
-    for (const item of items) {
-      const [menuRows] = await connection.query("SELECT price FROM menu_items WHERE id = ?", [item.menu_item_id]);
-      await connection.query(
-        "INSERT INTO order_items (order_id, menu_item_id, quantity, price) VALUES (?, ?, ?, ?)",
-        [orderId, item.menu_item_id, item.quantity, menuRows[0].price]
-      );
-    }
-
-    await connection.commit();
-    res.status(201).json({ status: "success", orderId, message: "Order processed successfully." });
-  } catch (error) {
-    await connection.rollback();
-    res.status(500).json({ status: "error", message: error.message });
-  } finally {
-    connection.release();
-  }
-};
-```
+Access tokens are verified in subsequent requests by extracting credentials from the header:
+`Authorization: Bearer <JWT_TOKEN>`
 
 ---
 
-## 6. Security Architecture & Authentication Flows
-
-> [!WARNING]  
-> Sensitive information must not be stored in plain text. Bites uses **bcryptjs** (10 salting rounds) to hash user credentials before inserting them into the database.
-
-### 6.1 Custom Auth Guard Middleware (`auth.js`)
-Handles route protection and credentials decoding:
-
-```javascript
-import jwt from "jsonwebtoken";
-
-export const authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ status: "error", message: "Missing authorization headers." });
-  }
-
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.status(403).json({ status: "error", message: "Invalid or expired token credentials." });
-    }
-    req.userId = decoded.id;
-    req.userRole = decoded.role;
-    req.userEmail = decoded.email;
-    next();
-  });
-};
-
-export const requireRole = (allowedRoles) => {
-  return (req, res, next) => {
-    if (!allowedRoles.includes(req.userRole)) {
-      return res.status(403).json({ status: "error", message: "Access denied. Insufficient privileges." });
-    }
-    next();
-  };
-};
-```
-
-### 6.2 JWT Signing Utility (`jwt.js`)
-Helper module for issuing user session states:
-
-```javascript
-import jwt from "jsonwebtoken";
-
-export const generateAccessToken = (user) => {
-  return jwt.sign(
-    { id: user.id, email: user.email, role: user.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "24h" }
-  );
-};
-```
-
----
-
-## 7. Comprehensive API Endpoint Registry
+## 9. API Documentation Reference
 
 Below is a detailed list of all system endpoints, parameters, and responses:
 
-### 7.1 User Credentials (`/api/auth`)
+### 9.1 Authentication (`/api/auth`)
 * **`POST /api/auth/register`**
   * *Request Body*: `{ first_name, last_name, email, phone, password, role }`
   * *Response (201)*: `{ status: "success", message: "User registered." }`
-  * *Errors (400)*: `{ status: "error", message: "Email already registered." }`
 * **`POST /api/auth/login`**
   * *Request Body*: `{ email, password }`
   * *Response (200)*: `{ status: "success", accessToken: "JWT_TOKEN", role: "customer" }`
-  * *Errors (401)*: `{ status: "error", message: "Invalid password details." }`
 
-### 7.2 Admin Console (`/api/admin`)
+### 9.2 Admin Portal (`/api/admin`)
 * **`GET /api/admin/analytics`**
-  * *Headers*: `Authorization: Bearer <JWT>`
   * *Response (200)*: `{ status: "success", data: { totalUsers: 240, grossVolume: 12400.00 } }`
 * **`PUT /api/admin/restaurants/:id/verify`**
-  * *Headers*: `Authorization: Bearer <JWT>`
-  * *Response (200)*: `{ status: "success", message: "Restaurant verified." }`
+  * *Response (200)*: `{ status: "success", message: "Restaurant verification toggled." }`
 * **`POST /api/admin/coupons`**
   * *Request Body*: `{ code, discount_type, discount_value, min_order_amount, start_date, end_date }`
   * *Response (201)*: `{ status: "success", couponId: "UUID" }`
 
-### 7.3 Storefront Catalog (`/api/restaurants`)
+### 9.3 Storefront Catalog (`/api/restaurants`)
 * **`GET /api/restaurants`**
   * *Query Params*: `?search=pizza`
   * *Response (200)*: `[{ id: "UUID", name: "Pizza Store", average_delivery_time: 25 }]`
 
 ---
 
-## 8. Real-time WebSocket Coordination System
+## 10. Features Documentation
 
-The server uses WebSockets to coordinate delivery tracking:
+### 10.1 Campaign Coupon Vouchers
+Allows admins to release flat/percentage checkout discounts:
+* **Business Logic**: Validates promo validity, ensures order subtotal meets `min_order_amount`, and applies discount dynamically before final payable calculations.
+* **API Endpoints**: POST `/api/admin/coupons`, DELETE `/api/admin/coupons/:id`.
 
-```
-[Customer Client] <====== (Socket Update) ====== [Express Gateway Server] <====== (Location Track) ====== [Rider App]
-```
+---
 
-### 8.1 WebSocket Event Schema Registry
+## 11. Core Business Logic & Workflows
 
-| Event Label | Source | Recipient | Action Description | Payload Structure |
+### 11.1 Platform Operations Flow
+The table below specifies the transaction flow from catalog preparation to delivery verification:
+
+| Step | Action | Actors Involved | Trigger Mechanism | Data Payload |
 | :--- | :--- | :--- | :--- | :--- |
-| **`connection`** | Client App | WebSocket Server | Handshake verification | `Headers: { Bearer Token }` |
-| **`join_order_channel`** | Customer Portal | WebSocket Server | Subscribe to status events | `{ orderId: "UUID" }` |
-| **`order_status_changed`**| Restaurant Portal | Customer Client | Notify client of kitchen status changes | `{ orderId: "UUID", status: "preparing" }` |
-| **`driver_assigned`** | Operations Engine | Driver Console | Notify rider of available dispatch task | `{ orderId: "UUID", pickupAddress: "String" }` |
-| **`coordinate_update`** | Rider Device GPS | Customer map view | Send location update stream | `{ orderId: "UUID", lat: 12.971, lng: 77.594 }` |
+| **1. Onboarding** | Restaurant applies for verification; admin audits store profile | Merchant & Admin | HTTP `PUT /admin/restaurants/:id/verify` | Store details, category parameters |
+| **2. Cataloging** | Restaurant configures categories, dishes, prices, and status | Merchant | HTTP `POST /menu` | Menu item JSON, price, banner asset |
+| **3. Checkout** | Customer places order, uses wallet funds, sets destination | Customer | HTTP `POST /orders` | Dish IDs, address, wallet credentials |
+| **4. Acceptance** | Merchant accepts order, kitchen starts preparation | Merchant | Socket emit `order_accepted` | Prep time estimation, order ID |
+| **5. Task Offer** | System queries online driver pool; driver claims dispatch task | Rider & System | Socket emit `driver_assigned` | Restaurant address, drop-off location |
+| **6. Pickup** | Rider arrives at merchant, picks up, marks "Out for Delivery" | Rider | HTTP `PUT /delivery/status` | Current timestamp, GPS coordinates |
+| **7. Drop-off** | Rider delivers order to destination; customer confirms code | Rider & Customer | HTTP `PUT /delivery/complete` | Delivery confirmation payload |
+| **8. Settlement** | Payout calculated; commission deducted; wallet updated | Ledger System | SQL Transaction execution | Wallet debit/credit logs |
 
 ---
 
-## 9. Shared Component Library Specifications
+## 12. System Data Flow
 
-Common components are structured under the `/frontend/shared/components` directory to ensure layout consistency across all portals:
-
-### 9.1 Platform Navigation (`BitesNavbar.tsx`)
-Provides a responsive navigation header, responsive layout states, and custom action items:
-
-```tsx
-import React from "react";
-import { Menu, LogOut, ShoppingBag, User } from "lucide-react";
-
-interface NavbarProps {
-  variant: "customer" | "admin" | "restaurant" | "delivery";
-  userName?: string | null;
-  cartCount?: number;
-  onLogout?: () => void;
-  onCartClick?: () => void;
-}
-
-export const BitesNavbar: React.FC<NavbarProps> = ({
-  variant,
-  userName,
-  cartCount = 0,
-  onLogout,
-  onCartClick,
-}) => {
-  const dispatchSidebarEvent = () => {
-    window.dispatchEvent(new CustomEvent("open-app-sidebar"));
-  };
-
-  return (
-    <header className="bites-navbar-container">
-      <div className="navbar-flex-row">
-        <button onClick={dispatchSidebarEvent} className="mobile-hamburger-btn">
-          <Menu size={22} />
-        </button>
-        <span className="navbar-brand-logo">Bites {variant}</span>
-      </div>
-
-      <div className="navbar-actions-flex">
-        {variant === "customer" && (
-          <button onClick={onCartClick} className="cart-badge-button">
-            <ShoppingBag size={20} />
-            {cartCount > 0 && <span className="badge-count">{cartCount}</span>}
-          </button>
-        )}
-        <span className="user-name-text">{userName || "Operator"}</span>
-        <button onClick={onLogout} className="logout-action-btn">
-          <LogOut size={18} />
-        </button>
-      </div>
-    </header>
-  );
-};
-```
-
-### 9.2 Custom Drawer Architecture (`PreviewDrawer.tsx`)
-This sliding side drawer replaces standard popup modals across all management portals:
-
-```tsx
-import React, { useEffect } from "react";
-import { X } from "lucide-react";
-
-interface PreviewDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  title: string;
-  subtitle?: string;
-  children: React.ReactNode;
-  footer?: React.ReactNode;
-}
-
-export const PreviewDrawer: React.FC<PreviewDrawerProps> = ({
-  isOpen,
-  onClose,
-  title,
-  subtitle,
-  children,
-  footer,
-}) => {
-  // Prevent background scrolling when the drawer is open
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [isOpen]);
-
-  return (
-    <>
-      <div
-        className={`preview-drawer-backdrop ${isOpen ? "open" : ""}`}
-        onClick={onClose}
-      />
-      <div className={`preview-drawer ${isOpen ? "open" : ""}`}>
-        <div className="preview-drawer-header">
-          <div>
-            <h3 className="drawer-title">{title}</h3>
-            {subtitle && <p className="drawer-subtitle">{subtitle}</p>}
-          </div>
-          <button onClick={onClose} className="drawer-close-btn">
-            <X size={20} />
-          </button>
-        </div>
-
-        <div className="preview-drawer-body">{children}</div>
-
-        {footer && <div className="preview-drawer-footer">{footer}</div>}
-      </div>
-    </>
-  );
-};
-```
-
----
-
-## 10. Frontend Portals Deep Dive
-
-### 10.1 Admin Operations Console
-* **`Dashboard.tsx`**: Renders neobrutalist finance cards and sparkline analytics showing platform performance.
-* **`OrdersManagement.tsx`**: Manages incoming orders, driver assignments, and details within the sliding drawer.
-* **`RestaurantsManagement.tsx`**: Allows operations teams to configure commission rates and verify merchant stores.
-* **`CustomersManagement.tsx`**: Enables agents to adjust wallet balances and suspend accounts.
-
-### 10.2 Customer Storefront Portal
-* **`Explore.tsx`**: Renders list of verified restaurants with search bar and filter controls.
-* **`CartDrawer.tsx`**: Manages customer cart state, coupon codes, and checkout validation.
-* **`OrderTracking.tsx`**: Renders live map tracking of rider locations.
-
-### 10.3 Restaurant Management Portal
-* **`Dashboard.tsx`**: Displays merchant earnings, completed orders, and active preparation queues.
-* **`MenuManager.tsx`**: Enables merchants to add items, modify descriptions, and set availability status.
-
-### 10.4 Delivery Partner Portal
-* **`RiderDashboard.tsx`**: Lists active jobs in the area with updates for order pickups and drop-offs.
-
----
-
-## 11. State Management & Data Synchronization Flow
-
-All API operations trace a structured path from the client UI down to database persistence:
+Data moves through the system according to this path:
 
 ```
 [React Component View] 
@@ -634,16 +412,31 @@ All API operations trace a structured path from the client UI down to database p
 
 ---
 
-## 12. System Performance & Optimization Log
+## 13. State Management & Context Providers
 
-### 12.1 Code Splitting & Dynamic Imports
+* **Local State**: Managed with standard `useState` hooks.
+* **Persistent States**: Login sessions, theme options, and collapsible sidebar preferences persist inside `localStorage`.
+
+---
+
+## 14. Security Policies & Hardening
+
+1. **SQL Injection Prevention**: Built entirely on prepared statements using placeholders (`?`).
+2. **Input Sanitization**: Express validation blocks structural scripts or HTML strings inside comments/inputs.
+3. **Environment Security**: Sensitive keys reside inside `.env` configurations.
+
+---
+
+## 15. Performance Optimizations
+
+### 15.1 Code Splitting & Dynamic Imports
 Vite is configured to split code into smaller bundles:
 ```typescript
 const Dashboard = React.lazy(() => import("./pages/Dashboard"));
 const OrdersManagement = React.lazy(() => import("./pages/OrdersManagement"));
 ```
 
-### 12.2 Database Performance Optimization
+### 15.2 Database Performance Optimization
 Database queries are optimized by adding indexes to commonly filtered columns:
 ```sql
 CREATE INDEX idx_orders_user_id ON orders(user_id);
@@ -652,9 +445,9 @@ CREATE INDEX idx_menu_items_restaurant_id ON menu_items(restaurant_id);
 
 ---
 
-## 13. Comprehensive Error Handling & Resiliency Guide
+## 16. Error Handling & Resiliency Guide
 
-### 13.1 Backend Controller Error Boundary
+### 16.1 Backend Controller Error Boundary
 All controller routes are wrapped in try-catch-finally blocks to avoid leaving database connections open:
 ```javascript
 } catch (err) {
@@ -665,10 +458,10 @@ All controller routes are wrapped in try-catch-finally blocks to avoid leaving d
 
 ---
 
-## 14. Local Development, Seed Hydration, & Deploy Runbook
+## 17. Deployment & Configuration Runbook
 
-### 14.1 Installation & Configuration
-1. Clone the repository and install project-wide node packages:
+### 17.1 Installation & Configuration
+1. Clone the repository and install node packages:
    ```bash
    npm install
    ```
@@ -689,7 +482,14 @@ All controller routes are wrapped in try-catch-finally blocks to avoid leaving d
 
 ---
 
-## 15. Project Metrics & Statistics Ledger
+## 18. Third-Party Integrations
+
+* **Rider Route Optimization**: Integrate Google Maps Directions API to compute optimal routes for delivery partners.
+* **Biometric Verification**: Support Passkeys and Biometric login workflows on mobile devices.
+
+---
+
+## 19. Project Statistics Ledger
 
 ```
 Portals (Build Targets):  4 Apps (Admin, Customer, Merchant, Rider)
@@ -702,21 +502,21 @@ Theme Options:            Light Theme (Neobrutalist Accent styling)
 
 ---
 
-## 16. Key Engineering Decisions & Trade-Offs
+## 20. Key Engineering Decisions & Trade-Offs
 
-### 16.1 Tailwind CSS vs. Vanilla CSS Variables
+### 20.1 Tailwind CSS vs. Vanilla CSS Variables
 We opted for a **Vanilla CSS Variables system** instead of Tailwind CSS. While Tailwind allows for fast prototyping, it can clutter TSX markup. Centralizing variables in a shared stylesheet maintains design consistency and simplifies UI updates.
 
 ---
 
-## 17. Future Enhancements Roadmap
+## 21. Future Enhancements Roadmap
 
 * **Rider Route Optimization**: Integrate Google Maps Directions API to compute optimal routes for delivery partners.
 * **Biometric Verification**: Support Passkeys and Biometric login workflows on mobile devices.
 
 ---
 
-## 18. End-to-End Operational Walkthrough (Launch to Payout)
+## 22. Complete Staging & User Walkthrough Guides
 
 To test the system locally, follow this end-to-end user journey:
 
@@ -732,11 +532,17 @@ To test the system locally, follow this end-to-end user journey:
 
 ---
 
-## 19. API Request and Response Payloads Reference Directory
+## 23. Conclusion & Platform Assessment
+
+The **Bites** platform features a modular monorepo structure, ensuring frontend views remain in sync. Its relational database schema guarantees data integrity, and neobrutalist styling choices provide a modern, premium experience for customers and administrators alike.
+
+---
+
+## 24. API Request and Response Payloads Reference Directory
 
 Below are the detailed request and response payload JSON schemas configured across the system routers.
 
-### 19.1 Verification Update (`PUT /api/admin/restaurants/:id/verify`)
+### 24.1 Verification Update (`PUT /api/admin/restaurants/:id/verify`)
 * **Expected Request Header**: `Authorization: Bearer <JWT_TOKEN>`
 * **Request URL Parameter**: `id` (VARCHAR UUID)
 * **Response Payload (Success 200)**:
@@ -750,72 +556,14 @@ Below are the detailed request and response payload JSON schemas configured acro
   }
 }
 ```
-* **Response Payload (Error 401)**:
-```json
-{
-  "status": "error",
-  "message": "Bearer authentication token missing or invalid."
-}
-```
-* **Response Payload (Error 404)**:
-```json
-{
-  "status": "error",
-  "message": "Target restaurant record not found in the database."
-}
-```
-
-### 19.2 Wallet Balance Adjustment (`POST /api/wallet/deposit`)
-* **Expected Request Header**: `Authorization: Bearer <JWT_TOKEN>`
-* **Request JSON Body**:
-```json
-{
-  "amount": 50.00,
-  "payment_method": "digital_card"
-}
-```
-* **Response Payload (Success 200)**:
-```json
-{
-  "status": "success",
-  "message": "Deposit processed successfully.",
-  "data": {
-    "user_id": "c3f87b8d-56d1-4e78-9e61-a0cd704cf4c1",
-    "new_balance": 125.50
-  }
-}
-```
-
-### 19.3 Menu Item Catalog Creation (`POST /api/menu`)
-* **Expected Request Header**: `Authorization: Bearer <JWT_TOKEN>`
-* **Request JSON Body**:
-```json
-{
-  "name": "Spicy Peri-Peri Chicken Burger",
-  "description": "Double grilled patty with signature spicy mayo and iceberg lettuce.",
-  "price": 12.99,
-  "category": "Burgers",
-  "image_url": "https://images.unsplash.com/photo-1568901346375-23c9450c58cd"
-}
-```
-* **Response Payload (Success 201)**:
-```json
-{
-  "status": "success",
-  "message": "Menu item created successfully.",
-  "data": {
-    "item_id": "df2b55f1-325b-4dcd-9721-c4cd711bfca2"
-  }
-}
-```
 
 ---
 
-## 20. Full Codebase Walkthrough and User Journey Verification Scripts
+## 25. Full Codebase Walkthrough and User Journey Verification Scripts
 
 This section details the verification commands and testing scripts used to audit the platform.
 
-### 20.1 API Status Checks (`check_status.js`)
+### 25.1 API Status Checks (`check_status.js`)
 Use this Node.js script to verify API health:
 ```javascript
 import http from 'http';
@@ -835,163 +583,422 @@ const req = http.request(options, (res) => {
   res.on('data', (chunk) => body += chunk);
   res.on('end', () => {
     if (res.statusCode === 200) {
-      console.log('✅ API Gateway server is healthy. Payload:', body);
-    } else {
-      console.log('❌ Server returned warning. Code:', res.statusCode);
+      console.log('✅ API Gateway server is healthy.');
     }
   });
 });
-
-req.on('error', (err) => {
-  console.error('❌ Failed to reach backend gateway:', err.message);
-});
-
 req.end();
 ```
 
-### 20.2 Type Safety and Lint Verifications
-Verify typescript definitions across the monorepo compile cleanly:
-```bash
-# Verify Customer Portal
-cd frontend/customer-app
-npx tsc --noEmit
+---
 
-# Verify Admin Portal
-cd ../admin-app
-npx tsc --noEmit
+## 26. Seed Data Directory & Initial Database Hydration Log
 
-# Verify Merchant Portal
-cd ../restaurant-app
-npx tsc --noEmit
-```
+This section details seed entries mapping database profiles setup.
+
+### 26.1 Profiles Catalog
+* Admin User: `admin@bites.com`
+* Merchant User: `merchant@pizza.com`
+* Rider User: `rider@bites.com`
 
 ---
 
-## 21. Seed Data Directory & Initial Database Hydration Log
+## 27. Comprehensive CSS Selector Map & Custom Overrides Atlas
 
-Below is the structured catalog of demo profiles registered within the system through `seed.sql`. These can be used to simulate checkout interactions.
-
-### 21.1 Core Platform Admin User Profile
-* **User ID**: `550e8400-e29b-41d4-a716-446655440000`
-* **Email Credentials**: `admin@bites.com`
-* **Assigned Role**: `admin`
-* **Identity Status**: `verified`
-
-### 21.2 Pizza Merchant Store Owner Profile
-* **User ID**: `550e8400-e29b-41d4-a716-446655440001`
-* **Email Credentials**: `merchant@pizza.com`
-* **Assigned Role**: `restaurant_owner`
-* **Linked Outlet**: `Pizza Haven Store` (UUID: `3b2b3b2b-3b2b-3b2b-3b2b-3b2b3b2b3b2b`)
+Custom styles classes overrides are detailed below:
+* `.app-shell`: Layout shell wrapper.
+* `.preview-drawer`: Panel slide animation selector.
+* `.preview-drawer-backdrop`: Backdrop blur handler.
 
 ---
 
-## 22. Comprehensive CSS Selector Map & Custom Overrides Atlas
+## 28. Expanded API Payload Samples Directory (Rider, Coupons, and Addresses)
 
-Below is the directory map of customized selectors configured inside `admin.css` and `admin-styles.css` to implement the neobrutalist theme:
-
-### 22.1 Administrative Page Content Wrapper
-* **CSS Selector**: `.app-shell`
-* **Layout Rule**: Grid layout with auto columns.
-* **Border Style**: `1px solid var(--cred-border)`
-
-### 22.2 Side detail Drawer Overrides
-* **CSS Selector**: `.preview-drawer-backdrop`
-* **Transition Speed**: `.3s`
-* **Backdrop Blur**: `blur(8px)`
-
----
-
-## 23. Expanded API Payload Samples Directory (Rider, Coupons, and Addresses)
-
-Below are additional payload definitions for secondary platform features.
-
-### 23.1 Driver Availability Toggle (`PUT /api/delivery/availability`)
-* **Expected Request Header**: `Authorization: Bearer <JWT_TOKEN>`
-* **Request JSON Body**:
+### 28.1 Address Creation Payload (`POST /api/addresses`)
 ```json
 {
-  "is_online": true,
-  "vehicle_type": "motorcycle"
-}
-```
-* **Response Payload (Success 200)**:
-```json
-{
-  "status": "success",
-  "message": "Driver status updated successfully.",
-  "data": {
-    "driver_id": "9a12b34c-56d1-4e78-9e61-a0cd704cf4c2",
-    "is_online": true,
-    "status": "idle"
-  }
-}
-```
-
-### 23.2 Coupon Code Claim Verification (`POST /api/coupons/verify`)
-* **Expected Request Header**: `Authorization: Bearer <JWT_TOKEN>`
-* **Request JSON Body**:
-```json
-{
-  "code": "BITE50PERCENT",
-  "order_subtotal": 35.50
-}
-```
-* **Response Payload (Success 200)**:
-```json
-{
-  "status": "success",
-  "message": "Coupon code is valid and active.",
-  "data": {
-    "code": "BITE50PERCENT",
-    "discount_type": "percentage",
-    "discount_value": 0.50,
-    "discount_amount": 17.75,
-    "final_payable": 17.75
-  }
-}
-```
-
-### 23.3 Customer Address Creation (`POST /api/addresses`)
-* **Expected Request Header**: `Authorization: Bearer <JWT_TOKEN>`
-* **Request JSON Body**:
-```json
-{
-  "label": "Home",
-  "street_address": "456 Park Avenue",
-  "landmark": "Near Central Library",
+  "label": "Work",
+  "street_address": "123 Main Road",
   "city": "Bengaluru",
   "state": "Karnataka",
   "postal_code": "560001"
 }
 ```
-* **Response Payload (Success 201)**:
-```json
-{
-  "status": "success",
-  "message": "Address added successfully.",
-  "data": {
-    "address_id": "7f83b27b-e109-411a-85d1-9f2d011c750c"
+
+---
+
+## 29. Exhaustive Controller Implementation Breakdowns
+
+### 29.1 Admin approvals controller
+Provides operational verification switches to approve partner profiles and audit operations records.
+
+---
+
+## 30. Appendices - Production Checklist & Compliance Protocols
+
+1. **Compilation Validation**: `npx tsc --noEmit` checks must pass across all client build portals before publishing targets.
+2. **Database Migrations Logs**: Ensure `schema.sql` is run completely before deploying builds.
+
+---
+
+## 31. Exhaustive API Router Specifications Manual
+
+### 31.1 Address Routing System (`addressRoutes.js`)
+* **Endpoint Path**: `POST /api/addresses`
+  * *Method*: `POST`
+  * *Purpose*: Registers a customer delivery address profile.
+  * *Security*: Requires valid Customer JWT token.
+  * *Request Body*:
+    ```json
+    {
+      "label": "Home",
+      "street_address": "123 Park Lane",
+      "landmark": "Opposite City Mall",
+      "city": "Mumbai",
+      "state": "Maharashtra",
+      "postal_code": "400001"
+    }
+    ```
+  * *Success Response (201)*:
+    ```json
+    {
+      "status": "success",
+      "address_id": "9a9a9a9a-9a9a-9a9a-9a9a-9a9a9a9a9a9a"
+    }
+    ```
+  * *Error Response (400)*:
+    ```json
+    {
+      "status": "error",
+      "message": "Required fields are missing."
+    }
+    ```
+
+* **Endpoint Path**: `GET /api/addresses`
+  * *Method*: `GET`
+  * *Purpose*: Fetches all saved address coordinates for the logged-in customer.
+  * *Success Response (200)*:
+    ```json
+    [
+      {
+        "id": "UUID",
+        "label": "Home",
+        "street_address": "123 Park Lane",
+        "city": "Mumbai"
+      }
+    ]
+    ```
+
+### 31.2 Admin Management Console Routing (`adminRoutes.js`)
+* **Endpoint Path**: `GET /api/admin/analytics`
+  * *Method*: `GET`
+  * *Purpose*: Computes platform metrics (totals, counts, and processed volumes).
+  * *Security*: Only accessible by authenticated `admin` role JWT tokens.
+  * *Success Response (200)*:
+    ```json
+    {
+      "status": "success",
+      "data": {
+        "total_users": 150,
+        "total_orders": 85,
+        "gross_volume": 4250.00
+      }
+    }
+    ```
+
+* **Endpoint Path**: `PUT /api/admin/restaurants/:id/verify`
+  * *Method*: `PUT`
+  * *Purpose*: Verifies or suspends partner listing accounts.
+  * *Success Response (200)*:
+    ```json
+    {
+      "status": "success",
+      "message": "Restaurant status toggled successfully."
+    }
+    ```
+
+* **Endpoint Path**: `POST /api/admin/coupons`
+  * *Method*: `POST`
+  * *Purpose*: Publishes platform discount codes.
+  * *Request Body*:
+    ```json
+    {
+      "code": "SUPERFOOD50",
+      "discount_type": "percentage",
+      "discount_value": 0.50,
+      "min_order_amount": 15.00,
+      "start_date": "2026-07-01",
+      "end_date": "2026-07-31"
+    }
+    ```
+  * *Success Response (201)*:
+    ```json
+    {
+      "status": "success",
+      "coupon_id": "UUID"
+    }
+    ```
+
+### 31.3 Cart Storage Management (`cartRoutes.js`)
+* **Endpoint Path**: `POST /api/cart`
+  * *Method*: `POST`
+  * *Purpose*: Saves customer checkout items list.
+  * *Request Body*:
+    ```json
+    {
+      "items": [
+        {
+          "menu_item_id": "UUID",
+          "quantity": 2
+        }
+      ]
+    }
+    ```
+  * *Success Response (200)*:
+    ```json
+    {
+      "status": "success",
+      "message": "Cart synchronized."
+    }
+    ```
+
+* **Endpoint Path**: `GET /api/cart`
+  * *Method*: `GET`
+  * *Purpose*: Retrieves saved cart list for user session.
+
+### 31.4 Operations Dispatch Tracking Routing (`deliveryRoutes.js`)
+* **Endpoint Path**: `PUT /api/delivery/status`
+  * *Method*: `PUT`
+  * *Purpose*: Updates delivery status (e.g. out_for_delivery, delivered).
+  * *Request Body*:
+    ```json
+    {
+      "order_id": "UUID",
+      "status": "out_for_delivery"
+    }
+    ```
+  * *Success Response (200)*:
+    ```json
+    {
+      "status": "success",
+      "message": "Delivery status updated."
+    }
+    ```
+
+* **Endpoint Path**: `PUT /api/delivery/availability`
+  * *Method*: `PUT`
+  * *Purpose*: Driver online/offline status switch.
+  * *Request Body*:
+    ```json
+    {
+      "is_online": true
+    }
+    ```
+
+### 31.5 Client Favorites Bookmarks (`favoriteRoutes.js`)
+* **Endpoint Path**: `POST /api/favorites`
+  * *Method*: `POST`
+  * *Purpose*: Bookmarks or removes a merchant store profile.
+  * *Request Body*:
+    ```json
+    {
+      "restaurant_id": "UUID"
+    }
+    ```
+  * *Success Response (200)*:
+    ```json
+    {
+      "status": "success",
+      "message": "Favorites checklist updated."
+    }
+    ```
+
+### 31.6 Notifications Console Routing (`notificationRoutes.js`)
+* **Endpoint Path**: `GET /api/notifications`
+  * *Method*: `GET`
+  * *Purpose*: Retrieves push logs for the active user account.
+
+### 31.7 Orders Subsystem Router (`orderRoutes.js`)
+* **Endpoint Path**: `POST /api/orders`
+  * *Method*: `POST`
+  * *Purpose*: Debits wallet balances and creates a checkout order.
+  * *Request Body*:
+    ```json
+    {
+      "restaurant_id": "UUID",
+      "items": [
+        { "menu_item_id": "UUID", "quantity": 1 }
+      ],
+      "street_address": "789 Park St",
+      "city": "Bengaluru",
+      "state": "Karnataka",
+      "postal_code": "560001"
+    }
+    ```
+  * *Success Response (201)*:
+    ```json
+    {
+      "status": "success",
+      "order_id": "UUID",
+      "message": "Checkout complete."
+    }
+    ```
+
+* **Endpoint Path**: `GET /api/orders/:id`
+  * *Method*: `GET`
+  * *Purpose*: Retrieve itemized receipts metadata.
+
+### 31.8 Payments Processor Subsystem (`paymentRoutes.js`)
+* **Endpoint Path**: `POST /api/payments/checkout`
+  * *Method*: `POST`
+  * *Purpose*: Simulates checkout operations.
+
+### 31.9 Ratings Subsystem Routing (`ratingRoutes.js`)
+* **Endpoint Path**: `POST /api/ratings`
+  * *Method*: `POST`
+  * *Purpose*: Records food review logs.
+  * *Request Body*:
+    ```json
+    {
+      "order_id": "UUID",
+      "menu_item_id": "UUID",
+      "rating": 5,
+      "comment": "Delicious food!"
+    }
+    ```
+
+### 31.10 Refunds and Claims Routing (`refundRoutes.js`)
+* **Endpoint Path**: `POST /api/refunds`
+  * *Method*: `POST`
+  * *Purpose*: Submits a refund claim for a cancelled transaction.
+
+### 31.11 Sales Reports Subsystem (`reportRoutes.js`)
+* **Endpoint Path**: `GET /api/reports/sales`
+  * *Method*: `GET`
+  * *Purpose*: Computes sales logs for the merchant dashboard.
+
+### 31.12 Restaurant Directory Router (`restaurantRoutes.js`)
+* **Endpoint Path**: `GET /api/restaurants`
+  * *Method*: `GET`
+  * *Purpose*: Fetches verified merchant stores list.
+
+### 31.13 Wallet Ledger Adjustments (`walletRoutes.js`)
+* **Endpoint Path**: `POST /api/wallets/deposit`
+  * *Method*: `POST`
+  * *Purpose*: Deposits balance to platform wallets.
+  * *Request Body*:
+    ```json
+    {
+      "amount": 100.00
+    }
+    ```
+
+### 31.14 CMS Static Catalog Router (`cmsRoutes.js`)
+* **Endpoint Path**: `GET /api/cms/pages`
+  * *Method*: `GET`
+  * *Purpose*: Retrieves static marketing content.
+
+### 31.15 File Uploader System (`app.js`)
+* **Endpoint Path**: `POST /api/upload`
+  * *Method*: `POST`
+  * *Purpose*: Uploads image file.
+
+---
+
+## 32. Expanded Database Model Configurations
+The database models enforce indexing structures to maintain fast read speeds:
+
+### 32.1 Indexing Catalog
+* `CREATE UNIQUE INDEX idx_user_email ON users(email);`
+* `CREATE INDEX idx_restaurants_owner ON restaurants(owner_id);`
+* `CREATE INDEX idx_menu_items_restaurant ON menu_items(restaurant_id);`
+* `CREATE INDEX idx_orders_user ON orders(user_id);`
+
+### 32.2 Table Audit Fields
+Every transactional model enforces fields like `created_at` and `updated_at` to trace records operations history.
+
+---
+
+## 33. Detailed Frontend Context Providers
+* **AuthContext**: Persists session tokens and exposes role guards to nested routing components.
+* **ThemeContext**: Sets dark-mode/light-mode variables dynamically.
+
+---
+
+## 34. Exhaustive Custom Hooks Walkthrough
+
+The React apps use custom hooks to encapsulate reusable stateful behavior:
+
+### 34.1 `useAuth` Hook
+Provides convenient access to the current authentication state and actions:
+```typescript
+import { useContext } from "react";
+import { AuthContext } from "../context/AuthContext";
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
   }
-}
+  return context;
+};
+```
+
+### 34.2 `useSocket` Hook
+Handles connection states, channel subscriptions, and automatic cleanup on unmount:
+```typescript
+import { useEffect, useRef } from "react";
+import { io, Socket } from "socket.io-client";
+
+export const useSocket = (url: string, token: string | null) => {
+  const socketRef = useRef<Socket | null>(null);
+
+  useEffect(() => {
+    if (!token) return;
+
+    socketRef.current = io(url, {
+      auth: { token },
+      transports: ["websocket"]
+    });
+
+    return () => {
+      if (socketRef.current) {
+        socketRef.current.disconnect();
+      }
+    };
+  }, [url, token]);
+
+  return socketRef.current;
+};
 ```
 
 ---
 
-## 24. Exhaustive Controller Implementation Breakdowns
+## 35. Comprehensive System Troubleshooting Guide
 
-This section analyzes the code logic of the primary controller subsystems.
+Operational recovery guidelines for typical local and staging failures:
 
-### 24.1 Administrative Controller (`adminController.js` logic)
-The admin controller processes requests relating to users, merchants, and campaigns. When verifying a store profile:
-1. It parses the request parameter for the target restaurant's UUID.
-2. It queries the database to verify the restaurant exists.
-3. It toggles the `is_verified` boolean in the database.
-4. It sends a confirmation payload back to the client.
+### 35.1 Database Pool Exhaustion
+* **Symptoms**: Requests stall and backend logs return "Connection limit reached".
+* **Solution**: Ensure connections are always released back to the pool inside a `finally` block:
+  ```javascript
+  } finally {
+    if (connection) connection.release();
+  }
+  ```
 
-### 24.2 Restaurant Catalog Controller (`restaurantController.js` logic)
-The restaurant controller manages digital catalogs and operating schedules. When updating menu items, it:
-1. Verifies the user has a valid merchant token.
-2. Validates item parameters (price must be positive, category must be active).
-3. Updates the menu item record in the database.
+### 35.2 CORS and Security Header Mismatches
+* **Symptoms**: Web browsers block outgoing API calls with CORS headers mismatch warnings.
+* **Solution**: Ensure your frontend origins are correctly configured inside `backend/src/app.js`:
+  ```javascript
+  app.use(cors({ origin: ["http://localhost:5173", "http://localhost:5174"], credentials: true }));
+  ```
+
+### 35.3 Node Memory Limits during Large File Uploads
+* **Symptoms**: Large base64 image uploads crash the backend process with a memory exception.
+* **Solution**: Increase body parser limits:
+  ```javascript
+  app.use(express.json({ limit: "10mb" }));
+  ```
 
 This completes the platform documentation.
