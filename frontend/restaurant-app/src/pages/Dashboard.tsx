@@ -7,9 +7,14 @@ import {
   Check,
   Plus,
   Store,
+  TrendingUp,
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+
+import { PremiumPageHeader } from "../components/ui/PremiumPageHeader";
+import { CredStatCard } from "../components/ui/CredStatCard";
+import "../restaurant-premium.css";
 
 interface Order {
   id: string;
@@ -211,8 +216,8 @@ export const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="flex-center" style={{ minHeight: "80vh" }}>
-        <p className="text-muted">Loading restaurant dashboard...</p>
+      <div style={{ padding: "40px", color: "var(--cred-text-secondary)", textAlign: "center" }}>
+        Loading restaurant dashboard...
       </div>
     );
   }
@@ -220,134 +225,110 @@ export const Dashboard: React.FC = () => {
   // Onboarding UI if no restaurant profile found
   if (!restaurantId) {
     return (
-      <div className="page-container">
-        <div className="panel-card">
-          <div className="text-center" style={{ marginBottom: "24px" }}>
-            <Store size={48} color="var(--accent-orange)" className="mb-16" />
-            <h1 className="section-heading section-heading-md">
+      <div className="restaurant-premium-layout" style={{ padding: "40px 20px" }}>
+        <div style={{ maxWidth: "600px", margin: "0 auto" }} className="cred-stat-card">
+          <div style={{ textAlign: "center", marginBottom: "32px" }}>
+            <Store size={48} style={{ color: "var(--cred-accent)", marginBottom: "16px" }} />
+            <h1 style={{ fontSize: "2rem", fontWeight: 800, marginBottom: "8px", color: "var(--cred-text-primary)" }}>
               Setup Your Restaurant
             </h1>
-            <p className="text-muted text-small">
-              Create your business profile to begin managing menus and receiving
-              orders.
+            <p style={{ color: "var(--cred-text-secondary)" }}>
+              Create your business profile to begin managing menus and receiving orders.
             </p>
           </div>
 
-          <form onSubmit={handleCreateRestaurant} className="form-grid">
-            <div className="form-field">
-              <label>Restaurant Name *</label>
+          <form onSubmit={handleCreateRestaurant} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+            <div className="neo-input-wrapper">
               <input
                 type="text"
                 value={restName}
                 onChange={(e) => setRestName(e.target.value)}
-                placeholder="The Curry House"
+                placeholder=" "
                 required
-                className="input-premium"
+                className="neo-input"
               />
+              <label>Restaurant Name *</label>
             </div>
 
-            <div className="form-field">
-              <label>Description</label>
+            <div className="neo-input-wrapper">
               <textarea
                 value={restDesc}
                 onChange={(e) => setRestDesc(e.target.value)}
-                placeholder="Delicious home-style Indian cuisine..."
-                className="input-premium textarea-large"
+                placeholder=" "
+                className="neo-input"
+                style={{ height: "100px", resize: "none" }}
               />
+              <label>Description</label>
             </div>
 
-            <div className="form-field">
-              <label>Street Address *</label>
+            <div className="neo-input-wrapper">
               <input
                 type="text"
                 value={restAddress}
                 onChange={(e) => setRestAddress(e.target.value)}
-                placeholder="123 Main St, Indiranagar"
+                placeholder=" "
                 required
-                className="input-premium"
+                className="neo-input"
               />
+              <label>Street Address *</label>
             </div>
 
-            <div className="form-row">
-              <div className="form-field">
-                <label>Landmark</label>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <div className="neo-input-wrapper">
                 <input
                   type="text"
                   value={restLandmark}
                   onChange={(e) => setRestLandmark(e.target.value)}
-                  placeholder="Near Metro Station"
-                  className="input-premium"
+                  placeholder=" "
+                  className="neo-input"
                 />
+                <label>Landmark</label>
               </div>
-              <div className="form-field">
-                <label>City *</label>
+              <div className="neo-input-wrapper">
                 <input
                   type="text"
                   value={restCity}
                   onChange={(e) => setRestCity(e.target.value)}
-                  placeholder="Bengaluru"
+                  placeholder=" "
                   required
-                  className="input-premium"
+                  className="neo-input"
                 />
+                <label>City *</label>
               </div>
             </div>
 
-            <div className="form-row">
-              <div className="form-field">
-                <label>State *</label>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <div className="neo-input-wrapper">
                 <input
                   type="text"
                   value={restState}
                   onChange={(e) => setRestState(e.target.value)}
-                  placeholder="Karnataka"
+                  placeholder=" "
                   required
-                  className="input-premium"
+                  className="neo-input"
                 />
+                <label>State *</label>
               </div>
-              <div className="form-field">
-                <label>Postal Code *</label>
+              <div className="neo-input-wrapper">
                 <input
                   type="text"
                   value={restPostalCode}
                   onChange={(e) => setRestPostalCode(e.target.value)}
-                  placeholder="560038"
+                  placeholder=" "
                   required
-                  className="input-premium"
+                  className="neo-input"
                 />
-              </div>
-            </div>
-
-            <div className="form-row">
-              <div className="form-field">
-                <label>Opening Time</label>
-                <input
-                  type="text"
-                  value={restOpenTime}
-                  onChange={(e) => setRestOpenTime(e.target.value)}
-                  placeholder="11:00:00"
-                  className="input-premium"
-                />
-              </div>
-              <div className="form-field">
-                <label>Closing Time</label>
-                <input
-                  type="text"
-                  value={restCloseTime}
-                  onChange={(e) => setRestCloseTime(e.target.value)}
-                  placeholder="23:00:00"
-                  className="input-premium"
-                />
+                <label>Postal Code *</label>
               </div>
             </div>
 
             <button
               type="submit"
               disabled={createLoading}
-              className="btn-premium btn-sm button-stretch"
+              className="neo-btn neo-btn-primary"
+              style={{ width: "100%" }}
             >
-              {createLoading
-                ? "Creating Profile..."
-                : "Create Restaurant Profile"}
+              {createLoading ? "Creating Profile..." : "Create Restaurant Profile"}
             </button>
           </form>
         </div>
@@ -355,236 +336,152 @@ export const Dashboard: React.FC = () => {
     );
   }
 
+  const activeOrdersCount = orders.filter((o) => o.status !== "delivered" && o.status !== "cancelled").length;
+  const pendingOrdersCount = orders.filter((o) => o.status === "placed").length;
+  const estimatedRevenue = orders
+    .reduce((acc, o) => acc + parseFloat(o.item_total?.toString() || "0"), 0);
+
   return (
-    <div className="page-container">
-      {/* Header Panel */}
-      <div className="header-panel-premium">
-        <div>
-          <h1 style={{ fontSize: "2.2rem", marginBottom: "8px" }}>
-            {restaurantName || "Active Orders"}
-          </h1>
-          <p style={{ color: "var(--text-muted)" }}>
-            {restaurantName
-              ? `Realtime Order Dispatch Control for ${restaurantName}`
-              : "Realtime order dispatch control panel"}
-          </p>
+    <div className="restaurant-premium-layout" style={{ padding: "40px 20px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        
+        {/* Header Panel */}
+        <PremiumPageHeader 
+          title={restaurantName || "Active Orders"}
+          subtitle={restaurantName ? `Realtime Order Control for ${restaurantName}` : "Realtime dispatch control panel"}
+          rightAction={
+            <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+              <span className="premium-badge neutral" style={{ border: "1px solid var(--cred-border)", padding: "10px 16px" }}>
+                Store: <strong style={{ color: restaurantStatus === "open" ? "var(--cred-success)" : "var(--cred-accent)", marginLeft: "4px" }}>{restaurantStatus.toUpperCase()}</strong>
+              </span>
+              <button
+                onClick={toggleRestaurantOpen}
+                className={`neo-btn ${restaurantStatus === "open" ? "neo-btn-accent" : "neo-btn-primary"}`}
+                style={{ padding: "10px 20px", fontSize: "0.9rem" }}
+              >
+                {restaurantStatus === "open" ? "Go Offline" : "Go Online"}
+              </button>
+            </div>
+          }
+        />
+
+        {/* Stats strip using CredStatCard */}
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", marginBottom: "40px" }} className="premium-animate-in">
+          <CredStatCard 
+            title="Total Orders"
+            value={orders.length}
+            subtitle="Today's total orders received"
+            icon={<CookingPot />}
+          />
+          <CredStatCard 
+            title="Pending Orders"
+            value={pendingOrdersCount}
+            subtitle="Need acceptance action"
+            icon={<Clock />}
+            theme={pendingOrdersCount > 0 ? "warning" : "default"}
+          />
+          <CredStatCard 
+            title="Estimated Revenue"
+            value={`$${estimatedRevenue.toFixed(2)}`}
+            subtitle="Gross value of today's sales"
+            icon={<TrendingUp />}
+            theme="success"
+          />
         </div>
 
-        {/* Status toggle */}
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>
-            Store Status:{" "}
-            <strong
-              style={{
-                color: restaurantStatus === "open" ? "#4CAF50" : "#F44336",
-              }}
-            >
-              {restaurantStatus.toUpperCase()}
-            </strong>
-          </span>
-          <button
-            onClick={toggleRestaurantOpen}
-            className="btn-premium"
-            style={{
-              padding: "8px 24px",
-              fontSize: "0.9rem",
-              background:
-                restaurantStatus === "open"
-                  ? "#F44336"
-                  : "var(--primary-gradient)",
-              boxShadow: "none",
-            }}
-          >
-            {restaurantStatus === "open" ? "Go Offline" : "Go Online"}
-          </button>
-        </div>
-      </div>
+        {/* Grid list of active orders */}
+        <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "20px", letterSpacing: "1px", textTransform: "uppercase" }}>
+          Active Orders Queue ({activeOrdersCount})
+        </h3>
+        
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))", gap: "24px" }} className="premium-animate-in">
+          {orders.map((o) => {
+            const isCompleted = o.status === "delivered" || o.status === "cancelled";
+            const badgeTheme = o.status === "placed" ? "danger" : o.status === "preparing" ? "warning" : "success";
 
-      {/* Today's Stats Strip */}
-      {orders.length > 0 && (
-        <div className="today-stats-strip">
-          <div className="stat-tile stat-tile--green">
-            <div className="stat-tile-icon">
-              <CookingPot size={32} />
-            </div>
-            <div className="stat-tile-label">Total Orders</div>
-            <div className="stat-tile-value">{orders.length}</div>
-            <div className="stat-tile-sub">Today's count</div>
-          </div>
-          <div className="stat-tile stat-tile--orange">
-            <div className="stat-tile-icon">
-              <Clock size={32} />
-            </div>
-            <div className="stat-tile-label">Pending</div>
-            <div className="stat-tile-value">
-              {orders.filter((o) => o.status === "placed").length}
-            </div>
-            <div className="stat-tile-sub">Need action now</div>
-          </div>
-          <div className="stat-tile stat-tile--violet">
-            <div className="stat-tile-icon">
-              <Check size={32} />
-            </div>
-            <div className="stat-tile-label">Revenue</div>
-            <div className="stat-tile-value">
-              $
-              {orders
-                .reduce(
-                  (acc, o) => acc + parseFloat(o.item_total?.toString() || "0"),
-                  0,
-                )
-                .toFixed(0)}
-            </div>
-            <div className="stat-tile-sub">Estimated total</div>
-          </div>
-        </div>
-      )}
+            return (
+              <div key={o.id} className="cred-stat-card" style={{ minHeight: "auto", padding: "24px" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
+                  <div>
+                    <h4 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 800 }}>Order #{o.order_number.slice(-6)}</h4>
+                    <span style={{ fontSize: "0.8rem", color: "var(--cred-text-secondary)" }}>
+                      {new Date(o.created_at).toLocaleTimeString()}
+                    </span>
+                  </div>
+                  <span className={`premium-badge ${badgeTheme}`}>
+                    {o.status.replace("_", " ")}
+                  </span>
+                </div>
 
-      {/* Grid list of orders */}
-      <div className="panel-grid">
-        {orders.map((o) => (
-          <div key={o.id} className="panel-card panel-card-stacked">
-            {/* Order Card Head */}
-            <div className="panel-row" style={{ marginBottom: "16px" }}>
-              <div>
-                <strong style={{ fontSize: "1.1rem" }}>
-                  Order #{o.order_number}
-                </strong>
-                <div style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                  {new Date(o.created_at).toLocaleTimeString()}
+                <div style={{ fontSize: "0.9rem", color: "var(--cred-text-primary)", marginBottom: "16px" }}>
+                  Customer: <strong>{o.customer_first_name} {o.customer_last_name}</strong>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", pt: "12px", borderTop: "1px solid var(--cred-border)" }}>
+                  <span style={{ fontSize: "1.25rem", fontWeight: 800 }}>
+                    ${parseFloat((o.item_total ?? 0).toString()).toFixed(2)}
+                  </span>
+
+                  <div>
+                    {o.status === "placed" && (
+                      <button
+                        onClick={() => handleUpdateStatus(o.id, "preparing")}
+                        className="neo-btn neo-btn-primary"
+                        style={{ padding: "8px 16px", fontSize: "0.85rem" }}
+                      >
+                        Accept Order
+                      </button>
+                    )}
+
+                    {o.status === "preparing" && (
+                      <button
+                        onClick={() => handleUpdateStatus(o.id, "ready_for_pickup")}
+                        className="neo-btn neo-btn-accent"
+                        style={{ padding: "8px 16px", fontSize: "0.85rem" }}
+                      >
+                        Ready for Pickup
+                      </button>
+                    )}
+
+                    {o.status === "ready_for_pickup" && (
+                      <span style={{ fontSize: "0.85rem", color: "var(--cred-text-secondary)", display: "flex", alignItems: "center", gap: "6px" }}>
+                        <Clock size={16} /> Waiting for pickup
+                      </span>
+                    )}
+
+                    {o.status === "out_for_delivery" && (
+                      <span style={{ fontSize: "0.85rem", color: "var(--cred-info)", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}>
+                        <Clock size={16} /> Out for delivery
+                      </span>
+                    )}
+
+                    {o.status === "delivered" && (
+                      <span style={{ fontSize: "0.85rem", color: "var(--cred-success)", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}>
+                        <Check size={16} /> Delivered
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
-              <span className="status-pill warning">
-                {o.status.toUpperCase()}
-              </span>
-            </div>
+            );
+          })}
 
-            {/* Customer Details */}
-            <div
-              className="text-small"
-              style={{ marginBottom: "20px", flexGrow: 1 }}
-            >
-              Customer:{" "}
-              <strong>
-                {o.customer_first_name} {o.customer_last_name}
-              </strong>
-            </div>
-
-            {/* Total value */}
+          {orders.length === 0 && (
             <div
               style={{
-                fontSize: "1.2rem",
-                fontWeight: 800,
-                marginBottom: "24px",
+                padding: "60px",
+                gridColumn: "1 / -1",
+                textAlign: "center",
+                color: "var(--cred-text-secondary)",
+                background: "var(--cred-surface)",
+                borderRadius: "16px",
+                border: "1px solid var(--cred-border)",
               }}
             >
-              ${parseFloat((o.item_total ?? 0).toString()).toFixed(2)}
+              No orders received today.
             </div>
-
-            {/* Action buttons */}
-            <div style={{ display: "flex", gap: "12px" }}>
-              {o.status === "placed" && (
-                <button
-                  onClick={() => handleUpdateStatus(o.id, "preparing")}
-                  className="btn-premium"
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                    padding: "10px",
-                    fontSize: "0.9rem",
-                  }}
-                >
-                  <CookingPot size={16} /> Accept Order
-                </button>
-              )}
-
-              {o.status === "preparing" && (
-                <button
-                  onClick={() => handleUpdateStatus(o.id, "ready_for_pickup")}
-                  className="btn-premium"
-                  style={{
-                    flex: 1,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "8px",
-                    padding: "10px",
-                    fontSize: "0.9rem",
-                    background: "var(--accent-violet)",
-                  }}
-                >
-                  <CheckCircle size={16} /> Ready for Pickup
-                </button>
-              )}
-
-              {o.status === "ready_for_pickup" && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    color: "var(--text-muted)",
-                    fontSize: "0.9rem",
-                    width: "100%",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Clock size={16} /> Waiting for Driver Pickup...
-                </div>
-              )}
-
-              {o.status === "out_for_delivery" && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    color: "var(--accent-orange)",
-                    fontSize: "0.9rem",
-                    width: "100%",
-                    justifyContent: "center",
-                    fontWeight: 700,
-                  }}
-                >
-                  <Clock size={16} /> Order Out for Delivery...
-                </div>
-              )}
-
-              {o.status === "delivered" && (
-                <div
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "6px",
-                    color: "#4CAF50",
-                    fontSize: "0.9rem",
-                    width: "100%",
-                    justifyContent: "center",
-                    fontWeight: 700,
-                  }}
-                >
-                  <Check size={16} /> Order Delivered!
-                </div>
-              )}
-            </div>
-          </div>
-        ))}
-
-        {orders.length === 0 && (
-          <div
-            style={{
-              padding: "60px",
-              gridColumn: "1 / -1",
-              textAlign: "center",
-              color: "var(--text-muted)",
-            }}
-          >
-            No active orders.
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

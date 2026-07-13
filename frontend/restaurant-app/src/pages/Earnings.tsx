@@ -166,7 +166,7 @@ export const Earnings: React.FC = () => {
   ];
 
   return (
-    <div className="restaurant-dark-mode" style={{ minHeight: "100vh", padding: "40px 20px", background: "var(--cred-bg)" }}>
+    <div className="restaurant-premium-layout" style={{ padding: "40px 20px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
         <PremiumPageHeader 
           title="Merchant Finances"

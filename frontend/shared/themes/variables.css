@@ -5395,3 +5395,13 @@ h3 {
   font-size: 0.9rem !important;
   box-shadow: 0 10px 30px -5px rgba(146, 64, 14, 0.15) !important;
 }
+
+.navbar-mobile-only {
+  display: none !important;
+}
+
+@media (max-width: 1024px) {
+  .navbar-mobile-only {
+    display: flex !important;
+  }
+}

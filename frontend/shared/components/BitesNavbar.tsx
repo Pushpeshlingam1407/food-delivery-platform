@@ -56,20 +56,37 @@ export const BitesNavbar: React.FC<
       <PlatformNavbar
         className="premium-navbar"
         left={
-          <Link
-            to="/"
-            style={{
-              fontSize: "1.5rem",
-              fontWeight: 800,
-              color: "var(--accent-orange)",
-              textDecoration: "none",
-              display: "flex",
-              alignItems: "center",
-              gap: "8px",
-            }}
-          >
-            bites
-          </Link>
+          <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+            <button
+              onClick={() => window.dispatchEvent(new CustomEvent("open-app-sidebar"))}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                padding: "4px",
+                display: "flex",
+                alignItems: "center",
+                color: "var(--text-slate)",
+              }}
+              className="navbar-mobile-only"
+            >
+              <Menu size={24} />
+            </button>
+            <Link
+              to="/"
+              style={{
+                fontSize: "1.5rem",
+                fontWeight: 800,
+                color: "var(--accent-orange)",
+                textDecoration: "none",
+                display: "flex",
+                alignItems: "center",
+                gap: "8px",
+              }}
+            >
+              bites
+            </Link>
+          </div>
         }
         center={
           <div

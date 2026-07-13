@@ -4,6 +4,9 @@ import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { MenuCard } from "../../../shared/components/MenuCard";
 
+import { PremiumPageHeader } from "../components/ui/PremiumPageHeader";
+import "../restaurant-premium.css";
+
 interface MenuItem {
   id: string;
   name: string;
@@ -205,450 +208,247 @@ export const MenuManager: React.FC = () => {
   };
 
   return (
-    <div
-      className="app-shell menu-manager-page"
-      style={{ padding: "40px", maxWidth: "1200px", margin: "0 auto" }}
-    >
-      <h1 style={{ fontSize: "2.5rem", marginBottom: "32px" }}>
-        Menu Catalog Manager
-      </h1>
+    <div className="restaurant-premium-layout" style={{ padding: "40px 20px" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <PremiumPageHeader 
+          title="Menu Catalog Manager"
+          subtitle="Organize restaurant offering categories, add custom items, upload photos, and update availability."
+        />
 
-      <div className="responsive-split menu-manager-layout">
-        {/* Dishes list */}
-        <div className="menu-manager-list">
-          <h2 style={{ fontSize: "1.8rem", marginBottom: "24px" }}>
-            Dishes List
-          </h2>
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-          >
-            {menuItems.map((item) => {
-              const cat = categories.find((c) => c.id === item.category_id);
-              // Map the item to the expected type inside MenuCard
-              const cardItem = {
-                ...item,
-                description: item.description || undefined,
-                image_url: item.image_url || undefined,
-                available_quantity: item.available_quantity ?? undefined,
-                unlimited: item.unlimited,
-              };
+        <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: "40px", alignItems: "start" }} className="premium-animate-in">
+          
+          {/* Dishes list */}
+          <div>
+            <h2 style={{ fontSize: "1.4rem", fontWeight: 800, marginBottom: "24px", color: "var(--cred-text-primary)" }}>
+              Dishes Catalog
+            </h2>
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {menuItems.map((item) => {
+                const cardItem = {
+                  ...item,
+                  description: item.description || undefined,
+                  image_url: item.image_url || undefined,
+                  available_quantity: item.available_quantity ?? undefined,
+                  unlimited: item.unlimited,
+                };
 
-              return (
-                <MenuCard
-                  key={item.id}
-                  item={cardItem}
-                  renderFooterActions={() => (
-                    <div className="menu-manager-item-actions">
-                      <label
-                        style={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: "8px",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          checked={!!item.is_available}
-                          onChange={() =>
-                            toggleItemAvailability(item.id, !!item.is_available)
-                          }
-                          style={{ width: "16px", height: "16px" }}
-                        />
-                        <span style={{ fontSize: "0.9rem", fontWeight: 600 }}>
-                          Available
-                        </span>
-                      </label>
+                return (
+                  <MenuCard
+                    key={item.id}
+                    item={cardItem}
+                    renderFooterActions={() => (
+                      <div style={{ display: "flex", alignItems: "center", gap: "16px", marginTop: "12px", borderTop: "1px solid var(--cred-border)", paddingTop: "12px" }}>
+                        <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
+                          <input
+                            type="checkbox"
+                            checked={!!item.is_available}
+                            onChange={() => toggleItemAvailability(item.id, !!item.is_available)}
+                            style={{ width: "16px", height: "16px", accentColor: "var(--cred-success)" }}
+                          />
+                          <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cred-text-secondary)" }}>
+                            Available
+                          </span>
+                        </label>
 
-                      <button
-                        onClick={() => startEdit(item)}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          color: "var(--text-slate)",
-                          display: "inline-flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Edit2 size={16} />
-                      </button>
+                        <button
+                          onClick={() => startEdit(item)}
+                          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--cred-text-secondary)", display: "flex", alignItems: "center" }}
+                        >
+                          <Edit2 size={16} />
+                        </button>
 
-                      <button
-                        onClick={() => handleDeleteItem(item.id)}
-                        style={{
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          color: "#F44336",
-                          display: "inline-flex",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </div>
-                  )}
-                />
-              );
-            })}
-
-            {menuItems.length === 0 && (
-              <div
-                style={{
-                  padding: "40px",
-                  textAlign: "center",
-                  color: "var(--text-muted)",
-                }}
-              >
-                No dishes found in menu catalog. Add dishes on the right to
-                start.
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Creation panels */}
-        <div
-          className="menu-manager-sidebar"
-          style={{ display: "flex", flexDirection: "column", gap: "32px" }}
-        >
-          {/* Category CRUD Form */}
-          <div
-            className="menu-manager-form-panel"
-            style={{
-              background: "var(--glass-bg)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-squircle)",
-              padding: "24px",
-              boxShadow: "var(--glass-shadow)",
-              backdropFilter: "var(--glass-blur)",
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: "var(--font-cohere)",
-                fontSize: "1.1rem",
-                marginBottom: "16px",
-                margin: 0,
-              }}
-            >
-              Add Category
-            </h3>
-            <form
-              onSubmit={handleAddCategory}
-              className="menu-manager-inline-form"
-              style={{ display: "flex", gap: "8px", marginTop: "12px" }}
-            >
-              <input
-                type="text"
-                value={newCatName}
-                onChange={(e) => setNewCatName(e.target.value)}
-                placeholder="Starters"
-                required
-                style={{
-                  padding: "8px 12px",
-                  borderRadius: "6px",
-                  border: "1px solid var(--glass-border)",
-                  flexGrow: 1,
-                  fontFamily: "var(--font-apple)",
-                  fontSize: "0.9rem",
-                }}
-              />
-              <button
-                type="submit"
-                className="btn-premium"
-                style={{
-                  padding: "8px 16px",
-                  borderRadius: "6px",
-                  fontSize: "0.85rem",
-                }}
-              >
-                <Plus size={16} />
-              </button>
-            </form>
-          </div>
-
-          {/* Dish CRUD Form */}
-          <div
-            className="menu-manager-form-panel"
-            style={{
-              background: "var(--glass-bg)",
-              border: "1px solid var(--glass-border)",
-              borderRadius: "var(--radius-squircle)",
-              padding: "24px",
-              boxShadow: "var(--glass-shadow)",
-              backdropFilter: "var(--glass-blur)",
-            }}
-          >
-            <h3
-              style={{
-                fontFamily: "var(--font-cohere)",
-                fontSize: "1.1rem",
-                marginBottom: "16px",
-                margin: 0,
-              }}
-            >
-              {editingId ? "Edit Dish Properties" : "Add New Dish"}
-            </h3>
-            <form
-              onSubmit={handleSaveMenuItem}
-              className="menu-manager-inline-form"
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "16px",
-                marginTop: "12px",
-              }}
-            >
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Dish Name
-                </label>
-                <input
-                  type="text"
-                  value={newItemName}
-                  onChange={(e) => setNewItemName(e.target.value)}
-                  placeholder="Butter Chicken"
-                  required
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                  }}
-                />
-              </div>
-
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Description
-                </label>
-                <textarea
-                  value={newItemDesc}
-                  onChange={(e) => setNewItemDesc(e.target.value)}
-                  placeholder="Rich and creamy tomato base..."
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                    minHeight: "60px",
-                  }}
-                />
-              </div>
-
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Price ($)
-                </label>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={newItemPrice}
-                  onChange={(e) => setNewItemPrice(e.target.value)}
-                  placeholder="12.99"
-                  required
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                  }}
-                />
-              </div>
-
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-              >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                    Image URL Link
-                  </label>
-                  {newItemImageUrl.startsWith("http") ? (
-                    <span
-                      style={{
-                        fontSize: "0.75rem",
-                        color: "var(--accent-orange)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                      }}
-                    >
-                      <Globe size={12} /> Remote URL
-                    </span>
-                  ) : newItemImageUrl ? (
-                    <span
-                      style={{
-                        fontSize: "0.75rem",
-                        color: "var(--accent-violet)",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                      }}
-                    >
-                      <FileImage size={12} /> Local File
-                    </span>
-                  ) : null}
-                </div>
-                <input
-                  type="text"
-                  value={newItemImageUrl}
-                  onChange={(e) => setNewItemImageUrl(e.target.value)}
-                  placeholder="https://example.com/dish.jpg"
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                  }}
-                />
-                <input
-                  type="file"
-                  accept="image/*, image/webp, image/png, image/jpeg, image/jpg, image/gif"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onloadend = async () => {
-                        try {
-                          const base64Data = reader.result as string;
-                          const res = await api.post("/upload", {
-                            image: base64Data,
-                          });
-                          if (res.data.status === "success") {
-                            setNewItemImageUrl(res.data.url);
-                            notify.success("Image uploaded!");
-                          }
-                        } catch (err) {
-                          notify.error("We couldn't upload this image.");
-                        }
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  }}
-                  style={{ marginTop: "4px", fontSize: "0.8rem" }}
-                />
-              </div>
-
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Category
-                </label>
-                <select
-                  value={newItemCategoryId}
-                  onChange={(e) => setNewItemCategoryId(e.target.value)}
-                  required
-                  style={{
-                    padding: "8px 12px",
-                    borderRadius: "6px",
-                    border: "1px solid var(--glass-border)",
-                    background: "var(--glass-bg)",
-                  }}
-                >
-                  <option value="">Select Category</option>
-                  {categories.map((c) => (
-                    <option key={c.id} value={c.id}>
-                      {c.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-
-              <div
-                style={{ display: "flex", flexDirection: "column", gap: "6px" }}
-              >
-                <label style={{ fontSize: "0.8rem", fontWeight: 600 }}>
-                  Inventory Stock Level
-                </label>
-                <div
-                  style={{ display: "flex", gap: "10px", alignItems: "center" }}
-                >
-                  <input
-                    type="number"
-                    value={newItemStock}
-                    onChange={(e) => setNewItemStock(e.target.value)}
-                    disabled={newItemUnlimited}
-                    placeholder="50"
-                    style={{
-                      padding: "8px 12px",
-                      borderRadius: "6px",
-                      border: "1px solid var(--glass-border)",
-                      width: "80px",
-                    }}
+                        <button
+                          onClick={() => handleDeleteItem(item.id)}
+                          style={{ background: "none", border: "none", cursor: "pointer", color: "var(--cred-accent)", display: "flex", alignItems: "center" }}
+                        >
+                          <Trash2 size={16} />
+                        </button>
+                      </div>
+                    )}
                   />
-                  <label
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "4px",
-                      cursor: "pointer",
-                      fontSize: "0.85rem",
-                    }}
+                );
+              })}
+
+              {menuItems.length === 0 && (
+                <div
+                  style={{
+                    padding: "60px 40px",
+                    textAlign: "center",
+                    color: "var(--cred-text-secondary)",
+                    background: "var(--cred-surface)",
+                    borderRadius: "16px",
+                    border: "1px solid var(--cred-border)",
+                  }}
+                >
+                  No dishes found in menu catalog. Use the right form panels to start building.
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Creation panels */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "32px" }}>
+            
+            {/* Category CRUD Form */}
+            <div className="cred-stat-card" style={{ minHeight: "auto", padding: "28px" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "16px" }}>
+                Add New Category
+              </h3>
+              <form onSubmit={handleAddCategory} style={{ display: "flex", gap: "12px" }}>
+                <div className="neo-input-wrapper">
+                  <input
+                    type="text"
+                    value={newCatName}
+                    onChange={(e) => setNewCatName(e.target.value)}
+                    placeholder=" "
+                    required
+                    className="neo-input"
+                    style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                  />
+                  <label style={{ fontSize: "0.85rem" }}>Category Name (e.g. Starters)</label>
+                </div>
+                <button type="submit" className="neo-btn neo-btn-primary" style={{ padding: "0 20px" }}>
+                  <Plus size={20} />
+                </button>
+              </form>
+            </div>
+
+            {/* Dish CRUD Form */}
+            <div className="cred-stat-card" style={{ minHeight: "auto", padding: "28px" }}>
+              <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "20px" }}>
+                {editingId ? "Edit Dish Properties" : "Add New Dish"}
+              </h3>
+              
+              <form onSubmit={handleSaveMenuItem} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+                
+                <div className="neo-input-wrapper">
+                  <select
+                    value={newItemCategoryId}
+                    onChange={(e) => setNewItemCategoryId(e.target.value)}
+                    required
+                    className="neo-input"
+                    style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px", appearance: "none" }}
                   >
+                    <option value="" disabled hidden></option>
+                    {categories.map((c) => (
+                      <option key={c.id} value={c.id} style={{ color: "black" }}>
+                        {c.name}
+                      </option>
+                    ))}
+                  </select>
+                  <label style={{ fontSize: "0.85rem" }}>Select Category *</label>
+                </div>
+
+                <div className="neo-input-wrapper">
+                  <input
+                    type="text"
+                    value={newItemName}
+                    onChange={(e) => setNewItemName(e.target.value)}
+                    placeholder=" "
+                    required
+                    className="neo-input"
+                    style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                  />
+                  <label style={{ fontSize: "0.85rem" }}>Dish Name *</label>
+                </div>
+
+                <div className="neo-input-wrapper">
+                  <textarea
+                    value={newItemDesc}
+                    onChange={(e) => setNewItemDesc(e.target.value)}
+                    placeholder=" "
+                    className="neo-input"
+                    style={{ height: "80px", resize: "none", fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                  />
+                  <label style={{ fontSize: "0.85rem" }}>Description</label>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+                  <div className="neo-input-wrapper">
+                    <input
+                      type="number"
+                      value={newItemPrice}
+                      onChange={(e) => setNewItemPrice(e.target.value)}
+                      placeholder=" "
+                      step="0.01"
+                      min="0.01"
+                      required
+                      className="neo-input"
+                      style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                    />
+                    <label style={{ fontSize: "0.85rem" }}>Price ($) *</label>
+                  </div>
+
+                  <div className="neo-input-wrapper">
+                    <select
+                      value={newItemIsVeg ? "true" : "false"}
+                      onChange={(e) => setNewItemIsVeg(e.target.value === "true")}
+                      className="neo-input"
+                      style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px", appearance: "none" }}
+                    >
+                      <option value="true">Vegetarian</option>
+                      <option value="false">Non-Vegetarian</option>
+                    </select>
+                    <label style={{ fontSize: "0.85rem" }}>Food Type</label>
+                  </div>
+                </div>
+
+                <div className="neo-input-wrapper">
+                  <input
+                    type="url"
+                    value={newItemImageUrl}
+                    onChange={(e) => setNewItemImageUrl(e.target.value)}
+                    placeholder=" "
+                    className="neo-input"
+                    style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                  />
+                  <label style={{ fontSize: "0.85rem" }}>Image URL</label>
+                </div>
+
+                <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+                  <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer" }}>
                     <input
                       type="checkbox"
                       checked={newItemUnlimited}
                       onChange={(e) => setNewItemUnlimited(e.target.checked)}
+                      style={{ width: "16px", height: "16px", accentColor: "var(--cred-success)" }}
                     />
-                    Unlimited
+                    <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cred-text-secondary)" }}>
+                      Unlimited stock
+                    </span>
                   </label>
+
+                  {!newItemUnlimited && (
+                    <div className="neo-input-wrapper" style={{ flexGrow: 1 }}>
+                      <input
+                        type="number"
+                        value={newItemStock}
+                        onChange={(e) => setNewItemStock(e.target.value)}
+                        placeholder=" "
+                        className="neo-input"
+                        style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                      />
+                      <label style={{ fontSize: "0.85rem" }}>Available Stock</label>
+                    </div>
+                  )}
                 </div>
-              </div>
 
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "12px" }}
-              >
-                <input
-                  type="checkbox"
-                  id="new-item-veg"
-                  checked={newItemIsVeg}
-                  onChange={(e) => setNewItemIsVeg(e.target.checked)}
-                  style={{ width: "16px", height: "16px" }}
-                />
-                <label
-                  htmlFor="new-item-veg"
-                  style={{ fontWeight: 600, fontSize: "0.85rem" }}
-                >
-                  Is Vegetarian 🌱
-                </label>
-              </div>
-
-              <div style={{ display: "flex", gap: "10px" }}>
-                <button
-                  type="submit"
-                  className="btn-premium"
-                  style={{ flex: 1, padding: "12px" }}
-                >
-                  {editingId ? "Update Dish" : "Create Dish"}
-                </button>
-                {editingId && (
-                  <button
-                    type="button"
-                    onClick={resetForm}
-                    className="btn-premium"
-                    style={{
-                      background: "var(--text-slate)",
-                      flex: 1,
-                      padding: "12px",
-                    }}
-                  >
-                    Cancel
+                <div style={{ display: "flex", gap: "12px", marginTop: "10px" }}>
+                  <button type="submit" className="neo-btn neo-btn-primary" style={{ flex: 2 }}>
+                    {editingId ? "Save Changes" : "Add to Catalog"}
                   </button>
-                )}
-              </div>
-            </form>
+                  {editingId && (
+                    <button type="button" onClick={resetForm} className="neo-btn neo-btn-outline" style={{ flex: 1 }}>
+                      Cancel
+                    </button>
+                  )}
+                </div>
+
+              </form>
+            </div>
+
           </div>
+
         </div>
       </div>
     </div>

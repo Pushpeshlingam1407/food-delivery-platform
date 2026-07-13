@@ -1,23 +1,26 @@
 /* ============================================================================
-   Restaurant Premium Stylesheet (CRED/Zomato Neobrutalism & Glassmorphism)
+   Restaurant Premium Stylesheet (Sophisticated Premium Light Segment)
    ============================================================================ */
 
 :root {
-  --cred-bg: #000000;
-  --cred-surface: #121212;
-  --cred-surface-light: #1e1e1e;
-  --cred-border: rgba(255, 255, 255, 0.08);
-  --cred-text-primary: #ffffff;
-  --cred-text-secondary: rgba(255, 255, 255, 0.6);
-  --cred-accent: #ff4d4d;
-  --cred-success: #00d09c;
-  --cred-warning: #ffb800;
-  --cred-info: #3b82f6;
+  --cred-bg: #f8fafc;
+  --cred-canvas: #f1f5f9;
+  --cred-surface: #ffffff;
+  --cred-surface-light: #f8fafc;
+  --cred-border: rgba(15, 23, 42, 0.06);
+  --cred-text-primary: #0f172a;
+  --cred-text-secondary: #475569;
+  --cred-text-muted: #94a3b8;
+  --cred-accent: #f43f5e; /* Rose / Terracotta */
+  --cred-success: #10b981; /* Emerald */
+  --cred-warning: #f59e0b; /* Amber */
+  --cred-info: #0ea5e9; /* Sky Blue */
 
-  /* Glassmorphism */
-  --premium-glass-bg: rgba(255, 255, 255, 0.03);
-  --premium-glass-border: rgba(255, 255, 255, 0.05);
-  --premium-glass-blur: blur(20px);
+  /* Shadows */
+  --cred-shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.03);
+  --cred-shadow-md: 0 10px 30px -10px rgba(15, 23, 42, 0.08);
+  --cred-shadow-lg: 0 20px 40px -15px rgba(15, 23, 42, 0.12);
+  --cred-shadow-inset: inset 0 1px 2px rgba(255, 255, 255, 0.9);
 }
 
 /* =====================================
@@ -27,7 +30,7 @@
 @keyframes slideUpFade {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(12px);
   }
   to {
     opacity: 1;
@@ -36,7 +39,7 @@
 }
 
 .premium-animate-in {
-  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: slideUpFade 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 /* =====================================
@@ -44,62 +47,62 @@
    ===================================== */
 .neo-btn {
   background: var(--cred-text-primary);
-  color: var(--cred-bg);
-  border: none;
-  padding: 16px 32px;
+  color: #ffffff;
+  border: 1px solid transparent;
+  padding: 14px 28px;
   border-radius: 12px;
-  font-size: 1.1rem;
-  font-weight: 800;
+  font-size: 1rem;
+  font-weight: 700;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
+  gap: 10px;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+  box-shadow: var(--cred-shadow-md);
 }
 
 .neo-btn:hover:not(:disabled) {
   transform: translateY(-2px);
-  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.25);
+  box-shadow: var(--cred-shadow-lg);
+  background: #1e293b;
 }
 
 .neo-btn:active:not(:disabled) {
-  transform: translateY(2px) scale(0.98);
-  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+  transform: translateY(1px);
+  box-shadow: var(--cred-shadow-sm);
 }
 
 .neo-btn:disabled {
-  opacity: 0.5;
+  opacity: 0.4;
   cursor: not-allowed;
   box-shadow: none;
 }
 
 .neo-btn-primary {
   background: var(--cred-text-primary);
-  color: var(--cred-bg);
+  color: #ffffff;
 }
 
 .neo-btn-accent {
   background: var(--cred-accent);
-  color: var(--cred-text-primary);
-  box-shadow: 0 8px 24px rgba(255, 77, 77, 0.25);
+  color: #ffffff;
 }
 
 .neo-btn-accent:hover:not(:disabled) {
-  box-shadow: 0 12px 32px rgba(255, 77, 77, 0.35);
+  background: #e11d48;
 }
 
 .neo-btn-outline {
-  background: transparent;
+  background: #ffffff;
   color: var(--cred-text-primary);
   border: 1px solid var(--cred-border);
-  box-shadow: none;
+  box-shadow: var(--cred-shadow-sm);
 }
 
 .neo-btn-outline:hover:not(:disabled) {
-  background: rgba(255, 255, 255, 0.05);
-  box-shadow: none;
+  background: var(--cred-surface-light);
+  border-color: rgba(15, 23, 42, 0.12);
 }
 
 /* =====================================
@@ -112,10 +115,10 @@
 
 .neo-input-wrapper label {
   position: absolute;
-  left: 20px;
+  left: 18px;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.1rem;
+  font-size: 0.95rem;
   color: var(--cred-text-secondary);
   transition: all 0.2s ease;
   pointer-events: none;
@@ -124,31 +127,33 @@
 
 .neo-input {
   width: 100%;
-  padding: 32px 20px 12px 20px;
-  background: var(--cred-surface);
+  padding: 26px 18px 10px 18px;
+  background: #ffffff;
   border: 1px solid var(--cred-border);
-  border-radius: 16px;
+  border-radius: 12px;
   color: var(--cred-text-primary);
-  font-size: 1.5rem;
-  font-weight: 800;
+  font-size: 1.25rem;
+  font-weight: 700;
   outline: none;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   box-sizing: border-box;
+  box-shadow: var(--cred-shadow-sm);
 }
 
 .neo-input:focus,
 .neo-input:not(:placeholder-shown) {
-  border-color: var(--cred-text-secondary);
-  background: var(--cred-surface-light);
+  border-color: rgba(15, 23, 42, 0.2);
+  background: #ffffff;
 }
 
 .neo-input:focus + label,
 .neo-input:not(:placeholder-shown) + label {
-  top: 16px;
-  font-size: 0.75rem;
+  top: 14px;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
+  color: var(--cred-text-muted);
 }
 
 /* =====================================
@@ -157,64 +162,65 @@
 .cred-stat-card {
   background: var(--cred-surface);
   border: 1px solid var(--cred-border);
-  border-radius: 24px;
-  padding: 32px;
+  border-radius: 20px;
+  padding: 28px;
   position: relative;
   overflow: hidden;
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  min-height: 180px;
+  min-height: 150px;
+  box-shadow: var(--cred-shadow-sm);
 }
 
 .cred-stat-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.15);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  transform: translateY(-3px);
+  border-color: rgba(15, 23, 42, 0.1);
+  box-shadow: var(--cred-shadow-md);
 }
 
 .cred-stat-card .bg-icon {
   position: absolute;
-  right: -20px;
-  bottom: -20px;
-  opacity: 0.03;
-  width: 150px;
-  height: 150px;
+  right: -10px;
+  bottom: -10px;
+  opacity: 0.04;
+  width: 120px;
+  height: 120px;
   pointer-events: none;
-  transition: all 0.5s ease;
+  transition: all 0.4s ease;
+  color: var(--cred-text-primary);
 }
 
 .cred-stat-card:hover .bg-icon {
-  transform: scale(1.1) rotate(-10deg);
-  opacity: 0.06;
+  transform: scale(1.08) rotate(-6deg);
+  opacity: 0.08;
 }
 
 .cred-stat-title {
   color: var(--cred-text-secondary);
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 700;
-  letter-spacing: 2px;
+  letter-spacing: 1px;
   text-transform: uppercase;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
 
 .cred-stat-value {
-  font-size: 2.8rem;
-  font-weight: 900;
+  font-size: 2.2rem;
+  font-weight: 800;
   color: var(--cred-text-primary);
-  margin-top: 16px;
+  margin-top: 12px;
   line-height: 1.1;
-  font-family: var(--font-cohere), sans-serif;
-  letter-spacing: -1px;
+  letter-spacing: -0.5px;
 }
 
 .cred-stat-subtitle {
   color: var(--cred-text-secondary);
-  font-size: 0.9rem;
-  margin-top: 8px;
+  font-size: 0.85rem;
+  margin-top: 6px;
   font-weight: 500;
 }
 
@@ -224,37 +230,38 @@
 .premium-ledger-container {
   background: var(--cred-surface);
   border: 1px solid var(--cred-border);
-  border-radius: 24px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  box-shadow: var(--cred-shadow-sm);
 }
 
 .premium-ledger-header {
   display: grid;
-  grid-template-columns: 2fr 3fr 1.5fr 1.5fr 1.5fr;
-  padding: 20px 32px;
+  grid-template-columns: 2fr 3fr 1.5fr 1.5fr;
+  padding: 16px 24px;
   border-bottom: 1px solid var(--cred-border);
   font-size: 0.75rem;
-  font-weight: 800;
+  font-weight: 700;
   color: var(--cred-text-secondary);
   text-transform: uppercase;
-  letter-spacing: 1.5px;
+  letter-spacing: 1px;
+  background: var(--cred-surface-light);
 }
 
 .premium-ledger-row {
   display: grid;
-  grid-template-columns: 2fr 3fr 1.5fr 1.5fr 1.5fr;
-  padding: 24px 32px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  grid-template-columns: 2fr 3fr 1.5fr 1.5fr;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--cred-border);
   align-items: center;
-  transition: background 0.2s;
+  transition: background 0.15s;
   color: var(--cred-text-primary);
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
 .premium-ledger-row:hover {
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--cred-surface-light);
 }
 
 .premium-ledger-row:last-child {
@@ -267,42 +274,38 @@
 .premium-badge {
   display: inline-flex;
   align-items: center;
-  padding: 6px 12px;
+  padding: 5px 10px;
   border-radius: 100px;
-  font-size: 0.75rem;
-  font-weight: 800;
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 1px;
+  letter-spacing: 0.5px;
 }
 
 .premium-badge.success {
-  background: rgba(0, 208, 156, 0.1);
+  background: rgba(16, 185, 129, 0.08);
   color: var(--cred-success);
-  border: 1px solid rgba(0, 208, 156, 0.2);
+  border: 1px solid rgba(16, 185, 129, 0.15);
 }
 
 .premium-badge.danger {
-  background: rgba(255, 77, 77, 0.1);
+  background: rgba(244, 63, 94, 0.08);
   color: var(--cred-accent);
-  border: 1px solid rgba(255, 77, 77, 0.2);
+  border: 1px solid rgba(244, 63, 94, 0.15);
 }
 
 .premium-badge.neutral {
-  background: rgba(255, 255, 255, 0.05);
+  background: #ffffff;
   color: var(--cred-text-secondary);
   border: 1px solid var(--cred-border);
+  box-shadow: var(--cred-shadow-sm);
 }
 
 /* =====================================
-   Dark Theme Overrides for Restaurant Layout
+   Premium Layout Structure
    ===================================== */
-.restaurant-dark-mode {
-  background: var(--cred-bg) !important;
-  color: var(--cred-text-primary) !important;
+.restaurant-premium-layout {
+  background: var(--cred-bg);
+  color: var(--cred-text-primary);
   min-height: 100vh;
-}
-
-.restaurant-dark-mode .bites-navbar {
-  background: rgba(18, 18, 18, 0.8) !important;
-  border-bottom: 1px solid var(--cred-border) !important;
 }
