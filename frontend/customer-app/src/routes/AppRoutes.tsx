@@ -624,7 +624,7 @@ export const AppRoutes: React.FC = () => {
           { label: "Dashboard", to: "/" },
           { label: "Global Settings", to: "/settings" },
           { label: "CMS Management", to: "/cms" },
-        ]
+        ],
       },
       {
         title: "Operations",
@@ -632,18 +632,28 @@ export const AppRoutes: React.FC = () => {
           { label: "Restaurants", to: "/restaurants" },
           { label: "Customers", to: "/customers" },
           { label: "Orders & Refunds", to: "/orders" },
-        ]
-      }
+        ],
+      },
     ];
     return (
       <BrowserRouter>
         <div className="main-layout-wrapper">
-          <div className="main-content-area" style={{ width: "100%", marginLeft: 0, padding: 0 }}>
-            <BitesNavbar variant="admin" userName={localStorage.getItem("userName")} onLogout={handleLogout} />
+          <div
+            className="main-content-area"
+            style={{ width: "100%", marginLeft: 0, padding: 0 }}
+          >
+            <BitesNavbar
+              variant="admin"
+              userName={localStorage.getItem("userName")}
+              onLogout={handleLogout}
+            />
             <div style={{ minHeight: "calc(100vh - 350px)" }}>
               <Routes>
                 <Route path="/" element={<AdminDashboard />} />
-                <Route path="/restaurants" element={<RestaurantsManagement />} />
+                <Route
+                  path="/restaurants"
+                  element={<RestaurantsManagement />}
+                />
                 <Route path="/customers" element={<CustomersManagement />} />
                 <Route path="/owners" element={<OwnersManagement />} />
                 <Route path="/drivers" element={<DriversManagement />} />
@@ -673,21 +683,28 @@ export const AppRoutes: React.FC = () => {
           { label: "Overview", to: "/" },
           { label: "Menu Management", to: "/menu" },
           { label: "Earnings & Payouts", to: "/earnings" },
-        ]
+        ],
       },
       {
         title: "Support",
         links: [
           { label: "Partner Help Center", to: "/" },
           { label: "Contact Account Manager", to: "/" },
-        ]
-      }
+        ],
+      },
     ];
     return (
       <BrowserRouter>
         <div className="main-layout-wrapper">
-          <div className="main-content-area" style={{ width: "100%", marginLeft: 0, padding: 0 }}>
-            <BitesNavbar variant="restaurant" userName={localStorage.getItem("userName")} onLogout={handleLogout} />
+          <div
+            className="main-content-area"
+            style={{ width: "100%", marginLeft: 0, padding: 0 }}
+          >
+            <BitesNavbar
+              variant="restaurant"
+              userName={localStorage.getItem("userName")}
+              onLogout={handleLogout}
+            />
             <div style={{ minHeight: "calc(100vh - 350px)" }}>
               <Routes>
                 <Route path="/" element={<RestaurantDashboard />} />
@@ -765,7 +782,10 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="main-layout-wrapper">
-          <div className="main-content-area" style={{ width: "100%", marginLeft: 0, padding: 0 }}>
+          <div
+            className="main-content-area"
+            style={{ width: "100%", marginLeft: 0, padding: 0 }}
+          >
             <BitesNavbar
               variant="driver"
               driverName={localStorage.getItem("userName")}
@@ -793,7 +813,10 @@ export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <div className="main-layout-wrapper">
-        <div className="main-content-area" style={{ width: "100%", marginLeft: 0 }}>
+        <div
+          className="main-content-area"
+          style={{ width: "100%", marginLeft: 0 }}
+        >
           <Navbar
             cartCount={cartCount}
             userEmail={userEmail}

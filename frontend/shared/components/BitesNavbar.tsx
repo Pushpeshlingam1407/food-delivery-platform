@@ -50,34 +50,100 @@ export const BitesNavbar: React.FC<
   React.useEffect(() => setProfileOpen(false), [location.pathname]);
 
   if (props.variant === "admin" || props.variant === "restaurant") {
-    const name = props.userName || (props.variant === "admin" ? "Admin" : "Merchant");
+    const name =
+      props.userName || (props.variant === "admin" ? "Admin" : "Merchant");
     return (
       <PlatformNavbar
         className="premium-admin-navbar"
         left={
-          <Link to="/" style={{ fontSize: "1.5rem", fontWeight: 800, color: "var(--accent-orange)", textDecoration: "none", display: "flex", alignItems: "center", gap: "8px" }}>
+          <Link
+            to="/"
+            style={{
+              fontSize: "1.5rem",
+              fontWeight: 800,
+              color: "var(--accent-orange)",
+              textDecoration: "none",
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+            }}
+          >
             bites
           </Link>
         }
         center={
-          <div style={{ display: "flex", alignItems: "center", gap: "8px", background: "rgba(0,0,0,0.03)", padding: "6px 16px", borderRadius: "99px", fontSize: "0.85rem", fontWeight: 600, color: "var(--text-slate)" }}>
-            {props.variant === "admin" ? <Shield size={16} color="var(--accent-orange)" /> : <Store size={16} color="var(--accent-orange)" />}
-            <span>{props.variant === "admin" ? "System Administrator" : "Merchant Portal"}</span>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "8px",
+              background: "rgba(0,0,0,0.03)",
+              padding: "6px 16px",
+              borderRadius: "99px",
+              fontSize: "0.85rem",
+              fontWeight: 600,
+              color: "var(--text-slate)",
+            }}
+          >
+            {props.variant === "admin" ? (
+              <Shield size={16} color="var(--accent-orange)" />
+            ) : (
+              <Store size={16} color="var(--accent-orange)" />
+            )}
+            <span>
+              {props.variant === "admin"
+                ? "System Administrator"
+                : "Merchant Portal"}
+            </span>
           </div>
         }
         right={
           props.onLogout ? (
-            <div className="navbar-profile-menu-wrapper" style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                <div style={{ width: "36px", height: "36px", borderRadius: "50%", background: "var(--accent-orange)", color: "white", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 700 }}>
+            <div
+              className="navbar-profile-menu-wrapper"
+              style={{ display: "flex", alignItems: "center", gap: "16px" }}
+            >
+              <div
+                style={{ display: "flex", alignItems: "center", gap: "10px" }}
+              >
+                <div
+                  style={{
+                    width: "36px",
+                    height: "36px",
+                    borderRadius: "50%",
+                    background: "var(--accent-orange)",
+                    color: "white",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontWeight: 700,
+                  }}
+                >
                   {name.charAt(0).toUpperCase()}
                 </div>
-                <span className="navbar-desktop-only" style={{ fontWeight: 600, fontSize: "0.9rem" }}>{name}</span>
+                <span
+                  className="navbar-desktop-only"
+                  style={{ fontWeight: 600, fontSize: "0.9rem" }}
+                >
+                  {name}
+                </span>
               </div>
               <button
                 type="button"
                 onClick={props.onLogout}
-                style={{ background: "none", border: "1px solid var(--glass-border)", padding: "8px 16px", borderRadius: "99px", fontSize: "0.85rem", fontWeight: 600, cursor: "pointer", display: "flex", alignItems: "center", gap: "6px", color: "var(--text-slate)" }}
+                style={{
+                  background: "none",
+                  border: "1px solid var(--glass-border)",
+                  padding: "8px 16px",
+                  borderRadius: "99px",
+                  fontSize: "0.85rem",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  color: "var(--text-slate)",
+                }}
               >
                 <LogOut size={16} />
                 <span className="navbar-desktop-only">Sign out</span>
