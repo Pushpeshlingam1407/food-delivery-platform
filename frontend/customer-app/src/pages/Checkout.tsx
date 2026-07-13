@@ -338,7 +338,7 @@ export const Checkout: React.FC = () => {
           </div>
 
           {/* Payment Method select block */}
-          <div className="card-premium">
+          <PremiumCard>
             <h3
               style={{
                 fontFamily: "var(--font-cohere)",
@@ -580,7 +580,7 @@ export const Checkout: React.FC = () => {
             >
               {loading ? "Placing Order..." : "Confirm Order"}
             </button>
-          </div>
+          </PremiumCard>
         </div>
       </div>
     </div>
