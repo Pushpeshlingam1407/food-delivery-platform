@@ -17,13 +17,14 @@ export const TransactionLedger: React.FC<TransactionLedgerProps> = ({
   data,
 }) => {
   return (
-    <div className="premium-ledger-container premium-animate-in" style={{ animationDelay: "0.2s" }}>
+    <div
+      className="premium-ledger-container premium-animate-in"
+      style={{ animationDelay: "0.2s" }}
+    >
       <div
         className="premium-ledger-header"
         style={{
-          gridTemplateColumns: columns
-            .map((c) => `${c.flex || 1}fr`)
-            .join(" "),
+          gridTemplateColumns: columns.map((c) => `${c.flex || 1}fr`).join(" "),
         }}
       >
         {columns.map((col, idx) => (

@@ -309,3 +309,54 @@
   color: var(--cred-text-primary);
   min-height: 100vh;
 }
+
+/* =====================================
+   Bespoke Catalog Form Layout
+   ===================================== */
+.menu-manager-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+@media (max-width: 1024px) {
+  .menu-manager-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+}
+
+.premium-form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.premium-form-group label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--cred-text-secondary);
+}
+
+.premium-form-input {
+  width: 100%;
+  padding: 12px 14px;
+  background: #ffffff;
+  border: 1px solid var(--cred-border);
+  border-radius: 8px;
+  color: var(--cred-text-primary);
+  font-size: 0.95rem;
+  font-weight: 600;
+  outline: none;
+  transition: all 0.2s ease;
+  box-sizing: border-box;
+  box-shadow: var(--cred-shadow-sm);
+}
+
+.premium-form-input:focus {
+  border-color: rgba(15, 23, 42, 0.2);
+}

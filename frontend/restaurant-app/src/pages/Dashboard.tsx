@@ -216,7 +216,13 @@ export const Dashboard: React.FC = () => {
 
   if (loading) {
     return (
-      <div style={{ padding: "40px", color: "var(--cred-text-secondary)", textAlign: "center" }}>
+      <div
+        style={{
+          padding: "40px",
+          color: "var(--cred-text-secondary)",
+          textAlign: "center",
+        }}
+      >
         Loading restaurant dashboard...
       </div>
     );
@@ -225,19 +231,39 @@ export const Dashboard: React.FC = () => {
   // Onboarding UI if no restaurant profile found
   if (!restaurantId) {
     return (
-      <div className="restaurant-premium-layout" style={{ padding: "40px 20px" }}>
-        <div style={{ maxWidth: "600px", margin: "0 auto" }} className="cred-stat-card">
+      <div
+        className="restaurant-premium-layout"
+        style={{ padding: "40px 20px" }}
+      >
+        <div
+          style={{ maxWidth: "600px", margin: "0 auto" }}
+          className="cred-stat-card"
+        >
           <div style={{ textAlign: "center", marginBottom: "32px" }}>
-            <Store size={48} style={{ color: "var(--cred-accent)", marginBottom: "16px" }} />
-            <h1 style={{ fontSize: "2rem", fontWeight: 800, marginBottom: "8px", color: "var(--cred-text-primary)" }}>
+            <Store
+              size={48}
+              style={{ color: "var(--cred-accent)", marginBottom: "16px" }}
+            />
+            <h1
+              style={{
+                fontSize: "2rem",
+                fontWeight: 800,
+                marginBottom: "8px",
+                color: "var(--cred-text-primary)",
+              }}
+            >
               Setup Your Restaurant
             </h1>
             <p style={{ color: "var(--cred-text-secondary)" }}>
-              Create your business profile to begin managing menus and receiving orders.
+              Create your business profile to begin managing menus and receiving
+              orders.
             </p>
           </div>
 
-          <form onSubmit={handleCreateRestaurant} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <form
+            onSubmit={handleCreateRestaurant}
+            style={{ display: "flex", flexDirection: "column", gap: "20px" }}
+          >
             <div className="neo-input-wrapper">
               <input
                 type="text"
@@ -273,7 +299,13 @@ export const Dashboard: React.FC = () => {
               <label>Street Address *</label>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "16px",
+              }}
+            >
               <div className="neo-input-wrapper">
                 <input
                   type="text"
@@ -297,7 +329,13 @@ export const Dashboard: React.FC = () => {
               </div>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "1fr 1fr",
+                gap: "16px",
+              }}
+            >
               <div className="neo-input-wrapper">
                 <input
                   type="text"
@@ -328,7 +366,9 @@ export const Dashboard: React.FC = () => {
               className="neo-btn neo-btn-primary"
               style={{ width: "100%" }}
             >
-              {createLoading ? "Creating Profile..." : "Create Restaurant Profile"}
+              {createLoading
+                ? "Creating Profile..."
+                : "Create Restaurant Profile"}
             </button>
           </form>
         </div>
@@ -336,23 +376,47 @@ export const Dashboard: React.FC = () => {
     );
   }
 
-  const activeOrdersCount = orders.filter((o) => o.status !== "delivered" && o.status !== "cancelled").length;
+  const activeOrdersCount = orders.filter(
+    (o) => o.status !== "delivered" && o.status !== "cancelled",
+  ).length;
   const pendingOrdersCount = orders.filter((o) => o.status === "placed").length;
-  const estimatedRevenue = orders
-    .reduce((acc, o) => acc + parseFloat(o.item_total?.toString() || "0"), 0);
+  const estimatedRevenue = orders.reduce(
+    (acc, o) => acc + parseFloat(o.item_total?.toString() || "0"),
+    0,
+  );
 
   return (
     <div className="restaurant-premium-layout" style={{ padding: "40px 20px" }}>
       <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
-        
         {/* Header Panel */}
-        <PremiumPageHeader 
+        <PremiumPageHeader
           title={restaurantName || "Active Orders"}
-          subtitle={restaurantName ? `Realtime Order Control for ${restaurantName}` : "Realtime dispatch control panel"}
+          subtitle={
+            restaurantName
+              ? `Realtime Order Control for ${restaurantName}`
+              : "Realtime dispatch control panel"
+          }
           rightAction={
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-              <span className="premium-badge neutral" style={{ border: "1px solid var(--cred-border)", padding: "10px 16px" }}>
-                Store: <strong style={{ color: restaurantStatus === "open" ? "var(--cred-success)" : "var(--cred-accent)", marginLeft: "4px" }}>{restaurantStatus.toUpperCase()}</strong>
+              <span
+                className="premium-badge neutral"
+                style={{
+                  border: "1px solid var(--cred-border)",
+                  padding: "10px 16px",
+                }}
+              >
+                Store:{" "}
+                <strong
+                  style={{
+                    color:
+                      restaurantStatus === "open"
+                        ? "var(--cred-success)"
+                        : "var(--cred-accent)",
+                    marginLeft: "4px",
+                  }}
+                >
+                  {restaurantStatus.toUpperCase()}
+                </strong>
               </span>
               <button
                 onClick={toggleRestaurantOpen}
@@ -366,21 +430,29 @@ export const Dashboard: React.FC = () => {
         />
 
         {/* Stats strip using CredStatCard */}
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "24px", marginBottom: "40px" }} className="premium-animate-in">
-          <CredStatCard 
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+            gap: "24px",
+            marginBottom: "40px",
+          }}
+          className="premium-animate-in"
+        >
+          <CredStatCard
             title="Total Orders"
             value={orders.length}
             subtitle="Today's total orders received"
             icon={<CookingPot />}
           />
-          <CredStatCard 
+          <CredStatCard
             title="Pending Orders"
             value={pendingOrdersCount}
             subtitle="Need acceptance action"
             icon={<Clock />}
             theme={pendingOrdersCount > 0 ? "warning" : "default"}
           />
-          <CredStatCard 
+          <CredStatCard
             title="Estimated Revenue"
             value={`$${estimatedRevenue.toFixed(2)}`}
             subtitle="Gross value of today's sales"
@@ -390,21 +462,63 @@ export const Dashboard: React.FC = () => {
         </div>
 
         {/* Grid list of active orders */}
-        <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "20px", letterSpacing: "1px", textTransform: "uppercase" }}>
+        <h3
+          style={{
+            fontSize: "1.1rem",
+            fontWeight: 800,
+            color: "var(--cred-text-primary)",
+            marginBottom: "20px",
+            letterSpacing: "1px",
+            textTransform: "uppercase",
+          }}
+        >
           Active Orders Queue ({activeOrdersCount})
         </h3>
-        
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))", gap: "24px" }} className="premium-animate-in">
+
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(350px, 1fr))",
+            gap: "24px",
+          }}
+          className="premium-animate-in"
+        >
           {orders.map((o) => {
-            const isCompleted = o.status === "delivered" || o.status === "cancelled";
-            const badgeTheme = o.status === "placed" ? "danger" : o.status === "preparing" ? "warning" : "success";
+            const isCompleted =
+              o.status === "delivered" || o.status === "cancelled";
+            const badgeTheme =
+              o.status === "placed"
+                ? "danger"
+                : o.status === "preparing"
+                  ? "warning"
+                  : "success";
 
             return (
-              <div key={o.id} className="cred-stat-card" style={{ minHeight: "auto", padding: "24px" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "16px" }}>
+              <div
+                key={o.id}
+                className="cred-stat-card"
+                style={{ minHeight: "auto", padding: "24px" }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "flex-start",
+                    marginBottom: "16px",
+                  }}
+                >
                   <div>
-                    <h4 style={{ margin: 0, fontSize: "1.1rem", fontWeight: 800 }}>Order #{String(o.order_number || o.id || "").slice(-6)}</h4>
-                    <span style={{ fontSize: "0.8rem", color: "var(--cred-text-secondary)" }}>
+                    <h4
+                      style={{ margin: 0, fontSize: "1.1rem", fontWeight: 800 }}
+                    >
+                      Order #{String(o.order_number || o.id || "").slice(-6)}
+                    </h4>
+                    <span
+                      style={{
+                        fontSize: "0.8rem",
+                        color: "var(--cred-text-secondary)",
+                      }}
+                    >
                       {new Date(o.created_at).toLocaleTimeString()}
                     </span>
                   </div>
@@ -413,11 +527,29 @@ export const Dashboard: React.FC = () => {
                   </span>
                 </div>
 
-                <div style={{ fontSize: "0.9rem", color: "var(--cred-text-primary)", marginBottom: "16px" }}>
-                  Customer: <strong>{o.customer_first_name} {o.customer_last_name}</strong>
+                <div
+                  style={{
+                    fontSize: "0.9rem",
+                    color: "var(--cred-text-primary)",
+                    marginBottom: "16px",
+                  }}
+                >
+                  Customer:{" "}
+                  <strong>
+                    {o.customer_first_name} {o.customer_last_name}
+                  </strong>
                 </div>
 
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "auto", pt: "12px", borderTop: "1px solid var(--cred-border)" }}>
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    marginTop: "auto",
+                    pt: "12px",
+                    borderTop: "1px solid var(--cred-border)",
+                  }}
+                >
                   <span style={{ fontSize: "1.25rem", fontWeight: 800 }}>
                     ${parseFloat((o.item_total ?? 0).toString()).toFixed(2)}
                   </span>
@@ -435,7 +567,9 @@ export const Dashboard: React.FC = () => {
 
                     {o.status === "preparing" && (
                       <button
-                        onClick={() => handleUpdateStatus(o.id, "ready_for_pickup")}
+                        onClick={() =>
+                          handleUpdateStatus(o.id, "ready_for_pickup")
+                        }
                         className="neo-btn neo-btn-accent"
                         style={{ padding: "8px 16px", fontSize: "0.85rem" }}
                       >
@@ -444,19 +578,45 @@ export const Dashboard: React.FC = () => {
                     )}
 
                     {o.status === "ready_for_pickup" && (
-                      <span style={{ fontSize: "0.85rem", color: "var(--cred-text-secondary)", display: "flex", alignItems: "center", gap: "6px" }}>
+                      <span
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "var(--cred-text-secondary)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                        }}
+                      >
                         <Clock size={16} /> Waiting for pickup
                       </span>
                     )}
 
                     {o.status === "out_for_delivery" && (
-                      <span style={{ fontSize: "0.85rem", color: "var(--cred-info)", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}>
+                      <span
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "var(--cred-info)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          fontWeight: 600,
+                        }}
+                      >
                         <Clock size={16} /> Out for delivery
                       </span>
                     )}
 
                     {o.status === "delivered" && (
-                      <span style={{ fontSize: "0.85rem", color: "var(--cred-success)", display: "flex", alignItems: "center", gap: "6px", fontWeight: 600 }}>
+                      <span
+                        style={{
+                          fontSize: "0.85rem",
+                          color: "var(--cred-success)",
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "6px",
+                          fontWeight: 600,
+                        }}
+                      >
                         <Check size={16} /> Delivered
                       </span>
                     )}

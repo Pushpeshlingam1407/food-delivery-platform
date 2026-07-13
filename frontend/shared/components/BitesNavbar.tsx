@@ -58,7 +58,9 @@ export const BitesNavbar: React.FC<
         left={
           <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
             <button
-              onClick={() => window.dispatchEvent(new CustomEvent("open-app-sidebar"))}
+              onClick={() =>
+                window.dispatchEvent(new CustomEvent("open-app-sidebar"))
+              }
               style={{
                 background: "none",
                 border: "none",
@@ -185,7 +187,9 @@ export const BitesNavbar: React.FC<
               type="button"
               className="delivery-navbar__menu navbar-mobile-only"
               aria-label="Open navigation"
-              onClick={() => window.dispatchEvent(new CustomEvent("open-app-sidebar"))}
+              onClick={() =>
+                window.dispatchEvent(new CustomEvent("open-app-sidebar"))
+              }
             >
               <Menu size={20} />
             </button>
@@ -240,7 +244,9 @@ export const BitesNavbar: React.FC<
       left={
         <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
           <button
-            onClick={() => window.dispatchEvent(new CustomEvent("open-app-sidebar"))}
+            onClick={() =>
+              window.dispatchEvent(new CustomEvent("open-app-sidebar"))
+            }
             style={{
               background: "none",
               border: "none",

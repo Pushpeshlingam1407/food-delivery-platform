@@ -215,7 +215,7 @@ export const MenuManager: React.FC = () => {
           subtitle="Organize restaurant offering categories, add custom items, upload photos, and update availability."
         />
 
-        <div style={{ display: "grid", gridTemplateColumns: "1.6fr 1fr", gap: "40px", alignItems: "start" }} className="premium-animate-in">
+        <div className="menu-manager-grid premium-animate-in">
           
           {/* Dishes list */}
           <div>
@@ -291,23 +291,22 @@ export const MenuManager: React.FC = () => {
             
             {/* Category CRUD Form */}
             <div className="cred-stat-card" style={{ minHeight: "auto", padding: "28px" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "16px" }}>
+              <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "16px" }}>
                 Add New Category
               </h3>
-              <form onSubmit={handleAddCategory} style={{ display: "flex", gap: "12px" }}>
-                <div className="neo-input-wrapper">
+              <form onSubmit={handleAddCategory} style={{ display: "flex", alignItems: "flex-end", gap: "12px" }}>
+                <div className="premium-form-group">
+                  <label>Category Name</label>
                   <input
                     type="text"
                     value={newCatName}
                     onChange={(e) => setNewCatName(e.target.value)}
-                    placeholder=" "
+                    placeholder="e.g. Starters"
                     required
-                    className="neo-input"
-                    style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                    className="premium-form-input"
                   />
-                  <label style={{ fontSize: "0.85rem" }}>Category Name (e.g. Starters)</label>
                 </div>
-                <button type="submit" className="neo-btn neo-btn-primary" style={{ padding: "0 20px" }}>
+                <button type="submit" className="neo-btn neo-btn-primary" style={{ padding: "12px 20px", height: "46px" }}>
                   <Plus size={20} />
                 </button>
               </form>
@@ -315,94 +314,89 @@ export const MenuManager: React.FC = () => {
 
             {/* Dish CRUD Form */}
             <div className="cred-stat-card" style={{ minHeight: "auto", padding: "28px" }}>
-              <h3 style={{ fontSize: "1.1rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "20px" }}>
+              <h3 style={{ fontSize: "1.15rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "20px" }}>
                 {editingId ? "Edit Dish Properties" : "Add New Dish"}
               </h3>
               
               <form onSubmit={handleSaveMenuItem} style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
                 
-                <div className="neo-input-wrapper">
+                <div className="premium-form-group">
+                  <label>Select Category *</label>
                   <select
                     value={newItemCategoryId}
                     onChange={(e) => setNewItemCategoryId(e.target.value)}
                     required
-                    className="neo-input"
-                    style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px", appearance: "none" }}
+                    className="premium-form-input"
                   >
-                    <option value="" disabled hidden></option>
+                    <option value="" disabled hidden>Choose a category</option>
                     {categories.map((c) => (
                       <option key={c.id} value={c.id} style={{ color: "black" }}>
                         {c.name}
                       </option>
                     ))}
                   </select>
-                  <label style={{ fontSize: "0.85rem" }}>Select Category *</label>
                 </div>
 
-                <div className="neo-input-wrapper">
+                <div className="premium-form-group">
+                  <label>Dish Name *</label>
                   <input
                     type="text"
                     value={newItemName}
                     onChange={(e) => setNewItemName(e.target.value)}
-                    placeholder=" "
+                    placeholder="e.g. Margherita Pizza"
                     required
-                    className="neo-input"
-                    style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                    className="premium-form-input"
                   />
-                  <label style={{ fontSize: "0.85rem" }}>Dish Name *</label>
                 </div>
 
-                <div className="neo-input-wrapper">
+                <div className="premium-form-group">
+                  <label>Description</label>
                   <textarea
                     value={newItemDesc}
                     onChange={(e) => setNewItemDesc(e.target.value)}
-                    placeholder=" "
-                    className="neo-input"
-                    style={{ height: "80px", resize: "none", fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                    placeholder="Describe the dish flavors, ingredients..."
+                    className="premium-form-input"
+                    style={{ height: "80px", resize: "none" }}
                   />
-                  <label style={{ fontSize: "0.85rem" }}>Description</label>
                 </div>
 
                 <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-                  <div className="neo-input-wrapper">
+                  <div className="premium-form-group">
+                    <label>Price ($) *</label>
                     <input
                       type="number"
                       value={newItemPrice}
                       onChange={(e) => setNewItemPrice(e.target.value)}
-                      placeholder=" "
+                      placeholder="9.99"
                       step="0.01"
                       min="0.01"
                       required
-                      className="neo-input"
-                      style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                      className="premium-form-input"
                     />
-                    <label style={{ fontSize: "0.85rem" }}>Price ($) *</label>
                   </div>
 
-                  <div className="neo-input-wrapper">
+                  <div className="premium-form-group">
+                    <label>Food Type</label>
                     <select
                       value={newItemIsVeg ? "true" : "false"}
                       onChange={(e) => setNewItemIsVeg(e.target.value === "true")}
-                      className="neo-input"
-                      style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px", appearance: "none" }}
+                      className="premium-form-input"
                     >
                       <option value="true">Vegetarian</option>
                       <option value="false">Non-Vegetarian</option>
                     </select>
-                    <label style={{ fontSize: "0.85rem" }}>Food Type</label>
                   </div>
                 </div>
 
-                <div className="neo-input-wrapper">
+                <div className="premium-form-group">
+                  <label>Image URL</label>
                   <input
                     type="url"
                     value={newItemImageUrl}
                     onChange={(e) => setNewItemImageUrl(e.target.value)}
-                    placeholder=" "
-                    className="neo-input"
-                    style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                    placeholder="https://example.com/dish.jpg"
+                    className="premium-form-input"
                   />
-                  <label style={{ fontSize: "0.85rem" }}>Image URL</label>
                 </div>
 
                 <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
@@ -419,16 +413,14 @@ export const MenuManager: React.FC = () => {
                   </label>
 
                   {!newItemUnlimited && (
-                    <div className="neo-input-wrapper" style={{ flexGrow: 1 }}>
+                    <div className="premium-form-group" style={{ flexGrow: 1 }}>
                       <input
                         type="number"
                         value={newItemStock}
                         onChange={(e) => setNewItemStock(e.target.value)}
-                        placeholder=" "
-                        className="neo-input"
-                        style={{ fontSize: "1.05rem", padding: "22px 14px 8px 14px" }}
+                        placeholder="50"
+                        className="premium-form-input"
                       />
-                      <label style={{ fontSize: "0.85rem" }}>Available Stock</label>
                     </div>
                   )}
                 </div>

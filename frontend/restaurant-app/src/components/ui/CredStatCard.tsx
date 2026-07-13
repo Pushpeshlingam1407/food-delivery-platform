@@ -36,7 +36,7 @@ export const CredStatCard: React.FC<CredStatCardProps> = ({
         <div className="cred-stat-value">{value}</div>
       </div>
       {subtitle && <div className="cred-stat-subtitle">{subtitle}</div>}
-      
+
       {/* Background Watermark Icon */}
       {icon && (
         <div

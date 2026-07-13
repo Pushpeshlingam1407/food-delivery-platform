@@ -126,16 +126,16 @@ export const ToastProvider = () => {
  */
 export const notify = {
   success: (message: string, options?: { description?: string }) => {
-    sonner.success(message, { ...options, duration: 4000 });
+    sonner.success(message, { ...options, style: credSuccessStyle, duration: 4000 });
   },
   error: (message: string, options?: { description?: string }) => {
-    sonner.error(message, { ...options, duration: 6000 });
+    sonner.error(message, { ...options, style: credErrorStyle, duration: 6000 });
   },
   warning: (message: string, options?: { description?: string }) => {
-    sonner.warning(message, { ...options, duration: 5000 });
+    sonner.warning(message, { ...options, style: credWarningStyle, duration: 5000 });
   },
   info: (message: string, options?: { description?: string }) => {
-    sonner.info(message, { ...options, duration: 4000 });
+    sonner.info(message, { ...options, style: credInfoStyle, duration: 4000 });
   },
   authSuccess: (title: string, subtitle?: string) => {
     sonner.custom(
