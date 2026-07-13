@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from "react";
 import {
   DollarSign,
-  FileText,
-  ArrowUpRight,
   TrendingUp,
   Wallet,
-  Building,
   CheckCircle,
   Clock,
+  ArrowUpRight,
   ArrowDownLeft,
-  ArrowUpRight as ArrowUpRightIcon,
+  Building
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
-import { StatCard } from "../../../shared/components/StatCard";
+
+import { PremiumPageHeader } from "../components/ui/PremiumPageHeader";
+import { CredStatCard } from "../components/ui/CredStatCard";
+import { TransactionLedger } from "../components/ui/TransactionLedger";
+
+import "../restaurant-premium.css";
 
 interface Summary {
   total_orders: number;
@@ -123,560 +126,151 @@ export const Earnings: React.FC = () => {
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          minHeight: "80vh",
-        }}
-      >
-        <p style={{ color: "var(--text-muted)", fontSize: "1.1rem" }}>
-          Loading financial dashboard...
-        </p>
+      <div style={{ padding: "40px", color: "var(--cred-text-secondary)", textAlign: "center" }}>
+        Loading premium dashboard...
       </div>
     );
   }
 
+  const walletColumns = [
+    { key: "created_at", label: "Date", flex: 2, render: (val: string) => new Date(val).toLocaleDateString() },
+    { key: "description", label: "Description", flex: 3 },
+    { 
+      key: "type", 
+      label: "Type", 
+      flex: 1.5,
+      render: (val: string) => (
+        <span className={`premium-badge ${val === "credit" ? "success" : "danger"}`}>
+          {val}
+        </span>
+      )
+    },
+    { 
+      key: "amount", 
+      label: "Amount", 
+      flex: 1.5,
+      render: (val: string, row: any) => (
+        <span style={{ color: row.type === "credit" ? "var(--cred-success)" : "var(--cred-text-primary)", fontWeight: 800 }}>
+          {row.type === "credit" ? "+" : "-"}${parseFloat(val).toFixed(2)}
+        </span>
+      )
+    }
+  ];
+
+  const orderColumns = [
+    { key: "created_at", label: "Date", flex: 2, render: (val: string) => new Date(val).toLocaleDateString() },
+    { key: "order_id", label: "Order ID", flex: 2, render: (val: string) => <span style={{ opacity: 0.7 }}>#{val.slice(-6)}</span> },
+    { key: "order_total", label: "Gross", flex: 1.5, render: (val: string) => `$${parseFloat(val).toFixed(2)}` },
+    { key: "commission_amount", label: "Fee", flex: 1.5, render: (val: string) => <span style={{ color: "var(--cred-accent)" }}>-${parseFloat(val).toFixed(2)}</span> },
+    { key: "net_earning", label: "Net", flex: 1.5, render: (val: string) => <span style={{ color: "var(--cred-success)", fontWeight: 800 }}>+${parseFloat(val).toFixed(2)}</span> },
+  ];
+
   return (
-    <div style={{ padding: "40px", maxWidth: "1250px", margin: "0 auto" }}>
-      {/* Top Banner / Heading */}
-      <div
-        style={{
-          marginBottom: "40px",
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          flexWrap: "wrap",
-          gap: "20px",
-        }}
-      >
-        <div>
-          <h1
-            style={{
-              fontSize: "2.4rem",
-              fontWeight: 800,
-              marginBottom: "8px",
-              background: "var(--primary-gradient)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
-            Merchant Partner Finances
-          </h1>
-          <p style={{ color: "var(--text-muted)", fontSize: "1rem" }}>
-            Manage payouts, track sales revenues, and review platform ledger
-            records.
-          </p>
-        </div>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "12px",
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            padding: "10px 18px",
-            borderRadius: "50px",
-            fontSize: "0.9rem",
-            fontWeight: 700,
-          }}
-        >
-          <Building size={16} color="var(--accent-orange)" />
-          <span>Active Restaurant Account</span>
-          <span
-            style={{
-              width: "8px",
-              height: "8px",
-              borderRadius: "50%",
-              background: "#4CAF50",
-            }}
-          ></span>
-        </div>
-      </div>
+    <div className="restaurant-dark-mode" style={{ minHeight: "100vh", padding: "40px 20px", background: "var(--cred-bg)" }}>
+      <div style={{ maxWidth: "1200px", margin: "0 auto" }}>
+        <PremiumPageHeader 
+          title="Merchant Finances"
+          subtitle="Manage payouts, track sales revenues, and review platform ledger records."
+          rightAction={
+            <div className="premium-badge neutral" style={{ gap: "8px", fontSize: "0.85rem", padding: "10px 16px" }}>
+              <Building size={16} /> Active Account <span style={{ width: "8px", height: "8px", borderRadius: "50%", background: "var(--cred-success)" }} />
+            </div>
+          }
+        />
 
-      {/* Grid Stats & Payout Panel */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr",
-          gap: "32px",
-          marginBottom: "40px",
-        }}
-      >
-        {/* Main Financial Cards Row */}
-        <div className="stat-grid">
-          <StatCard
-            theme="restaurant"
-            title="GROSS REVENUE"
-            icon={<TrendingUp size={20} color="var(--accent-orange)" />}
-            value={`₹${parseFloat(summary?.gross_sales?.toString() || "0").toFixed(2)}`}
-            subtitle="Before commissions & deductions"
-            restContainerVariant="warm"
-            restIconVariant="orange"
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "24px", marginBottom: "40px" }} className="premium-animate-in">
+          <CredStatCard 
+            title="Available Balance"
+            value={`$${walletBalance.toFixed(2)}`}
+            subtitle="Ready for Instant Payout"
+            icon={<Wallet />}
+            theme="success"
           />
-
-          <StatCard
-            theme="restaurant"
-            title="PLATFORM COMMISSIONS"
-            icon={<DollarSign size={20} color="var(--accent-violet)" />}
-            value={`₹${parseFloat(summary?.total_commissions?.toString() || "0").toFixed(2)}`}
-            subtitle="Deducted at source (avg 10%)"
-            restContainerVariant="cool"
-            restIconVariant="violet"
-            restSubtitleVariant="danger"
+          <CredStatCard 
+            title="Net Earnings"
+            value={`$${parseFloat(summary?.net_earnings?.toString() || "0").toFixed(2)}`}
+            subtitle="Total platform payouts"
+            icon={<TrendingUp />}
           />
-
-          <StatCard
-            theme="restaurant"
-            title="NET EARNINGS"
-            icon={<CheckCircle size={20} color="#4CAF50" />}
-            value={`₹${parseFloat(summary?.net_earnings?.toString() || "0").toFixed(2)}`}
-            subtitle="Credited directly to owner wallet"
-            restContainerVariant="green"
-            restIconVariant="green"
-            restValueVariant="green"
-          />
-
-          <StatCard
-            theme="restaurant"
-            title="TOTAL ORDERS"
-            icon={<FileText size={20} color="var(--text-slate)" />}
+          <CredStatCard 
+            title="Total Orders"
             value={summary?.total_orders || 0}
             subtitle="Completed deliveries"
-            restContainerVariant="default"
-            restIconVariant="muted"
+            icon={<CheckCircle />}
           />
         </div>
 
-        {/* Payout & Wallet Interactive Portal */}
-        <div
-          style={{
-            background: "var(--glass-bg)",
-            border: "1px solid var(--glass-border)",
-            borderRadius: "24px",
-            padding: "32px",
-            boxShadow: "0 15px 45px rgba(25, 25, 25, 0.04)",
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
-            gap: "32px",
-          }}
-        >
-          {/* Wallet Balance Display */}
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-            }}
-          >
-            <div
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "10px",
-                marginBottom: "12px",
-              }}
-            >
-              <Wallet size={22} color="var(--accent-orange)" />
-              <span
-                style={{
-                  fontSize: "1.05rem",
-                  fontWeight: 700,
-                  color: "var(--text-slate)",
-                }}
-              >
-                Withdrawable Cash Balance
-              </span>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "40px", marginBottom: "60px" }}>
+          
+          {/* Payout Section */}
+          <div className="cred-stat-card" style={{ padding: "40px" }}>
+            <div style={{ marginBottom: "24px" }}>
+              <h2 style={{ fontSize: "1.8rem", fontWeight: 800, marginBottom: "8px", color: "var(--cred-text-primary)", letterSpacing: "-1px" }}>Instant Payout</h2>
+              <p style={{ color: "var(--cred-text-secondary)" }}>Withdraw funds directly to your linked bank account instantly.</p>
             </div>
-            <div
-              style={{
-                fontSize: "3rem",
-                fontWeight: 900,
-                color: "var(--text-slate)",
-                display: "flex",
-                alignItems: "center",
-                gap: "4px",
-              }}
-            >
-              ₹{walletBalance.toFixed(2)}
-            </div>
-            <p
-              style={{
-                color: "var(--text-muted)",
-                fontSize: "0.9rem",
-                marginTop: "10px",
-                lineHeight: "1.5",
-              }}
-            >
-              This balance is instantly available for withdrawal to your linked
-              settlement account. Platform settlements are processed instantly.
-            </p>
-          </div>
+            
+            <form onSubmit={handlePayoutSubmit} style={{ maxWidth: "500px" }}>
+              <div className="neo-input-wrapper" style={{ marginBottom: "20px" }}>
+                <input 
+                  type="number" 
+                  className="neo-input"
+                  placeholder=" " 
+                  value={payoutAmount}
+                  onChange={(e) => setPayoutAmount(e.target.value)}
+                  step="0.01"
+                  min="0.01"
+                  max={walletBalance}
+                  required
+                />
+                <label>Amount to Withdraw ($)</label>
+              </div>
 
-          {/* Instant Cash Out Form */}
-          <div
-            style={{
-              background: "#faf9f7",
-              padding: "24px",
-              borderRadius: "18px",
-              border: "1px solid var(--glass-border)",
-            }}
-          >
-            <h3
-              style={{
-                fontSize: "1.1rem",
-                fontWeight: 800,
-                marginBottom: "16px",
-              }}
-            >
-              Instant Settlement Payout
-            </h3>
-            <form
-              onSubmit={handlePayoutSubmit}
-              style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-            >
-              <div>
-                <label
-                  style={{
-                    display: "block",
-                    fontSize: "0.8rem",
-                    fontWeight: 700,
-                    color: "var(--text-muted)",
-                    marginBottom: "8px",
-                  }}
-                >
-                  SETTLEMENT AMOUNT (INR)
-                </label>
-                <div style={{ position: "relative" }}>
-                  <span
-                    style={{
-                      position: "absolute",
-                      left: "16px",
-                      top: "50%",
-                      transform: "translateY(-50%)",
-                      fontWeight: 700,
-                      color: "var(--text-slate)",
-                    }}
+              <div style={{ display: "flex", gap: "12px", marginBottom: "32px", flexWrap: "wrap" }}>
+                {[50, 100, 500].map((amt) => (
+                  <button 
+                    key={amt}
+                    type="button" 
+                    className="premium-badge neutral"
+                    onClick={() => handleQuickFill(amt)}
+                    style={{ cursor: "pointer", border: "1px solid var(--cred-border)", background: "transparent", color: "var(--cred-text-primary)" }}
                   >
-                    ₹
-                  </span>
-                  <input
-                    type="number"
-                    step="0.01"
-                    value={payoutAmount}
-                    onChange={(e) => setPayoutAmount(e.target.value)}
-                    placeholder="0.00"
-                    required
-                    style={{
-                      width: "100%",
-                      padding: "12px 12px 12px 32px",
-                      borderRadius: "10px",
-                      border: "1px solid var(--glass-border)",
-                      fontSize: "1.1rem",
-                      fontWeight: 700,
-                      outline: "none",
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Quick Fill Buttons */}
-              <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-                <button
-                  type="button"
-                  onClick={() => handleQuickFill(500)}
-                  style={{
-                    background: "var(--glass-bg)",
-                    border: "1px solid var(--glass-border)",
-                    borderRadius: "8px",
-                    padding: "6px 12px",
-                    fontSize: "0.8rem",
-                    cursor: "pointer",
-                    fontWeight: 600,
-                  }}
-                >
-                  ₹500
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickFill(1000)}
-                  style={{
-                    background: "var(--glass-bg)",
-                    border: "1px solid var(--glass-border)",
-                    borderRadius: "8px",
-                    padding: "6px 12px",
-                    fontSize: "0.8rem",
-                    cursor: "pointer",
-                    fontWeight: 600,
-                  }}
-                >
-                  ₹1000
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleQuickFill(5000)}
-                  style={{
-                    background: "var(--glass-bg)",
-                    border: "1px solid var(--glass-border)",
-                    borderRadius: "8px",
-                    padding: "6px 12px",
-                    fontSize: "0.8rem",
-                    cursor: "pointer",
-                    fontWeight: 600,
-                  }}
-                >
-                  ₹5000
-                </button>
-                <button
-                  type="button"
+                    +${amt}
+                  </button>
+                ))}
+                <button 
+                  type="button" 
+                  className="premium-badge success"
                   onClick={() => handleQuickFill(walletBalance)}
-                  style={{
-                    background: "rgba(255, 90, 31, 0.06)",
-                    border: "1px solid var(--accent-orange)",
-                    color: "var(--accent-orange)",
-                    borderRadius: "8px",
-                    padding: "6px 12px",
-                    fontSize: "0.8rem",
-                    cursor: "pointer",
-                    fontWeight: 700,
-                  }}
+                  style={{ cursor: "pointer", background: "rgba(0, 208, 156, 0.15)", border: "1px solid rgba(0, 208, 156, 0.4)" }}
                 >
-                  Settlement Max
+                  Max (${walletBalance.toFixed(2)})
                 </button>
               </div>
 
-              <button
-                type="submit"
-                disabled={payoutLoading || walletBalance <= 0}
-                style={{
-                  width: "100%",
-                  padding: "14px",
-                  background: "var(--primary-gradient)",
-                  color: "#FFF",
-                  border: "none",
-                  borderRadius: "10px",
-                  fontSize: "1rem",
-                  fontWeight: 800,
-                  cursor:
-                    payoutLoading || walletBalance <= 0
-                      ? "not-allowed"
-                      : "pointer",
-                  opacity: payoutLoading || walletBalance <= 0 ? 0.6 : 1,
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "8px",
-                  transition: "opacity 0.2s",
-                }}
+              <button 
+                type="submit" 
+                className="neo-btn neo-btn-primary" 
+                style={{ width: "100%", padding: "20px", fontSize: "1.2rem" }}
+                disabled={payoutLoading || walletBalance <= 0 || !payoutAmount}
               >
-                <ArrowUpRight size={18} />
-                {payoutLoading
-                  ? "Processing Transfer..."
-                  : "Request Cash Settlement"}
+                {payoutLoading ? "Processing..." : "Withdraw Funds"} <ArrowUpRight size={24} />
               </button>
             </form>
           </div>
-        </div>
-      </div>
 
-      {/* Ledger & Transactions Display Tabs */}
-      <div
-        style={{
-          background: "var(--glass-bg)",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "24px",
-          padding: "32px",
-          boxShadow: "0 10px 30px rgba(25, 25, 25, 0.02)",
-        }}
-      >
-        <h3
-          style={{
-            fontSize: "1.3rem",
-            fontWeight: 800,
-            marginBottom: "24px",
-            display: "flex",
-            alignItems: "center",
-            gap: "10px",
-          }}
-        >
-          <FileText size={20} color="var(--accent-violet)" /> Wallet Transaction
-          History Ledger
-        </h3>
-
-        <div style={{ overflowX: "auto" }}>
-          <table
-            style={{
-              width: "100%",
-              borderCollapse: "collapse",
-              textAlign: "left",
-            }}
-          >
-            <thead>
-              <tr
-                style={{
-                  borderBottom: "2px solid var(--glass-border)",
-                  color: "var(--text-muted)",
-                  fontSize: "0.85rem",
-                  fontWeight: 700,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                }}
-              >
-                <th style={{ padding: "14px 16px" }}>DATE & TIME</th>
-                <th style={{ padding: "14px 16px" }}>TRANSACTION DETAILS</th>
-                <th style={{ padding: "14px 16px" }}>REFERENCE TYPE</th>
-                <th style={{ padding: "14px 16px" }}>PAYMENT TYPE</th>
-                <th style={{ padding: "14px 16px" }}>AMOUNT</th>
-              </tr>
-            </thead>
-            <tbody>
-              {walletTransactions.map((row) => (
-                <tr
-                  key={row.id}
-                  style={{
-                    borderBottom: "1px solid #f2efeb",
-                    fontSize: "0.95rem",
-                    transition: "background 0.2s",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.background = "#fafaf9";
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.background = "transparent";
-                  }}
-                >
-                  {/* Timestamp */}
-                  <td
-                    style={{ padding: "18px 16px", color: "var(--text-slate)" }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "10px",
-                      }}
-                    >
-                      <Clock size={16} color="var(--text-muted)" />
-                      <span>{new Date(row.created_at).toLocaleString()}</span>
-                    </div>
-                  </td>
-
-                  {/* Transaction Details / Description */}
-                  <td style={{ padding: "18px 16px" }}>
-                    <div
-                      style={{ fontWeight: 700, color: "var(--text-slate)" }}
-                    >
-                      {row.description}
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "0.8rem",
-                        color: "var(--text-muted)",
-                        fontFamily: "monospace",
-                        marginTop: "4px",
-                      }}
-                    >
-                      ID: {row.id}
-                    </div>
-                  </td>
-
-                  {/* Reference Type Badge */}
-                  <td style={{ padding: "18px 16px" }}>
-                    <span
-                      style={{
-                        fontSize: "0.75rem",
-                        fontWeight: 800,
-                        textTransform: "uppercase",
-                        padding: "4px 10px",
-                        borderRadius: "100px",
-                        background:
-                          row.reference_type === "refund"
-                            ? "rgba(244, 67, 54, 0.08)"
-                            : "rgba(25, 25, 25, 0.05)",
-                        color:
-                          row.reference_type === "refund"
-                            ? "#F44336"
-                            : "var(--text-slate)",
-                      }}
-                    >
-                      {row.reference_type.replace("_", " ")}
-                    </span>
-                  </td>
-
-                  {/* Payment Type Badge */}
-                  <td style={{ padding: "18px 16px" }}>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "6px",
-                      }}
-                    >
-                      {row.type === "credit" ? (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "4px",
-                            color: "#4CAF50",
-                            fontWeight: 700,
-                            fontSize: "0.85rem",
-                          }}
-                        >
-                          <ArrowDownLeft size={16} />
-                          <span>Credit</span>
-                        </div>
-                      ) : (
-                        <div
-                          style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "4px",
-                            color: "#F44336",
-                            fontWeight: 700,
-                            fontSize: "0.85rem",
-                          }}
-                        >
-                          <ArrowUpRightIcon size={16} />
-                          <span>Settlement</span>
-                        </div>
-                      )}
-                    </div>
-                  </td>
-
-                  {/* Amount */}
-                  <td
-                    style={{
-                      padding: "18px 16px",
-                      color: row.type === "credit" ? "#4CAF50" : "#F44336",
-                      fontWeight: 800,
-                      fontSize: "1.1rem",
-                    }}
-                  >
-                    {row.type === "credit" ? "+" : "-"}₹
-                    {Math.abs(parseFloat(row.amount)).toFixed(2)}
-                  </td>
-                </tr>
-              ))}
-
-              {walletTransactions.length === 0 && (
-                <tr>
-                  <td
-                    colSpan={5}
-                    style={{
-                      padding: "50px",
-                      textAlign: "center",
-                      color: "var(--text-muted)",
-                      fontSize: "1rem",
-                    }}
-                  >
-                    No wallet activity or payout logs found.
-                  </td>
-                </tr>
-              )}
-            </tbody>
-          </table>
+          {/* Ledger Sections */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "40px" }}>
+            <div>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "24px", letterSpacing: "1px", textTransform: "uppercase" }}>Wallet Transactions</h3>
+              <TransactionLedger columns={walletColumns} data={walletTransactions} />
+            </div>
+            
+            <div>
+              <h3 style={{ fontSize: "1.2rem", fontWeight: 800, color: "var(--cred-text-primary)", marginBottom: "24px", letterSpacing: "1px", textTransform: "uppercase" }}>Order Earnings History</h3>
+              <TransactionLedger columns={orderColumns} data={ledger} />
+            </div>
+          </div>
+          
         </div>
       </div>
     </div>

@@ -24,46 +24,46 @@ const baseCredStyle = {
 const credStyle = {
   ...baseCredStyle,
   background:
-    "linear-gradient(135deg, rgba(15,15,15,0.95), rgba(30,30,30,0.98))",
+    "linear-gradient(135deg, rgba(20,20,20,0.95), rgba(40,40,40,0.98))",
   boxShadow:
-    "0 20px 40px rgba(0,0,0,0.25), inset 0 1px 1px rgba(255, 255, 255, 0.15)",
+    "0 20px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15)",
   border: "1px solid rgba(255, 255, 255, 0.1)",
 };
 
 const credSuccessStyle = {
   ...baseCredStyle,
-  background:
-    "linear-gradient(135deg, rgba(6, 78, 59, 0.95), rgba(2, 44, 34, 0.98))",
+  background: "linear-gradient(135deg, #00C853 0%, #64DD17 100%)",
   boxShadow:
-    "0 20px 40px rgba(16, 185, 129, 0.15), inset 0 1px 1px rgba(16, 185, 129, 0.4)",
-  border: "1px solid rgba(16, 185, 129, 0.3)",
+    "0 20px 40px rgba(0, 200, 83, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
+  border: "none",
+  color: "#ffffff",
 };
 
 const credErrorStyle = {
   ...baseCredStyle,
-  background:
-    "linear-gradient(135deg, rgba(127, 29, 29, 0.95), rgba(69, 10, 10, 0.98))",
+  background: "linear-gradient(135deg, #FF1744 0%, #D50000 100%)",
   boxShadow:
-    "0 20px 40px rgba(239, 68, 68, 0.15), inset 0 1px 1px rgba(239, 68, 68, 0.4)",
-  border: "1px solid rgba(239, 68, 68, 0.3)",
+    "0 20px 40px rgba(255, 23, 68, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
+  border: "none",
+  color: "#ffffff",
 };
 
 const credWarningStyle = {
   ...baseCredStyle,
-  background:
-    "linear-gradient(135deg, rgba(120, 53, 15, 0.95), rgba(69, 26, 3, 0.98))",
+  background: "linear-gradient(135deg, #FF9100 0%, #FF3D00 100%)",
   boxShadow:
-    "0 20px 40px rgba(245, 158, 11, 0.15), inset 0 1px 1px rgba(245, 158, 11, 0.4)",
-  border: "1px solid rgba(245, 158, 11, 0.3)",
+    "0 20px 40px rgba(255, 145, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
+  border: "none",
+  color: "#ffffff",
 };
 
 const credInfoStyle = {
   ...baseCredStyle,
-  background:
-    "linear-gradient(135deg, rgba(30, 58, 138, 0.95), rgba(17, 24, 39, 0.98))",
+  background: "linear-gradient(135deg, #2979FF 0%, #3D5AFE 100%)",
   boxShadow:
-    "0 20px 40px rgba(59, 130, 246, 0.15), inset 0 1px 1px rgba(59, 130, 246, 0.4)",
-  border: "1px solid rgba(59, 130, 246, 0.3)",
+    "0 20px 40px rgba(41, 121, 255, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
+  border: "none",
+  color: "#ffffff",
 };
 
 /**

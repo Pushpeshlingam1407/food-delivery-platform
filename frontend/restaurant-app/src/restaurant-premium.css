@@ -1,0 +1,308 @@
+/* ============================================================================
+   Restaurant Premium Stylesheet (CRED/Zomato Neobrutalism & Glassmorphism)
+   ============================================================================ */
+
+:root {
+  --cred-bg: #000000;
+  --cred-surface: #121212;
+  --cred-surface-light: #1e1e1e;
+  --cred-border: rgba(255, 255, 255, 0.08);
+  --cred-text-primary: #ffffff;
+  --cred-text-secondary: rgba(255, 255, 255, 0.6);
+  --cred-accent: #ff4d4d;
+  --cred-success: #00d09c;
+  --cred-warning: #ffb800;
+  --cred-info: #3b82f6;
+
+  /* Glassmorphism */
+  --premium-glass-bg: rgba(255, 255, 255, 0.03);
+  --premium-glass-border: rgba(255, 255, 255, 0.05);
+  --premium-glass-blur: blur(20px);
+}
+
+/* =====================================
+   Global Animations & Interactive States
+   ===================================== */
+
+@keyframes slideUpFade {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.premium-animate-in {
+  animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* =====================================
+   NeoButton (Fintech Style)
+   ===================================== */
+.neo-btn {
+  background: var(--cred-text-primary);
+  color: var(--cred-bg);
+  border: none;
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  font-weight: 800;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 8px 24px rgba(255, 255, 255, 0.15);
+}
+
+.neo-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(255, 255, 255, 0.25);
+}
+
+.neo-btn:active:not(:disabled) {
+  transform: translateY(2px) scale(0.98);
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+}
+
+.neo-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.neo-btn-primary {
+  background: var(--cred-text-primary);
+  color: var(--cred-bg);
+}
+
+.neo-btn-accent {
+  background: var(--cred-accent);
+  color: var(--cred-text-primary);
+  box-shadow: 0 8px 24px rgba(255, 77, 77, 0.25);
+}
+
+.neo-btn-accent:hover:not(:disabled) {
+  box-shadow: 0 12px 32px rgba(255, 77, 77, 0.35);
+}
+
+.neo-btn-outline {
+  background: transparent;
+  color: var(--cred-text-primary);
+  border: 1px solid var(--cred-border);
+  box-shadow: none;
+}
+
+.neo-btn-outline:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: none;
+}
+
+/* =====================================
+   Premium Input / Form Elements
+   ===================================== */
+.neo-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.neo-input-wrapper label {
+  position: absolute;
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.1rem;
+  color: var(--cred-text-secondary);
+  transition: all 0.2s ease;
+  pointer-events: none;
+  font-weight: 500;
+}
+
+.neo-input {
+  width: 100%;
+  padding: 32px 20px 12px 20px;
+  background: var(--cred-surface);
+  border: 1px solid var(--cred-border);
+  border-radius: 16px;
+  color: var(--cred-text-primary);
+  font-size: 1.5rem;
+  font-weight: 800;
+  outline: none;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.neo-input:focus,
+.neo-input:not(:placeholder-shown) {
+  border-color: var(--cred-text-secondary);
+  background: var(--cred-surface-light);
+}
+
+.neo-input:focus + label,
+.neo-input:not(:placeholder-shown) + label {
+  top: 16px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* =====================================
+   CredStatCard
+   ===================================== */
+.cred-stat-card {
+  background: var(--cred-surface);
+  border: 1px solid var(--cred-border);
+  border-radius: 24px;
+  padding: 32px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 180px;
+}
+
+.cred-stat-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+}
+
+.cred-stat-card .bg-icon {
+  position: absolute;
+  right: -20px;
+  bottom: -20px;
+  opacity: 0.03;
+  width: 150px;
+  height: 150px;
+  pointer-events: none;
+  transition: all 0.5s ease;
+}
+
+.cred-stat-card:hover .bg-icon {
+  transform: scale(1.1) rotate(-10deg);
+  opacity: 0.06;
+}
+
+.cred-stat-title {
+  color: var(--cred-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cred-stat-value {
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--cred-text-primary);
+  margin-top: 16px;
+  line-height: 1.1;
+  font-family: var(--font-cohere), sans-serif;
+  letter-spacing: -1px;
+}
+
+.cred-stat-subtitle {
+  color: var(--cred-text-secondary);
+  font-size: 0.9rem;
+  margin-top: 8px;
+  font-weight: 500;
+}
+
+/* =====================================
+   Transaction Ledger Grid
+   ===================================== */
+.premium-ledger-container {
+  background: var(--cred-surface);
+  border: 1px solid var(--cred-border);
+  border-radius: 24px;
+  overflow: hidden;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.premium-ledger-header {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1.5fr 1.5fr 1.5fr;
+  padding: 20px 32px;
+  border-bottom: 1px solid var(--cred-border);
+  font-size: 0.75rem;
+  font-weight: 800;
+  color: var(--cred-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+}
+
+.premium-ledger-row {
+  display: grid;
+  grid-template-columns: 2fr 3fr 1.5fr 1.5fr 1.5fr;
+  padding: 24px 32px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  align-items: center;
+  transition: background 0.2s;
+  color: var(--cred-text-primary);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.premium-ledger-row:hover {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.premium-ledger-row:last-child {
+  border-bottom: none;
+}
+
+/* =====================================
+   Badge System
+   ===================================== */
+.premium-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 12px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.premium-badge.success {
+  background: rgba(0, 208, 156, 0.1);
+  color: var(--cred-success);
+  border: 1px solid rgba(0, 208, 156, 0.2);
+}
+
+.premium-badge.danger {
+  background: rgba(255, 77, 77, 0.1);
+  color: var(--cred-accent);
+  border: 1px solid rgba(255, 77, 77, 0.2);
+}
+
+.premium-badge.neutral {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--cred-text-secondary);
+  border: 1px solid var(--cred-border);
+}
+
+/* =====================================
+   Dark Theme Overrides for Restaurant Layout
+   ===================================== */
+.restaurant-dark-mode {
+  background: var(--cred-bg) !important;
+  color: var(--cred-text-primary) !important;
+  min-height: 100vh;
+}
+
+.restaurant-dark-mode .bites-navbar {
+  background: rgba(18, 18, 18, 0.8) !important;
+  border-bottom: 1px solid var(--cred-border) !important;
+}
