@@ -7,7 +7,13 @@ import {
   Users,
   Store,
   Trash2,
+  Settings,
+  FileText,
+  Image as ImageIcon,
+  Bike,
+  ClipboardList,
 } from "lucide-react";
+import { Link } from "react-router-dom";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { StatCard } from "../../../shared/components/StatCard";
@@ -243,6 +249,32 @@ export const Dashboard: React.FC = () => {
           value={analytics?.total_users || 0}
           subtitle="Customers, owners & riders"
         />
+      </div>
+
+      {/* Premium Quick Navigation Grid */}
+      <h2 style={{ fontSize: "1.2rem", fontWeight: 700, margin: "32px 0 16px 0", color: "#1e293b", fontFamily: "var(--font-anthropic)" }}>
+        Quick Navigation
+      </h2>
+      <div className="admin-grid-columns" style={{ marginBottom: "32px" }}>
+        {[
+          { label: "Restaurants", icon: <Store size={20} />, to: "/restaurants", color: "#f59e0b" },
+          { label: "Customers", icon: <Users size={20} />, to: "/customers", color: "#3b82f6" },
+          { label: "Delivery Partners", icon: <Bike size={20} />, to: "/drivers", color: "#10b981" },
+          { label: "Orders", icon: <ClipboardList size={20} />, to: "/orders", color: "#8b5cf6" },
+          { label: "Images", icon: <ImageIcon size={20} />, to: "/images", color: "#ec4899" },
+          { label: "Settings", icon: <Settings size={20} />, to: "/settings", color: "#64748b" },
+        ].map((nav) => (
+          <Link
+            key={nav.to}
+            to={nav.to}
+            className="premium-nav-card"
+          >
+            <div className="premium-nav-icon" style={{ backgroundColor: `${nav.color}15`, color: nav.color }}>
+              {nav.icon}
+            </div>
+            <span className="premium-nav-label">{nav.label}</span>
+          </Link>
+        ))}
       </div>
 
       <div className="admin-two-col">

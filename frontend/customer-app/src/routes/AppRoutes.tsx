@@ -8,6 +8,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 import { Navbar } from "../components/Navbar";
+import { BitesNavbar } from "../../../shared/components/BitesNavbar";
 import { AppSidebar } from "../../../shared/components/AppSidebar";
 import { MobileBottomNav } from "../../../shared/components/MobileBottomNav";
 import { ResponsiveFooter } from "../../../shared/components/ResponsiveFooter";
@@ -616,73 +617,48 @@ export const AppRoutes: React.FC = () => {
 
   // Render role-specific navigation and routing
   if (userEmail && userRole === "admin") {
+    const ADMIN_FOOTER_SECTIONS: FooterSection[] = [
+      {
+        title: "Platform Setup",
+        links: [
+          { label: "Dashboard", to: "/" },
+          { label: "Global Settings", to: "/settings" },
+          { label: "CMS Management", to: "/cms" },
+        ]
+      },
+      {
+        title: "Operations",
+        links: [
+          { label: "Restaurants", to: "/restaurants" },
+          { label: "Customers", to: "/customers" },
+          { label: "Orders & Refunds", to: "/orders" },
+        ]
+      }
+    ];
     return (
       <BrowserRouter>
-        <div className="admin-layout">
-          <AppSidebar
-            userName={localStorage.getItem("userName")}
-            role="admin"
-            onLogout={handleLogout}
-          />
-          <div className="admin-main-content">
-            {/* Elegant Console Switcher Header */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "24px",
-                paddingBottom: "16px",
-                borderBottom: "1px solid #e4e9f0",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "0.85rem",
-                  color: "#64748b",
-                  fontWeight: 700,
-                  letterSpacing: "0.5px",
-                }}
-              >
-                CONSOLE ROOM · ADMIN VIEW
-              </span>
-              <button
-                onClick={handleLogout}
-                style={{
-                  background: "#f1f5f9",
-                  border: "none",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  color: "#475569",
-                  cursor: "pointer",
-                  transition: "background 0.2s",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.background = "#e2e8f0")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.background = "#f1f5f9")
-                }
-              >
-                ← Back to Selector / Sign Out
-              </button>
+        <div className="main-layout-wrapper">
+          <div className="main-content-area" style={{ width: "100%", marginLeft: 0, padding: 0 }}>
+            <BitesNavbar variant="admin" userName={localStorage.getItem("userName")} onLogout={handleLogout} />
+            <div style={{ minHeight: "calc(100vh - 350px)" }}>
+              <Routes>
+                <Route path="/" element={<AdminDashboard />} />
+                <Route path="/restaurants" element={<RestaurantsManagement />} />
+                <Route path="/customers" element={<CustomersManagement />} />
+                <Route path="/owners" element={<OwnersManagement />} />
+                <Route path="/drivers" element={<DriversManagement />} />
+                <Route path="/orders" element={<OrdersManagement />} />
+                <Route path="/images" element={<ImagesManagement />} />
+                <Route path="/refunds" element={<Refunds />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/cms" element={<CMS />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
             </div>
-
-            <Routes>
-              <Route path="/" element={<AdminDashboard />} />
-              <Route path="/restaurants" element={<RestaurantsManagement />} />
-              <Route path="/customers" element={<CustomersManagement />} />
-              <Route path="/owners" element={<OwnersManagement />} />
-              <Route path="/drivers" element={<DriversManagement />} />
-              <Route path="/orders" element={<OrdersManagement />} />
-              <Route path="/images" element={<ImagesManagement />} />
-              <Route path="/refunds" element={<Refunds />} />
-              <Route path="/settings" element={<Settings />} />
-              <Route path="/cms" element={<CMS />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
+            <ResponsiveFooter
+              sections={ADMIN_FOOTER_SECTIONS}
+              bottomText={`© ${new Date().getFullYear()} Bites Platform Admin. All rights reserved.`}
+            />
           </div>
         </div>
       </BrowserRouter>
@@ -690,66 +666,40 @@ export const AppRoutes: React.FC = () => {
   }
 
   if (userEmail && userRole === "restaurant_owner") {
+    const RESTAURANT_FOOTER_SECTIONS: FooterSection[] = [
+      {
+        title: "Merchant Tools",
+        links: [
+          { label: "Overview", to: "/" },
+          { label: "Menu Management", to: "/menu" },
+          { label: "Earnings & Payouts", to: "/earnings" },
+        ]
+      },
+      {
+        title: "Support",
+        links: [
+          { label: "Partner Help Center", to: "/" },
+          { label: "Contact Account Manager", to: "/" },
+        ]
+      }
+    ];
     return (
       <BrowserRouter>
-        <div className="admin-layout">
-          <AppSidebar
-            userName={localStorage.getItem("userName")}
-            role="restaurant_owner"
-            onLogout={handleLogout}
-          />
-          <div className="admin-main-content">
-            {/* Elegant Console Switcher Header */}
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "24px",
-                paddingBottom: "16px",
-                borderBottom: "1px solid #e4e9f0",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "0.85rem",
-                  color: "#64748b",
-                  fontWeight: 700,
-                  letterSpacing: "0.5px",
-                }}
-              >
-                CONSOLE ROOM · MERCHANT VIEW
-              </span>
-              <button
-                onClick={handleLogout}
-                style={{
-                  background: "#f1f5f9",
-                  border: "none",
-                  padding: "8px 16px",
-                  borderRadius: "8px",
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  color: "#475569",
-                  cursor: "pointer",
-                  transition: "background 0.2s",
-                }}
-                onMouseOver={(e) =>
-                  (e.currentTarget.style.background = "#e2e8f0")
-                }
-                onMouseOut={(e) =>
-                  (e.currentTarget.style.background = "#f1f5f9")
-                }
-              >
-                ← Back to Selector / Sign Out
-              </button>
+        <div className="main-layout-wrapper">
+          <div className="main-content-area" style={{ width: "100%", marginLeft: 0, padding: 0 }}>
+            <BitesNavbar variant="restaurant" userName={localStorage.getItem("userName")} onLogout={handleLogout} />
+            <div style={{ minHeight: "calc(100vh - 350px)" }}>
+              <Routes>
+                <Route path="/" element={<RestaurantDashboard />} />
+                <Route path="/menu" element={<MenuManager />} />
+                <Route path="/earnings" element={<Earnings />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
             </div>
-
-            <Routes>
-              <Route path="/" element={<RestaurantDashboard />} />
-              <Route path="/menu" element={<MenuManager />} />
-              <Route path="/earnings" element={<Earnings />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
+            <ResponsiveFooter
+              sections={RESTAURANT_FOOTER_SECTIONS}
+              bottomText={`© ${new Date().getFullYear()} Bites Merchant Portal. All rights reserved.`}
+            />
           </div>
         </div>
       </BrowserRouter>
@@ -814,45 +764,20 @@ export const AppRoutes: React.FC = () => {
 
     return (
       <BrowserRouter>
-        <div className="delivery-layout">
-          <div
-            className={`delivery-sidebar-shell ${deliverySidebarCollapsed ? "is-collapsed" : ""}`}
-          >
-            <DeliverySidebar
-              driverName={localStorage.getItem("userName") || "Driver"}
-              isOnline={driverOnline}
-              collapsed={deliverySidebarCollapsed}
-              onToggleCollapsed={() =>
-                setDeliverySidebarCollapsed((collapsed) => !collapsed)
-              }
+        <div className="main-layout-wrapper">
+          <div className="main-content-area" style={{ width: "100%", marginLeft: 0, padding: 0 }}>
+            <BitesNavbar
+              variant="driver"
+              driverName={localStorage.getItem("userName")}
               onLogout={handleLogout}
-              onWalletJump={() => {
-                document
-                  .getElementById("driver-wallet-section")
-                  ?.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start",
-                  });
-              }}
-              onJobsJump={() => {
-                document.getElementById("driver-job-section")?.scrollIntoView({
-                  behavior: "smooth",
-                  block: "start",
-                });
-              }}
+              onOpenMenu={() => {}} // No sidebar, menu can be repurposed if needed
             />
-          </div>
-          <div className="delivery-main-shell">
-            <DeliveryNavbar
-              driverName={localStorage.getItem("userName") || "Driver"}
-              onLogout={handleLogout}
-            />
-
-            <Routes>
-              <Route path="/" element={<DeliveryDashboard />} />
-              <Route path="*" element={<Navigate to="/" />} />
-            </Routes>
-
+            <div style={{ minHeight: "calc(100vh - 350px)" }}>
+              <Routes>
+                <Route path="/" element={<DeliveryDashboard />} />
+                <Route path="*" element={<Navigate to="/" />} />
+              </Routes>
+            </div>
             <ResponsiveFooter
               sections={DELIVERY_FOOTER_SECTIONS}
               bottomText={`© ${new Date().getFullYear()} Bites Logistics Private Limited. All rights reserved.`}
@@ -868,15 +793,7 @@ export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <div className="main-layout-wrapper">
-        <AppSidebar
-          userName={userEmail}
-          role="customer"
-          isLoggedIn={!!userEmail}
-          onLogout={handleLogout}
-          onDepositClick={handleDeposit}
-          walletBalance={walletBalance}
-        />
-        <div className="main-content-area">
+        <div className="main-content-area" style={{ width: "100%", marginLeft: 0 }}>
           <Navbar
             cartCount={cartCount}
             userEmail={userEmail}

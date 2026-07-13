@@ -410,8 +410,8 @@ export const Checkout: React.FC = () => {
                   </div>
                 </div>
               </label>
-            </PremiumCard>
-          </div>
+            </div>
+          </PremiumCard>
         </div>
 
         {/* Order details checklist card */}
