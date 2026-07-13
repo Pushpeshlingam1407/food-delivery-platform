@@ -7,9 +7,12 @@ import {
   Award,
   Plus,
   DollarSign,
+  X,
+  User,
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import "../admin.css";
 
 interface Customer {
   id: string;
@@ -27,6 +30,9 @@ export const CustomersManagement: React.FC = () => {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // Inspector & Edit Drawer State
+  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null);
+
   // Edit form states
   const [editingId, setEditingId] = useState<string | null>(null);
   const [firstName, setFirstName] = useState("");
@@ -38,8 +44,7 @@ export const CustomersManagement: React.FC = () => {
   );
   const [isVerified, setIsVerified] = useState(true);
   const [walletBalance, setWalletBalance] = useState("0");
-
-  const [showEditForm, setShowEditForm] = useState(false);
+  const [saveLoading, setSaveLoading] = useState(false);
 
   const fetchCustomers = async () => {
     try {
@@ -64,6 +69,7 @@ export const CustomersManagement: React.FC = () => {
     e.preventDefault();
     if (!editingId) return;
 
+    setSaveLoading(true);
     try {
       const res = await api.put(`/admin/customers/${editingId}`, {
         first_name: firstName,
@@ -77,6 +83,7 @@ export const CustomersManagement: React.FC = () => {
 
       if (res.data.status === "success") {
         notify.success("Changes saved successfully.");
+        setSelectedCustomer(null);
         resetForm();
         fetchCustomers();
       }
@@ -85,16 +92,22 @@ export const CustomersManagement: React.FC = () => {
         err.response?.data?.message ||
           "We couldn't save your changes. Please try again.",
       );
+    } finally {
+      setSaveLoading(false);
     }
   };
 
-  const handleDeleteCustomer = async (id: string) => {
+  const handleDeleteCustomer = async (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
     if (!confirm("Are you sure you want to block/deactivate this customer?"))
       return;
     try {
       const res = await api.delete(`/admin/customers/${id}`);
       if (res.data.status === "success") {
         notify.success("Customer account suspended.");
+        if (selectedCustomer?.id === id) {
+          setSelectedCustomer(null);
+        }
         fetchCustomers();
       }
     } catch (err) {
@@ -111,7 +124,6 @@ export const CustomersManagement: React.FC = () => {
     setStatus(c.status);
     setIsVerified(c.is_verified);
     setWalletBalance(c.wallet_balance.toString());
-    setShowEditForm(true);
   };
 
   const resetForm = () => {
@@ -123,7 +135,11 @@ export const CustomersManagement: React.FC = () => {
     setStatus("active");
     setIsVerified(true);
     setWalletBalance("0");
-    setShowEditForm(false);
+  };
+
+  const handleInspectCustomer = (c: Customer) => {
+    setSelectedCustomer(c);
+    startEdit(c);
   };
 
   if (loading) {
@@ -135,7 +151,7 @@ export const CustomersManagement: React.FC = () => {
   }
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" style={{ position: "relative" }}>
       <div className="section-spacing">
         <h1
           className="section-heading section-heading-lg"
@@ -144,180 +160,25 @@ export const CustomersManagement: React.FC = () => {
           Customers Management
         </h1>
         <p className="text-muted">
-          Audit platform users, manage wallet balances, and handle account
-          status suspensions.
+          Click any customer card to audit history, adjust wallet balances, and manage account statuses.
         </p>
       </div>
 
-      {showEditForm && (
-        <div
-          className="panel-card section-spacing"
-          style={{ maxWidth: "600px" }}
-        >
-          <div className="panel-heading">
-            <Edit2 size={18} color="var(--accent-orange)" /> Edit Customer &
-            Wallet
-          </div>
-
-          <form onSubmit={handleUpdateCustomer} className="form-grid">
-            <div
-              className="form-grid"
-              style={{ gridTemplateColumns: "1fr 1fr", gap: "16px" }}
-            >
-              <div className="form-field">
-                <label>First Name</label>
-                <input
-                  type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
-                  required
-                  className="input-premium"
-                />
-              </div>
-
-              <div className="form-field">
-                <label>Last Name</label>
-                <input
-                  type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
-                  required
-                  className="input-premium"
-                />
-              </div>
-            </div>
-
-            <div className="form-field">
-              <label>Email Address</label>
-              <input
-                type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="input-premium"
-              />
-            </div>
-
-            <div className="form-field">
-              <label>Phone Number</label>
-              <input
-                type="text"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value)}
-                required
-                className="input-premium"
-              />
-            </div>
-
-            <div className="form-field">
-              <label>Adjust Wallet Balance ($)</label>
-              <div style={{ display: "flex", gap: "8px" }}>
-                <input
-                  type="number"
-                  step="0.01"
-                  value={walletBalance}
-                  onChange={(e) => setWalletBalance(e.target.value)}
-                  className="input-premium"
-                  style={{ flex: 1 }}
-                />
-                <button
-                  type="button"
-                  onClick={() => {
-                    const current = parseFloat(walletBalance || "0");
-                    setWalletBalance((current + 10).toString());
-                  }}
-                  className="btn-premium btn-sm"
-                  style={{
-                    whiteSpace: "nowrap",
-                    padding: "10px",
-                    boxShadow: "none",
-                  }}
-                >
-                  + $10
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    const current = parseFloat(walletBalance || "0");
-                    setWalletBalance((current + 50).toString());
-                  }}
-                  className="btn-premium btn-sm"
-                  style={{
-                    whiteSpace: "nowrap",
-                    padding: "10px",
-                    boxShadow: "none",
-                  }}
-                >
-                  + $50
-                </button>
-              </div>
-            </div>
-
-            <div
-              className="form-grid"
-              style={{
-                gridTemplateColumns: "1fr 1fr",
-                gap: "16px",
-                alignItems: "center",
-              }}
-            >
-              <div className="form-field">
-                <label>Account Status</label>
-                <select
-                  value={status}
-                  onChange={(e: any) => setStatus(e.target.value)}
-                  className="input-premium"
-                >
-                  <option value="active">Active</option>
-                  <option value="inactive">Inactive</option>
-                  <option value="suspended">Suspended</option>
-                </select>
-              </div>
-
-              <label
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  marginTop: "24px",
-                }}
-              >
-                <input
-                  type="checkbox"
-                  checked={isVerified}
-                  onChange={(e) => setIsVerified(e.target.checked)}
-                />
-                Verified User
-              </label>
-            </div>
-
-            <div style={{ display: "flex", gap: "12px", marginTop: "12px" }}>
-              <button type="submit" className="btn-premium" style={{ flex: 1 }}>
-                Save Profile Changes
-              </button>
-              <button
-                type="button"
-                onClick={resetForm}
-                className="btn-premium"
-                style={{ background: "var(--text-slate)", flex: 1 }}
-              >
-                Cancel
-              </button>
-            </div>
-          </form>
-        </div>
-      )}
-
       <div className="panel-grid">
         {customers.map((c) => (
-          <div key={c.id} className="panel-card panel-card-stacked">
+          <div
+            key={c.id}
+            className="panel-card panel-card-stacked"
+            onClick={() => handleInspectCustomer(c)}
+            style={{ cursor: "pointer" }}
+          >
             <div>
               <div className="panel-row">
-                <h3 style={{ margin: 0 }}>
+                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
                   {c.first_name} {c.last_name}
                 </h3>
                 <span
-                  className={`status-pill ${c.status === "active" ? "success" : "danger"}`}
+                  className={`premium-badge ${c.status === "active" ? "success" : "danger"}`}
                 >
                   {c.status}
                 </span>
@@ -325,7 +186,7 @@ export const CustomersManagement: React.FC = () => {
 
               <p
                 className="card-subtitle"
-                style={{ fontSize: "0.85rem", marginTop: "4px" }}
+                style={{ fontSize: "0.85rem", marginTop: "4px", color: "var(--text-muted)" }}
               >
                 {c.email} | {c.phone}
               </p>
@@ -335,11 +196,11 @@ export const CustomersManagement: React.FC = () => {
                   display: "flex",
                   alignItems: "center",
                   justifyContent: "space-between",
-                  background: "rgba(255,255,255,0.5)",
+                  background: "#f8fafc",
                   padding: "10px 14px",
                   borderRadius: "8px",
                   marginTop: "16px",
-                  border: "1px solid var(--glass-border)",
+                  border: "1px solid var(--cred-border, rgba(0,0,0,0.06))",
                 }}
               >
                 <div
@@ -351,24 +212,11 @@ export const CustomersManagement: React.FC = () => {
                     fontWeight: 700,
                   }}
                 >
-                  <DollarSign size={16} color="var(--accent-violet)" /> Wallet
-                  Balance:
+                  <DollarSign size={16} color="var(--accent-violet)" /> Balance:
                 </div>
-                <strong
-                  style={{ fontSize: "1.1rem", color: "var(--text-slate)" }}
-                >
+                <strong style={{ fontSize: "1.1rem" }}>
                   ${parseFloat(c.wallet_balance.toString()).toFixed(2)}
                 </strong>
-              </div>
-
-              <div
-                style={{
-                  fontSize: "0.75rem",
-                  color: "var(--text-muted)",
-                  marginTop: "12px",
-                }}
-              >
-                Registered: {new Date(c.created_at).toLocaleDateString()}
               </div>
             </div>
 
@@ -380,34 +228,28 @@ export const CustomersManagement: React.FC = () => {
                 paddingTop: "12px",
               }}
             >
-              <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
-                ID: <strong>{c.id.substring(0, 8)}...</strong>
-              </span>
+              <button
+                className="btn-premium btn-sm"
+                style={{
+                  padding: "6px 12px",
+                  fontSize: "0.75rem",
+                  boxShadow: "none",
+                }}
+              >
+                Inspect Account
+              </button>
 
-              <div style={{ display: "flex", gap: "12px" }}>
-                <button
-                  onClick={() => startEdit(c)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "var(--text-slate)",
-                  }}
-                >
-                  <Edit2 size={16} />
-                </button>
-                <button
-                  onClick={() => handleDeleteCustomer(c.id)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "#F44336",
-                  }}
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
+              <button
+                onClick={(e) => handleDeleteCustomer(c.id, e)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  cursor: "pointer",
+                  color: "#F44336",
+                }}
+              >
+                <Trash2 size={16} />
+              </button>
             </div>
           </div>
         ))}
@@ -416,6 +258,176 @@ export const CustomersManagement: React.FC = () => {
           <div className="full-span-card">
             <p className="text-muted">No registered customer accounts found.</p>
           </div>
+        )}
+      </div>
+
+      {/* Inspect Backdrop */}
+      {selectedCustomer && (
+        <div
+          className="preview-drawer-backdrop"
+          onClick={() => setSelectedCustomer(null)}
+        />
+      )}
+
+      {/* Inspect/Edit Drawer */}
+      <div className={`preview-drawer ${selectedCustomer ? "open" : ""}`}>
+        {selectedCustomer && (
+          <>
+            <div className="preview-drawer-header">
+              <div>
+                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
+                  Inspect Customer
+                </h3>
+                <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                  ID: #{selectedCustomer.id}
+                </span>
+              </div>
+              <button
+                onClick={() => setSelectedCustomer(null)}
+                style={{ background: "none", border: "none", cursor: "pointer", padding: "4px" }}
+              >
+                <X size={20} />
+              </button>
+            </div>
+
+            <div className="preview-drawer-body">
+              {/* Account summary header */}
+              <div style={{ display: "flex", gap: "12px", alignItems: "center", borderBottom: "1px solid #f1f5f9", paddingBottom: "20px" }}>
+                <div style={{ width: "48px", height: "48px", borderRadius: "50%", background: "rgba(139,92,246,0.1)", color: "#8b5cf6", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 800, fontSize: "1.2rem" }}>
+                  {selectedCustomer.first_name.charAt(0).toUpperCase()}
+                </div>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: "1.05rem", fontWeight: 800 }}>
+                    {selectedCustomer.first_name} {selectedCustomer.last_name}
+                  </h4>
+                  <span style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}>
+                    Registered on {new Date(selectedCustomer.created_at).toLocaleDateString()}
+                  </span>
+                </div>
+              </div>
+
+              {/* Edit forms */}
+              <form onSubmit={handleUpdateCustomer} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px" }}>
+                  <div className="premium-form-group">
+                    <label>First Name</label>
+                    <input
+                      type="text"
+                      value={firstName}
+                      onChange={(e) => setFirstName(e.target.value)}
+                      required
+                      className="premium-form-input"
+                    />
+                  </div>
+                  <div className="premium-form-group">
+                    <label>Last Name</label>
+                    <input
+                      type="text"
+                      value={lastName}
+                      onChange={(e) => setLastName(e.target.value)}
+                      required
+                      className="premium-form-input"
+                    />
+                  </div>
+                </div>
+
+                <div className="premium-form-group">
+                  <label>Email Address</label>
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="premium-form-input"
+                  />
+                </div>
+
+                <div className="premium-form-group">
+                  <label>Phone Number</label>
+                  <input
+                    type="text"
+                    value={phone}
+                    onChange={(e) => setPhone(e.target.value)}
+                    required
+                    className="premium-form-input"
+                  />
+                </div>
+
+                <div className="premium-form-group">
+                  <label>Adjust Wallet Balance ($)</label>
+                  <div style={{ display: "flex", gap: "10px" }}>
+                    <input
+                      type="number"
+                      step="0.01"
+                      value={walletBalance}
+                      onChange={(e) => setWalletBalance(e.target.value)}
+                      className="premium-form-input"
+                      style={{ flexGrow: 1 }}
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = parseFloat(walletBalance || "0");
+                        setWalletBalance((current + 10).toString());
+                      }}
+                      className="premium-badge neutral"
+                      style={{ cursor: "pointer", border: "1px solid var(--cred-border)", padding: "8px 12px" }}
+                    >
+                      +$10
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const current = parseFloat(walletBalance || "0");
+                        setWalletBalance((current + 50).toString());
+                      }}
+                      className="premium-badge neutral"
+                      style={{ cursor: "pointer", border: "1px solid var(--cred-border)", padding: "8px 12px" }}
+                    >
+                      +$50
+                    </button>
+                  </div>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "12px", alignItems: "center" }}>
+                  <div className="premium-form-group">
+                    <label>Account Status</label>
+                    <select
+                      value={status}
+                      onChange={(e: any) => setStatus(e.target.value)}
+                      className="premium-form-input"
+                      style={{ padding: "8px 10px" }}
+                    >
+                      <option value="active">Active</option>
+                      <option value="inactive">Inactive</option>
+                      <option value="suspended">Suspended</option>
+                    </select>
+                  </div>
+
+                  <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", marginTop: "18px" }}>
+                    <input
+                      type="checkbox"
+                      checked={isVerified}
+                      onChange={(e) => setIsVerified(e.target.checked)}
+                      style={{ width: "16px", height: "16px" }}
+                    />
+                    <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--cred-text-secondary)" }}>
+                      Verified Account
+                    </span>
+                  </label>
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={saveLoading}
+                  className="neo-btn neo-btn-primary"
+                  style={{ width: "100%", padding: "12px", fontSize: "0.95rem", marginTop: "12px" }}
+                >
+                  {saveLoading ? "Saving Changes..." : "Save Customer Modifications"}
+                </button>
+              </form>
+            </div>
+          </>
         )}
       </div>
     </div>

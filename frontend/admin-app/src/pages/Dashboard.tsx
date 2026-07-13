@@ -179,7 +179,8 @@ export const Dashboard: React.FC = () => {
         <div className="welcome-text">
           <h1 className="welcome-title-premium">Console Operations Panel ✨</h1>
           <p className="welcome-desc-premium">
-            Audit stores, manage voucher campaigns, and monitor platform metrics.
+            Audit stores, manage voucher campaigns, and monitor platform
+            metrics.
           </p>
         </div>
         <div className="navbar-desktop-only">
@@ -381,11 +382,7 @@ export const Dashboard: React.FC = () => {
             color: "#64748b",
           },
         ].map((nav) => (
-          <Link
-            key={nav.to}
-            to={nav.to}
-            className="premium-nav-card-container"
-          >
+          <Link key={nav.to} to={nav.to} className="premium-nav-card-container">
             <div
               className="premium-nav-card-icon"
               style={{
