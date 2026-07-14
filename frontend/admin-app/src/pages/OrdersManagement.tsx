@@ -181,11 +181,14 @@ export const OrdersManagement: React.FC = () => {
           >
             <div>
               <div className="panel-row">
-                <div className="flex-center-gap-6">
-                  <ShoppingBag size={18} color="var(--accent-violet)" />
-                  <strong className="bold-font-11">
-                    Order #{o.id.substring(0, 8)}
-                  </strong>
+                <div className="admin-order-card-title-container">
+                  <div className="flex-center-gap-6">
+                    <ShoppingBag size={18} color="var(--accent-violet)" />
+                    <strong className="bold-font-11">
+                      Order #{o.order_number || o.id.substring(0, 8)}
+                    </strong>
+                  </div>
+                  <span className="admin-order-id-label">ID: {o.id}</span>
                 </div>
                 <span
                   className={`status-pill ${

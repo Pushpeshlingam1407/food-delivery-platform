@@ -821,3 +821,11 @@
     padding-left: 20px;
   }
 }
+
+.order-id-label {
+  font-size: 0.8rem !important;
+  color: var(--text-slate-light, #556172) !important;
+  display: block !important;
+  margin-top: 4px !important;
+  word-break: break-all !important;
+}

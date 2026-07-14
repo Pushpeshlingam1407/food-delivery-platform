@@ -361,3 +361,11 @@
 .premium-form-input:focus {
   border-color: rgba(15, 23, 42, 0.2);
 }
+
+.order-id-subtext {
+  font-size: 0.8rem !important;
+  color: var(--cred-text-secondary) !important;
+  display: block !important;
+  margin-top: 4px !important;
+  word-break: break-all !important;
+}

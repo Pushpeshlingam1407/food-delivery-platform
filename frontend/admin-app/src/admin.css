@@ -893,3 +893,17 @@
   display: flex;
   align-items: center;
 }
+
+.admin-order-id-label {
+  font-size: 0.75rem !important;
+  color: var(--cred-text-secondary, #64748b) !important;
+  word-break: break-all !important;
+  display: block !important;
+  margin-top: 4px !important;
+}
+
+.admin-order-card-title-container {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: flex-start !important;
+}

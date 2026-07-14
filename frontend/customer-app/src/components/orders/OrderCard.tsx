@@ -76,6 +76,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
                 {formatOrderNumber(order.order_number)} -{" "}
                 {formatDate(order.placed_at)} at {formatTime(order.placed_at)}
               </p>
+              <span className="order-id-label">ID: {order.id}</span>
             </div>
             <span className={`order-status-chip ${statusClass}`}>
               {active ? "Live order" : statusLabel}

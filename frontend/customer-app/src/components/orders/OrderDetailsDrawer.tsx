@@ -41,6 +41,7 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
             <span>
               {formatDate(order.placed_at)} at {formatTime(order.placed_at)}
             </span>
+            <span className="order-id-label">ID: {order.id}</span>
           </div>
           <button
             type="button"

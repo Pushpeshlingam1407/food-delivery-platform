@@ -1552,3 +1552,11 @@ textarea {
     background: rgba(255, 255, 255, 0.7);
   }
 }
+
+.driver-order-id-label {
+  font-size: 0.75rem !important;
+  color: var(--driver-text-muted, #94a3b8) !important;
+  word-break: break-all !important;
+  display: block !important;
+  margin-top: 4px !important;
+}

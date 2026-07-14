@@ -330,6 +330,11 @@ export const Dashboard: React.FC = () => {
                   ? `Order #${activeJob.order_number}`
                   : "No delivery in progress"}
               </h2>
+              {activeJob && (
+                <p className="driver-order-id-label">
+                  ID: {activeJob.id}
+                </p>
+              )}
             </div>
             {activeJob && (
               <span className="driver-step-label">{activeStep}</span>
@@ -439,6 +444,9 @@ export const Dashboard: React.FC = () => {
                   <strong>{job.restaurant_name}</strong>
                   <p>
                     {job.city} · Order #{job.order_number}
+                  </p>
+                  <p className="driver-order-id-label">
+                    ID: {job.id}
                   </p>
                 </div>
                 <div className="driver-queue-item__action">
