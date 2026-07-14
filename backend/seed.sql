@@ -61,10 +61,10 @@ INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_ha
 
 -- Restaurant Owners
 INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, status, is_verified) VALUES
-('u0000000-0000-0000-0000-000000000004', 3, 'Rajesh', 'Kumar', 'rajesh.owner1@example.com', '+918765432101', '$2b$10$xyz...', 'active', TRUE),
-('u0000000-0000-0000-0000-000000000005', 3, 'Priya', 'Nair', 'priya.owner2@example.com', '+918765432102', '$2b$10$xyz...', 'active', TRUE),
-('u0000000-0000-0000-0000-000000000008', 3, 'Vikram', 'Mehta', 'vikram.owner3@example.com', '+918765432108', '$2b$10$xyz...', 'active', TRUE),
-('u0000000-0000-0000-0000-000000000009', 3, 'Maya', 'Sen', 'maya.owner4@example.com', '+918765432109', '$2b$10$xyz...', 'active', TRUE);
+('u0000000-0000-0000-0000-000000000004', 3, 'Rajesh', 'Kumar', 'rajesh.owner1@example.com', '+918765432101', '$2b$10$xyz...', 'active', TRUE), -- Owns The Curry House
+('u0000000-0000-0000-0000-000000000005', 3, 'Priya', 'Nair', 'priya.owner2@example.com', '+918765432102', '$2b$10$xyz...', 'active', TRUE), -- Owns Pizza Imperia
+('u0000000-0000-0000-0000-000000000008', 3, 'Vikram', 'Mehta', 'vikram.owner3@example.com', '+918765432108', '$2b$10$xyz...', 'active', TRUE), -- Owns Sushi World
+('u0000000-0000-0000-0000-000000000009', 3, 'Maya', 'Sen', 'maya.owner4@example.com', '+918765432109', '$2b$10$xyz...', 'active', TRUE); -- Owns Bake & Brew Cafe
 
 -- Delivery Partners
 INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, status, is_verified) VALUES

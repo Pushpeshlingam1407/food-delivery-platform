@@ -58,6 +58,7 @@
   align-items: center;
   justify-content: center;
   gap: 10px;
+  font-family: "Outfit", sans-serif !important;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: var(--cred-shadow-md);
 }

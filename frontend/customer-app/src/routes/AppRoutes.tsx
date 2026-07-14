@@ -107,7 +107,8 @@ const getRestEmoji = (desc: string = "") => {
 };
 
 // Landing Page Dashboard (Customers)
-const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
+const Home: React.FC = () => {
+  const { searchQuery, addToCart } = useAppContext();
   const navigate = useNavigate();
   const [restaurants, setRestaurants] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -741,31 +742,12 @@ export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <div className="main-layout-wrapper">
-        <AppSidebar
-          userName={userEmail}
-          role="customer"
-          isLoggedIn={!!userEmail}
-          onLogout={handleLogout}
-          onDepositClick={handleDeposit}
-          walletBalance={walletBalance}
-        />
+        <AppSidebar />
         <div className="main-content-area">
           <Navbar />
           <Routes>
-            <Route
-              path="/"
-              element={<Home searchQuery={searchQuery} addToCart={addToCart} />}
-            />
-            <Route
-              path="/restaurant/:id"
-              element={
-                <RestaurantDetails
-                  addToCart={addToCart}
-                  removeFromCart={removeFromCart}
-                  cartItems={cartItemsCountMap}
-                />
-              }
-            />
+            <Route path="/" element={<Home />} />
+            <Route path="/restaurant/:id" element={<RestaurantDetails />} />
             <Route
               path="/login"
               element={!userEmail ? <Login /> : <Navigate to="/" />}
@@ -789,13 +771,7 @@ export const AppRoutes: React.FC = () => {
             <Route path="/page/:slug" element={<CmsPage />} />
             <Route
               path="/orders"
-              element={
-                userEmail ? (
-                  <Orders addToCart={addToCart} />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
+              element={userEmail ? <Orders /> : <Navigate to="/login" />}
             />
             <Route
               path="/addresses"

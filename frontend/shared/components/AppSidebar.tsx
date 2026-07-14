@@ -21,6 +21,7 @@ import {
   ClipboardList,
 } from "lucide-react";
 import "./AppSidebar.css";
+import { useAppContext } from "../context/AppContext";
 
 /* ──────────────────────────────────────────────────────────
    AppSidebar — Unified sidebar for every role.
@@ -155,14 +156,34 @@ const getBadge = (role: string | null | undefined): string => {
 
 /* ─── Component ─── */
 export const AppSidebar: React.FC<AppSidebarProps> = ({
-  userName = "User",
-  role = "customer",
+  userName,
+  role,
   navGroups: customNavGroups,
   walletBalance = null,
   onLogout,
   onDepositClick,
-  isLoggedIn = true,
+  isLoggedIn,
 }) => {
+  const context = useAppContext();
+
+  // Resolve properties using props or fallback to context
+  const resolvedIsLoggedIn =
+    isLoggedIn !== undefined ? isLoggedIn : !!context?.userEmail;
+  const resolvedRole = role || context?.userRole || "customer";
+  const resolvedUserName =
+    userName ||
+    (context?.userEmail
+      ? localStorage.getItem("userName") || context.userEmail
+      : null);
+  const resolvedWalletBalance =
+    walletBalance !== null
+      ? walletBalance
+      : context?.walletBalance !== undefined
+        ? context?.walletBalance
+        : 0;
+  const resolvedOnLogout = onLogout || context?.handleLogout;
+  const resolvedOnDepositClick = onDepositClick || context?.handleDeposit;
+
   const location = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [isCollapsed, setIsCollapsed] = useState(() => {
@@ -192,16 +213,20 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   /* Resolve nav groups */
   const navGroups =
     customNavGroups ??
-    (role === "admin"
+    (resolvedRole === "admin"
       ? adminGroups
-      : role === "restaurant_owner"
+      : resolvedRole === "restaurant_owner"
         ? restaurantGroups
-        : role === "delivery_partner"
+        : resolvedRole === "delivery_partner"
           ? deliveryGroups
-          : getCustomerGroups(isLoggedIn, walletBalance, onDepositClick));
+          : getCustomerGroups(
+              resolvedIsLoggedIn,
+              resolvedWalletBalance,
+              resolvedOnDepositClick,
+            ));
 
-  const badgeLabel = getBadge(role);
-  const showUserCard = isLoggedIn;
+  const badgeLabel = getBadge(resolvedRole);
+  const showUserCard = resolvedIsLoggedIn;
 
   return (
     <>
@@ -248,11 +273,15 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
               className={`admin-sidebar-user ${isCollapsed ? "app-sidebar-user-card-collapsed" : "app-sidebar-user-card-expanded"}`}
             >
               <div className="admin-avatar">
-                {userName ? userName.charAt(0).toUpperCase() : "U"}
+                {resolvedUserName
+                  ? resolvedUserName.charAt(0).toUpperCase()
+                  : "U"}
               </div>
               {!isCollapsed && (
                 <div className="admin-user-info">
-                  <span className="admin-user-name">{userName || "User"}</span>
+                  <span className="admin-user-name">
+                    {resolvedUserName || "User"}
+                  </span>
                 </div>
               )}
             </div>
@@ -306,16 +335,16 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
         {/* Footer */}
         <div className="app-sidebar-footer-container">
-          {isLoggedIn && onLogout ? (
+          {resolvedIsLoggedIn && resolvedOnLogout ? (
             <button
-              onClick={onLogout}
+              onClick={resolvedOnLogout}
               className={`admin-nav-item app-sidebar-signout-btn ${isCollapsed ? "app-sidebar-nav-item-collapsed" : "app-sidebar-nav-item-expanded"}`}
               title={isCollapsed ? "Sign Out" : ""}
             >
               <LogOut size={18} />
               {!isCollapsed && <span>Sign Out</span>}
             </button>
-          ) : !isLoggedIn ? (
+          ) : !resolvedIsLoggedIn ? (
             <Link
               to="/login"
               className={`admin-nav-item app-sidebar-signin-link ${isCollapsed ? "app-sidebar-nav-item-collapsed" : "app-sidebar-nav-item-expanded"}`}

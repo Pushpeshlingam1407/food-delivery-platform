@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ShoppingBag } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import { useAppContext } from "../../../shared/context/AppContext";
 import { FeedbackModal } from "../components/FeedbackModal";
 import { OrderCard } from "../components/orders/OrderCard";
 import { OrderDetailsDrawer } from "../components/orders/OrderDetailsDrawer";
@@ -15,15 +16,8 @@ import {
   type OrderFilter,
 } from "../components/orders/orderUtils";
 
-interface OrdersProps {
-  addToCart?: (item: {
-    id: string;
-    name: string;
-    price: number;
-  }) => void | Promise<void>;
-}
-
-export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
+export const Orders: React.FC = () => {
+  const { addToCart } = useAppContext();
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState<Order[]>([]);
   const [feedbackOrderId, setFeedbackOrderId] = useState<string | null>(null);

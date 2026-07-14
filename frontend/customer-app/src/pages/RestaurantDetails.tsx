@@ -4,6 +4,7 @@ import { Heart, ArrowLeft } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { MenuCard } from "../../../shared/components/MenuCard";
+import { useAppContext } from "../../../shared/context/AppContext";
 
 interface MenuItem {
   id: string;
@@ -26,17 +27,12 @@ interface Restaurant {
   status: string;
 }
 
-interface RestaurantDetailsProps {
-  addToCart: (item: MenuItem) => void;
-  removeFromCart: (itemId: string) => void;
-  cartItems: { [itemId: string]: number };
-}
-
-export const RestaurantDetails: React.FC<RestaurantDetailsProps> = ({
-  addToCart,
-  removeFromCart,
-  cartItems,
-}) => {
+export const RestaurantDetails: React.FC = () => {
+  const {
+    addToCart,
+    removeFromCart,
+    cartItemsCountMap: cartItems,
+  } = useAppContext();
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const [restaurant, setRestaurant] = useState<Restaurant | null>(null);
