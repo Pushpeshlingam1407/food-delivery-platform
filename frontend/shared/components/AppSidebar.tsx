@@ -20,6 +20,7 @@ import {
   Wallet,
   ClipboardList,
 } from "lucide-react";
+import "./AppSidebar.css";
 
 /* ──────────────────────────────────────────────────────────
    AppSidebar — Unified sidebar for every role.
@@ -206,10 +207,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
     <>
       {/* Mobile Backdrop */}
       {isMobileOpen && (
-        <div
+        <button
+          type="button"
+          aria-label="Close navigation drawer"
           onClick={() => setIsMobileOpen(false)}
-          className="drawer-backdrop"
-          style={{ position: "fixed", zIndex: 95 }}
+          className="drawer-backdrop app-sidebar-fixed"
         />
       )}
 
@@ -220,8 +222,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         <div>
           {/* Logo */}
           <div
-            className="admin-sidebar-header"
-            style={{ padding: isCollapsed ? "28px 16px" : "28px 24px" }}
+            className={`admin-sidebar-header ${isCollapsed ? "app-sidebar-header-wrapper-collapsed" : "app-sidebar-header-wrapper-expanded"}`}
           >
             {!isCollapsed ? (
               <Link to="/" className="admin-sidebar-logo">
@@ -230,8 +231,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             ) : (
               <Link
                 to="/"
-                className="admin-sidebar-logo"
-                style={{ fontSize: "1.2rem" }}
+                className="admin-sidebar-logo app-sidebar-logo-text"
               >
                 b.
               </Link>
@@ -239,16 +239,6 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             <button
               onClick={toggleCollapse}
               className="navbar-desktop-only"
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "#64748b",
-                padding: "4px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-              }}
               title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
             >
               <Menu size={18} />
@@ -258,8 +248,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           {/* User Card (admin / restaurant / delivery) */}
           {showUserCard && (
             <div
-              className="admin-sidebar-user"
-              style={{ padding: isCollapsed ? "12px" : "16px 20px" }}
+              className={`admin-sidebar-user ${isCollapsed ? "app-sidebar-user-card-collapsed" : "app-sidebar-user-card-expanded"}`}
             >
               <div className="admin-avatar">
                 {userName ? userName.charAt(0).toUpperCase() : "U"}
@@ -273,10 +262,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           )}
 
           {/* Navigation */}
-          <nav
-            className="admin-sidebar-nav"
-            style={{ padding: isCollapsed ? "12px" : "16px" }}
-          >
+          <nav className="admin-sidebar-nav">
             {navGroups.map((group, groupIdx) => (
               <div key={groupIdx} className="admin-nav-group">
                 {!isCollapsed && (
@@ -294,18 +280,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                           item.onClick?.();
                           setIsMobileOpen(false);
                         }}
-                        className={`admin-nav-item ${active ? "active" : ""}`}
+                        className={`admin-nav-item ${active ? "active" : ""} ${isCollapsed ? "app-sidebar-nav-item-collapsed" : "app-sidebar-nav-item-expanded"}`}
                         title={isCollapsed ? item.label : ""}
-                        style={{
-                          justifyContent: isCollapsed ? "center" : "flex-start",
-                          padding: isCollapsed ? "12px" : "12px 14px",
-                          width: "100%",
-                          background: "none",
-                          border: "none",
-                          cursor: "pointer",
-                          textAlign: "left",
-                          font: "inherit",
-                        }}
                       >
                         <Icon size={18} />
                         {!isCollapsed && <span>{item.label}</span>}
@@ -318,12 +294,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                       key={item.path}
                       to={item.path}
                       onClick={() => setIsMobileOpen(false)}
-                      className={`admin-nav-item ${active ? "active" : ""}`}
+                      className={`admin-nav-item ${active ? "active" : ""} ${isCollapsed ? "app-sidebar-nav-item-collapsed" : "app-sidebar-nav-item-expanded"}`}
                       title={isCollapsed ? item.label : ""}
-                      style={{
-                        justifyContent: isCollapsed ? "center" : "flex-start",
-                        padding: isCollapsed ? "12px" : "12px 14px",
-                      }}
                     >
                       <Icon size={18} />
                       {!isCollapsed && <span>{item.label}</span>}
@@ -336,21 +308,12 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
         </div>
 
         {/* Footer */}
-        <div style={{ padding: "16px", borderTop: "1px solid #f0f4f8" }}>
+        <div className="app-sidebar-footer-container">
           {isLoggedIn && onLogout ? (
             <button
               onClick={onLogout}
-              className="admin-nav-item"
+              className={`admin-nav-item app-sidebar-signout-btn ${isCollapsed ? "app-sidebar-nav-item-collapsed" : "app-sidebar-nav-item-expanded"}`}
               title={isCollapsed ? "Sign Out" : ""}
-              style={{
-                width: "100%",
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                color: "#ef4444",
-                justifyContent: isCollapsed ? "center" : "flex-start",
-                padding: isCollapsed ? "12px" : "12px 14px",
-              }}
             >
               <LogOut size={18} />
               {!isCollapsed && <span>Sign Out</span>}
@@ -358,13 +321,8 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
           ) : !isLoggedIn ? (
             <Link
               to="/login"
-              className="admin-nav-item"
+              className={`admin-nav-item app-sidebar-signin-link ${isCollapsed ? "app-sidebar-nav-item-collapsed" : "app-sidebar-nav-item-expanded"}`}
               title={isCollapsed ? "Sign In" : ""}
-              style={{
-                justifyContent: isCollapsed ? "center" : "flex-start",
-                padding: isCollapsed ? "12px" : "12px 14px",
-                color: "var(--accent-orange)",
-              }}
             >
               <LogIn size={18} />
               {!isCollapsed && <span>Sign In</span>}

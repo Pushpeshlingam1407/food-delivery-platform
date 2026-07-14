@@ -1,0 +1,101 @@
+.app-sidebar-fixed {
+  position: fixed !important;
+  zIndex: 95 !important;
+}
+
+.app-sidebar-header-wrapper-collapsed {
+  padding: 28px 16px !important;
+}
+
+.app-sidebar-header-wrapper-expanded {
+  padding: 28px 24px !important;
+}
+
+.app-sidebar-logo-text {
+  font-size: 1.2rem !important;
+}
+
+.app-sidebar-avatar-collapsed {
+  width: 40px !important;
+  height: 40px !important;
+}
+
+.app-sidebar-avatar-expanded {
+  width: 48px !important;
+  height: 48px !important;
+}
+
+.app-sidebar-user-card-collapsed {
+  padding: 12px !important;
+}
+
+.app-sidebar-user-card-expanded {
+  padding: 16px 20px !important;
+}
+
+.app-sidebar-wallet-card-collapsed {
+  padding: 12px !important;
+}
+
+.app-sidebar-wallet-card-expanded {
+  padding: 16px !important;
+}
+
+.app-sidebar-nav-item-collapsed {
+  justify-content: center !important;
+  padding: 12px !important;
+}
+
+.app-sidebar-nav-item-expanded {
+  justify-content: flex-start !important;
+  padding: 12px 14px !important;
+}
+
+.app-sidebar-nav-item-active-rest {
+  background: rgba(255, 255, 255, 0.15) !important;
+  color: #fff !important;
+}
+
+.app-sidebar-footer-container {
+  padding: 16px !important;
+  border-top: 1px solid #f0f4f8 !important;
+}
+
+.app-sidebar-signout-btn {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  width: 100% !important;
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  color: #ef4444 !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+.app-sidebar-signin-link {
+  color: var(--accent-orange) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+}
+
+/* Ensure all button elements inside the sidebar inherit font properties */
+.admin-sidebar button {
+  font-family: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+}
+
+/* Nav padding based on collapsed state */
+.admin-sidebar:not(.collapsed) .admin-sidebar-nav {
+  padding: 16px !important;
+}
+
+.admin-sidebar.collapsed .admin-sidebar-nav {
+  padding: 12px !important;
+}

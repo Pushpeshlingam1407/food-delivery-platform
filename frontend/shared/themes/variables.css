@@ -4,9 +4,9 @@
 CSS VARIABLES
 ===================================== */
 :root {
-  /* Font Families - Strictly Anthropic (Playfair) and Cohere (Outfit) */
+  /* Font Families - Single unified font (Outfit) */
   --font-cohere: "Outfit", sans-serif;
-  --font-anthropic: "Playfair Display", serif;
+  --font-anthropic: "Outfit", sans-serif;
   --font-apple: "Outfit", sans-serif;
 
   /* Premium Warm Neutral Palette */

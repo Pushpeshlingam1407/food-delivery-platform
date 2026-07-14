@@ -12,6 +12,7 @@ interface CartItem {
 }
 
 import { useAppContext } from "../../../shared/context/AppContext";
+import "./CartDrawer.css";
 
 export const CartDrawer: React.FC = () => {
   const {
@@ -202,37 +203,18 @@ export const CartDrawer: React.FC = () => {
           {cartItems.map((item) => (
             <div
               key={item.id}
-              className="cart-drawer-item"
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-                marginBottom: "20px",
-                paddingBottom: "20px",
-                borderBottom: "1px solid var(--glass-border)",
-              }}
+              className="cart-drawer-item cart-drawer-item-container"
             >
-              <div style={{ flexGrow: 1 }}>
-                <h4
-                  style={{
-                    fontFamily: "var(--font-cohere)",
-                    fontSize: "1rem",
-                    marginBottom: "4px",
-                  }}
-                >
+              <div className="cart-drawer-item-grow">
+                <h4 className="cart-drawer-item-name">
                   {item.name}
                 </h4>
-                <span
-                  style={{ fontSize: "0.9rem", color: "var(--text-muted)" }}
-                >
+                <span className="cart-drawer-item-price-qty">
                   ${item.price.toFixed(2)} x {item.qty}
                 </span>
               </div>
 
-              <div
-                className="cart-drawer-item-controls"
-                style={{ display: "flex", alignItems: "center", gap: "16px" }}
-              >
+              <div className="cart-drawer-item-controls cart-drawer-item-controls-wrapper">
                 <input
                   type="number"
                   min={0}
@@ -240,22 +222,11 @@ export const CartDrawer: React.FC = () => {
                   onChange={(e) =>
                     updateQty(item.id, parseInt(e.target.value) || 0)
                   }
-                  style={{
-                    width: "50px",
-                    padding: "4px 8px",
-                    borderRadius: "4px",
-                    border: "1px solid var(--glass-border)",
-                    textAlign: "center",
-                  }}
+                  className="cart-drawer-item-qty-input"
                 />
                 <button
                   onClick={() => updateQty(item.id, 0)}
-                  style={{
-                    background: "none",
-                    border: "none",
-                    cursor: "pointer",
-                    color: "red",
-                  }}
+                  className="cart-drawer-item-trash-btn"
                 >
                   <Trash2 size={16} />
                 </button>
@@ -264,86 +235,34 @@ export const CartDrawer: React.FC = () => {
           ))}
 
           {cartItems.length === 0 && (
-            <div
-              style={{
-                padding: "60px 0",
-                textAlign: "center",
-                color: "var(--text-muted)",
-              }}
-            >
+            <div className="cart-drawer-empty-message">
               Your basket is empty
             </div>
           )}
 
           {/* Recommended Items Section */}
           {cartItems.length > 0 && recommendedItems.length > 0 && (
-            <div
-              style={{
-                marginTop: "32px",
-                borderTop: "2px dashed var(--glass-border)",
-                paddingTop: "20px",
-              }}
-            >
-              <h4
-                style={{
-                  margin: "0 0 12px 0",
-                  fontFamily: "var(--font-cohere)",
-                  fontSize: "0.95rem",
-                  color: "var(--text-slate)",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.5px",
-                }}
-              >
+            <div className="cart-drawer-recommended-section">
+              <h4 className="cart-drawer-recommended-title">
                 Add to your order?
               </h4>
-              <div
-                style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  gap: "10px",
-                }}
-              >
+              <div className="cart-drawer-recommended-list">
                 {recommendedItems.map((item) => (
                   <div
                     key={item.id}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      padding: "12px",
-                      background: "rgba(25,25,25,0.02)",
-                      borderRadius: "8px",
-                      border: "1px solid var(--glass-border)",
-                    }}
+                    className="cart-drawer-recommended-item"
                   >
                     <div>
-                      <div style={{ fontSize: "0.9rem", fontWeight: 700 }}>
+                      <div className="cart-drawer-recommended-item-info">
                         {item.name}
                       </div>
-                      <div
-                        style={{
-                          fontSize: "0.8rem",
-                          color: "var(--text-muted)",
-                        }}
-                      >
+                      <div className="cart-drawer-recommended-item-price">
                         ${parseFloat(item.price).toFixed(2)}
                       </div>
                     </div>
                     <button
                       onClick={() => addToCart(item)}
-                      style={{
-                        padding: "4px 10px",
-                        fontSize: "0.8rem",
-                        fontWeight: 700,
-                        border: "1px solid var(--accent-orange)",
-                        borderRadius: "4px",
-                        color: "var(--accent-orange)",
-                        background: "var(--glass-bg)",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "4px",
-                      }}
+                      className="cart-drawer-recommended-add-btn"
                     >
                       <Plus size={12} /> ADD
                     </button>
@@ -355,36 +274,14 @@ export const CartDrawer: React.FC = () => {
         </div>
 
         {cartItems.length > 0 && (
-          <div
-            className="cart-drawer-footer"
-            style={{
-              padding: "24px",
-              background: "rgba(25, 25, 25, 0.02)",
-              borderTop: "1px solid var(--glass-border)",
-            }}
-          >
+          <div className="cart-drawer-footer cart-drawer-footer-wrapper">
             {/* Coupon Browse list */}
             {availableCoupons.length > 0 && (
-              <div style={{ marginBottom: "16px" }}>
-                <div
-                  style={{
-                    fontSize: "0.8rem",
-                    fontWeight: 700,
-                    color: "var(--text-muted)",
-                    marginBottom: "8px",
-                    textTransform: "uppercase",
-                  }}
-                >
+              <div className="cart-drawer-coupons-section">
+                <div className="cart-drawer-coupons-title">
                   Available Coupons
                 </div>
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                    overflowX: "auto",
-                    paddingBottom: "4px",
-                  }}
-                >
+                <div className="cart-drawer-coupons-scroll">
                   {availableCoupons.map((c) => (
                     <button
                       key={c.id}
@@ -417,102 +314,46 @@ export const CartDrawer: React.FC = () => {
               </div>
             )}
 
-            <div
-              className="cart-drawer-coupon"
-              style={{ display: "flex", gap: "12px", marginBottom: "24px" }}
-            >
-              <div
-                style={{
-                  display: "flex",
-                  alignItems: "center",
-                  background: "var(--glass-bg)",
-                  border: "1px solid var(--glass-border)",
-                  borderRadius: "var(--radius-standard)",
-                  padding: "6px 12px",
-                  flexGrow: 1,
-                  gap: "8px",
-                }}
-              >
+            <div className="cart-drawer-coupon cart-drawer-coupon-pills-container">
+              <div className="cart-drawer-coupon-input-wrapper">
                 <Percent size={16} color="var(--text-muted)" />
                 <input
                   type="text"
                   placeholder="PROMOCODE"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
-                  style={{
-                    border: "none",
-                    outline: "none",
-                    width: "100%",
-                    fontSize: "0.85rem",
-                    textTransform: "uppercase",
-                  }}
+                  className="cart-drawer-coupon-input"
                 />
               </div>
               <button
                 onClick={handleApplyCoupon}
-                style={{
-                  background: "var(--text-slate)",
-                  color: "var(--text-sand)",
-                  border: "none",
-                  borderRadius: "var(--radius-standard)",
-                  padding: "8px 16px",
-                  fontWeight: 700,
-                  fontSize: "0.85rem",
-                  cursor: "pointer",
-                }}
+                className="cart-drawer-coupon-apply-btn"
               >
                 Apply
               </button>
             </div>
 
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "8px",
-                fontSize: "0.9rem",
-                marginBottom: "24px",
-              }}
-            >
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <div className="cart-drawer-summary-section">
+              <div className="cart-drawer-summary-row">
                 <span>Subtotal</span>
                 <span>${subtotal.toFixed(2)}</span>
               </div>
               {discount > 0 && (
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    color: "#4CAF50",
-                  }}
-                >
+                <div className="cart-drawer-summary-discount">
                   <span>Discount</span>
                   <span>-${discount.toFixed(2)}</span>
                 </div>
               )}
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div className="cart-drawer-summary-row">
                 <span>GST (18%)</span>
                 <span>${tax.toFixed(2)}</span>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between" }}>
+              <div className="cart-drawer-summary-row">
                 <span>Delivery Fee</span>
                 <span>${deliveryFee.toFixed(2)}</span>
               </div>
-              <hr
-                style={{
-                  border: "none",
-                  borderTop: "1px solid var(--glass-border)",
-                  margin: "8px 0",
-                }}
-              />
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  fontWeight: 800,
-                  fontSize: "1.1rem",
-                }}
-              >
+              <hr className="cart-drawer-summary-divider" />
+              <div className="cart-drawer-summary-total">
                 <span>Total Pay</span>
                 <span>${total.toFixed(2)}</span>
               </div>
@@ -521,12 +362,7 @@ export const CartDrawer: React.FC = () => {
             <button
               onClick={handleCheckout}
               disabled={cartItems.length === 0}
-              className="btn-premium"
-              style={{
-                width: "100%",
-                padding: "14px",
-                fontSize: "1rem",
-              }}
+              className="btn-premium cart-drawer-place-order-btn"
             >
               Place Order
             </button>
