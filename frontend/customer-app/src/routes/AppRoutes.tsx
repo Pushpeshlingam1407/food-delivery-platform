@@ -717,13 +717,7 @@ export const AppRoutes: React.FC = () => {
             />
             <Route
               path="/checkout"
-              element={
-                userEmail ? (
-                  <Checkout />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
+              element={userEmail ? <Checkout /> : <Navigate to="/login" />}
             />
             <Route
               path="/track/:orderId"

@@ -1,4 +1,5 @@
 import React from "react";
+import "./StatCard.css";
 
 export interface StatCardProps {
   theme: "admin" | "restaurant";
@@ -38,17 +39,11 @@ export const StatCard: React.FC<StatCardProps> = ({
       <div className="metric-card-premium">
         <div className="metric-card-header">
           <span className="metric-card-title">{title}</span>
-          <div
-            className="metric-card-icon-wrapper"
-            style={{
-              background: adminIconBackground || "#f1f5f9",
-              color: adminIconColor || "#475569",
-            }}
-          >
+          <div className="metric-card-icon-wrapper metric-card-icon-wrapper-default">
             {icon}
           </div>
         </div>
-        <div className="metric-card-value" style={adminValueStyle}>
+        <div className="metric-card-value">
           {value}
         </div>
         <div className="metric-card-desc">{subtitle}</div>

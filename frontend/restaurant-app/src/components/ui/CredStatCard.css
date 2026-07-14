@@ -1,0 +1,13 @@
+.cred-stat-card-icon-container {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--cred-text-secondary) !important;
+}
+
+.cred-stat-card-bg-icon {
+  position: absolute !important;
+  bottom: -20px !important;
+  right: -20px !important;
+  color: var(--cred-text-secondary) !important;
+}

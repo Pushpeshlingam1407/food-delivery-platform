@@ -2,69 +2,7 @@ import React from "react";
 import { Toaster as SonnerToaster, toast as sonner } from "sonner";
 import { Toaster as HotToaster, toast as hotToast } from "react-hot-toast";
 import { CheckCircle2, AlertCircle, TriangleAlert, Info } from "lucide-react";
-
-const baseCredStyle = {
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "flex-start",
-  borderRadius: "100px",
-  padding: "14px 20px",
-  fontSize: "0.92rem",
-  fontWeight: 600,
-  letterSpacing: "0.015em",
-  fontFamily: "var(--font-apple, inherit)",
-  color: "#fff",
-  backdropFilter: "blur(24px)",
-  width: "max-content",
-  maxWidth: "92vw",
-  margin: "0 auto",
-  gap: "12px",
-};
-
-const credStyle = {
-  ...baseCredStyle,
-  background:
-    "linear-gradient(135deg, rgba(20,20,20,0.95), rgba(40,40,40,0.98))",
-  boxShadow:
-    "0 20px 40px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255, 255, 255, 0.15)",
-  border: "1px solid rgba(255, 255, 255, 0.1)",
-};
-
-const credSuccessStyle = {
-  ...baseCredStyle,
-  background: "linear-gradient(135deg, #00C853 0%, #64DD17 100%)",
-  boxShadow:
-    "0 20px 40px rgba(0, 200, 83, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
-  border: "none",
-  color: "#ffffff",
-};
-
-const credErrorStyle = {
-  ...baseCredStyle,
-  background: "linear-gradient(135deg, #FF1744 0%, #D50000 100%)",
-  boxShadow:
-    "0 20px 40px rgba(255, 23, 68, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
-  border: "none",
-  color: "#ffffff",
-};
-
-const credWarningStyle = {
-  ...baseCredStyle,
-  background: "linear-gradient(135deg, #FF9100 0%, #FF3D00 100%)",
-  boxShadow:
-    "0 20px 40px rgba(255, 145, 0, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
-  border: "none",
-  color: "#ffffff",
-};
-
-const credInfoStyle = {
-  ...baseCredStyle,
-  background: "linear-gradient(135deg, #2979FF 0%, #3D5AFE 100%)",
-  boxShadow:
-    "0 20px 40px rgba(41, 121, 255, 0.4), inset 0 1px 2px rgba(255, 255, 255, 0.5)",
-  border: "none",
-  color: "#ffffff",
-};
+import "./toast.css";
 
 /**
  * Global Toast Provider wrapping both Sonner (for UI feedback)
@@ -77,22 +15,22 @@ export const ToastProvider = () => {
       <SonnerToaster
         position="top-center"
         toastOptions={{
-          style: credStyle,
+          className: "toast-base-cred toast-cred",
         }}
       />
       <HotToaster
         position="top-center"
         toastOptions={{
-          style: credStyle,
+          className: "toast-base-cred toast-cred",
           success: {
-            style: credSuccessStyle,
+            className: "toast-base-cred toast-cred-success",
             iconTheme: {
               primary: "#4ade80",
               secondary: "rgba(15,15,15,1)",
             },
           },
           error: {
-            style: credErrorStyle,
+            className: "toast-base-cred toast-cred-error",
             iconTheme: {
               primary: "#f87171",
               secondary: "rgba(15,15,15,1)",
@@ -112,76 +50,41 @@ export const notify = {
   success: (message: string, options?: { description?: string }) => {
     sonner.success(message, {
       ...options,
-      style: credSuccessStyle,
+      className: "toast-base-cred toast-cred-success",
       duration: 4000,
     });
   },
   error: (message: string, options?: { description?: string }) => {
     sonner.error(message, {
       ...options,
-      style: credErrorStyle,
+      className: "toast-base-cred toast-cred-error",
       duration: 6000,
     });
   },
   warning: (message: string, options?: { description?: string }) => {
     sonner.warning(message, {
       ...options,
-      style: credWarningStyle,
+      className: "toast-base-cred toast-cred-warning",
       duration: 5000,
     });
   },
   info: (message: string, options?: { description?: string }) => {
-    sonner.info(message, { ...options, style: credInfoStyle, duration: 4000 });
+    sonner.info(message, {
+      ...options,
+      className: "toast-base-cred toast-cred-info",
+      duration: 4000,
+    });
   },
   authSuccess: (title: string, subtitle?: string) => {
     sonner.custom(
       (t) => (
-        <div
-          style={{
-            ...credStyle,
-            background: "linear-gradient(135deg, #10b981 0%, #059669 100%)",
-            boxShadow:
-              "0 20px 40px rgba(16, 185, 129, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.3)",
-            border: "none",
-            padding: "16px 24px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              background: "rgba(255, 255, 255, 0.2)",
-              boxShadow: "inset 0 1px 2px rgba(255, 255, 255, 0.5)",
-            }}
-          >
+        <div className="toast-base-cred toast-cred toast-custom-success-bg toast-custom-wrapper">
+          <div className="toast-custom-icon-wrapper">
             <CheckCircle2 size={24} color="#fff" />
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            <span
-              style={{
-                fontSize: "1.05rem",
-                fontWeight: 800,
-                color: "#fff",
-                letterSpacing: "-0.01em",
-              }}
-            >
-              {title}
-            </span>
-            {subtitle && (
-              <span
-                style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 500,
-                  color: "rgba(255, 255, 255, 0.9)",
-                }}
-              >
-                {subtitle}
-              </span>
-            )}
+          <div className="toast-custom-text-wrapper">
+            <span className="toast-custom-title">{title}</span>
+            {subtitle && <span className="toast-custom-subtitle">{subtitle}</span>}
           </div>
         </div>
       ),
@@ -191,52 +94,13 @@ export const notify = {
   authLogout: (title: string, subtitle?: string) => {
     sonner.custom(
       (t) => (
-        <div
-          style={{
-            ...credStyle,
-            background: "linear-gradient(135deg, #3b82f6 0%, #2563eb 100%)",
-            boxShadow:
-              "0 20px 40px rgba(59, 130, 246, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.3)",
-            border: "none",
-            padding: "16px 24px",
-          }}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: "40px",
-              height: "40px",
-              borderRadius: "50%",
-              background: "rgba(255, 255, 255, 0.2)",
-              boxShadow: "inset 0 1px 2px rgba(255, 255, 255, 0.5)",
-            }}
-          >
+        <div className="toast-base-cred toast-cred toast-custom-logout-bg toast-custom-wrapper">
+          <div className="toast-custom-icon-wrapper">
             <Info size={24} color="#fff" />
           </div>
-          <div style={{ display: "flex", flexDirection: "column", gap: "2px" }}>
-            <span
-              style={{
-                fontSize: "1.05rem",
-                fontWeight: 800,
-                color: "#fff",
-                letterSpacing: "-0.01em",
-              }}
-            >
-              {title}
-            </span>
-            {subtitle && (
-              <span
-                style={{
-                  fontSize: "0.85rem",
-                  fontWeight: 500,
-                  color: "rgba(255, 255, 255, 0.9)",
-                }}
-              >
-                {subtitle}
-              </span>
-            )}
+          <div className="toast-custom-text-wrapper">
+            <span className="toast-custom-title">{title}</span>
+            {subtitle && <span className="toast-custom-subtitle">{subtitle}</span>}
           </div>
         </div>
       ),

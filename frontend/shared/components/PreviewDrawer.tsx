@@ -1,5 +1,6 @@
 import React from "react";
 import { X } from "lucide-react";
+import "./PreviewDrawer.css";
 
 interface PreviewDrawerProps {
   isOpen: boolean;
@@ -26,27 +27,18 @@ export const PreviewDrawer: React.FC<PreviewDrawerProps> = ({
           <>
             <div className="preview-drawer-header">
               <div>
-                <h3 style={{ margin: 0, fontSize: "1.2rem", fontWeight: 800 }}>
+                <h3 className="preview-drawer-title-text">
                   {title}
                 </h3>
                 {subtitle && (
-                  <span
-                    style={{ fontSize: "0.8rem", color: "var(--text-muted)" }}
-                  >
+                  <span className="preview-drawer-subtitle-text">
                     {subtitle}
                   </span>
                 )}
               </div>
               <button
                 onClick={onClose}
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                }}
+                className="preview-drawer-close-button"
               >
                 <X size={20} />
               </button>

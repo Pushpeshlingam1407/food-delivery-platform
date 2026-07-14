@@ -1,4 +1,5 @@
 import React from "react";
+import "./CredStatCard.css";
 
 interface CredStatCardProps {
   title: string;
@@ -20,14 +21,7 @@ export const CredStatCard: React.FC<CredStatCardProps> = ({
       <div>
         <div className="cred-stat-title">
           {icon && (
-            <span
-              style={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                color: "var(--cred-text-secondary)",
-              }}
-            >
+            <span className="cred-stat-card-icon-container">
               {icon}
             </span>
           )}
@@ -39,15 +33,7 @@ export const CredStatCard: React.FC<CredStatCardProps> = ({
 
       {/* Background Watermark Icon */}
       {icon && (
-        <div
-          className="bg-icon"
-          style={{
-            position: "absolute",
-            bottom: "-20px",
-            right: "-20px",
-            color: "var(--cred-text-secondary)",
-          }}
-        >
+        <div className="bg-icon cred-stat-card-bg-icon">
           {React.cloneElement(icon as React.ReactElement<any>, {
             size: 150,
             strokeWidth: 1.5,

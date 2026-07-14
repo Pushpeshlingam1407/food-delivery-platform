@@ -1,0 +1,19 @@
+.preview-drawer-title-text {
+  margin: 0 !important;
+  font-size: 1.2rem !important;
+  font-weight: 800 !important;
+}
+
+.preview-drawer-subtitle-text {
+  font-size: 0.8rem !important;
+  color: var(--text-muted) !important;
+}
+
+.preview-drawer-close-button {
+  background: none !important;
+  border: none !important;
+  cursor: pointer !important;
+  padding: 4px !important;
+  display: flex !important;
+  align-items: center !important;
+}
