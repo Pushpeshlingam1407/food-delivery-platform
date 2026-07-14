@@ -364,7 +364,15 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
               className="foodie-restaurant-card"
             >
               <div className="foodie-card-image-wrapper">
-                {getRestEmoji(r.description)}
+                {r.banner_image_url ? (
+                  <img
+                    src={r.banner_image_url}
+                    alt={r.name}
+                    className="foodie-card-image"
+                  />
+                ) : (
+                  getRestEmoji(r.description)
+                )}
                 {r.status !== "open" && (
                   <div className="foodie-card-closed-overlay">Closed</div>
                 )}

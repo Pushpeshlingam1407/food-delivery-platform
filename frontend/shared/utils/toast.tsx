@@ -80,7 +80,7 @@ const notify = {
       (t) => (
         <div className="toast-base-cred toast-cred toast-custom-success-bg toast-custom-wrapper">
           <div className="toast-custom-icon-wrapper">
-            <CheckCircle2 size={24} color="#fff" />
+            <CheckCircle2 size={22} color="#10b981" />
           </div>
           <div className="toast-custom-text-wrapper">
             <span className="toast-custom-title">{title}</span>
@@ -98,7 +98,7 @@ const notify = {
       (t) => (
         <div className="toast-base-cred toast-cred toast-custom-logout-bg toast-custom-wrapper">
           <div className="toast-custom-icon-wrapper">
-            <Info size={24} color="#fff" />
+            <Info size={22} color="#f43f5e" />
           </div>
           <div className="toast-custom-text-wrapper">
             <span className="toast-custom-title">{title}</span>

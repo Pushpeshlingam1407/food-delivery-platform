@@ -57,12 +57,15 @@ INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_ha
 -- Customers
 INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, status, is_verified) VALUES
 ('u0000000-0000-0000-0000-000000000002', 2, 'Aarav', 'Sharma', 'aarav.sharma@example.com', '+919876543210', '$2b$10$xyz...', 'active', TRUE),
-('u0000000-0000-0000-0000-000000000003', 2, 'Aditi', 'Verma', 'aditi.verma@example.com', '+919876543211', '$2b$10$xyz...', 'active', TRUE);
+('u0000000-0000-0000-0000-000000000003', 2, 'Aditi', 'Verma', 'aditi.verma@example.com', '+919876543211', '$2b$10$xyz...', 'active', TRUE),
+('u0000000-0000-0000-0000-000000000020', 2, 'Jimmy', 'McGill', 'jimmy@slippin.com', '+919876543220', '$2b$10$xyz...', 'active', TRUE);
 
 -- Restaurant Owners
 INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, status, is_verified) VALUES
 ('u0000000-0000-0000-0000-000000000004', 3, 'Rajesh', 'Kumar', 'rajesh.owner1@example.com', '+918765432101', '$2b$10$xyz...', 'active', TRUE),
-('u0000000-0000-0000-0000-000000000005', 3, 'Priya', 'Nair', 'priya.owner2@example.com', '+918765432102', '$2b$10$xyz...', 'active', TRUE);
+('u0000000-0000-0000-0000-000000000005', 3, 'Priya', 'Nair', 'priya.owner2@example.com', '+918765432102', '$2b$10$xyz...', 'active', TRUE),
+('u0000000-0000-0000-0000-000000000008', 3, 'Vikram', 'Mehta', 'vikram.owner3@example.com', '+918765432108', '$2b$10$xyz...', 'active', TRUE),
+('u0000000-0000-0000-0000-000000000009', 3, 'Maya', 'Sen', 'maya.owner4@example.com', '+918765432109', '$2b$10$xyz...', 'active', TRUE);
 
 -- Delivery Partners
 INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, status, is_verified) VALUES
@@ -73,7 +76,9 @@ INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_ha
 -- Restaurant Addresses
 INSERT INTO addresses (id, user_id, address_type, street_address, landmark, city, state, postal_code, latitude, longitude, is_default) VALUES
 ('a0000000-0000-0000-0000-000000000004', 'u0000000-0000-0000-0000-000000000004', 'restaurant', '12, MG Road', 'Near Metro Station', 'Bengaluru', 'Karnataka', '560001', 12.9716, 77.5946, TRUE),
-('a0000000-0000-0000-0000-000000000005', 'u0000000-0000-0000-0000-000000000005', 'restaurant', '45, Indiranagar Double Road', 'Opp Bank of Baroda', 'Bengaluru', 'Karnataka', '560038', 12.9784, 77.6408, TRUE);
+('a0000000-0000-0000-0000-000000000005', 'u0000000-0000-0000-0000-000000000005', 'restaurant', '45, Indiranagar Double Road', 'Opp Bank of Baroda', 'Bengaluru', 'Karnataka', '560038', 12.9784, 77.6408, TRUE),
+('a0000000-0000-0000-0000-000000000008', 'u0000000-0000-0000-0000-000000000008', 'restaurant', '88, Koramangala 4th Block', 'Near Sony Signal', 'Bengaluru', 'Karnataka', '560034', 12.9343, 77.6244, TRUE),
+('a0000000-0000-0000-0000-000000000009', 'u0000000-0000-0000-0000-000000000009', 'restaurant', '201, 100 Feet Road', 'Hal 2nd Stage', 'Bengaluru', 'Karnataka', '560008', 12.9698, 77.6413, TRUE);
 
 -- Customer Addresses
 INSERT INTO addresses (id, user_id, address_type, street_address, landmark, city, state, postal_code, latitude, longitude, is_default) VALUES
@@ -81,30 +86,40 @@ INSERT INTO addresses (id, user_id, address_type, street_address, landmark, city
 ('a0000000-0000-0000-0000-000000000003', 'u0000000-0000-0000-0000-000000000003', 'work', 'Tower B, Tech Park', 'Floor 8', 'Bengaluru', 'Karnataka', '560103', 12.9279, 77.6833, TRUE);
 
 -- 4. Seed Restaurants
-INSERT INTO restaurants (id, owner_id, name, description, address_id, commission_rate, average_delivery_time, is_active, is_verified, status, opening_time, closing_time) VALUES
-('r0000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000004', 'The Curry House', 'Authentic North Indian Curries and Biryanis', 'a0000000-0000-0000-0000-000000000004', 12.50, 35, TRUE, TRUE, 'open', '11:00:00', '23:00:00'),
-('r0000000-0000-0000-0000-000000000002', 'u0000000-0000-0000-0000-000000000005', 'Pizza Imperia', 'Woodfired pizzas and Italian pasta', 'a0000000-0000-0000-0000-000000000005', 10.00, 25, TRUE, TRUE, 'open', '12:00:00', '23:30:00');
+INSERT INTO restaurants (id, owner_id, name, description, address_id, banner_image_url, logo_url, commission_rate, average_delivery_time, is_active, is_verified, status, opening_time, closing_time) VALUES
+('r0000000-0000-0000-0000-000000000001', 'u0000000-0000-0000-0000-000000000004', 'The Curry House', 'Authentic North Indian Curries and Biryanis', 'a0000000-0000-0000-0000-000000000004', 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=600&auto=format&fit=crop', 'https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=80&auto=format&fit=crop', 12.50, 35, TRUE, TRUE, 'open', '11:00:00', '23:00:00'),
+('r0000000-0000-0000-0000-000000000002', 'u0000000-0000-0000-0000-000000000005', 'Pizza Imperia', 'Woodfired pizzas and Italian pasta', 'a0000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop', 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=80&auto=format&fit=crop', 10.00, 25, TRUE, TRUE, 'open', '12:00:00', '23:30:00'),
+('r0000000-0000-0000-0000-000000000003', 'u0000000-0000-0000-0000-000000000008', 'Sushi World', 'Premium Japanese Sushi and Ramen', 'a0000000-0000-0000-0000-000000000008', 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&auto=format&fit=crop', 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=80&auto=format&fit=crop', 15.00, 40, TRUE, TRUE, 'open', '11:30:00', '22:30:00'),
+('r0000000-0000-0000-0000-000000000004', 'u0000000-0000-0000-0000-000000000009', 'Bake & Brew Cafe', 'Fresh artisanal bakery and specialty coffee', 'a0000000-0000-0000-0000-000000000009', 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=600&auto=format&fit=crop', 'https://images.unsplash.com/photo-1509440159596-0249088772ff?w=80&auto=format&fit=crop', 8.00, 20, TRUE, TRUE, 'open', '08:00:00', '21:00:00');
 
 -- 5. Seed Restaurant Categories
 INSERT INTO restaurant_categories (id, name, image_url, is_active) VALUES
 (1, 'North Indian', 'http://cdn/categories/north_indian.jpg', TRUE),
 (2, 'Pizza', 'http://cdn/categories/pizza.jpg', TRUE),
 (3, 'Biryani', 'http://cdn/categories/biryani.jpg', TRUE),
-(4, 'Italian', 'http://cdn/categories/italian.jpg', TRUE);
+(4, 'Italian', 'http://cdn/categories/italian.jpg', TRUE),
+(5, 'Japanese', 'http://cdn/categories/japanese.jpg', TRUE),
+(6, 'Bakery', 'http://cdn/categories/bakery.jpg', TRUE);
 
 -- 6. Map Restaurants to Categories
 INSERT INTO restaurant_category_mapping (restaurant_id, category_id) VALUES
 ('r0000000-0000-0000-0000-000000000001', 1),
 ('r0000000-0000-0000-0000-000000000001', 3),
 ('r0000000-0000-0000-0000-000000000002', 2),
-('r0000000-0000-0000-0000-000000000002', 4);
+('r0000000-0000-0000-0000-000000000002', 4),
+('r0000000-0000-0000-0000-000000000003', 5),
+('r0000000-0000-0000-0000-000000000004', 6);
 
 -- 7. Menu Categories
 INSERT INTO menu_categories (id, restaurant_id, name, sort_order, is_active) VALUES
 ('mc000000-0000-0000-0000-000000000001', 'r0000000-0000-0000-0000-000000000001', 'Main Course', 1, TRUE),
 ('mc000000-0000-0000-0000-000000000002', 'r0000000-0000-0000-0000-000000000001', 'Starters', 0, TRUE),
 ('mc000000-0000-0000-0000-000000000003', 'r0000000-0000-0000-0000-000000000002', 'Gourmet Pizzas', 0, TRUE),
-('mc000000-0000-0000-0000-000000000004', 'r0000000-0000-0000-0000-000000000002', 'Beverages', 1, TRUE);
+('mc000000-0000-0000-0000-000000000004', 'r0000000-0000-0000-0000-000000000002', 'Beverages', 1, TRUE),
+('mc000000-0000-0000-0000-000000000005', 'r0000000-0000-0000-0000-000000000003', 'Sushi & Rolls', 0, TRUE),
+('mc000000-0000-0000-0000-000000000006', 'r0000000-0000-0000-0000-000000000003', 'Ramen & Bowls', 1, TRUE),
+('mc000000-0000-0000-0000-000000000007', 'r0000000-0000-0000-0000-000000000004', 'Artisanal Bread & Pastry', 0, TRUE),
+('mc000000-0000-0000-0000-000000000008', 'r0000000-0000-0000-0000-000000000004', 'Specialty Coffee', 1, TRUE);
 
 -- 8. Menus
 INSERT INTO menus (id, restaurant_id, category_id, name, description, price, is_veg, is_available, preparation_time) VALUES
@@ -112,7 +127,21 @@ INSERT INTO menus (id, restaurant_id, category_id, name, description, price, is_
 ('m0000000-0000-0000-0000-000000000002', 'r0000000-0000-0000-0000-000000000001', 'mc000000-0000-0000-0000-000000000001', 'Paneer Butter Masala', 'Fresh cottage cheese cooked in creamy tomato butter gravy', 320.00, TRUE, TRUE, 15),
 ('m0000000-0000-0000-0000-000000000003', 'r0000000-0000-0000-0000-000000000001', 'mc000000-0000-0000-0000-000000000002', 'Garlic Naan', 'Leavened flatbread brushed with garlic and butter', 80.00, TRUE, TRUE, 8),
 ('m0000000-0000-0000-0000-000000000004', 'r0000000-0000-0000-0000-000000000002', 'mc000000-0000-0000-0000-000000000003', 'Margherita Pizza', 'Classic pizza with fresh mozzarella, basil, and San Marzano tomatoes', 299.00, TRUE, TRUE, 12),
-('m0000000-0000-0000-0000-000000000005', 'r0000000-0000-0000-0000-000000000002', 'mc000000-0000-0000-0000-000000000003', 'Chicken Pepperoni Pizza', 'Spiced chicken pepperoni slices with cheese blend', 420.00, FALSE, TRUE, 15);
+('m0000000-0000-0000-0000-000000000005', 'r0000000-0000-0000-0000-000000000002', 'mc000000-0000-0000-0000-000000000003', 'Chicken Pepperoni Pizza', 'Spiced chicken pepperoni slices with cheese blend', 420.00, FALSE, TRUE, 15),
+('m0000000-0000-0000-0000-000000000006', 'r0000000-0000-0000-0000-000000000003', 'mc000000-0000-0000-0000-000000000005', 'California Roll', 'Premium crab meat, avocado, cucumber', 350.00, FALSE, TRUE, 10),
+('m0000000-0000-0000-0000-000000000007', 'r0000000-0000-0000-0000-000000000003', 'mc000000-0000-0000-0000-000000000005', 'Spicy Tuna Roll', 'Fresh yellowfin tuna, spicy mayo, green onions', 390.00, FALSE, TRUE, 12),
+('m0000000-0000-0000-0000-000000000008', 'r0000000-0000-0000-0000-000000000003', 'mc000000-0000-0000-0000-000000000006', 'Tonkotsu Ramen', 'Rich pork bone broth, soft-boiled egg, chashu pork', 450.00, FALSE, TRUE, 18),
+('m0000000-0000-0000-0000-000000000009', 'r0000000-0000-0000-0000-000000000003', 'mc000000-0000-0000-0000-000000000006', 'Vegetable Gyoza', 'Pan-seared dumplings filled with seasoned vegetables', 250.00, TRUE, TRUE, 10),
+('m0000000-0000-0000-0000-000000000010', 'r0000000-0000-0000-0000-000000000004', 'mc000000-0000-0000-0000-000000000007', 'Butter Croissant', 'Flaky, butter-laminated french style croissant', 120.00, TRUE, TRUE, 5),
+('m0000000-0000-0000-0000-000000000011', 'r0000000-0000-0000-0000-000000000004', 'mc000000-0000-0000-0000-000000000007', 'Pain au Chocolat', 'Butter pastry filled with dark Belgian chocolate', 150.00, TRUE, TRUE, 5),
+('m0000000-0000-0000-0000-000000000012', 'r0000000-0000-0000-0000-000000000004', 'mc000000-0000-0000-0000-000000000008', 'Cold Brew Coffee', 'Slow-steeped specialty single-origin coffee', 180.00, TRUE, TRUE, 3),
+('m0000000-0000-0000-0000-000000000013', 'r0000000-0000-0000-0000-000000000004', 'mc000000-0000-0000-0000-000000000008', 'Caramel Macchiato', 'Espresso with steamed milk, vanilla syrup, caramel drizzle', 220.00, TRUE, TRUE, 5),
+('m0000000-0000-0000-0000-000000000014', 'r0000000-0000-0000-0000-000000000001', 'mc000000-0000-0000-0000-000000000001', 'Dal Makhani', 'Slow-cooked black lentils in butter and cream', 280.00, TRUE, TRUE, 15),
+('m0000000-0000-0000-0000-000000000015', 'r0000000-0000-0000-0000-000000000002', 'mc000000-0000-0000-0000-000000000003', 'Four Cheese White Pizza', 'Mozzarella, gorgonzola, parmesan, ricotta', 380.00, TRUE, TRUE, 12),
+('m0000000-0000-0000-0000-000000000016', 'r0000000-0000-0000-0000-000000000002', 'mc000000-0000-0000-0000-000000000003', 'Garlic Breadsticks', 'Fresh baked dough brushed with butter and garlic herbs', 149.00, TRUE, TRUE, 8),
+('m0000000-0000-0000-0000-000000000017', 'r0000000-0000-0000-0000-000000000002', 'mc000000-0000-0000-0000-000000000003', 'Truffle Mushroom Pasta', 'Penne pasta in rich creamy parmesan and truffle oil sauce', 349.00, TRUE, TRUE, 12),
+('m0000000-0000-0000-0000-000000000018', 'r0000000-0000-0000-0000-000000000002', 'mc000000-0000-0000-0000-000000000003', 'Pesto Chicken Pizza', 'Grilled chicken, house basil pesto, sun-dried tomatoes', 449.00, FALSE, TRUE, 15),
+('m0000000-0000-0000-0000-000000000019', 'r0000000-0000-0000-0000-000000000002', 'mc000000-0000-0000-0000-000000000003', 'Tiramisu', 'Classic Italian dessert with coffee-dipped ladyfingers and mascarpone', 199.00, TRUE, TRUE, 8);
 
 -- 9. Menu Images
 INSERT INTO menu_images (id, menu_id, image_url, is_primary) VALUES
@@ -120,7 +149,17 @@ INSERT INTO menu_images (id, menu_id, image_url, is_primary) VALUES
 ('mi000000-0000-0000-0000-000000000002', 'm0000000-0000-0000-0000-000000000002', 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000003', 'm0000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000004', 'm0000000-0000-0000-0000-000000000004', 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop', TRUE),
-('mi000000-0000-0000-0000-000000000005', 'm0000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&auto=format&fit=crop', TRUE);
+('mi000000-0000-0000-0000-000000000005', 'm0000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000006', 'm0000000-0000-0000-0000-000000000006', 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000007', 'm0000000-0000-0000-0000-000000000007', 'https://images.unsplash.com/photo-1553621042-f6e147245754?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000008', 'm0000000-0000-0000-0000-000000000008', 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000009', 'm0000000-0000-0000-0000-000000000009', 'https://images.unsplash.com/photo-1541696432-82c6da8ce7bf?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000010', 'm0000000-0000-0000-0000-000000000010', 'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000011', 'm0000000-0000-0000-0000-000000000011', 'https://images.unsplash.com/photo-1608198093002-ad4e005484ec?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000012', 'm0000000-0000-0000-0000-000000000012', 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000013', 'm0000000-0000-0000-0000-000000000013', 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000014', 'm0000000-0000-0000-0000-000000000014', 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000015', 'm0000000-0000-0000-0000-000000000015', 'https://images.unsplash.com/photo-1573821663912-569905455b1c?w=600&auto=format&fit=crop', TRUE);
 
 
 -- 10. Inventory
@@ -129,7 +168,21 @@ INSERT INTO inventory (id, menu_id, available_quantity, unlimited) VALUES
 ('i0000000-0000-0000-0000-000000000002', 'm0000000-0000-0000-0000-000000000002', 100, FALSE),
 ('i0000000-0000-0000-0000-000000000003', 'm0000000-0000-0000-0000-000000000003', 200, FALSE),
 ('i0000000-0000-0000-0000-000000000004', 'm0000000-0000-0000-0000-000000000004', 30, FALSE),
-('i0000000-0000-0000-0000-000000000005', 'm0000000-0000-0000-0000-000000000005', 0, FALSE); -- Sold out pepperoni
+('i0000000-0000-0000-0000-000000000005', 'm0000000-0000-0000-0000-000000000005', 0, FALSE), -- Sold out pepperoni
+('i0000000-0000-0000-0000-000000000006', 'm0000000-0000-0000-0000-000000000006', 75, FALSE),
+('i0000000-0000-0000-0000-000000000007', 'm0000000-0000-0000-0000-000000000007', 40, FALSE),
+('i0000000-0000-0000-0000-000000000008', 'm0000000-0000-0000-0000-000000000008', 50, FALSE),
+('i0000000-0000-0000-0000-000000000009', 'm0000000-0000-0000-0000-000000000009', 90, FALSE),
+('i0000000-0000-0000-0000-000000000010', 'm0000000-0000-0000-0000-000000000010', 120, FALSE),
+('i0000000-0000-0000-0000-000000000011', 'm0000000-0000-0000-0000-000000000011', 80, FALSE),
+('i0000000-0000-0000-0000-000000000012', 'm0000000-0000-0000-0000-000000000012', 150, FALSE),
+('i0000000-0000-0000-0000-000000000013', 'm0000000-0000-0000-0000-000000000013', 60, FALSE),
+('i0000000-0000-0000-0000-000000000014', 'm0000000-0000-0000-0000-000000000014', 110, FALSE),
+('i0000000-0000-0000-0000-000000000015', 'm0000000-0000-0000-0000-000000000015', 70, FALSE),
+('i0000000-0000-0000-0000-000000000016', 'm0000000-0000-0000-0000-000000000016', 50, FALSE),
+('i0000000-0000-0000-0000-000000000017', 'm0000000-0000-0000-0000-000000000017', 45, FALSE),
+('i0000000-0000-0000-0000-000000000018', 'm0000000-0000-0000-0000-000000000018', 60, FALSE),
+('i0000000-0000-0000-0000-000000000019', 'm0000000-0000-0000-0000-000000000019', 30, FALSE);
 
 -- 11. Delivery Partners
 INSERT INTO delivery_partners (id, vehicle_number, vehicle_type, license_number, is_online, status) VALUES
@@ -139,7 +192,8 @@ INSERT INTO delivery_partners (id, vehicle_number, vehicle_type, license_number,
 -- 12. Wallets
 INSERT INTO wallets (id, user_id, balance, currency) VALUES
 ('w0000000-0000-0000-0000-000000000002', 'u0000000-0000-0000-0000-000000000002', 500.00, 'INR'), -- Customer Wallet
-('w0000000-0000-0000-0000-000000000006', 'u0000000-0000-0000-0000-000000000006', 150.00, 'INR'); -- Driver Wallet
+('w0000000-0000-0000-0000-000000000006', 'u0000000-0000-0000-0000-000000000006', 150.00, 'INR'), -- Driver Wallet
+('w0000000-0000-0000-0000-000000000020', 'u0000000-0000-0000-0000-000000000020', 1000.00, 'INR'); -- Driver Wallet
 
 -- 13. System Settings
 INSERT INTO system_settings (key_name, value, description) VALUES

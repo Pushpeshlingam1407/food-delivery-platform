@@ -226,3 +226,24 @@ textarea {
     gap: 24px;
   }
 }
+
+/* Restaurant Card Images styling */
+.customer-home .foodie-card-image-wrapper {
+  height: 160px !important;
+  position: relative !important;
+  overflow: hidden !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.customer-home .foodie-card-image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  transition: transform 0.3s ease !important;
+}
+
+.customer-home .foodie-restaurant-card:hover .foodie-card-image {
+  transform: scale(1.05) !important;
+}
