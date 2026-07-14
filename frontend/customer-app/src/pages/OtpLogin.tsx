@@ -22,10 +22,9 @@ export const OtpLogin: React.FC = () => {
       const response = await api.post("/auth/otp/send", { phone });
       if (response.data.status === "success") {
         setOtpSent(true);
-        notify.success(
-          "Verification code sent!",
-          `Check your phone for the code.`,
-        );
+        notify.success("Verification code sent!", {
+          description: "Check your phone for the code.",
+        });
       }
     } catch (error: any) {
       console.error(error);

@@ -121,7 +121,9 @@ export const Dashboard: React.FC = () => {
     fetchDriverStats();
     const ioSocket = io("http://localhost:5000");
     setSocket(ioSocket);
-    return () => ioSocket.disconnect();
+    return () => {
+      ioSocket.disconnect();
+    };
   }, []);
 
   useEffect(() => {

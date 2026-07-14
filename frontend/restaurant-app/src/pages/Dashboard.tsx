@@ -546,7 +546,7 @@ export const Dashboard: React.FC = () => {
                     justifyContent: "space-between",
                     alignItems: "center",
                     marginTop: "auto",
-                    pt: "12px",
+                    paddingTop: "12px",
                     borderTop: "1px solid var(--cred-border)",
                   }}
                 >

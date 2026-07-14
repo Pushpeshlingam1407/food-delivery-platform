@@ -48,7 +48,7 @@ export const CredStatCard: React.FC<CredStatCardProps> = ({
             color: "var(--cred-text-secondary)",
           }}
         >
-          {React.cloneElement(icon as React.ReactElement, {
+          {React.cloneElement(icon as React.ReactElement<any>, {
             size: 150,
             strokeWidth: 1.5,
           })}

@@ -28,7 +28,7 @@ type DriverProps = {
   variant: "driver";
   driverName?: string | null;
   onLogout?: () => void;
-  onOpenMenu: () => void;
+  onOpenMenu?: () => void;
 };
 type AdminProps = {
   variant: "admin";
