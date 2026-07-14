@@ -43,9 +43,7 @@ export const StatCard: React.FC<StatCardProps> = ({
             {icon}
           </div>
         </div>
-        <div className="metric-card-value">
-          {value}
-        </div>
+        <div className="metric-card-value">{value}</div>
         <div className="metric-card-desc">{subtitle}</div>
       </div>
     );

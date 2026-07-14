@@ -27,19 +27,14 @@ export const PreviewDrawer: React.FC<PreviewDrawerProps> = ({
           <>
             <div className="preview-drawer-header">
               <div>
-                <h3 className="preview-drawer-title-text">
-                  {title}
-                </h3>
+                <h3 className="preview-drawer-title-text">{title}</h3>
                 {subtitle && (
                   <span className="preview-drawer-subtitle-text">
                     {subtitle}
                   </span>
                 )}
               </div>
-              <button
-                onClick={onClose}
-                className="preview-drawer-close-button"
-              >
+              <button onClick={onClose} className="preview-drawer-close-button">
                 <X size={20} />
               </button>
             </div>

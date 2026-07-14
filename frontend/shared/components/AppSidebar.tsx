@@ -229,10 +229,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
                 bites<span>{badgeLabel}</span>
               </Link>
             ) : (
-              <Link
-                to="/"
-                className="admin-sidebar-logo app-sidebar-logo-text"
-              >
+              <Link to="/" className="admin-sidebar-logo app-sidebar-logo-text">
                 b.
               </Link>
             )}

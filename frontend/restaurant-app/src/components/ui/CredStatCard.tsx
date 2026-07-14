@@ -21,9 +21,7 @@ export const CredStatCard: React.FC<CredStatCardProps> = ({
       <div>
         <div className="cred-stat-title">
           {icon && (
-            <span className="cred-stat-card-icon-container">
-              {icon}
-            </span>
+            <span className="cred-stat-card-icon-container">{icon}</span>
           )}
           {title}
         </div>

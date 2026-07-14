@@ -1,6 +1,6 @@
 .app-sidebar-fixed {
   position: fixed !important;
-  zIndex: 95 !important;
+  zindex: 95 !important;
 }
 
 .app-sidebar-header-wrapper-collapsed {

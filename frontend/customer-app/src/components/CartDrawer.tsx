@@ -206,9 +206,7 @@ export const CartDrawer: React.FC = () => {
               className="cart-drawer-item cart-drawer-item-container"
             >
               <div className="cart-drawer-item-grow">
-                <h4 className="cart-drawer-item-name">
-                  {item.name}
-                </h4>
+                <h4 className="cart-drawer-item-name">{item.name}</h4>
                 <span className="cart-drawer-item-price-qty">
                   ${item.price.toFixed(2)} x {item.qty}
                 </span>
@@ -248,10 +246,7 @@ export const CartDrawer: React.FC = () => {
               </h4>
               <div className="cart-drawer-recommended-list">
                 {recommendedItems.map((item) => (
-                  <div
-                    key={item.id}
-                    className="cart-drawer-recommended-item"
-                  >
+                  <div key={item.id} className="cart-drawer-recommended-item">
                     <div>
                       <div className="cart-drawer-recommended-item-info">
                         {item.name}

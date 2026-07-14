@@ -84,7 +84,9 @@ export const notify = {
           </div>
           <div className="toast-custom-text-wrapper">
             <span className="toast-custom-title">{title}</span>
-            {subtitle && <span className="toast-custom-subtitle">{subtitle}</span>}
+            {subtitle && (
+              <span className="toast-custom-subtitle">{subtitle}</span>
+            )}
           </div>
         </div>
       ),
@@ -100,7 +102,9 @@ export const notify = {
           </div>
           <div className="toast-custom-text-wrapper">
             <span className="toast-custom-title">{title}</span>
-            {subtitle && <span className="toast-custom-subtitle">{subtitle}</span>}
+            {subtitle && (
+              <span className="toast-custom-subtitle">{subtitle}</span>
+            )}
           </div>
         </div>
       ),
