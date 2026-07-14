@@ -40,6 +40,7 @@ interface Order {
   discount_amount: number;
   total_payable: number;
   placed_at: string;
+  order_number?: string | number;
 }
 
 interface Driver {

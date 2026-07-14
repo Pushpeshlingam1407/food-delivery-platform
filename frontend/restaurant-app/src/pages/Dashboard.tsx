@@ -513,9 +513,7 @@ export const Dashboard: React.FC = () => {
                     >
                       Order #{o.order_number}
                     </h4>
-                    <span className="order-id-subtext">
-                      ID: {o.id}
-                    </span>
+                    <span className="order-id-subtext">ID: {o.id}</span>
                     <span
                       style={{
                         fontSize: "0.8rem",
