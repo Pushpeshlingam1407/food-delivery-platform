@@ -78,22 +78,6 @@ export const ToastProvider = () => {
         position="top-center"
         toastOptions={{
           style: credStyle,
-          success: {
-            style: credSuccessStyle,
-            icon: <CheckCircle2 size={18} color="#4ade80" />,
-          },
-          error: {
-            style: credErrorStyle,
-            icon: <AlertCircle size={18} color="#f87171" />,
-          },
-          warning: {
-            style: credWarningStyle,
-            icon: <TriangleAlert size={18} color="#fbbf24" />,
-          },
-          info: {
-            style: credInfoStyle,
-            icon: <Info size={18} color="#60a5fa" />,
-          },
         }}
       />
       <HotToaster

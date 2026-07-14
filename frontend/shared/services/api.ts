@@ -1,4 +1,5 @@
-import axios, { AxiosInstance, InternalAxiosRequestConfig } from "axios";
+import axios from "axios";
+import type { AxiosInstance, InternalAxiosRequestConfig } from "axios";
 import notify from "../utils/toast";
 
 const API_BASE_URL = "http://localhost:5000/api";

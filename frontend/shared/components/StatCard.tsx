@@ -14,7 +14,7 @@ export interface StatCardProps {
 
   // Restaurant specific props
   restContainerVariant?: "warm" | "cool" | "green" | "default";
-  restIconVariant?: "orange" | "violet" | "green" | "muted";
+  restIconVariant?: "orange" | "violet" | "green" | "muted" | "default";
   restValueVariant?: "green" | "default";
   restSubtitleVariant?: "danger" | "default";
 }

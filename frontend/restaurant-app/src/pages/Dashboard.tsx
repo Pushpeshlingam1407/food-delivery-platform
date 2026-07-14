@@ -75,8 +75,8 @@ export const Dashboard: React.FC = () => {
   const [restCity, setRestCity] = useState("");
   const [restState, setRestState] = useState("");
   const [restPostalCode, setRestPostalCode] = useState("");
-  const [restOpenTime, setRestOpenTime] = useState("11:00:00");
-  const [restCloseTime, setRestCloseTime] = useState("23:00:00");
+  const [restOpenTime] = useState("11:00:00");
+  const [restCloseTime] = useState("23:00:00");
   const [createLoading, setCreateLoading] = useState(false);
 
   const fetchRestaurantAndOrders = async () => {
