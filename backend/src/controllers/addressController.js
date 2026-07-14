@@ -25,26 +25,30 @@ export async function createAddress(req, res) {
     return res.status(401).json({ status: "error", message: "Unauthorized" });
   }
 
-  const {
-    address_type,
-    street_address,
-    landmark,
-    city,
-    state,
-    postal_code,
-    latitude,
-    longitude,
-    is_default,
-  } = req.body;
+  const street_address = req.body.street_address || req.body.streetAddress;
+  const postal_code = req.body.postal_code || req.body.postalCode;
+  const is_default =
+    req.body.is_default !== undefined
+      ? req.body.is_default
+      : req.body.isDefault;
+  const address_type = req.body.address_type || req.body.addressType;
+  const landmark = req.body.landmark;
+  const city = req.body.city;
+  const state = req.body.state;
+  const latitude =
+    req.body.latitude !== undefined
+      ? req.body.latitude
+      : req.body.lat !== undefined
+        ? req.body.lat
+        : 12.9716;
+  const longitude =
+    req.body.longitude !== undefined
+      ? req.body.longitude
+      : req.body.lng !== undefined
+        ? req.body.lng
+        : 77.5946;
 
-  if (
-    !street_address ||
-    !city ||
-    !state ||
-    !postal_code ||
-    latitude === undefined ||
-    longitude === undefined
-  ) {
+  if (!street_address || !city || !state || !postal_code) {
     return res
       .status(400)
       .json({ status: "error", message: "Missing required address fields" });
@@ -110,17 +114,28 @@ export async function updateAddress(req, res) {
   }
 
   const { id } = req.params;
-  const {
-    address_type,
-    street_address,
-    landmark,
-    city,
-    state,
-    postal_code,
-    latitude,
-    longitude,
-    is_default,
-  } = req.body;
+  const street_address = req.body.street_address || req.body.streetAddress;
+  const postal_code = req.body.postal_code || req.body.postalCode;
+  const is_default =
+    req.body.is_default !== undefined
+      ? req.body.is_default
+      : req.body.isDefault;
+  const address_type = req.body.address_type || req.body.addressType;
+  const landmark = req.body.landmark;
+  const city = req.body.city;
+  const state = req.body.state;
+  const latitude =
+    req.body.latitude !== undefined
+      ? req.body.latitude
+      : req.body.lat !== undefined
+        ? req.body.lat
+        : undefined;
+  const longitude =
+    req.body.longitude !== undefined
+      ? req.body.longitude
+      : req.body.lng !== undefined
+        ? req.body.lng
+        : undefined;
 
   try {
     const [rows] = await pool.query(

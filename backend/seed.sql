@@ -56,9 +56,8 @@ INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_ha
 
 -- Customers
 INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, status, is_verified) VALUES
-('u0000000-0000-0000-0000-000000000002', 2, 'Aarav', 'Sharma', 'aarav.sharma@example.com', '+919876543210', '$2b$10$xyz...', 'active', TRUE),
-('u0000000-0000-0000-0000-000000000003', 2, 'Aditi', 'Verma', 'aditi.verma@example.com', '+919876543211', '$2b$10$xyz...', 'active', TRUE),
-('u0000000-0000-0000-0000-000000000020', 2, 'Jimmy', 'McGill', 'jimmy@slippin.com', '+919876543220', '$2b$10$xyz...', 'active', TRUE);
+('u0000000-0000-0000-0000-000000000002', 2, 'Jimmy', 'McGill', 'jimmy@slippin.com', '+919876543220', '$2b$10$xyz...', 'active', TRUE),
+('u0000000-0000-0000-0000-000000000003', 2, 'Aditi', 'Verma', 'aditi.verma@example.com', '+919876543211', '$2b$10$xyz...', 'active', TRUE);
 
 -- Restaurant Owners
 INSERT INTO users (id, role_id, first_name, last_name, email, phone, password_hash, status, is_verified) VALUES
@@ -192,8 +191,7 @@ INSERT INTO delivery_partners (id, vehicle_number, vehicle_type, license_number,
 -- 12. Wallets
 INSERT INTO wallets (id, user_id, balance, currency) VALUES
 ('w0000000-0000-0000-0000-000000000002', 'u0000000-0000-0000-0000-000000000002', 500.00, 'INR'), -- Customer Wallet
-('w0000000-0000-0000-0000-000000000006', 'u0000000-0000-0000-0000-000000000006', 150.00, 'INR'), -- Driver Wallet
-('w0000000-0000-0000-0000-000000000020', 'u0000000-0000-0000-0000-000000000020', 1000.00, 'INR'); -- Driver Wallet
+('w0000000-0000-0000-0000-000000000006', 'u0000000-0000-0000-0000-000000000006', 150.00, 'INR'); -- Driver Wallet
 
 -- 13. System Settings
 INSERT INTO system_settings (key_name, value, description) VALUES
