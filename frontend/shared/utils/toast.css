@@ -18,35 +18,49 @@
 }
 
 .toast-cred {
-  background: linear-gradient(135deg, rgba(20, 20, 20, 0.95), rgba(40, 40, 40, 0.98)) !important;
-  box-shadow: 0 20px 45px rgba(0, 0, 0, 0.4), inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
+  background: linear-gradient(
+    135deg,
+    rgba(20, 20, 20, 0.95),
+    rgba(40, 40, 40, 0.98)
+  ) !important;
+  box-shadow:
+    0 20px 45px rgba(0, 0, 0, 0.4),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15) !important;
   border: 1px solid rgba(255, 255, 255, 0.15) !important;
 }
 
 .toast-cred-success {
   background: linear-gradient(135deg, #00f2fe 0%, #4facfe 100%) !important;
-  box-shadow: 0 12px 30px rgba(79, 172, 254, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+  box-shadow:
+    0 12px 30px rgba(79, 172, 254, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
 }
 
 .toast-cred-error {
   background: linear-gradient(135deg, #ff0844 0%, #ffb199 100%) !important;
-  box-shadow: 0 12px 30px rgba(255, 8, 68, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+  box-shadow:
+    0 12px 30px rgba(255, 8, 68, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
 }
 
 .toast-cred-warning {
   background: linear-gradient(135deg, #f12711 0%, #f5af19 100%) !important;
-  box-shadow: 0 12px 30px rgba(245, 175, 25, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+  box-shadow:
+    0 12px 30px rgba(245, 175, 25, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
 }
 
 .toast-cred-info {
   background: linear-gradient(135deg, #7028e4 0%, #e5b2ca 100%) !important;
-  box-shadow: 0 12px 30px rgba(112, 40, 228, 0.5), inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
+  box-shadow:
+    0 12px 30px rgba(112, 40, 228, 0.5),
+    inset 0 1px 2px rgba(255, 255, 255, 0.6) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
   color: #ffffff !important;
 }
@@ -89,12 +103,16 @@
 
 .toast-custom-success-bg {
   background: linear-gradient(135deg, #13f1fc 0%, #0470dc 100%) !important;
-  box-shadow: 0 20px 45px rgba(4, 112, 220, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.5) !important;
+  box-shadow:
+    0 20px 45px rgba(4, 112, 220, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.5) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }
 
 .toast-custom-logout-bg {
   background: linear-gradient(135deg, #ec008c 0%, #fc6767 100%) !important;
-  box-shadow: 0 20px 45px rgba(236, 0, 140, 0.4), inset 0 1px 3px rgba(255, 255, 255, 0.5) !important;
+  box-shadow:
+    0 20px 45px rgba(236, 0, 140, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.5) !important;
   border: 1px solid rgba(255, 255, 255, 0.3) !important;
 }

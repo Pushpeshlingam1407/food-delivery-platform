@@ -180,7 +180,10 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
               });
             }
           } catch (menuErr) {
-            console.error("Could not fetch restaurant menu for validation:", menuErr);
+            console.error(
+              "Could not fetch restaurant menu for validation:",
+              menuErr,
+            );
           }
         }
 
@@ -190,7 +193,11 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
         for (const item of items) {
           const menuId = item.menu_id;
           const menuItem = availableItemsMap[menuId];
-          const isItemAvailable = menuItem && (menuItem.is_available === true || menuItem.is_available === 1 || menuItem.is_available === "1");
+          const isItemAvailable =
+            menuItem &&
+            (menuItem.is_available === true ||
+              menuItem.is_available === 1 ||
+              menuItem.is_available === "1");
 
           if (isItemAvailable) {
             if (addToCart) {
@@ -199,7 +206,9 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
                 await addToCart({
                   id: menuId,
                   name: menuItem.name || item.name,
-                  price: parseFloat((menuItem.price || item.price || 0).toString()),
+                  price: parseFloat(
+                    (menuItem.price || item.price || 0).toString(),
+                  ),
                 });
               }
             }
@@ -210,15 +219,16 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
         }
 
         if (unavailableNames.length > 0) {
-          notify.warning(
-            `Unavailable items: ${unavailableNames.join(", ")}`,
-            { description: "The rest of the available items were added." }
-          );
+          notify.warning(`Unavailable items: ${unavailableNames.join(", ")}`, {
+            description: "The rest of the available items were added.",
+          });
         }
         if (addedNames.length > 0) {
           notify.success(`Added to cart: ${addedNames.join(", ")}`);
         } else if (unavailableNames.length > 0 && addedNames.length === 0) {
-          notify.error("None of the items in this order are currently available.");
+          notify.error(
+            "None of the items in this order are currently available.",
+          );
         }
       }
     } catch {
