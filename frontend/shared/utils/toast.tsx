@@ -46,7 +46,7 @@ export const ToastProvider = () => {
  * Sentiment-aware, centralized notification API.
  * Translates intent into appropriate visuals and libraries.
  */
-export const notify = {
+const notify = {
   success: (message: string, options?: { description?: string }) => {
     sonner.success(message, {
       ...options,

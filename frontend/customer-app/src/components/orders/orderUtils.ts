@@ -28,6 +28,7 @@ export interface Order {
   delivered_at?: string | null;
   street_address?: string;
   city?: string;
+  restaurant_id?: string;
   items?: OrderItem[];
 }
 

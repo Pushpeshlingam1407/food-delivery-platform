@@ -110,18 +110,60 @@ export const Orders: React.FC<OrdersProps> = ({ addToCart }) => {
         return;
       }
 
-      for (const item of items) {
-        const quantity = Math.max(1, Number(item.quantity || 1));
-        for (let i = 0; i < quantity; i += 1) {
-          await addToCart?.({
-            id: item.menu_id,
-            name: getItemName(item),
-            price: parseFloat(item.unit_price.toString()),
-          });
+      const restaurantId = order.restaurant_id;
+
+      // Fetch restaurant menu to check availability
+      let availableItemsMap: Record<string, any> = {};
+      if (restaurantId) {
+        try {
+          const menuRes = await api.get(`/restaurants/${restaurantId}/items`);
+          if (menuRes.data.status === "success") {
+            const menuItems = menuRes.data.data || [];
+            menuItems.forEach((m: any) => {
+              availableItemsMap[m.id] = m;
+            });
+          }
+        } catch (menuErr) {
+          console.error("Could not fetch restaurant menu for validation:", menuErr);
         }
       }
 
-      notify.success("Items added to your cart!");
+      const unavailableNames: string[] = [];
+      const addedNames: string[] = [];
+
+      for (const item of items) {
+        const menuId = item.menu_id;
+        const menuItem = availableItemsMap[menuId];
+        const isItemAvailable = menuItem && (menuItem.is_available === true || menuItem.is_available === 1 || menuItem.is_available === "1");
+
+        if (isItemAvailable) {
+          if (addToCart) {
+            const qty = Math.max(1, Number(item.quantity || (item as any).qty || 1));
+            for (let i = 0; i < qty; i++) {
+              await addToCart({
+                id: menuId,
+                name: menuItem.name || item.name || getItemName(item),
+                price: parseFloat((menuItem.price || item.unit_price || 0).toString()),
+              });
+            }
+          }
+          addedNames.push(menuItem.name || item.name || getItemName(item));
+        } else {
+          unavailableNames.push(item.name || getItemName(item) || "Unknown Item");
+        }
+      }
+
+      if (unavailableNames.length > 0) {
+        notify.warning(
+          `Unavailable items: ${unavailableNames.join(", ")}`,
+          { description: "The rest of the available items were added." }
+        );
+      }
+      if (addedNames.length > 0) {
+        notify.success(`Added to cart: ${addedNames.join(", ")}`);
+      } else if (unavailableNames.length > 0 && addedNames.length === 0) {
+        notify.error("None of the items in this order are currently available.");
+      }
     } catch (err) {
       console.error("Reorder failed:", err);
       notify.error("We couldn't reorder these items. Please try again.");

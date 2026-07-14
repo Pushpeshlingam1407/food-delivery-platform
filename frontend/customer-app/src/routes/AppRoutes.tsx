@@ -164,17 +164,62 @@ const Home: React.FC<HomeProps> = ({ searchQuery, addToCart }) => {
     try {
       const res = await api.get(`/orders/${orderId}`);
       if (res.data.status === "success") {
-        const items = res.data.data?.items || [];
-        for (const item of items) {
-          if (addToCart) {
-            await addToCart({
-              id: item.menu_id,
-              name: item.name,
-              price: item.price,
-            });
+        const orderData = res.data.data || {};
+        const items = orderData.items || [];
+        const restaurantId = orderData.restaurant_id;
+
+        // Fetch restaurant menu to check availability
+        let availableItemsMap: Record<string, any> = {};
+        if (restaurantId) {
+          try {
+            const menuRes = await api.get(`/restaurants/${restaurantId}/items`);
+            if (menuRes.data.status === "success") {
+              const menuItems = menuRes.data.data || [];
+              menuItems.forEach((m: any) => {
+                availableItemsMap[m.id] = m;
+              });
+            }
+          } catch (menuErr) {
+            console.error("Could not fetch restaurant menu for validation:", menuErr);
           }
         }
-        notify.success("Items added to your cart! Ÿ›’");
+
+        const unavailableNames: string[] = [];
+        const addedNames: string[] = [];
+
+        for (const item of items) {
+          const menuId = item.menu_id;
+          const menuItem = availableItemsMap[menuId];
+          const isItemAvailable = menuItem && (menuItem.is_available === true || menuItem.is_available === 1 || menuItem.is_available === "1");
+
+          if (isItemAvailable) {
+            if (addToCart) {
+              const qty = Math.max(1, Number(item.quantity || item.qty || 1));
+              for (let i = 0; i < qty; i++) {
+                await addToCart({
+                  id: menuId,
+                  name: menuItem.name || item.name,
+                  price: parseFloat((menuItem.price || item.price || 0).toString()),
+                });
+              }
+            }
+            addedNames.push(menuItem.name || item.name);
+          } else {
+            unavailableNames.push(item.name || "Unknown Item");
+          }
+        }
+
+        if (unavailableNames.length > 0) {
+          notify.warning(
+            `Unavailable items: ${unavailableNames.join(", ")}`,
+            { description: "The rest of the available items were added." }
+          );
+        }
+        if (addedNames.length > 0) {
+          notify.success(`Added to cart: ${addedNames.join(", ")}`);
+        } else if (unavailableNames.length > 0 && addedNames.length === 0) {
+          notify.error("None of the items in this order are currently available.");
+        }
       }
     } catch {
       notify.error("Could not reorder. Please try again.");
