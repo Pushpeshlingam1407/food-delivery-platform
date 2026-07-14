@@ -42,20 +42,24 @@ interface AppContextType {
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
-export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [userEmail, setUserEmail] = useState<string | null>(() =>
-    localStorage.getItem("userEmail")
+    localStorage.getItem("userEmail"),
   );
   const [userRole, setUserRole] = useState<string | null>(() =>
-    localStorage.getItem("userRole")
+    localStorage.getItem("userRole"),
   );
   const [driverOnline, setDriverOnline] = useState(false);
-  const [deliverySidebarCollapsed, setDeliverySidebarCollapsed] = useState(false);
+  const [deliverySidebarCollapsed, setDeliverySidebarCollapsed] =
+    useState(false);
   const [cart, setCart] = useState<{ [itemId: string]: CartItem }>({});
   const [cartOpen, setCartOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
-  const [deliveryAddress, setDeliveryAddress] = useState<string>("Select Address");
+  const [deliveryAddress, setDeliveryAddress] =
+    useState<string>("Select Address");
 
   useEffect(() => {
     const syncShiftState = () =>
@@ -253,10 +257,13 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({ ch
 
   const cartCount = cartList.reduce((acc, item) => acc + item.qty, 0);
 
-  const cartItemsCountMap = Object.keys(cart).reduce((acc, id) => {
-    acc[id] = cart[id].qty;
-    return acc;
-  }, {} as { [key: string]: number });
+  const cartItemsCountMap = Object.keys(cart).reduce(
+    (acc, id) => {
+      acc[id] = cart[id].qty;
+      return acc;
+    },
+    {} as { [key: string]: number },
+  );
 
   return (
     <AppContext.Provider

@@ -11,22 +11,19 @@ interface CartItem {
   qty: number;
 }
 
-interface CartDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  cartItems: CartItem[];
-  updateQty: (itemId: string, newQty: number) => void;
-  clearCart: () => void;
-  addToCart: (item: any) => void;
-}
+import { useAppContext } from "../../../shared/context/AppContext";
 
-export const CartDrawer: React.FC<CartDrawerProps> = ({
-  isOpen,
-  onClose,
-  cartItems,
-  updateQty,
-  addToCart,
-}) => {
+export const CartDrawer: React.FC = () => {
+  const {
+    cartOpen: isOpen,
+    setCartOpen,
+    cartList: cartItems,
+    updateQty,
+    addToCart,
+  } = useAppContext();
+
+  const onClose = () => setCartOpen(false);
+
   const navigate = useNavigate();
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);

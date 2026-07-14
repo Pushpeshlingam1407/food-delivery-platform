@@ -7,22 +7,11 @@ import { Dashboard } from "../pages/Dashboard";
 import { MenuManager } from "../pages/MenuManager";
 import { Earnings } from "../pages/Earnings";
 
-export const AppRoutes: React.FC = () => {
-  const [userEmail, setUserEmail] = useState<string | null>(() =>
-    localStorage.getItem("userEmail"),
-  );
-  const [restaurantName, setRestaurantName] = useState<string | null>(() =>
-    localStorage.getItem("userName"),
-  );
+import { useAppContext } from "../../../shared/context/AppContext";
 
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userName");
-    setUserEmail(null);
-    window.location.reload();
-  };
+export const AppRoutes: React.FC = () => {
+  const { userEmail, handleLogout } = useAppContext();
+  const restaurantName = localStorage.getItem("userName");
 
   return (
     <BrowserRouter>

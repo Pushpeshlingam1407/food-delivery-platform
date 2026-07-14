@@ -11,31 +11,18 @@ import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Dashboard } from "../pages/Dashboard";
 
+import { useAppContext } from "../../../shared/context/AppContext";
+
 export const AppRoutes: React.FC = () => {
-  const [userEmail, setUserEmail] = useState<string | null>(() =>
-    localStorage.getItem("userEmail"),
-  );
-  const [isOnline, setIsOnline] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const {
+    userEmail,
+    handleLogout,
+    driverOnline: isOnline,
+    deliverySidebarCollapsed: sidebarCollapsed,
+    setDeliverySidebarCollapsed: setSidebarCollapsed,
+  } = useAppContext();
+
   const driverName = localStorage.getItem("userName") || "Driver";
-
-  useEffect(() => {
-    const syncShiftState = () =>
-      setIsOnline(localStorage.getItem("driverOnline") === "true");
-    syncShiftState();
-    window.addEventListener("driver-shift-change", syncShiftState);
-    return () =>
-      window.removeEventListener("driver-shift-change", syncShiftState);
-  }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userName");
-    setUserEmail(null);
-    window.location.reload();
-  };
 
   const footerSections: FooterSection[] = [
     {

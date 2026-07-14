@@ -1,20 +1,28 @@
 import React from "react";
 import { BitesNavbar } from "../../../shared/components/BitesNavbar";
+import { useAppContext } from "../../../shared/context/AppContext";
 
-interface NavbarProps {
-  cartCount?: number;
-  userEmail?: string | null;
-  onLogout?: () => void;
-  onCartClick?: () => void;
-  searchQuery?: string;
-  onSearchChange?: (val: string) => void;
-  walletBalance?: number | null;
-  onDepositClick?: () => void;
-  deliveryAddress?: string;
-}
+export const Navbar: React.FC = () => {
+  const {
+    cartCount,
+    userEmail,
+    handleLogout,
+    setCartOpen,
+    searchQuery,
+    setSearchQuery,
+    deliveryAddress,
+  } = useAppContext();
 
-export const Navbar: React.FC<NavbarProps> = ({
-  walletBalance: _walletBalance,
-  onDepositClick: _onDepositClick,
-  ...props
-}) => <BitesNavbar variant="customer" {...props} />;
+  return (
+    <BitesNavbar
+      variant="customer"
+      cartCount={cartCount}
+      userEmail={userEmail}
+      onLogout={handleLogout}
+      onCartClick={() => setCartOpen(true)}
+      searchQuery={searchQuery}
+      onSearchChange={setSearchQuery}
+      deliveryAddress={deliveryAddress}
+    />
+  );
+};

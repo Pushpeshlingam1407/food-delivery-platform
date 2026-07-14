@@ -14,21 +14,11 @@ import { OrdersManagement } from "../pages/OrdersManagement";
 import { ImagesManagement } from "../pages/ImagesManagement";
 import { OwnersManagement } from "../pages/OwnersManagement";
 
-export const AppRoutes: React.FC = () => {
-  const [userEmail, setUserEmail] = useState<string | null>(() =>
-    localStorage.getItem("userEmail"),
-  );
-  const adminName = localStorage.getItem("userName");
+import { useAppContext } from "../../../shared/context/AppContext";
 
-  const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userName");
-    localStorage.removeItem("userId");
-    setUserEmail(null);
-    window.location.reload();
-  };
+export const AppRoutes: React.FC = () => {
+  const { userEmail, handleLogout } = useAppContext();
+  const adminName = localStorage.getItem("userName");
 
   return (
     <BrowserRouter>
