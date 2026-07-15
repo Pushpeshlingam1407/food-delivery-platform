@@ -210,7 +210,9 @@ INSERT INTO menu_images (id, menu_id, image_url, is_primary) VALUES
 ('mi000000-0000-0000-0000-000000000012', 'm0000000-0000-0000-0000-000000000012', 'https://images.unsplash.com/photo-1517701604599-bb29b565090c?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000013', 'm0000000-0000-0000-0000-000000000013', 'https://images.unsplash.com/photo-1485808191679-5f86510681a2?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000014', 'm0000000-0000-0000-0000-000000000014', 'https://images.unsplash.com/photo-1546833999-b9f581a1996d?w=600&auto=format&fit=crop', TRUE),
-('mi000000-0000-0000-0000-000000000015', 'm0000000-0000-0000-0000-000000000015', 'https://images.unsplash.com/photo-1573821663912-569905455b1c?w=600&auto=format&fit=crop', TRUE);
+('mi000000-0000-0000-0000-000000000015', 'm0000000-0000-0000-0000-000000000015', 'https://images.unsplash.com/photo-1573821663912-569905455b1c?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000028', 'm0000000-0000-0000-0000-000000000028', 'https://images.unsplash.com/photo-1626700051175-6518c4793f4f?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000029', 'm0000000-0000-0000-0000-000000000029', 'https://images.unsplash.com/photo-1585934589900-54e50592426f?w=600&auto=format&fit=crop', TRUE);
 
 
 -- 10. Inventory
