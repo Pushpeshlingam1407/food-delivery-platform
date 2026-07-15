@@ -163,6 +163,7 @@ export const Refunds: React.FC = () => {
                   >
                     <td style={{ padding: "16px", fontWeight: 600 }}>
                       #{o.order_number}
+                      <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 400, marginTop: "2px" }}>ID: {o.id}</div>
                     </td>
                     <td style={{ padding: "16px" }}>{o.restaurant_name}</td>
                     <td style={{ padding: "16px" }}>

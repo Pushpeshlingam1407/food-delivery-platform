@@ -693,71 +693,77 @@ export const AppRoutes: React.FC = () => {
     );
   }
 
-  // Fallback / Customer Routes
-  return (
-    <BrowserRouter>
-      <div className="main-layout-wrapper">
-        <div className="main-content-area">
-          <Navbar />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/restaurant/:id" element={<RestaurantDetails />} />
-            <Route
-              path="/login"
-              element={!userEmail ? <Login /> : <Navigate to="/" />}
+    const CUSTOMER_BOTTOM_NAV_ITEMS: MobileBottomNavItem[] = [
+      { icon: <HomeIcon size={22} />, label: "Home", route: "/" },
+      { icon: <ClipboardList size={22} />, label: "Orders", route: "/orders" },
+      { icon: <User size={22} />, label: "Profile", route: "/profile" },
+    ];
+
+    return (
+      <BrowserRouter>
+        <div className="main-layout-wrapper">
+          <div className="main-content-area">
+            <Navbar />
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/restaurant/:id" element={<RestaurantDetails />} />
+              <Route
+                path="/login"
+                element={!userEmail ? <Login /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/register"
+                element={!userEmail ? <Register /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/otp-login"
+                element={!userEmail ? <OtpLogin /> : <Navigate to="/" />}
+              />
+              <Route
+                path="/checkout"
+                element={userEmail ? <Checkout /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/track/:orderId"
+                element={userEmail ? <OrderTracking /> : <Navigate to="/login" />}
+              />
+              <Route path="/page/:slug" element={<CmsPage />} />
+              <Route
+                path="/orders"
+                element={userEmail ? <Orders /> : <Navigate to="/login" />}
+              />
+              <Route
+                path="/addresses"
+                element={
+                  userEmail ? <AddressManager /> : <Navigate to="/login" />
+                }
+              />
+              <Route
+                path="/profile"
+                element={
+                  userEmail ? (
+                    <Profile
+                      userEmail={userEmail}
+                      userName={localStorage.getItem("userName")}
+                      walletBalance={walletBalance}
+                      onLogout={handleLogout}
+                      onDepositClick={handleDeposit}
+                    />
+                  ) : (
+                    <Navigate to="/login" />
+                  )
+                }
+              />
+              <Route path="*" element={<Navigate to="/" />} />
+            </Routes>
+            <ResponsiveFooter
+              sections={CUSTOMER_FOOTER_SECTIONS}
+              bottomText={`© ${new Date().getFullYear()} Bites Internet Private Limited. All rights reserved.`}
             />
-            <Route
-              path="/register"
-              element={!userEmail ? <Register /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/otp-login"
-              element={!userEmail ? <OtpLogin /> : <Navigate to="/" />}
-            />
-            <Route
-              path="/checkout"
-              element={userEmail ? <Checkout /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/track/:orderId"
-              element={userEmail ? <OrderTracking /> : <Navigate to="/login" />}
-            />
-            <Route path="/page/:slug" element={<CmsPage />} />
-            <Route
-              path="/orders"
-              element={userEmail ? <Orders /> : <Navigate to="/login" />}
-            />
-            <Route
-              path="/addresses"
-              element={
-                userEmail ? <AddressManager /> : <Navigate to="/login" />
-              }
-            />
-            <Route
-              path="/profile"
-              element={
-                userEmail ? (
-                  <Profile
-                    userEmail={userEmail}
-                    userName={localStorage.getItem("userName")}
-                    walletBalance={walletBalance}
-                    onLogout={handleLogout}
-                    onDepositClick={handleDeposit}
-                  />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
-            />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-          <ResponsiveFooter
-            sections={CUSTOMER_FOOTER_SECTIONS}
-            bottomText={`© ${new Date().getFullYear()} Bites Internet Private Limited. All rights reserved.`}
-          />
+          </div>
         </div>
-      </div>
-      <CartDrawer />
-    </BrowserRouter>
-  );
-};
+        <CartDrawer />
+        <MobileBottomNav items={CUSTOMER_BOTTOM_NAV_ITEMS} />
+      </BrowserRouter>
+    );
+  };
