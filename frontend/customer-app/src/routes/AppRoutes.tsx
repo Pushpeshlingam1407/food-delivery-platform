@@ -822,28 +822,6 @@ export const AppRoutes: React.FC = () => {
           />
         </div>
       </div>
-      {/* Mobile bottom navigation */}
-      <MobileBottomNav
-        items={[
-          { icon: <HomeIcon size={22} />, label: "Home", route: "/" },
-          {
-            icon: <ClipboardList size={22} />,
-            label: "Orders",
-            route: "/orders",
-          },
-          {
-            icon: <ShoppingBag size={22} />,
-            label: "Cart",
-            onClick: () => setCartOpen(true),
-            badge: cartCount > 0 ? cartCount : null,
-          },
-          {
-            icon: <User size={22} />,
-            label: "Profile",
-            route: userEmail ? "/profile" : "/login",
-          },
-        ]}
-      />
       <CartDrawer />
     </BrowserRouter>
   );
