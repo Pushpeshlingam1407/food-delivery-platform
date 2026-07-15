@@ -655,7 +655,7 @@ export async function getOrders(req, res) {
   }
   try {
     const [rows] = await pool.query(
-      `SELECT o.*, 
+      `SELECT o.*, UPPER(SUBSTRING(REPLACE(o.id, '-', ''), 1, 8)) AS order_number,
               CONCAT(u.first_name, ' ', u.last_name) as customer_name, u.email as customer_email,
               r.name as restaurant_name,
               CONCAT(d.first_name, ' ', d.last_name) as driver_name, d.phone as driver_phone

@@ -324,7 +324,7 @@ export async function getOrderById(req, res) {
 
   try {
     const [orderRows] = await pool.query(
-      `SELECT o.*, r.name as restaurant_name, a.street_address, a.city, a.postal_code, a.landmark, a.state,
+      `SELECT o.*, UPPER(SUBSTRING(REPLACE(o.id, '-', ''), 1, 8)) AS order_number, r.name as restaurant_name, a.street_address, a.city, a.postal_code, a.landmark, a.state,
               u.first_name as customer_first_name, u.last_name as customer_last_name, u.phone as customer_phone
        FROM orders o
        JOIN restaurants r ON o.restaurant_id = r.id
