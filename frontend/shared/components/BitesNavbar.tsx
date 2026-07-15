@@ -298,7 +298,7 @@ export const BitesNavbar: React.FC<
             >
               <Menu size={24} />
             </button>
-            
+
             <div style={{ display: "flex", flexDirection: "column" }}>
               <span
                 style={{
@@ -365,7 +365,9 @@ export const BitesNavbar: React.FC<
                       <span className="navbar-profile-menu-eyebrow">
                         Logged in as
                       </span>
-                      <div className="navbar-profile-menu-email">{userEmail}</div>
+                      <div className="navbar-profile-menu-email">
+                        {userEmail}
+                      </div>
                     </div>
                     <Link
                       to="/orders"
@@ -405,12 +407,12 @@ export const BitesNavbar: React.FC<
           </>
         }
       />
-      <AppSidebar 
+      <AppSidebar
         role="customer"
         isLoggedIn={!!userEmail}
         userName={localStorage.getItem("userName")}
         walletBalance={props.variant === "customer" ? null : 0}
-        onLogout={onLogout} 
+        onLogout={onLogout}
       />
     </>
   );

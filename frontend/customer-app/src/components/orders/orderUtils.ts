@@ -90,10 +90,16 @@ export const formatTime = (value: string) =>
     minute: "2-digit",
   });
 
-export const formatOrderNumber = (value: string | undefined | null, idFallback?: string) => {
+export const formatOrderNumber = (
+  value: string | undefined | null,
+  idFallback?: string,
+) => {
   if (!value) {
     const rawId = idFallback || "";
-    const cleanId = rawId.replace(/[^a-zA-Z0-9]/g, "").substring(0, 8).toUpperCase();
+    const cleanId = rawId
+      .replace(/[^a-zA-Z0-9]/g, "")
+      .substring(0, 8)
+      .toUpperCase();
     return `Order No. ${cleanId || "00000000"}`;
   }
   return `Order No. ${value}`;

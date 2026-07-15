@@ -134,7 +134,8 @@ export const OrderTracking: React.FC = () => {
           marginBottom: "40px",
         }}
       >
-        Order Number: <strong>{orderNumber || "—"}</strong> &middot; Order ID: <strong>{orderId}</strong>
+        Order Number: <strong>{orderNumber || "—"}</strong> &middot; Order ID:{" "}
+        <strong>{orderId}</strong>
       </p>
 
       {/* Progress pipeline (Apple-style frosted glass) */}

@@ -271,7 +271,7 @@ export async function getOrders(req, res) {
 
     if (req.user.role === "customer") {
       query = `
-        SELECT o.*, r.name as restaurant_name 
+        SELECT o.*, UPPER(SUBSTRING(REPLACE(o.id, '-', ''), 1, 8)) AS order_number, r.name as restaurant_name 
         FROM orders o
         JOIN restaurants r ON o.restaurant_id = r.id
         WHERE o.user_id = ? 
@@ -280,7 +280,7 @@ export async function getOrders(req, res) {
       params.push(req.user.userId);
     } else if (req.user.role === "restaurant_owner") {
       query = `
-        SELECT o.*, r.name as restaurant_name 
+        SELECT o.*, UPPER(SUBSTRING(REPLACE(o.id, '-', ''), 1, 8)) AS order_number, r.name as restaurant_name 
         FROM orders o
         JOIN restaurants r ON o.restaurant_id = r.id
         WHERE r.owner_id = ? 
@@ -289,7 +289,7 @@ export async function getOrders(req, res) {
       params.push(req.user.userId);
     } else if (req.user.role === "delivery_partner") {
       query = `
-        SELECT o.*, r.name as restaurant_name 
+        SELECT o.*, UPPER(SUBSTRING(REPLACE(o.id, '-', ''), 1, 8)) AS order_number, r.name as restaurant_name 
         FROM orders o
         JOIN restaurants r ON o.restaurant_id = r.id
         WHERE o.delivery_partner_id = ? OR (o.status = 'ready_for_pickup' AND o.delivery_partner_id IS NULL)
@@ -298,7 +298,7 @@ export async function getOrders(req, res) {
       params.push(req.user.userId);
     } else {
       query = `
-        SELECT o.*, r.name as restaurant_name 
+        SELECT o.*, UPPER(SUBSTRING(REPLACE(o.id, '-', ''), 1, 8)) AS order_number, r.name as restaurant_name 
         FROM orders o
         JOIN restaurants r ON o.restaurant_id = r.id
         ORDER BY o.placed_at DESC
