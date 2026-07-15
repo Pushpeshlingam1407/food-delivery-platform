@@ -31,7 +31,7 @@ export const MenuCard: React.FC<MenuCardProps> = ({
   renderFooterActions,
 }) => {
   const isVeg = !!item.is_veg;
-  const formattedPrice = `$${parseFloat(item.price.toString()).toFixed(2)}`;
+  const formattedPrice = `₹${parseFloat(item.price.toString()).toFixed(2)}`;
   const isOutOfStock =
     (item.is_available !== undefined && !item.is_available) ||
     (!item.unlimited &&
@@ -43,7 +43,7 @@ export const MenuCard: React.FC<MenuCardProps> = ({
       className={`restaurant-menu-card ${isOutOfStock ? "out-of-stock" : ""}`}
     >
       <div className="menu-card-image">
-        {item.image_url ? (
+        {item.image_url ? (chna
           <img src={item.image_url} alt={item.name} />
         ) : (
           <div className="menu-card-image-placeholder">No Image</div>

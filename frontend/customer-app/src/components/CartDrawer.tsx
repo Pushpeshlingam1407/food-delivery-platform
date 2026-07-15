@@ -111,7 +111,7 @@ export const CartDrawer: React.FC = () => {
 
           if (subtotal < parseFloat(coupon.min_order_amount.toString())) {
             notify.warning(
-              `Add a bit more! Minimum order of $${parseFloat(
+              `Add a bit more! Minimum order of ₹${parseFloat(
                 coupon.min_order_amount.toString(),
               ).toFixed(2)} required for this coupon.`,
             );
@@ -141,7 +141,7 @@ export const CartDrawer: React.FC = () => {
           const discountMsg =
             coupon.discount_type === "percentage"
               ? `${coupon.discount_value}% discount applied.`
-              : `$${parseFloat(coupon.discount_value.toString()).toFixed(2)} discount applied.`;
+              : `₹${parseFloat(coupon.discount_value.toString()).toFixed(2)} discount applied.`;
 
           notify.success("Coupon applied!", {
             description: discountMsg,
@@ -208,7 +208,7 @@ export const CartDrawer: React.FC = () => {
               <div className="cart-drawer-item-grow">
                 <h4 className="cart-drawer-item-name">{item.name}</h4>
                 <span className="cart-drawer-item-price-qty">
-                  ${item.price.toFixed(2)} x {item.qty}
+                  ₹{item.price.toFixed(2)} x {item.qty}
                 </span>
               </div>
 
@@ -252,7 +252,7 @@ export const CartDrawer: React.FC = () => {
                         {item.name}
                       </div>
                       <div className="cart-drawer-recommended-item-price">
-                        ${parseFloat(item.price).toFixed(2)}
+                        ₹{parseFloat(item.price).toFixed(2)}
                       </div>
                     </div>
                     <button
@@ -331,26 +331,26 @@ export const CartDrawer: React.FC = () => {
             <div className="cart-drawer-summary-section">
               <div className="cart-drawer-summary-row">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>₹{subtotal.toFixed(2)}</span>
               </div>
               {discount > 0 && (
                 <div className="cart-drawer-summary-discount">
                   <span>Discount</span>
-                  <span>-${discount.toFixed(2)}</span>
+                  <span>-₹{discount.toFixed(2)}</span>
                 </div>
               )}
               <div className="cart-drawer-summary-row">
                 <span>GST (18%)</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>₹{tax.toFixed(2)}</span>
               </div>
               <div className="cart-drawer-summary-row">
                 <span>Delivery Fee</span>
-                <span>${deliveryFee.toFixed(2)}</span>
+                <span>₹{deliveryFee.toFixed(2)}</span>
               </div>
               <hr className="cart-drawer-summary-divider" />
               <div className="cart-drawer-summary-total">
                 <span>Total Pay</span>
-                <span>${total.toFixed(2)}</span>
+                <span>₹{total.toFixed(2)}</span>
               </div>
             </div>
 

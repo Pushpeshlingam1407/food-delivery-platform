@@ -250,15 +250,20 @@ const Home: React.FC = () => {
           const desc = (r.description || "").toLowerCase();
           const name = (r.name || "").toLowerCase();
           const category = activeCategory.toLowerCase();
-          
+
           // Handle specific aliases
           if (category === "burgers") {
             return desc.includes("burger") || name.includes("burger");
           }
           if (category === "rolls & wraps") {
-            return desc.includes("roll") || desc.includes("wrap") || name.includes("roll") || name.includes("wrap");
+            return (
+              desc.includes("roll") ||
+              desc.includes("wrap") ||
+              name.includes("roll") ||
+              name.includes("wrap")
+            );
           }
-          
+
           return desc.includes(category) || name.includes(category);
         });
 
@@ -324,7 +329,7 @@ const Home: React.FC = () => {
                 <div className="order-again-rest">{o.restaurant_name}</div>
                 <div className="order-again-meta">
                   Order #{o.order_number}
-                  <br />$
+                  <br />₹
                   {parseFloat(o.total_payable?.toString() || "0").toFixed(2)}
                 </div>
                 <button

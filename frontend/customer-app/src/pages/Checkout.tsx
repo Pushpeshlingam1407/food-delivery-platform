@@ -406,7 +406,7 @@ export const Checkout: React.FC = () => {
                   <strong>Pay via bites Wallet</strong>
                   <div style={{ color: "var(--text-muted)" }}>
                     Current Balance:{" "}
-                    <strong>${walletBalance.toFixed(2)}</strong>
+                    <strong>₹{walletBalance.toFixed(2)}</strong>
                   </div>
                 </div>
               </label>
@@ -512,7 +512,7 @@ export const Checkout: React.FC = () => {
                   <span>
                     {item.name} <strong>x {item.qty}</strong>
                   </span>
-                  <span>${(item.price * item.qty).toFixed(2)}</span>
+                  <span>₹{(item.price * item.qty).toFixed(2)}</span>
                 </div>
               ))}
             </div>
@@ -536,15 +536,15 @@ export const Checkout: React.FC = () => {
             >
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span>Subtotal</span>
-                <span>${stateData.subtotal.toFixed(2)}</span>
+                <span>₹{stateData.subtotal.toFixed(2)}</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span>GST (18%)</span>
-                <span>${tax.toFixed(2)}</span>
+                <span>₹{tax.toFixed(2)}</span>
               </div>
               <div style={{ display: "flex", justifyContent: "space-between" }}>
                 <span>Delivery Fee</span>
-                <span>${deliveryFee.toFixed(2)}</span>
+                <span>₹{deliveryFee.toFixed(2)}</span>
               </div>
               <hr
                 style={{
@@ -562,7 +562,7 @@ export const Checkout: React.FC = () => {
                 }}
               >
                 <span>Total Pay</span>
-                <span>${total.toFixed(2)}</span>
+                <span>₹{total.toFixed(2)}</span>
               </div>
             </div>
 
