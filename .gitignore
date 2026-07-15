@@ -10,3 +10,9 @@ backend/.env
 backend/uploads/
 uploads/
 credentials.md
+api_documentation.md
+backend_reference_atlas.md
+check_status.js
+test_api_toggle.js
+test_restaurant_toggle.js
+test_toggles.js
