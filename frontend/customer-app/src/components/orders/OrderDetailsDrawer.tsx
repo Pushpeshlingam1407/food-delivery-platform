@@ -36,7 +36,7 @@ export const OrderDetailsDrawer: React.FC<OrderDetailsDrawerProps> = ({
       >
         <div className="order-details-header">
           <div>
-            <p>{formatOrderNumber(order.order_number)}</p>
+            <p>{formatOrderNumber(order.order_number, order.id)}</p>
             <h2>{order.restaurant_name}</h2>
             <span>
               {formatDate(order.placed_at)} at {formatTime(order.placed_at)}

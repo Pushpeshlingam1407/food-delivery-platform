@@ -73,7 +73,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             <div>
               <h2>{order.restaurant_name}</h2>
               <p>
-                {formatOrderNumber(order.order_number)} -{" "}
+                {formatOrderNumber(order.order_number, order.id)} -{" "}
                 {formatDate(order.placed_at)} at {formatTime(order.placed_at)}
               </p>
               <span className="order-id-label">ID: {order.id}</span>
