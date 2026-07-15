@@ -74,26 +74,30 @@ interface HomeProps {
 
 const CUISINE_CATEGORIES = [
   { id: "all", label: "All", emoji: "🍽️" },
-  { id: "biryani", label: "Biryani", emoji: "🍛" },
+  { id: "north indian", label: "North Indian", emoji: "🍛" },
   { id: "pizza", label: "Pizza", emoji: "🍕" },
-  { id: "burger", label: "Burgers", emoji: "🍔" },
+  { id: "biryani", label: "Biryani", emoji: "🍚" },
+  { id: "burgers", label: "Burgers", emoji: "🍔" },
   { id: "chinese", label: "Chinese", emoji: "🥢" },
   { id: "south indian", label: "South Indian", emoji: "🥘" },
   { id: "desserts", label: "Desserts", emoji: "🍰" },
   { id: "healthy", label: "Healthy", emoji: "🥗" },
-  { id: "rolls", label: "Rolls & Wraps", emoji: "🌯" },
+  { id: "rolls & wraps", label: "Rolls & Wraps", emoji: "🌯" },
   { id: "thali", label: "Thali", emoji: "🍱" },
 ];
 
 const REST_EMOJIS: Record<string, string> = {
-  biryani: "🍛",
+  "north indian": "🍛",
+  biryani: "🍚",
   pizza: "🍕",
   burger: "🍔",
+  burgers: "🍔",
   chinese: "🥢",
   "south indian": "🥘",
   desserts: "🍰",
   healthy: "🥗",
   rolls: "🌯",
+  "rolls & wraps": "🌯",
   thali: "🍱",
   default: "🍽️",
 };
@@ -242,11 +246,21 @@ const Home: React.FC = () => {
   const filteredRestaurants =
     activeCategory === "all"
       ? restaurants
-      : restaurants.filter(
-          (r) =>
-            (r.description || "").toLowerCase().includes(activeCategory) ||
-            (r.name || "").toLowerCase().includes(activeCategory),
-        );
+      : restaurants.filter((r) => {
+          const desc = (r.description || "").toLowerCase();
+          const name = (r.name || "").toLowerCase();
+          const category = activeCategory.toLowerCase();
+          
+          // Handle specific aliases
+          if (category === "burgers") {
+            return desc.includes("burger") || name.includes("burger");
+          }
+          if (category === "rolls & wraps") {
+            return desc.includes("roll") || desc.includes("wrap") || name.includes("roll") || name.includes("wrap");
+          }
+          
+          return desc.includes(category) || name.includes(category);
+        });
 
   return (
     <div className="app-shell customer-home">
