@@ -25,6 +25,8 @@ interface Restaurant {
   description: string;
   average_delivery_time: number;
   status: string;
+  banner_image_url?: string;
+  logo_url?: string;
 }
 
 export const RestaurantDetails: React.FC = () => {

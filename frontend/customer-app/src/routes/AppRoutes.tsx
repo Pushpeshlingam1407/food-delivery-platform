@@ -570,27 +570,6 @@ export const AppRoutes: React.FC = () => {
             />
           </div>
         </div>
-        {/* Mobile bottom navigation tailored for Admin */}
-        <MobileBottomNav
-          items={[
-            { icon: <HomeIcon size={22} />, label: "Dashboard", route: "/" },
-            {
-              icon: <Store size={22} />,
-              label: "Restaurants",
-              route: "/restaurants",
-            },
-            {
-              icon: <Users size={22} />,
-              label: "Customers",
-              route: "/customers",
-            },
-            {
-              icon: <User size={22} />,
-              label: "Logout",
-              onClick: handleLogout,
-            },
-          ]}
-        />
       </BrowserRouter>
     );
   }
@@ -643,27 +622,6 @@ export const AppRoutes: React.FC = () => {
             />
           </div>
         </div>
-        {/* Mobile bottom navigation tailored for Merchant */}
-        <MobileBottomNav
-          items={[
-            { icon: <HomeIcon size={22} />, label: "Dashboard", route: "/" },
-            {
-              icon: <ClipboardList size={22} />,
-              label: "Menu",
-              route: "/menu",
-            },
-            {
-              icon: <Wallet size={22} />,
-              label: "Earnings",
-              route: "/earnings",
-            },
-            {
-              icon: <LogOut size={22} />,
-              label: "Exit",
-              onClick: handleLogout,
-            },
-          ]}
-        />
       </BrowserRouter>
     );
   }
@@ -752,7 +710,6 @@ export const AppRoutes: React.FC = () => {
             />
           </div>
         </div>
-        <MobileBottomNav items={DELIVERY_BOTTOM_NAV_ITEMS} />
       </BrowserRouter>
     );
   }
