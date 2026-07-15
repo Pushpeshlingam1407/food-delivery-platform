@@ -5,6 +5,18 @@
   width: 100%;
 }
 
+.main-layout-wrapper {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.main-content-area {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
 .app-shell {
   padding: 48px 36px;
   max-width: 1240px;

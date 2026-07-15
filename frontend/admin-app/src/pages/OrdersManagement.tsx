@@ -255,7 +255,7 @@ export const OrdersManagement: React.FC = () => {
         onClose={() => setSelectedDetailedOrder(null)}
         title="Order Details"
         subtitle={
-          selectedDetailedOrder ? `ID: #${selectedDetailedOrder.id}` : undefined
+          selectedDetailedOrder ? `Order Number: #${selectedDetailedOrder.order_number || "—"} | ID: ${selectedDetailedOrder.id}` : undefined
         }
         footer={
           selectedDetailedOrder ? (
