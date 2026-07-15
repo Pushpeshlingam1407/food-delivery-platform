@@ -250,8 +250,22 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             className={`admin-sidebar-header ${isCollapsed ? "app-sidebar-header-wrapper-collapsed" : "app-sidebar-header-wrapper-expanded"}`}
           >
             {!isCollapsed ? (
-              <Link to="/" className="admin-sidebar-logo">
-                bites<span>{badgeLabel}</span>
+              <Link
+                to="/"
+                className="admin-sidebar-logo"
+                style={{
+                  textTransform: "uppercase",
+                  letterSpacing: "0.05em",
+                  fontWeight: 900,
+                }}
+              >
+                {resolvedRole === "admin"
+                  ? "Bites Admin"
+                  : resolvedRole === "restaurant_owner"
+                    ? "Bites Merchant"
+                    : resolvedRole === "delivery_partner"
+                      ? "Bites Logistics"
+                      : "bites"}
               </Link>
             ) : (
               <Link to="/" className="admin-sidebar-logo app-sidebar-logo-text">

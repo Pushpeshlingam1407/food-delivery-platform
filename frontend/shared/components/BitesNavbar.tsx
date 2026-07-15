@@ -77,16 +77,18 @@ export const BitesNavbar: React.FC<
             <Link
               to="/"
               style={{
-                fontSize: "1.5rem",
-                fontWeight: 800,
+                fontSize: "1.2rem",
+                fontWeight: 900,
                 color: "var(--accent-orange)",
                 textDecoration: "none",
                 display: "flex",
                 alignItems: "center",
                 gap: "8px",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
               }}
             >
-              bites
+              {props.variant === "admin" ? "Bites Admin" : "Bites Merchant"}
             </Link>
           </div>
         }
@@ -193,8 +195,19 @@ export const BitesNavbar: React.FC<
             >
               <Menu size={20} />
             </button>
-            <Link to="/" className="delivery-navbar__brand">
-              bites
+            <Link
+              to="/"
+              className="delivery-navbar__brand"
+              style={{
+                fontSize: "1.2rem",
+                fontWeight: 900,
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                color: "var(--accent-orange)",
+                textDecoration: "none",
+              }}
+            >
+              Bites Logistics
             </Link>
           </>
         }
@@ -256,28 +269,42 @@ export const BitesNavbar: React.FC<
               alignItems: "center",
               color: "var(--text-slate)",
             }}
-            className="navbar-mobile-only"
           >
             <Menu size={24} />
           </button>
-          <Link to="/addresses" className="address-pill-btn">
-            <div className="address-icon-wrapper">
-              <MapPin size={14} color="var(--accent-orange)" />
-            </div>
-            <div className="address-text-wrapper">
-              <span className="address-label">Deliver to</span>
-              <span className="address-value">
+
+          <div style={{ display: "flex", flexDirection: "column" }}>
+            <span
+              style={{
+                fontSize: "1.2rem",
+                fontWeight: 900,
+                color: "var(--accent-orange)",
+                textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                lineHeight: 1.1,
+              }}
+            >
+              bites
+            </span>
+            <Link
+              to="/addresses"
+              style={{
+                textDecoration: "none",
+                fontSize: "0.78rem",
+                color: "var(--text-muted)",
+                display: "flex",
+                alignItems: "center",
+                gap: "2px",
+              }}
+            >
+              <span className="address-value" style={{ fontWeight: 600 }}>
                 {deliveryAddress.length > 20
                   ? `${deliveryAddress.slice(0, 20)}...`
                   : deliveryAddress}
               </span>
-            </div>
-            <ChevronDown
-              size={16}
-              color="var(--text-muted)"
-              className="address-chevron"
-            />
-          </Link>
+              <ChevronDown size={12} />
+            </Link>
+          </div>
         </div>
       }
       center={

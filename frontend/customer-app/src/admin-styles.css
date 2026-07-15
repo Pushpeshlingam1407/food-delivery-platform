@@ -360,7 +360,7 @@
   }
 
   .address-label::before {
-    content: "bites in 10 mins";
+    content: "bites";
     display: block;
     font-size: 1.15rem;
     font-weight: 900;
