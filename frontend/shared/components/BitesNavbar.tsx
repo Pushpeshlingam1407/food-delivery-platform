@@ -406,7 +406,10 @@ export const BitesNavbar: React.FC<
         }
       />
       <AppSidebar 
-        userEmail={userEmail} 
+        role="customer"
+        isLoggedIn={!!userEmail}
+        userName={localStorage.getItem("userName")}
+        walletBalance={props.variant === "customer" ? null : 0}
         onLogout={onLogout} 
       />
     </>

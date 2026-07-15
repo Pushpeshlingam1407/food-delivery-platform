@@ -3007,7 +3007,6 @@ h3 {
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
   border-right: 1px solid #e4e9f0;
-  display: none !important;
   flex-direction: column;
   justify-content: space-between;
   height: 100vh;
@@ -3221,29 +3220,33 @@ h3 {
   width: 100%;
 }
 
+.admin-sidebar {
+  width: 280px;
+  background: var(--bg-sand);
+  border-right: 1px solid var(--glass-border);
+  display: flex !important;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100vh;
+  position: fixed !important;
+  top: 0;
+  left: -280px;
+  z-index: 1000;
+  box-shadow: 10px 0 30px rgba(0, 0, 0, 0.05);
+  transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.admin-sidebar.open {
+  left: 0 !important;
+}
+
 @media (max-width: 1024px) {
   .admin-sidebar {
-    position: fixed !important;
-    top: 0;
-    left: -240px;
-    height: 100vh;
-    z-index: 1000;
-    box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
-    background: #ffffff !important;
-    transition: left 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex !important;
+    width: 280px;
+    left: -280px;
   }
   .admin-sidebar.open {
-    left: 0;
-  }
-  .admin-sidebar-logo {
-    display: flex !important;
-  }
-  .admin-sidebar-header {
-    display: flex !important;
-  }
-  .mobile-menu-bar {
-    display: none;
+    left: 0 !important;
   }
 }
 
