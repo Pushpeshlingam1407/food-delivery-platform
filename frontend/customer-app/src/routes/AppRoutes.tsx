@@ -533,13 +533,6 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="main-layout-wrapper">
-          <AppSidebar
-            userName={localStorage.getItem("userName")}
-            role="admin"
-            isLoggedIn={!!userEmail}
-            onLogout={handleLogout}
-            walletBalance={walletBalance}
-          />
           <div className="main-content-area">
             <BitesNavbar
               variant="admin"
@@ -595,13 +588,6 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="main-layout-wrapper">
-          <AppSidebar
-            userName={localStorage.getItem("userName")}
-            role="restaurant_owner"
-            isLoggedIn={!!userEmail}
-            onLogout={handleLogout}
-            walletBalance={walletBalance}
-          />
           <div className="main-content-area">
             <BitesNavbar
               variant="restaurant"
@@ -685,13 +671,6 @@ export const AppRoutes: React.FC = () => {
     return (
       <BrowserRouter>
         <div className="main-layout-wrapper">
-          <AppSidebar
-            userName={localStorage.getItem("userName")}
-            role="delivery_partner"
-            isLoggedIn={!!userEmail}
-            onLogout={handleLogout}
-            walletBalance={walletBalance}
-          />
           <div className="main-content-area">
             <BitesNavbar
               variant="driver"
@@ -718,7 +697,6 @@ export const AppRoutes: React.FC = () => {
   return (
     <BrowserRouter>
       <div className="main-layout-wrapper">
-        <AppSidebar />
         <div className="main-content-area">
           <Navbar />
           <Routes>
