@@ -1,19 +1,37 @@
+<!-- Banner header with micro-animations & premium fonts -->
 <p align="center">
-  <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&auto=format&fit=crop&q=80" alt="Bites Banner" width="100%" style="border-radius: 12px;" />
-</p>
-
-<h1 align="center">🍔 Bites</h1>
-
-<p align="center">
-  <strong>A premium, micro-animated multi-portal food delivery engine orchestrating customer orders, merchant kitchen processing, and real-time courier dispatch.</strong>
+  <a href="https://github.com/Pushpeshlingam1407/food-delivery-platform">
+    <img src="https://readme-typing-svg.demolab.com?font=Cinzel+Decorative&weight=700&size=40&duration=3000&pause=1000&color=FF6F61&center=true&vCenter=true&width=600&height=100&lines=%E2%9C%A8+BITES+%E2%9C%A8;Premium+Food+Engine;Dynamic+Multi-Portal;Rupee+Native+%E2%82%B9" alt="Bites Typing Animation" />
+  </a>
 </p>
 
 <p align="center">
-  <a href="https://github.com/Pushpeshlingam1407/food-delivery-platform/actions"><img src="https://img.shields.io/github/actions/workflow/status/Pushpeshlingam1407/food-delivery-platform/ci.yml?branch=main&style=flat-square" alt="Build Status" /></a>
-  <a href="https://github.com/Pushpeshlingam1407/food-delivery-platform/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Pushpeshlingam1407/food-delivery-platform?style=flat-square" alt="License" /></a>
-  <a href="https://github.com/Pushpeshlingam1407/food-delivery-platform/issues"><img src="https://img.shields.io/github/issues/Pushpeshlingam1407/food-delivery-platform?style=flat-square" alt="Issues" /></a>
-  <a href="https://github.com/Pushpeshlingam1407/food-delivery-platform/pulls"><img src="https://img.shields.io/github/issues-pr/Pushpeshlingam1407/food-delivery-platform?style=flat-square" alt="PRs Welcome" /></a>
-  <img src="https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=flat-square" alt="PRs Welcome" />
+  <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&auto=format&fit=crop&q=80" alt="Bites Flagship Banner" width="100%" style="border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.15); transition: transform 0.5s ease;" />
+</p>
+
+<p align="center">
+  <strong>An ultra-premium, modular food delivery engine orchestrating customer ordering, merchant kitchen flows, and courier coordinate routing.</strong>
+</p>
+
+<p align="center">
+  <a href="https://github.com/Pushpeshlingam1407/food-delivery-platform/actions"><img src="https://img.shields.io/github/actions/workflow/status/Pushpeshlingam1407/food-delivery-platform/ci.yml?branch=main&style=for-the-badge&color=FF6F61" alt="Build Status" /></a>
+  <a href="https://github.com/Pushpeshlingam1407/food-delivery-platform/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Pushpeshlingam1407/food-delivery-platform?style=for-the-badge&color=8A2BE2" alt="License" /></a>
+  <a href="https://github.com/Pushpeshlingam1407/food-delivery-platform/issues"><img src="https://img.shields.io/github/issues/Pushpeshlingam1407/food-delivery-platform?style=for-the-badge&color=20B2AA" alt="Issues" /></a>
+</p>
+
+---
+
+## 🎨 Immersive User Experience
+
+We believe food delivery should feel tactile, fast, and beautiful. Here is a preview of the frontend portals:
+
+<p align="center">
+  <kbd>
+    <img src="https://images.unsplash.com/photo-1565557623262-b51c2513a641?w=800&auto=format&fit=crop&q=80" alt="Customer Storefront Preview" width="45%" style="border-radius: 8px; margin: 2%;" />
+  </kbd>
+  <kbd>
+    <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?w=800&auto=format&fit=crop&q=80" alt="Merchant Dashboard Preview" width="45%" style="border-radius: 8px; margin: 2%;" />
+  </kbd>
 </p>
 
 ---
