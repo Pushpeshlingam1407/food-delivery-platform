@@ -137,7 +137,7 @@ const getCustomerGroups = (
         { path: "/addresses", label: "Addresses", icon: MapPin },
         {
           path: "#",
-          label: `Wallet: $${walletBalance !== null && walletBalance !== undefined ? walletBalance.toFixed(2) : "0.00"}`,
+          label: `Wallet: ₹${walletBalance !== null && walletBalance !== undefined ? walletBalance.toFixed(2) : "0.00"}`,
           icon: Wallet,
           onClick: onDepositClick,
         },
