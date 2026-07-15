@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import { PremiumCard } from "../../../shared/components/PremiumCard";
 
 export const Register: React.FC = () => {
   const [firstName, setFirstName] = useState("");
@@ -49,7 +50,7 @@ export const Register: React.FC = () => {
 
   return (
     <div className="auth-container">
-      <div className="auth-card">
+      <PremiumCard className="auth-card">
         <h2 className="auth-title">Create Account</h2>
         <p className="auth-subtitle">
           Sign up to order delicious meals in seconds
@@ -149,7 +150,7 @@ export const Register: React.FC = () => {
             Sign In
           </Link>
         </div>
-      </div>
+      </PremiumCard>
     </div>
   );
 };
