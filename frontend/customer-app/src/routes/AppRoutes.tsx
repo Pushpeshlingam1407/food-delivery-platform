@@ -36,6 +36,9 @@ import {
   ClipboardList,
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
+import curryHouseImage from "../assets/restaurants/curry-house.png";
+import rollsKingImage from "../assets/restaurants/rolls-king.png";
+import shahiRasoiImage from "../assets/restaurants/shahi-rasoi.png";
 
 // Admin Imports
 import { Dashboard as AdminDashboard } from "../../../admin-app/src/pages/Dashboard";
@@ -54,9 +57,9 @@ import { Dashboard as RestaurantDashboard } from "../../../restaurant-app/src/pa
 import { MenuManager } from "../../../restaurant-app/src/pages/MenuManager";
 import { Earnings } from "../../../restaurant-app/src/pages/Earnings";
 // Delivery Imports
+import { AppRoutes as DeliveryAppRoutes } from "../../../delivery-app/src/routes/AppRoutes";
+import { DeliveryProvider } from "../../../delivery-app/src/contexts/DeliveryContext";
 import { Dashboard as DeliveryDashboard } from "../../../delivery-app/src/pages/Dashboard";
-import { Navbar as DeliveryNavbar } from "../../../delivery-app/src/components/Navbar";
-import { DeliverySidebar } from "../../../delivery-app/src/components/DeliverySidebar";
 import type { MobileBottomNavItem } from "../../../shared/components/MobileBottomNav";
 import {
   Truck,
@@ -100,6 +103,12 @@ const REST_EMOJIS: Record<string, string> = {
   "rolls & wraps": "🌯",
   thali: "🍱",
   default: "🍽️",
+};
+
+const LOCAL_RESTAURANT_BANNERS: Record<string, string> = {
+  "The Curry House": curryHouseImage,
+  "Rolls King": rollsKingImage,
+  "Shahi Rasoi": shahiRasoiImage,
 };
 
 const getRestEmoji = (desc: string = "") => {
@@ -386,7 +395,7 @@ const Home: React.FC = () => {
               <div className="foodie-card-image-wrapper">
                 {r.banner_image_url ? (
                   <img
-                    src={r.banner_image_url}
+                    src={LOCAL_RESTAURANT_BANNERS[r.name] || r.banner_image_url}
                     alt={r.name}
                     className="foodie-card-image"
                   />
@@ -613,6 +622,16 @@ export const AppRoutes: React.FC = () => {
   }
 
   if (userEmail && userRole === "delivery_partner") {
+    return (
+      <BrowserRouter>
+        <DeliveryProvider>
+          <DeliveryAppRoutes />
+        </DeliveryProvider>
+      </BrowserRouter>
+    );
+  }
+
+  if (false && userEmail && userRole === "delivery_partner") {
     const DELIVERY_FOOTER_SECTIONS: FooterSection[] = [
       {
         title: "Driver Tools",

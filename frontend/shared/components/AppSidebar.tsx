@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import type { LucideIcon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
@@ -30,15 +31,15 @@ import { useAppContext } from "../context/AppContext";
    and delivery partner views.
    ────────────────────────────────────────────────────────── */
 
-interface NavItem {
+export interface NavItem {
   path: string;
   label: string;
-  icon: React.FC<{ size?: number }>;
+  icon: LucideIcon;
   /** Optional click handler instead of navigation */
   onClick?: () => void;
 }
 
-interface NavGroup {
+export interface NavGroup {
   label: string;
   items: NavItem[];
 }
@@ -64,6 +65,12 @@ export interface AppSidebarProps {
   onDepositClick?: () => void;
   /** Whether the user is logged in */
   isLoggedIn?: boolean;
+  /** Controlled desktop collapse state when the host owns layout width. */
+  collapsed?: boolean;
+  /** Called whenever the collapse state changes. */
+  onCollapsedChange?: (collapsed: boolean) => void;
+  /** Keep the sidebar visible on desktop when the host reserves layout space. */
+  persistentOnDesktop?: boolean;
 }
 
 /* ─── Default nav groups per role ─── */
@@ -163,6 +170,9 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
   onLogout,
   onDepositClick,
   isLoggedIn,
+  collapsed: controlledCollapsed,
+  onCollapsedChange,
+  persistentOnDesktop = false,
 }) => {
   const context = useAppContext();
 
@@ -186,9 +196,11 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
   const location = useLocation();
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [isCollapsed, setIsCollapsed] = useState(() => {
+  const touchStartX = useRef<number | null>(null);
+  const [internalCollapsed, setInternalCollapsed] = useState(() => {
     return localStorage.getItem("app_sidebar_collapsed") === "true";
   });
+  const isCollapsed = controlledCollapsed ?? internalCollapsed;
 
   React.useEffect(() => {
     const handleOpenSidebar = () => setIsMobileOpen(true);
@@ -197,12 +209,41 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       window.removeEventListener("open-app-sidebar", handleOpenSidebar);
   }, []);
 
+  React.useEffect(() => {
+    const isMobileViewport = () => window.innerWidth <= 1024;
+
+    const handleTouchStart = (event: TouchEvent) => {
+      touchStartX.current = event.touches[0]?.clientX ?? null;
+    };
+
+    const handleTouchEnd = (event: TouchEvent) => {
+      const startX = touchStartX.current;
+      const endX = event.changedTouches[0]?.clientX;
+      touchStartX.current = null;
+      if (!isMobileViewport() || startX === null || endX === undefined) return;
+
+      const horizontalDistance = endX - startX;
+      if (!isMobileOpen && startX <= 28 && horizontalDistance >= 72) {
+        setIsMobileOpen(true);
+      }
+      if (isMobileOpen && horizontalDistance <= -72) {
+        setIsMobileOpen(false);
+      }
+    };
+
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
+    window.addEventListener("touchend", handleTouchEnd, { passive: true });
+    return () => {
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("touchend", handleTouchEnd);
+    };
+  }, [isMobileOpen]);
+
   const toggleCollapse = () => {
-    setIsCollapsed((prev) => {
-      const next = !prev;
-      localStorage.setItem("app_sidebar_collapsed", String(next));
-      return next;
-    });
+    const next = !isCollapsed;
+    localStorage.setItem("app_sidebar_collapsed", String(next));
+    setInternalCollapsed(next);
+    onCollapsedChange?.(next);
   };
 
   const isActive = (path: string) => {
@@ -242,7 +283,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
 
       {/* Sidebar */}
       <aside
-        className={`admin-sidebar ${isMobileOpen ? "open" : ""} ${isCollapsed ? "collapsed" : ""}`}
+        className={`admin-sidebar ${isMobileOpen ? "open" : ""} ${isCollapsed ? "collapsed" : ""} ${persistentOnDesktop ? "app-sidebar--persistent" : ""}`}
       >
         <div>
           {/* Logo */}
@@ -250,15 +291,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             className={`admin-sidebar-header ${isCollapsed ? "app-sidebar-header-wrapper-collapsed" : "app-sidebar-header-wrapper-expanded"}`}
           >
             {!isCollapsed ? (
-              <Link
-                to="/"
-                className="admin-sidebar-logo"
-                style={{
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  fontWeight: 900,
-                }}
-              >
+              <Link to="/" className="admin-sidebar-logo app-sidebar-logo-expanded">
                 {resolvedRole === "admin"
                   ? "Bites Admin"
                   : resolvedRole === "restaurant_owner"

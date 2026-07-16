@@ -1,6 +1,10 @@
 .app-sidebar-fixed {
   position: fixed !important;
-  zindex: 95 !important;
+  z-index: 2090 !important;
+}
+
+.admin-sidebar {
+  z-index: 2100 !important;
 }
 
 .app-sidebar-header-wrapper-collapsed {
@@ -13,6 +17,28 @@
 
 .app-sidebar-logo-text {
   font-size: 1.2rem !important;
+}
+
+.app-sidebar-logo-expanded {
+  font-weight: 900 !important;
+  letter-spacing: 0.05em !important;
+  text-transform: uppercase;
+}
+
+@media (min-width: 1025px) {
+  .admin-sidebar.app-sidebar--persistent {
+    left: 0 !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .admin-sidebar.app-sidebar--persistent {
+    left: -280px !important;
+  }
+
+  .admin-sidebar.app-sidebar--persistent.open {
+    left: 0 !important;
+  }
 }
 
 .app-sidebar-avatar-collapsed {

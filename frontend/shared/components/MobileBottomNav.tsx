@@ -11,13 +11,20 @@ export interface MobileBottomNavItem {
 
 interface MobileBottomNavProps {
   items: MobileBottomNavItem[];
+  className?: string;
 }
 
-export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({ items }) => {
+export const MobileBottomNav: React.FC<MobileBottomNavProps> = ({
+  items,
+  className = "",
+}) => {
   const location = useLocation();
 
   return (
-    <nav className="mobile-bottom-nav" aria-label="Mobile navigation">
+    <nav
+      className={`mobile-bottom-nav ${className}`.trim()}
+      aria-label="Mobile navigation"
+    >
       {items.map((item) => {
         const isActive = item.route ? location.pathname === item.route : false;
 

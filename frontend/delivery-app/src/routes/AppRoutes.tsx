@@ -12,6 +12,7 @@ import { Register } from "../pages/Register";
 import { Dashboard } from "../pages/Dashboard";
 import { DeliveryRequestsPage } from "../pages/DeliveryRequestsPage";
 import { ActiveOrdersPage } from "../pages/ActiveOrdersPage";
+import { DeliveriesPage } from "../pages/DeliveriesPage";
 import { Earnings } from "../pages/Earnings";
 import { Ledger } from "../pages/Ledger";
 import { WalletPage } from "../pages/WalletPage";
@@ -29,6 +30,7 @@ export const AppRoutes: React.FC = () => {
       title: "Driver Tools",
       links: [
         { label: "Shift Overview", to: "/" },
+        { label: "Job Board", to: "/deliveries" },
         { label: "Delivery Requests", to: "/requests" },
         { label: "Active Orders", to: "/active-orders" },
         { label: "Delivery History", to: "/ledger" },
@@ -55,8 +57,8 @@ export const AppRoutes: React.FC = () => {
 
   const bottomNavItems: MobileBottomNavItem[] = [
     { icon: <LayoutDashboard size={22} />, label: "Home", route: "/" },
-    { icon: <Truck size={22} />, label: "Deliveries", route: "/requests" },
-    { icon: <Map size={22} />, label: "Map / Route", route: "/active-orders" },
+    { icon: <Truck size={22} />, label: "Deliveries", route: "/deliveries" },
+    { icon: <Map size={22} />, label: "Active Jobs", route: "/active-orders" },
     {
       icon: <Wallet size={22} />,
       label: "Earnings",
@@ -79,18 +81,28 @@ export const AppRoutes: React.FC = () => {
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/requests" element={<DeliveryRequestsPage />} />
+          <Route path="/deliveries" element={<DeliveriesPage />} />
           <Route path="/active-orders" element={<ActiveOrdersPage />} />
+          <Route path="/assigned-jobs" element={<ActiveOrdersPage />} />
+          <Route path="/route" element={<ActiveOrdersPage />} />
           <Route path="/earnings" element={<Earnings />} />
+          <Route path="/performance" element={<Earnings />} />
           <Route path="/ledger" element={<Ledger />} />
           <Route path="/wallet" element={<WalletPage />} />
           <Route path="/profile" element={<ProfilePage />} />
+          <Route path="/notifications" element={<Dashboard />} />
+          <Route path="/support" element={<ProfilePage />} />
+          <Route path="/settings" element={<ProfilePage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <ResponsiveFooter
           sections={footerSections}
           bottomText={`© ${new Date().getFullYear()} Bites Logistics Private Limited. All rights reserved.`}
         />
-        <MobileBottomNav items={bottomNavItems} />
+        <MobileBottomNav
+          items={bottomNavItems}
+          className="delivery-mobile-bottom-nav"
+        />
       </div>
     </div>
   ) : (

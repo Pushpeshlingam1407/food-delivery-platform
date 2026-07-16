@@ -941,6 +941,52 @@ textarea {
   padding-bottom: 20px;
 }
 
+/* The shared drawer styles target every direct div. Delivery sections are
+   direct divs too, so reset them explicitly to preserve a vertical menu. */
+.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) !important;
+  gap: 4px !important;
+  margin: 0 !important;
+  padding: 14px 0 !important;
+  border-bottom: 1px solid rgba(56, 45, 36, 0.09) !important;
+  color: inherit !important;
+}
+
+.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section:last-of-type {
+  border-bottom: 0 !important;
+}
+
+.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section > .delivery-navbar__drawer-title {
+  display: block;
+  padding: 0 10px 5px;
+}
+
+.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section > a {
+  display: flex !important;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px 12px !important;
+  overflow: hidden;
+  border: 1px solid transparent !important;
+  border-radius: 10px;
+  color: #504841 !important;
+  line-height: 1.25;
+  white-space: normal;
+}
+
+.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section > a svg {
+  flex: 0 0 auto;
+}
+
+.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section > a.active {
+  border-color: rgba(255, 117, 79, 0.15) !important;
+  background: rgba(255, 117, 79, 0.1) !important;
+  color: var(--accent-orange) !important;
+}
+
 .delivery-navbar__drawer-status {
   display: inline-flex;
   align-items: center;
@@ -1647,6 +1693,17 @@ textarea {
     padding-bottom: env(safe-area-inset-bottom, 0);
   }
 
+  .delivery-mobile-bottom-nav {
+    display: flex !important;
+    position: fixed !important;
+    right: 10px !important;
+    bottom: max(10px, env(safe-area-inset-bottom, 0px)) !important;
+    left: 10px !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    z-index: 2000 !important;
+  }
+
   /* Header overrides */
   .driver-workspace {
     padding: 20px 16px !important;
@@ -1793,6 +1850,252 @@ textarea {
 
   .driver-route strong {
     font-size: 0.85rem !important;
+  }
+}
+
+/* Delivery navigation: the same calm, layered navigation treatment used by
+   the customer experience, tailored to the driver console hierarchy. */
+.delivery-sidebar {
+  padding: 18px 14px;
+  overflow-y: auto;
+  background: rgba(255, 253, 251, 0.94);
+  border-right-color: rgba(56, 45, 36, 0.09);
+  box-shadow: 14px 0 38px rgba(70, 50, 31, 0.035);
+  scrollbar-width: thin;
+  scrollbar-color: rgba(119, 92, 70, 0.2) transparent;
+}
+
+.delivery-sidebar__top {
+  min-height: 46px;
+  padding: 0 6px 14px;
+  border-bottom: 1px solid rgba(56, 45, 36, 0.07);
+}
+
+.delivery-sidebar__brand {
+  font-size: 1.45rem;
+  letter-spacing: -0.055em;
+}
+
+.delivery-sidebar__status {
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(107, 92, 80, 0.07);
+  font-size: 0.64rem;
+  letter-spacing: 0.06em;
+}
+
+.delivery-sidebar__status.is-live {
+  background: rgba(16, 185, 129, 0.1);
+}
+
+.delivery-sidebar__status.is-offline {
+  background: rgba(255, 117, 79, 0.1);
+}
+
+.delivery-sidebar__toggle {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.delivery-sidebar__toggle:hover {
+  border-color: rgba(255, 117, 79, 0.26);
+  background: rgba(255, 117, 79, 0.08);
+  transform: translateY(-1px);
+}
+
+.delivery-sidebar__card {
+  margin: 2px 2px 4px;
+  padding: 14px;
+  border: 1px solid rgba(255, 117, 79, 0.12);
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(255, 247, 243, 0.96), rgba(255, 255, 255, 0.8));
+}
+
+.delivery-sidebar__avatar {
+  box-shadow: 0 8px 18px rgba(255, 117, 79, 0.2);
+}
+
+.delivery-sidebar__name {
+  letter-spacing: -0.02em;
+}
+
+.delivery-sidebar__meta {
+  margin-top: 2px;
+  font-size: 0.76rem;
+}
+
+.delivery-sidebar__section-title {
+  padding: 0 10px !important;
+  margin: 16px 0 6px !important;
+  color: #9a8d83 !important;
+  font-size: 0.64rem !important;
+  letter-spacing: 0.1em !important;
+}
+
+.delivery-sidebar__nav {
+  gap: 3px;
+  margin-top: 0;
+}
+
+.delivery-sidebar__link,
+.delivery-sidebar__logout {
+  position: relative;
+  min-height: 42px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 11px;
+  color: #5d554f;
+  font-size: 0.86rem;
+  font-weight: 700;
+}
+
+.delivery-sidebar__link:hover {
+  background: rgba(255, 117, 79, 0.06);
+  border-color: rgba(255, 117, 79, 0.1);
+  color: #3d3732;
+  transform: none;
+}
+
+.delivery-sidebar__link.active {
+  border-color: rgba(255, 117, 79, 0.16);
+  background: linear-gradient(90deg, rgba(255, 117, 79, 0.13), rgba(255, 117, 79, 0.035));
+  color: #c64b2e;
+}
+
+.delivery-sidebar__link.active::before {
+  position: absolute;
+  top: 10px;
+  bottom: 10px;
+  left: -1px;
+  width: 3px;
+  border-radius: 0 4px 4px 0;
+  background: var(--accent-orange);
+  content: "";
+}
+
+.delivery-sidebar__availability {
+  color: #4d7662;
+}
+
+.delivery-sidebar__footer {
+  padding: 12px 2px 4px;
+  border-top: 1px solid rgba(56, 45, 36, 0.07);
+}
+
+.delivery-sidebar__logout:hover {
+  background: rgba(239, 68, 68, 0.06);
+}
+
+.delivery-sidebar.is-collapsed {
+  padding: 18px 12px;
+}
+
+/* Profile: improve information hierarchy and control affordance without
+   changing the screen's data, actions, or delivery workflow. */
+.driver-profile-overview-card {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(255, 117, 79, 0.16) !important;
+  background: linear-gradient(125deg, rgba(255, 249, 246, 0.98), rgba(255, 255, 255, 0.9)) !important;
+  box-shadow: 0 14px 34px rgba(67, 45, 30, 0.045);
+}
+
+.driver-profile-overview-card::after {
+  position: absolute;
+  top: -72px;
+  right: -48px;
+  width: 190px;
+  height: 190px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 117, 79, 0.13), transparent 68%);
+  content: "";
+  pointer-events: none;
+}
+
+.driver-profile-flex-wrapper {
+  position: relative;
+  z-index: 1;
+  gap: 18px !important;
+}
+
+.driver-profile-avatar-large {
+  border: 4px solid #fff;
+  box-shadow: 0 10px 24px rgba(255, 117, 79, 0.24);
+}
+
+.driver-profile-name {
+  font-size: clamp(1.35rem, 3vw, 1.65rem) !important;
+  letter-spacing: -0.04em;
+}
+
+.driver-profile-meta-line {
+  font-weight: 700;
+}
+
+.driver-profile-panel-padded {
+  border: 1px solid rgba(44, 36, 30, 0.07);
+  box-shadow: 0 10px 26px rgba(45, 36, 27, 0.025);
+}
+
+.driver-profile-details-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px !important;
+}
+
+.driver-profile-details-grid > div {
+  min-height: 74px;
+  padding: 13px 14px;
+  border: 1px solid rgba(69, 55, 45, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 253, 251, 0.78);
+  color: #443c36;
+  line-height: 1.45;
+}
+
+.driver-profile-bold-label {
+  display: block;
+  margin-bottom: 4px;
+  font-size: 0.7rem;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+.driver-profile-assistance-btn {
+  min-height: 48px;
+  border-color: rgba(69, 55, 45, 0.1) !important;
+  border-radius: 12px;
+  background: rgba(255, 253, 251, 0.85) !important;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.driver-profile-assistance-btn:hover {
+  border-color: rgba(255, 117, 79, 0.24) !important;
+  background: rgba(255, 247, 243, 0.96) !important;
+  transform: translateY(-1px);
+}
+
+@media (max-width: 560px) {
+  .driver-profile-overview-card,
+  .driver-profile-panel-padded {
+    padding: 20px !important;
+  }
+
+  .driver-profile-details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Keep the sidebar mount point alive on mobile. The shared AppSidebar is
+   fixed-position and opens independently of layout width; hiding its parent
+   prevented the Delivery drawer from ever becoming visible. */
+@media (max-width: 1024px) {
+  .delivery-sidebar-shell {
+    display: block !important;
+    flex: 0 0 0 !important;
+    width: 0 !important;
+    overflow: visible !important;
   }
 }
 
@@ -2596,3 +2899,67 @@ textarea {
 .driver-heatmap-dot--0 { background: #ef4444; color: #ef4444; }
 .driver-heatmap-dot--1 { background: #f59e0b; color: #f59e0b; }
 .driver-heatmap-dot--2 { background: #10b981; color: #10b981; }
+
+/* Earnings trend: reserve independent rows for each datum so labels never
+   compete with the chart title or plotting area on narrow screens. */
+.driver-trend-chart-outer {
+  margin-top: 16px;
+  overflow: hidden;
+}
+
+.driver-trend-bar-chart-container {
+  display: flex !important;
+  align-items: stretch !important;
+  gap: clamp(6px, 2vw, 12px) !important;
+  height: 144px !important;
+  padding: 0 2px;
+}
+
+.driver-trend-col {
+  display: grid !important;
+  grid-template-rows: 18px 102px 18px;
+  flex: 1 1 0;
+  min-width: 0;
+  align-items: end;
+}
+
+.driver-trend-bar-label,
+.driver-trend-bar-date {
+  display: block;
+  width: 100%;
+  overflow: hidden;
+  text-align: center;
+  text-overflow: ellipsis;
+}
+
+.driver-trend-bar-label {
+  grid-row: 1;
+  align-self: start;
+  line-height: 18px;
+  white-space: nowrap;
+}
+
+.driver-trend-bar {
+  grid-row: 2;
+  align-self: end;
+  max-height: 102px;
+  margin-top: 0 !important;
+}
+
+.driver-trend-bar-date {
+  grid-row: 3;
+  align-self: end;
+  margin-top: 0 !important;
+  line-height: 18px;
+}
+
+@media (max-width: 480px) {
+  .driver-trend-bar-chart-container {
+    gap: 5px !important;
+  }
+
+  .driver-trend-bar-label,
+  .driver-trend-bar-date {
+    font-size: 0.58rem !important;
+  }
+}
