@@ -102,7 +102,7 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
   };
 
   const handleDeposit = async () => {
-    const amountStr = prompt("Enter deposit amount ($):");
+    const amountStr = prompt("Enter deposit amount (₹):");
     if (!amountStr) return;
     const amount = parseFloat(amountStr);
     if (isNaN(amount) || amount <= 0) {

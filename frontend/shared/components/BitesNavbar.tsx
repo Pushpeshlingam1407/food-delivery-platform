@@ -398,8 +398,14 @@ export const BitesNavbar: React.FC<
             <button
               onClick={onCartClick}
               className={`cart-btn-capsule ${cartCount > 0 ? "cart-btn-capsule--active" : ""}`}
+              style={{ position: "relative" }}
             >
               <ShoppingBag size={18} />
+              {cartCount > 0 && (
+                <span className="cart-badge-mobile">
+                  {cartCount}
+                </span>
+              )}
               <span className="cart-text">
                 {cartCount > 0 ? `${cartCount} Items` : "Cart"}
               </span>

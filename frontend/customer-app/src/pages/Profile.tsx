@@ -9,6 +9,7 @@ import {
   HelpCircle,
   FileText,
 } from "lucide-react";
+import { formatIndianCurrency } from "../../../shared/utils/currency";
 
 interface ProfileProps {
   userEmail: string | null;
@@ -54,7 +55,7 @@ export const Profile: React.FC<ProfileProps> = ({
       label: "Wallet",
       sub:
         walletBalance !== null
-          ? `Balance: $${walletBalance.toFixed(2)} — tap to top up`
+          ? `Balance: ${formatIndianCurrency(walletBalance)} — tap to top up`
           : "Add money to your wallet",
       action: onDepositClick,
     },
@@ -99,7 +100,7 @@ export const Profile: React.FC<ProfileProps> = ({
             <Wallet size={32} />
           </div>
           <div className="stat-tile-label">Wallet Balance</div>
-          <div className="stat-tile-value">${walletBalance.toFixed(2)}</div>
+          <div className="stat-tile-value">{formatIndianCurrency(walletBalance)}</div>
           <div className="stat-tile-sub">Tap to add money →</div>
         </div>
       )}

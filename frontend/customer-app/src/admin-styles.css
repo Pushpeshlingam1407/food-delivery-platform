@@ -440,6 +440,25 @@
     display: none;
   }
 
+  .cart-badge-mobile {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    background: var(--accent-orange) !important;
+    color: white !important;
+    border-radius: 50% !important;
+    width: 18px !important;
+    height: 18px !important;
+    font-size: 0.65rem !important;
+    font-weight: 800 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border: 1.5px solid white !important;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2) !important;
+    z-index: 10;
+  }
+
   .cart-btn-capsule--active {
     background: var(--accent-orange) !important;
     border-color: var(--accent-orange) !important;

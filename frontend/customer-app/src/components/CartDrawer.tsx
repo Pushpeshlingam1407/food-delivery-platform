@@ -12,6 +12,7 @@ interface CartItem {
 }
 
 import { useAppContext } from "../../../shared/context/AppContext";
+import { formatIndianCurrency } from "../../../shared/utils/currency";
 import "./CartDrawer.css";
 
 export const CartDrawer: React.FC = () => {
@@ -29,6 +30,7 @@ export const CartDrawer: React.FC = () => {
   const [couponCode, setCouponCode] = useState("");
   const [discount, setDiscount] = useState(0);
   const [appliedCouponId, setAppliedCouponId] = useState<string | null>(null);
+  const [appliedCoupon, setAppliedCoupon] = useState<any | null>(null);
 
   // Custom cart features
   const [availableCoupons, setAvailableCoupons] = useState<any[]>([]);
@@ -90,7 +92,63 @@ export const CartDrawer: React.FC = () => {
     loadDrawerFeatures();
   }, [isOpen, cartItems.length]);
 
+  // Automatically clear coupon if cart is empty
+  useEffect(() => {
+    if (cartItems.length === 0) {
+      setAppliedCouponId(null);
+      setAppliedCoupon(null);
+      setDiscount(0);
+      setCouponCode("");
+    }
+  }, [cartItems.length]);
+
+  // Recalculate discount or remove if subtotal changes
+  useEffect(() => {
+    if (appliedCoupon && cartItems.length > 0) {
+      if (subtotal < parseFloat(appliedCoupon.min_order_amount.toString())) {
+        setAppliedCouponId(null);
+        setAppliedCoupon(null);
+        setDiscount(0);
+        setCouponCode("");
+        notify.warning(
+          `Coupon '${appliedCoupon.code}' removed: minimum order of ₹${parseFloat(
+            appliedCoupon.min_order_amount.toString(),
+          ).toFixed(2)} required.`,
+        );
+      } else {
+        let discountAmt = 0;
+        if (appliedCoupon.discount_type === "percentage") {
+          discountAmt =
+            (subtotal * parseFloat(appliedCoupon.discount_value.toString())) / 100;
+          if (appliedCoupon.max_discount_amount) {
+            discountAmt = Math.min(
+              discountAmt,
+              parseFloat(appliedCoupon.max_discount_amount.toString()),
+            );
+          }
+        } else {
+          discountAmt = parseFloat(appliedCoupon.discount_value.toString());
+        }
+        discountAmt = Math.min(discountAmt, subtotal);
+        discountAmt = parseFloat(discountAmt.toFixed(2));
+        setDiscount(discountAmt);
+      }
+    }
+  }, [subtotal, appliedCoupon]);
+
+  const handleRemoveCoupon = () => {
+    setAppliedCouponId(null);
+    setAppliedCoupon(null);
+    setDiscount(0);
+    setCouponCode("");
+    notify.success("Coupon removed.");
+  };
+
   const handleApplyCouponCode = async (code: string) => {
+    if (appliedCouponId) {
+      notify.warning("A coupon has already been applied.");
+      return;
+    }
     try {
       const response = await api.get(`/admin/coupons`);
       if (response.data.status === "success") {
@@ -111,9 +169,7 @@ export const CartDrawer: React.FC = () => {
 
           if (subtotal < parseFloat(coupon.min_order_amount.toString())) {
             notify.warning(
-              `Add a bit more! Minimum order of ₹${parseFloat(
-                coupon.min_order_amount.toString(),
-              ).toFixed(2)} required for this coupon.`,
+              `Add a bit more! Minimum order of ${formatIndianCurrency(coupon.min_order_amount)} required for this coupon.`,
             );
             return;
           }
@@ -136,12 +192,13 @@ export const CartDrawer: React.FC = () => {
 
           setDiscount(discountAmt);
           setAppliedCouponId(coupon.id);
+          setAppliedCoupon(coupon);
           setCouponCode(coupon.code);
 
           const discountMsg =
             coupon.discount_type === "percentage"
               ? `${coupon.discount_value}% discount applied.`
-              : `₹${parseFloat(coupon.discount_value.toString()).toFixed(2)} discount applied.`;
+              : `${formatIndianCurrency(coupon.discount_value)} discount applied.`;
 
           notify.success("Coupon applied!", {
             description: discountMsg,
@@ -208,7 +265,7 @@ export const CartDrawer: React.FC = () => {
               <div className="cart-drawer-item-grow">
                 <h4 className="cart-drawer-item-name">{item.name}</h4>
                 <span className="cart-drawer-item-price-qty">
-                  ₹{item.price.toFixed(2)} x {item.qty}
+                  {formatIndianCurrency(item.price)} x {item.qty}
                 </span>
               </div>
 
@@ -252,7 +309,7 @@ export const CartDrawer: React.FC = () => {
                         {item.name}
                       </div>
                       <div className="cart-drawer-recommended-item-price">
-                        ₹{parseFloat(item.price).toFixed(2)}
+                        {formatIndianCurrency(item.price)}
                       </div>
                     </div>
                     <button
@@ -281,6 +338,7 @@ export const CartDrawer: React.FC = () => {
                     <button
                       key={c.id}
                       onClick={() => handleApplyCouponCode(c.code)}
+                      disabled={!!appliedCouponId}
                       style={{
                         background:
                           appliedCouponId === c.id
@@ -298,7 +356,8 @@ export const CartDrawer: React.FC = () => {
                         padding: "4px 12px",
                         fontSize: "0.75rem",
                         fontWeight: 700,
-                        cursor: "pointer",
+                        cursor: appliedCouponId ? "not-allowed" : "pointer",
+                        opacity: appliedCouponId && appliedCouponId !== c.id ? 0.5 : 1,
                         whiteSpace: "nowrap",
                       }}
                     >
@@ -310,47 +369,83 @@ export const CartDrawer: React.FC = () => {
             )}
 
             <div className="cart-drawer-coupon cart-drawer-coupon-pills-container">
-              <div className="cart-drawer-coupon-input-wrapper">
+              <div className="cart-drawer-coupon-input-wrapper" style={{ opacity: appliedCouponId ? 0.7 : 1 }}>
                 <Percent size={16} color="var(--text-muted)" />
                 <input
                   type="text"
                   placeholder="PROMOCODE"
                   value={couponCode}
                   onChange={(e) => setCouponCode(e.target.value)}
+                  disabled={!!appliedCouponId}
                   className="cart-drawer-coupon-input"
+                  style={{ cursor: appliedCouponId ? "not-allowed" : "text" }}
                 />
               </div>
-              <button
-                onClick={handleApplyCoupon}
-                className="cart-drawer-coupon-apply-btn"
-              >
-                Apply
-              </button>
+              {appliedCouponId ? (
+                <div style={{ display: "flex", gap: "8px" }}>
+                  <button
+                    disabled
+                    className="cart-drawer-coupon-apply-btn"
+                    style={{
+                      background: "#4CAF50",
+                      borderColor: "#4CAF50",
+                      color: "white",
+                      cursor: "not-allowed",
+                    }}
+                  >
+                    Applied
+                  </button>
+                  <button
+                    onClick={handleRemoveCoupon}
+                    className="cart-drawer-coupon-remove-btn"
+                    style={{
+                      background: "rgba(244, 67, 54, 0.1)",
+                      color: "#f44336",
+                      border: "1px solid #f44336",
+                      padding: "8px 16px",
+                      borderRadius: "99px",
+                      fontSize: "0.85rem",
+                      fontWeight: 600,
+                      cursor: "pointer",
+                      transition: "all 0.2s ease",
+                    }}
+                  >
+                    Remove
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={handleApplyCoupon}
+                  className="cart-drawer-coupon-apply-btn"
+                >
+                  Apply
+                </button>
+              )}
             </div>
 
             <div className="cart-drawer-summary-section">
               <div className="cart-drawer-summary-row">
                 <span>Subtotal</span>
-                <span>₹{subtotal.toFixed(2)}</span>
+                <span>{formatIndianCurrency(subtotal)}</span>
               </div>
               {discount > 0 && (
                 <div className="cart-drawer-summary-discount">
                   <span>Discount</span>
-                  <span>-₹{discount.toFixed(2)}</span>
+                  <span>-{formatIndianCurrency(discount)}</span>
                 </div>
               )}
               <div className="cart-drawer-summary-row">
                 <span>GST (18%)</span>
-                <span>₹{tax.toFixed(2)}</span>
+                <span>{formatIndianCurrency(tax)}</span>
               </div>
               <div className="cart-drawer-summary-row">
                 <span>Delivery Fee</span>
-                <span>₹{deliveryFee.toFixed(2)}</span>
+                <span>{formatIndianCurrency(deliveryFee)}</span>
               </div>
               <hr className="cart-drawer-summary-divider" />
               <div className="cart-drawer-summary-total">
                 <span>Total Pay</span>
-                <span>₹{total.toFixed(2)}</span>
+                <span>{formatIndianCurrency(total)}</span>
               </div>
             </div>
 
