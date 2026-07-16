@@ -62,32 +62,13 @@ export const BitesNavbar: React.FC<
                 type="button"
                 className="delivery-navbar__menu"
                 aria-label="Open navigation"
-                onClick={() =>
-                  window.dispatchEvent(new CustomEvent("open-app-sidebar"))
-                }
-                style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "4px",
-                  display: "flex",
-                  alignItems: "center",
-                  color: "var(--text-slate)",
-                }}
+                onClick={props.onOpenMenu}
               >
                 <Menu size={24} />
               </button>
               <Link
                 to="/"
-                className="delivery-navbar__brand"
-                style={{
-                  fontSize: "1.2rem",
-                  fontWeight: 900,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.05em",
-                  color: "var(--accent-orange)",
-                  textDecoration: "none",
-                }}
+                className="delivery-navbar__brand delivery-navbar__brand--header"
               >
                 Bites Logistics
               </Link>
@@ -114,12 +95,6 @@ export const BitesNavbar: React.FC<
               <span />
             )
           }
-        />
-        <AppSidebar
-          userName={name}
-          role="driver"
-          isLoggedIn={!!props.onLogout}
-          onLogout={props.onLogout}
         />
       </>
     );

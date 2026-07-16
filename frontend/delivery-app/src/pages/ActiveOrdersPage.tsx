@@ -228,21 +228,14 @@ export const ActiveOrdersPage: React.FC = () => {
                   <span>Cust.</span>
                 </div>
                 <div
-                  className="driver-map-marker marker-driver"
-                  style={{
-                    top: `${130 + (gpsProgress / 100) * 80}px`,
-                    left: `${130 + (gpsProgress / 100) * 110}px`,
-                  }}
+                  className={`driver-map-marker marker-driver marker-driver--progress-${gpsProgress}`}
                 >
                   <Truck size={12} />
                   <span>You</span>
                 </div>
               </div>
               <div className="driver-map-gps-bar">
-                <div
-                  className="driver-map-gps-fill"
-                  style={{ width: `${gpsProgress}%` }}
-                />
+                <div className={`driver-map-gps-fill driver-map-gps-fill--${gpsProgress}`} />
               </div>
             </div>
 

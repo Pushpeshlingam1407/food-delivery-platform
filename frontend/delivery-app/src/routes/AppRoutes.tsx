@@ -6,15 +6,7 @@ import { MobileBottomNav } from "../../../shared/components/MobileBottomNav";
 import { ResponsiveFooter } from "../../../shared/components/ResponsiveFooter";
 import type { MobileBottomNavItem } from "../../../shared/components/MobileBottomNav";
 import type { FooterSection } from "../../../shared/components/ResponsiveFooter";
-import {
-  Truck,
-  Wallet,
-  ClipboardList,
-  LayoutDashboard,
-  User,
-  FileText,
-  Map,
-} from "lucide-react";
+import { Truck, Wallet, LayoutDashboard, User, Map } from "lucide-react";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Dashboard } from "../pages/Dashboard";
@@ -26,17 +18,11 @@ import { WalletPage } from "../pages/WalletPage";
 import { ProfilePage } from "../pages/ProfilePage";
 
 import { useAppContext } from "../../../shared/context/AppContext";
+import { useDelivery } from "../hooks/useDelivery";
 
 export const AppRoutes: React.FC = () => {
-  const {
-    userEmail,
-    handleLogout,
-    driverOnline: isOnline,
-    deliverySidebarCollapsed: sidebarCollapsed,
-    setDeliverySidebarCollapsed: setSidebarCollapsed,
-  } = useAppContext();
-
-  const driverName = localStorage.getItem("userName") || "Driver";
+  const { userEmail } = useAppContext();
+  const { sidebarCollapsed, logout } = useDelivery();
 
   const footerSections: FooterSection[] = [
     {
@@ -62,7 +48,7 @@ export const AppRoutes: React.FC = () => {
       links: [
         { label: "Shift Safety", to: "/" },
         { label: "Payment Help", to: "/" },
-        { label: "Logout", onClick: handleLogout },
+        { label: "Logout", onClick: logout },
       ],
     },
   ];
@@ -72,7 +58,7 @@ export const AppRoutes: React.FC = () => {
     { icon: <Truck size={22} />, label: "Deliveries", route: "/requests" },
     { icon: <Map size={22} />, label: "Map / Route", route: "/active-orders" },
     {
-      icon: <ClipboardList size={22} />,
+      icon: <Wallet size={22} />,
       label: "Earnings",
       route: "/earnings",
     },
@@ -85,18 +71,11 @@ export const AppRoutes: React.FC = () => {
         className={`delivery-sidebar-shell ${sidebarCollapsed ? "is-collapsed" : ""}`}
       >
         <DeliverySidebar
-          driverName={driverName}
-          isOnline={isOnline}
-          collapsed={sidebarCollapsed}
-          onToggleCollapsed={() =>
-            setSidebarCollapsed((collapsed) => !collapsed)
-          }
-          onLogout={handleLogout}
         />
       </div>
 
       <div className="delivery-main-shell">
-        <Navbar driverName={driverName} onLogout={handleLogout} />
+        <Navbar />
         <Routes>
           <Route path="/" element={<Dashboard />} />
           <Route path="/requests" element={<DeliveryRequestsPage />} />

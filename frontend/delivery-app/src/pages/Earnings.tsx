@@ -100,10 +100,7 @@ export const Earnings: React.FC = () => {
             </div>
             <div className="driver-quest-progress-track">
               <div
-                className="driver-quest-progress-fill"
-                style={{
-                  width: `${Math.min(100, (completedDeliveriesCount / 8) * 100)}%`,
-                }}
+                className={`driver-quest-progress-fill driver-quest-progress-fill--${Math.min(100, Math.floor((completedDeliveriesCount / 8) * 100))}`}
               />
             </div>
           </div>
@@ -167,10 +164,7 @@ export const Earnings: React.FC = () => {
                         ₹{Math.round(t.amount)}
                       </span>
                       <div
-                        className="driver-trend-bar"
-                        style={{
-                          height: `${percentHeight}px`,
-                        }}
+                        className={`driver-trend-bar driver-trend-bar--${Math.min(100, Math.ceil(percentHeight / 10) * 10)}`}
                       />
                       <span className="driver-trend-bar-date">
                         {new Date(t.date).toLocaleDateString(undefined, {
@@ -197,23 +191,7 @@ export const Earnings: React.FC = () => {
               analytics.heatmaps.map((h: any, idx: number) => (
                 <div key={idx} className="driver-heatmap-item">
                   <div className="driver-heatmap-left">
-                    <span
-                      className="driver-heatmap-dot"
-                      style={{
-                        background:
-                          idx === 0
-                            ? "#ef4444"
-                            : idx === 1
-                              ? "#f59e0b"
-                              : "#10b981",
-                        color:
-                          idx === 0
-                            ? "#ef4444"
-                            : idx === 1
-                              ? "#f59e0b"
-                              : "#10b981",
-                      }}
-                    />
+                    <span className={`driver-heatmap-dot driver-heatmap-dot--${Math.min(idx, 2)}`} />
                     <strong className="driver-heatmap-zone-name">
                       {h.zone}
                     </strong>
