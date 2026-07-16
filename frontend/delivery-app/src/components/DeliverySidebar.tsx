@@ -9,14 +9,16 @@ import {
   Sparkles,
   PanelLeftClose,
   PanelLeftOpen,
+  FileText,
+  ShoppingBag,
+  Store,
+  Shield,
 } from "lucide-react";
 
 interface DeliverySidebarProps {
   driverName?: string | null;
   isOnline?: boolean;
   onLogout?: () => void;
-  onWalletJump?: () => void;
-  onJobsJump?: () => void;
   collapsed?: boolean;
   onToggleCollapsed?: () => void;
 }
@@ -25,8 +27,6 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
   driverName = "Driver",
   isOnline = false,
   onLogout,
-  onWalletJump,
-  onJobsJump,
   collapsed = false,
   onToggleCollapsed,
 }) => {
@@ -88,22 +88,46 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
           <LayoutDashboard size={18} />
           {!collapsed && <span>Shift overview</span>}
         </Link>
-        <button
-          className="delivery-sidebar__link"
-          type="button"
-          onClick={onJobsJump}
+        <Link
+          className={`delivery-sidebar__link ${isActive("/earnings") ? "active" : ""}`}
+          to="/earnings"
         >
           <ClipboardList size={18} />
-          {!collapsed && <span>Job queue</span>}
-        </button>
-        <button
-          className="delivery-sidebar__link"
-          type="button"
-          onClick={onWalletJump}
+          {!collapsed && <span>Earnings</span>}
+        </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/ledger") ? "active" : ""}`}
+          to="/ledger"
+        >
+          <FileText size={18} />
+          {!collapsed && <span>Ledger</span>}
+        </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/wallet") ? "active" : ""}`}
+          to="/wallet"
         >
           <Wallet size={18} />
           {!collapsed && <span>Wallet</span>}
-        </button>
+        </Link>
+      </nav>
+
+      {/* Switch Portals Section */}
+      <div className="delivery-sidebar__section-title">
+        {!collapsed ? "Switch Portals" : "•••"}
+      </div>
+      <nav className="delivery-sidebar__nav" aria-label="Platform portals">
+        <a className="delivery-sidebar__link" href="http://localhost:5173" target="_blank" rel="noreferrer">
+          <ShoppingBag size={18} />
+          {!collapsed && <span>Customer App</span>}
+        </a>
+        <a className="delivery-sidebar__link" href="http://localhost:5174" target="_blank" rel="noreferrer">
+          <Store size={18} />
+          {!collapsed && <span>Restaurant App</span>}
+        </a>
+        <a className="delivery-sidebar__link" href="http://localhost:5175" target="_blank" rel="noreferrer">
+          <Shield size={18} />
+          {!collapsed && <span>Admin Dashboard</span>}
+        </a>
       </nav>
 
       {!collapsed && (
