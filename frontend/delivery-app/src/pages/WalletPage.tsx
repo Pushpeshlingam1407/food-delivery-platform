@@ -43,8 +43,7 @@ export const WalletPage: React.FC = () => {
       }
     } catch (error: any) {
       notify.error(
-        error.response?.data?.message ||
-          "We couldn't request your payout right now.",
+        error.response?.data?.message || "We couldn't request your payout right now."
       );
     } finally {
       setPayoutLoading(false);
@@ -57,10 +56,7 @@ export const WalletPage: React.FC = () => {
         <div>
           <p className="driver-workspace__eyebrow">Finance Console</p>
           <h1>Driver Payout Wallet</h1>
-          <p>
-            Request instant payouts and review your historical settlement
-            transactions.
-          </p>
+          <p>Request instant payouts and review your historical settlement transactions.</p>
         </div>
       </header>
 
@@ -104,14 +100,14 @@ export const WalletPage: React.FC = () => {
       </section>
 
       {/* Historical Payout Logs */}
-      <section className="driver-panel" style={{ marginTop: "24px" }}>
+      <section className="driver-panel driver-wallet-panel-margin">
         <div className="driver-panel__heading">
           <div>
             <p>Cashout Logs</p>
             <h2>Latest Activities</h2>
           </div>
         </div>
-        <div className="table-responsive" style={{ marginTop: "16px" }}>
+        <div className="table-responsive driver-wallet-table-responsive">
           <table className="driver-ledger-table">
             <thead>
               <tr className="driver-ledger-table-header-row">
@@ -125,58 +121,30 @@ export const WalletPage: React.FC = () => {
             <tbody>
               {transactions.map((tx) => (
                 <tr key={tx.id} className="driver-ledger-table-row">
-                  <td className="driver-ledger-tx-id">
-                    #{tx.id.slice(0, 8).toUpperCase()}
-                  </td>
-                  <td style={{ padding: "14px 16px", fontSize: "0.85rem" }}>
-                    {tx.description}
-                  </td>
-                  <td
-                    style={{
-                      padding: "14px 16px",
-                      fontSize: "0.85rem",
-                      fontWeight: 800,
-                    }}
-                  >
+                  <td className="driver-ledger-tx-id">#{tx.id.slice(0, 8).toUpperCase()}</td>
+                  <td className="driver-wallet-table-cell">{tx.description}</td>
+                  <td className="driver-wallet-table-cell-bold">
                     {formatIndianCurrency(Math.abs(parseFloat(tx.amount)))}
                   </td>
-                  <td style={{ padding: "14px 16px" }}>
+                  <td className="driver-wallet-table-cell-padding">
                     <span
-                      style={{
-                        background:
-                          tx.type === "credit" ? "#e6f4ea" : "#fce8e6",
-                        color: tx.type === "credit" ? "#137333" : "#c5221f",
-                        fontSize: "0.7rem",
-                        fontWeight: 800,
-                        padding: "4px 8px",
-                        borderRadius: "6px",
-                        textTransform: "uppercase",
-                      }}
+                      className={`driver-wallet-type-badge ${
+                        tx.type === "credit"
+                          ? "driver-wallet-type-badge-credit"
+                          : "driver-wallet-type-badge-debit"
+                      }`}
                     >
                       {tx.type}
                     </span>
                   </td>
-                  <td
-                    style={{
-                      padding: "14px 16px",
-                      fontSize: "0.85rem",
-                      color: "#64748b",
-                    }}
-                  >
+                  <td className="driver-wallet-table-time">
                     {new Date(tx.created_at).toLocaleString()}
                   </td>
                 </tr>
               ))}
               {transactions.length === 0 && (
                 <tr>
-                  <td
-                    colSpan={5}
-                    style={{
-                      padding: "30px",
-                      textAlign: "center",
-                      color: "#64748b",
-                    }}
-                  >
+                  <td colSpan={5} className="driver-wallet-table-empty-row">
                     No payout transactions recorded.
                   </td>
                 </tr>

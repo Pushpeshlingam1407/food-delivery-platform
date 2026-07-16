@@ -2183,3 +2183,179 @@ textarea {
   text-transform: uppercase !important;
   letter-spacing: 0.05em !important;
 }
+
+/* PROFILE PAGE CUSTOM STYLES */
+.driver-profile-overview-card {
+  padding: 24px !important;
+  margin-bottom: 24px !important;
+}
+
+.driver-profile-avatar-large {
+  width: 72px !important;
+  height: 72px !important;
+  font-size: 1.8rem !important;
+}
+
+.driver-profile-name {
+  font-size: 1.4rem !important;
+  font-weight: 900 !important;
+  margin: 0 !important;
+}
+
+.driver-profile-meta-line {
+  color: #64748b !important;
+  font-size: 0.85rem !important;
+  margin: 4px 0 0 0 !important;
+}
+
+.driver-profile-meta-subline {
+  color: #64748b !important;
+  font-size: 0.85rem !important;
+  margin: 2px 0 0 0 !important;
+}
+
+.driver-profile-flex-wrapper {
+  display: flex !important;
+  gap: 20px !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+}
+
+.driver-profile-grid-margin {
+  margin-bottom: 24px !important;
+}
+
+.driver-profile-grid-bottom-margin {
+  margin-bottom: 32px !important;
+}
+
+.driver-profile-panel-padded {
+  padding: 24px !important;
+}
+
+.driver-profile-panel-heading-margin {
+  margin-bottom: 16px !important;
+}
+
+.driver-profile-details-grid {
+  display: grid !important;
+  gap: 12px !important;
+  font-size: 0.88rem !important;
+}
+
+.driver-profile-bold-label {
+  color: #64748b !important;
+}
+
+.driver-profile-button-list {
+  display: grid !important;
+  gap: 12px !important;
+}
+
+.driver-profile-assistance-btn {
+  width: 100% !important;
+  justify-content: flex-start !important;
+  gap: 10px !important;
+  padding: 10px 14px !important;
+  background: rgba(25,25,25,0.03) !important;
+  text-decoration: none !important;
+  color: inherit !important;
+}
+
+/* WALLET PAGE CUSTOM STYLES */
+.driver-wallet-panel-margin {
+  margin-top: 24px !important;
+}
+
+.driver-wallet-table-responsive {
+  margin-top: 16px !important;
+}
+
+.driver-wallet-table-cell {
+  padding: 14px 16px !important;
+  font-size: 0.85rem !important;
+}
+
+.driver-wallet-table-cell-bold {
+  padding: 14px 16px !important;
+  font-size: 0.85rem !important;
+  font-weight: 800 !important;
+}
+
+.driver-wallet-table-cell-padding {
+  padding: 14px 16px !important;
+}
+
+.driver-wallet-type-badge {
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  text-transform: uppercase !important;
+}
+
+.driver-wallet-type-badge-credit {
+  background: #e6f4ea !important;
+  color: #137333 !important;
+}
+
+.driver-wallet-type-badge-debit {
+  background: #fce8e6 !important;
+  color: #c5221f !important;
+}
+
+.driver-wallet-table-time {
+  padding: 14px 16px !important;
+  font-size: 0.85rem !important;
+  color: #64748b !important;
+}
+
+.driver-wallet-table-empty-row {
+  padding: 30px !important;
+  text-align: center !important;
+  color: #64748b !important;
+}
+
+/* DASHBOARD REDESIGN STYLES */
+.driver-dashboard-panel-padding {
+  padding: 24px !important;
+}
+
+.driver-dashboard-flex-align {
+  display: flex !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+.driver-dashboard-notifications-list {
+  font-size: 0.85rem !important;
+  display: grid !important;
+  gap: 14px !important;
+}
+
+.driver-dashboard-alert-blue {
+  border-left: 3px solid #3b82f6 !important;
+  padding-left: 10px !important;
+}
+
+.driver-dashboard-alert-green {
+  border-left: 3px solid #10b981 !important;
+  padding-left: 10px !important;
+}
+
+.driver-dashboard-alert-desc {
+  margin: 2px 0 0 0 !important;
+  color: #64748b !important;
+}
+
+.driver-dashboard-sos-btn {
+  width: 100% !important;
+  justify-content: center !important;
+  background: #fef2f2 !important;
+  border-color: #fecaca !important;
+  color: #ef4444 !important;
+  padding: 10px !important;
+}
+
+
+

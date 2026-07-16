@@ -13,6 +13,8 @@ import {
   ShoppingBag,
   Store,
   Shield,
+  Truck,
+  User,
 } from "lucide-react";
 
 interface DeliverySidebarProps {
@@ -89,6 +91,13 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
           {!collapsed && <span>Shift overview</span>}
         </Link>
         <Link
+          className={`delivery-sidebar__link ${isActive("/deliveries") ? "active" : ""}`}
+          to="/deliveries"
+        >
+          <Truck size={18} />
+          {!collapsed && <span>Deliveries</span>}
+        </Link>
+        <Link
           className={`delivery-sidebar__link ${isActive("/earnings") ? "active" : ""}`}
           to="/earnings"
         >
@@ -109,6 +118,13 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
           <Wallet size={18} />
           {!collapsed && <span>Wallet</span>}
         </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/profile") ? "active" : ""}`}
+          to="/profile"
+        >
+          <User size={18} />
+          {!collapsed && <span>Profile</span>}
+        </Link>
       </nav>
 
       {/* Switch Portals Section */}
@@ -116,30 +132,15 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
         {!collapsed ? "Switch Portals" : "•••"}
       </div>
       <nav className="delivery-sidebar__nav" aria-label="Platform portals">
-        <a
-          className="delivery-sidebar__link"
-          href="http://localhost:5173"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="delivery-sidebar__link" href="http://localhost:5173" target="_blank" rel="noreferrer">
           <ShoppingBag size={18} />
           {!collapsed && <span>Customer App</span>}
         </a>
-        <a
-          className="delivery-sidebar__link"
-          href="http://localhost:5174"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="delivery-sidebar__link" href="http://localhost:5174" target="_blank" rel="noreferrer">
           <Store size={18} />
           {!collapsed && <span>Restaurant App</span>}
         </a>
-        <a
-          className="delivery-sidebar__link"
-          href="http://localhost:5175"
-          target="_blank"
-          rel="noreferrer"
-        >
+        <a className="delivery-sidebar__link" href="http://localhost:5175" target="_blank" rel="noreferrer">
           <Shield size={18} />
           {!collapsed && <span>Admin Dashboard</span>}
         </a>

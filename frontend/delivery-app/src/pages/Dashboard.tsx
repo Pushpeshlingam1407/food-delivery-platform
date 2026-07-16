@@ -1,65 +1,31 @@
 import React, { useEffect, useState } from "react";
-import { io, Socket } from "socket.io-client";
-import { Check, Navigation, Power, Truck } from "lucide-react";
+import { Link } from "react-router-dom";
+import {
+  Power,
+  ShieldAlert,
+  Bell,
+  ArrowRight,
+  TrendingUp,
+  Clock,
+  Award,
+} from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { formatIndianCurrency } from "../../../shared/utils/currency";
 
-interface Order {
-  id: string;
-  order_number: string;
-  status:
-    | "placed"
-    | "preparing"
-    | "ready_for_pickup"
-    | "out_for_delivery"
-    | "delivered"
-    | "cancelled";
-  total_amount: number;
-  restaurant_name: string;
-  street_address: string;
-  city: string;
-  delivery_charges?: string;
-}
-
 export const Dashboard: React.FC = () => {
   const [isOnline, setIsOnline] = useState(false);
-  const [jobs, setJobs] = useState<Order[]>([]);
-  const [activeJob, setActiveJob] = useState<Order | null>(null);
-  const [activeJobDetails, setActiveJobDetails] = useState<any | null>(null);
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [deliveryStep, setDeliveryStep] = useState<
-    "accepted" | "arrived_store" | "picked_up"
-  >("accepted");
-  const [deliveryTimer, setDeliveryTimer] = useState(600);
-  const [gpsProgress, setGpsProgress] = useState(0);
+  const [analytics, setAnalytics] = useState<any>({
+    totalEarnings: 0,
+    onlineHours: 0,
+    idleHours: 0,
+    completionRate: 100,
+    acceptanceRate: 95,
+  });
 
   const driverName = localStorage.getItem("userName") || "Driver";
 
-  const simulateGPSMovement = (orderId: string) => {
-    let lat = 12.9716;
-    let lon = 77.5946;
-    let stepCount = 0;
-    setGpsProgress(0);
-
-    const interval = setInterval(() => {
-      if (stepCount >= 10) {
-        clearInterval(interval);
-        return;
-      }
-      lat += 0.0005;
-      lon += 0.0005;
-      stepCount += 1;
-      setGpsProgress(stepCount * 10);
-      socket?.emit("updateLocation", {
-        orderId,
-        latitude: lat,
-        longitude: lon,
-      });
-    }, 4000);
-  };
-
-  const fetchDriverStats = async () => {
+  const fetchDriverShiftDetails = async () => {
     try {
       const meRes = await api.get("/auth/me");
       if (meRes.data.status === "success" && meRes.data.data) {
@@ -69,62 +35,18 @@ export const Dashboard: React.FC = () => {
         window.dispatchEvent(new Event("driver-shift-change"));
       }
 
-      const ordersRes = await api.get("/orders");
-      if (ordersRes.data.status === "success") {
-        const allOrders = ordersRes.data.data || [];
-        setJobs(
-          allOrders.filter(
-            (order: Order) => order.status === "ready_for_pickup",
-          ),
-        );
-        setActiveJob(
-          allOrders.find(
-            (order: Order) => order.status === "out_for_delivery",
-          ) || null,
-        );
+      const analyticsRes = await api.get("/delivery/earnings/analytics");
+      if (analyticsRes.data.status === "success" && analyticsRes.data.data) {
+        setAnalytics(analyticsRes.data.data);
       }
     } catch (error) {
-      console.error("Unable to load driver dashboard:", error);
+      console.error("Unable to load driver shift details:", error);
     }
   };
 
   useEffect(() => {
-    fetchDriverStats();
-
-    const ioSocket = io("http://localhost:5000");
-    setSocket(ioSocket);
-
-    return () => {
-      ioSocket.disconnect();
-    };
+    fetchDriverShiftDetails();
   }, []);
-
-  useEffect(() => {
-    if (!activeJob) {
-      setActiveJobDetails(null);
-      return;
-    }
-    api
-      .get(`/orders/${activeJob.id}`)
-      .then((res) => {
-        if (res.data.status === "success") setActiveJobDetails(res.data.data);
-      })
-      .catch(console.error);
-
-    const savedStep = localStorage.getItem(`delivery_step_${activeJob.id}`);
-    setDeliveryStep(
-      (savedStep as "accepted" | "arrived_store" | "picked_up") || "accepted",
-    );
-  }, [activeJob?.id]);
-
-  useEffect(() => {
-    if (!activeJob || deliveryStep !== "picked_up") return;
-    const interval = window.setInterval(
-      () => setDeliveryTimer((time) => time - 1),
-      1000,
-    );
-    return () => window.clearInterval(interval);
-  }, [activeJob, deliveryStep]);
 
   const handleToggleOnline = async () => {
     const nextOnlineState = !isOnline;
@@ -141,43 +63,10 @@ export const Dashboard: React.FC = () => {
         } else {
           notify.error("You are now offline.");
         }
-        await fetchDriverStats();
+        await fetchDriverShiftDetails();
       }
     } catch {
       notify.error("We couldn't change your status.");
-    }
-  };
-
-  const handleAcceptJob = async (orderId: string) => {
-    try {
-      const response = await api.put(`/orders/${orderId}/status`, {
-        status: "out_for_delivery",
-      });
-      if (response.data.status === "success") {
-        localStorage.setItem(`delivery_step_${orderId}`, "accepted");
-        setDeliveryStep("accepted");
-        await fetchDriverStats();
-        notify.success("Delivery accepted! Head to the restaurant.");
-      }
-    } catch {
-      notify.error("We couldn't accept this delivery right now.");
-    }
-  };
-
-  const handleDeliverJob = async () => {
-    if (!activeJob) return;
-    try {
-      const response = await api.put(`/orders/${activeJob.id}/status`, {
-        status: "delivered",
-      });
-      if (response.data.status === "success") {
-        localStorage.removeItem(`delivery_step_${activeJob.id}`);
-        setActiveJob(null);
-        await fetchDriverStats();
-        notify.success("Delivery complete! Great job.");
-      }
-    } catch {
-      notify.error("We couldn't complete this delivery.");
     }
   };
 
@@ -188,39 +77,11 @@ export const Dashboard: React.FC = () => {
         ? "afternoon"
         : "evening";
 
-  const activeStep =
-    deliveryStep === "accepted"
-      ? "Head to restaurant"
-      : deliveryStep === "arrived_store"
-        ? "Collect order"
-        : "Deliver order";
-
-  const remainingTime = `${Math.max(0, Math.floor(deliveryTimer / 60))
-    .toString()
-    .padStart(2, "0")}:${Math.max(0, deliveryTimer % 60)
-    .toString()
-    .padStart(2, "0")}`;
-
-  const moveToPickup = () => {
-    if (!activeJob) return;
-    setDeliveryStep("arrived_store");
-    localStorage.setItem(`delivery_step_${activeJob.id}`, "arrived_store");
-  };
-
-  const startDelivery = () => {
-    if (!activeJob) return;
-    setDeliveryStep("picked_up");
-    setDeliveryTimer(600);
-    localStorage.setItem(`delivery_step_${activeJob.id}`, "picked_up");
-    socket?.emit("joinRoom", { room: `order_${activeJob.id}` });
-    simulateGPSMovement(activeJob.id);
-  };
-
   return (
     <div className="app-shell driver-workspace">
       <header className="driver-workspace__header">
         <div>
-          <p className="driver-workspace__eyebrow">Driver workspace</p>
+          <p className="driver-workspace__eyebrow">Shift Console</p>
           <h1>
             Good {greeting}, {driverName}
           </h1>
@@ -247,183 +108,96 @@ export const Dashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* Active Job & Queue grid */}
-      <div className="driver-workspace__grid">
-        <section
-          className="driver-panel driver-current-job"
-          id="driver-job-section"
-        >
-          <div className="driver-panel__heading">
-            <div>
-              <p>Current delivery</p>
-              <h2>
-                {activeJob
-                  ? `Order #${activeJob.order_number}`
-                  : "No delivery in progress"}
-              </h2>
-              {activeJob && (
-                <p className="driver-order-id-label">ID: {activeJob.id}</p>
-              )}
-            </div>
-            {activeJob && (
-              <span className="driver-step-label">{activeStep}</span>
-            )}
+      {/* Quick Launch Board */}
+      <section className="driver-panel driver-profile-overview-card">
+        <div className="driver-quest-header">
+          <div>
+            <h2 className="driver-profile-name">Shift Handoff Operations</h2>
+            <p className="driver-quest-subtitle">
+              Ready to deliver? View active routes, customer orders, and pickup queues.
+            </p>
           </div>
+          <div>
+            <Link to="/deliveries" className="driver-primary-button">
+              Go to Job Board <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
 
-          {activeJob ? (
-            <>
-              <div className="driver-route">
-                <div>
-                  <span>Pick up</span>
-                  <strong>{activeJob.restaurant_name}</strong>
-                  <p>Restaurant</p>
-                </div>
-                <div>
-                  <span>Drop off</span>
-                  <strong>
-                    {activeJobDetails?.street_address ||
-                      activeJob.street_address}
-                  </strong>
-                  <p>{activeJobDetails?.city || activeJob.city}</p>
-                </div>
-              </div>
-              <div
-                className="driver-progress"
-                aria-label={`Delivery step: ${activeStep}`}
-              >
-                {[
-                  ["accepted", "1", "To pickup"],
-                  ["arrived_store", "2", "At restaurant"],
-                  ["picked_up", "3", "Deliver"],
-                ].map(([step, number, label]) => (
-                  <div
-                    key={step}
-                    className={
-                      deliveryStep === step ||
-                      (deliveryStep === "arrived_store" &&
-                        step === "accepted") ||
-                      deliveryStep === "picked_up"
-                        ? "is-complete"
-                        : ""
-                    }
-                  >
-                    <b>{number}</b>
-                    <span>{label}</span>
-                  </div>
-                ))}
-              </div>
-
-              {/* Map simulation container */}
-              <div className="driver-map-preview">
-                <div className="driver-map-bg">
-                  <div className="driver-map-streets" />
-                  <div className="driver-map-marker marker-restaurant">
-                    <span>Rest.</span>
-                  </div>
-                  <div className="driver-map-marker marker-customer">
-                    <span>Cust.</span>
-                  </div>
-                  <div
-                    className="driver-map-marker marker-driver"
-                    style={{
-                      top: `${130 + (gpsProgress / 100) * 80}px`,
-                      left: `${130 + (gpsProgress / 100) * 110}px`,
-                    }}
-                  >
-                    <Truck size={12} />
-                    <span>You</span>
-                  </div>
-                </div>
-                <div className="driver-map-gps-bar">
-                  <div
-                    className="driver-map-gps-fill"
-                    style={{ width: `${gpsProgress}%` }}
-                  />
-                </div>
-              </div>
-
-              <div className="driver-current-job__footer">
-                {deliveryStep === "picked_up" && (
-                  <span className="driver-timer">
-                    {remainingTime} left · {gpsProgress}% route sync
-                  </span>
-                )}
-                {deliveryStep === "accepted" && (
-                  <button
-                    type="button"
-                    className="driver-primary-button"
-                    onClick={moveToPickup}
-                  >
-                    <Navigation size={17} /> I’m at the restaurant
-                  </button>
-                )}
-                {deliveryStep === "arrived_store" && (
-                  <button
-                    type="button"
-                    className="driver-primary-button"
-                    onClick={startDelivery}
-                  >
-                    <Check size={17} /> Picked up order
-                  </button>
-                )}
-                {deliveryStep === "picked_up" && (
-                  <button
-                    type="button"
-                    className="driver-primary-button"
-                    onClick={handleDeliverJob}
-                  >
-                    <Check size={17} /> Complete delivery
-                  </button>
-                )}
-              </div>
-            </>
-          ) : (
-            <div className="driver-empty-state">
-              <Truck size={22} />
-              <div>
-                <strong>Your next delivery will show here.</strong>
-                <p>Accept a request from the queue when you are online.</p>
-              </div>
+      {/* Operational Stats Grid */}
+      <section className="driver-stat-grid driver-profile-grid-margin">
+        <article>
+          <span className="driver-stat-title-flex">
+            <TrendingUp size={14} color="var(--accent-orange)" /> Today’s Earnings
+          </span>
+          <strong>{formatIndianCurrency(analytics.totalEarnings || 0)}</strong>
+          <small>Base + Distance + Tips</small>
+        </article>
+        <article>
+          <span className="driver-stat-title-flex">
+            <Clock size={14} color="#6366f1" /> Active Duration
+          </span>
+          <strong>{analytics.onlineHours || 0} hrs</strong>
+          <small>{analytics.idleHours || 0} hrs idle time</small>
+        </article>
+        <article>
+          <span className="driver-stat-title-flex">
+            <Award size={14} color="#10b981" /> Performance
+          </span>
+          <div className="driver-stat-ops-flex">
+            <div>
+              <div className="driver-ops-number">{analytics.completionRate}%</div>
+              <div className="driver-ops-label">Completion</div>
             </div>
-          )}
+            <div className="driver-ops-divider">
+              <div className="driver-ops-number">{analytics.acceptanceRate}%</div>
+              <div className="driver-ops-label">Acceptance</div>
+            </div>
+          </div>
+        </article>
+      </section>
+
+      {/* Bottom info section: Notifications & Safety emergency */}
+      <div className="driver-workspace__grid driver-profile-grid-bottom-margin">
+        {/* Notifications */}
+        <section className="driver-panel driver-dashboard-panel-padding">
+          <div className="driver-panel__heading driver-profile-panel-heading-margin">
+            <div className="driver-dashboard-flex-align">
+              <Bell size={18} color="var(--accent-orange)" />
+              <h2 className="driver-quest-title">Alerts & Notifications</h2>
+            </div>
+          </div>
+          <div className="driver-dashboard-notifications-list">
+            <div className="driver-dashboard-alert-blue">
+              <strong>Peak Hours Surge Boost active</strong>
+              <p className="driver-dashboard-alert-desc">₹30.00 extra payout per delivery completed in Koramangala zone.</p>
+            </div>
+            <div className="driver-dashboard-alert-green">
+              <strong>Fintech wallet auto-settlement complete</strong>
+              <p className="driver-dashboard-alert-desc">All cleared earnings have been successfully moved to your available ledger wallet.</p>
+            </div>
+          </div>
         </section>
 
-        {/* Requests Queue */}
-        <section className="driver-panel driver-queue">
-          <div className="driver-panel__heading">
-            <div>
-              <p>Available requests</p>
-              <h2>Pickup queue</h2>
+        {/* Safety & Compliance */}
+        <section className="driver-panel driver-dashboard-panel-padding">
+          <div className="driver-panel__heading driver-profile-panel-heading-margin">
+            <div className="driver-dashboard-flex-align">
+              <ShieldAlert size={18} color="#ef4444" />
+              <h2 className="driver-quest-title">Safety & Compliance Center</h2>
             </div>
-            <span>{jobs.length}</span>
           </div>
-          <div className="driver-queue__list">
-            {jobs.slice(0, 4).map((job) => (
-              <article key={job.id} className="driver-queue-item">
-                <div>
-                  <strong>{job.restaurant_name}</strong>
-                  <p>
-                    {job.city} · Order #{job.order_number}
-                  </p>
-                  <p className="driver-order-id-label">ID: {job.id}</p>
-                </div>
-                <div className="driver-queue-item__action">
-                  <strong>{formatIndianCurrency(job.delivery_charges)}</strong>
-                  <button
-                    type="button"
-                    disabled={!isOnline || !!activeJob}
-                    onClick={() => handleAcceptJob(job.id)}
-                  >
-                    Accept
-                  </button>
-                </div>
-              </article>
-            ))}
-            {jobs.length === 0 && (
-              <div className="driver-queue__empty">
-                No requests are waiting right now.
-              </div>
-            )}
+          <div className="driver-dashboard-alert-desc">
+            <p className="driver-profile-grid-margin">Ensure your smartphone is securely mounted in the vehicle and you wear your helmet during all shifts.</p>
+            <div>
+              <button
+                className="driver-secondary-button driver-dashboard-sos-btn"
+                onClick={() => alert("SOS Triggered! Dispatching emergency contacts...")}
+              >
+                SOS Emergency Assistance
+              </button>
+            </div>
           </div>
         </section>
       </div>
