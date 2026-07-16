@@ -1728,3 +1728,450 @@ textarea {
     font-size: 0.85rem !important;
   }
 }
+
+/* =============================================
+   DRIVER DASHBOARD FINTECH & ANALYTICS STYLES
+   ============================================= */
+
+.driver-quest-card-section {
+  margin-bottom: 24px !important;
+}
+
+.driver-quest-content-flex {
+  display: flex !important;
+  gap: 16px !important;
+  align-items: center !important;
+}
+
+.driver-quest-progress-bar-wrapper {
+  margin-top: 20px !important;
+}
+
+.driver-quest-card {
+  background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 8px 32px rgba(49, 16, 66, 0.25) !important;
+  padding: 24px !important;
+}
+
+.driver-quest-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+}
+
+.driver-quest-icon-wrapper {
+  background: rgba(255, 255, 255, 0.1) !important;
+  padding: 12px !important;
+  border-radius: 16px !important;
+}
+
+.driver-quest-title {
+  margin: 0 !important;
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+}
+
+.driver-quest-subtitle {
+  margin: 4px 0 0 0 !important;
+  font-size: 0.85rem !important;
+  color: #cbd5e1 !important;
+}
+
+.driver-quest-bonus-tag {
+  background: #fcd34d !important;
+  color: #1e1b4b !important;
+  font-weight: 900 !important;
+  font-size: 0.8rem !important;
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  text-transform: uppercase !important;
+}
+
+.driver-quest-progress-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  font-size: 0.8rem !important;
+  margin-bottom: 6px !important;
+  color: #e2e8f0 !important;
+}
+
+.driver-quest-progress-track {
+  width: 100% !important;
+  height: 10px !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 99px !important;
+  overflow: hidden !important;
+}
+
+.driver-quest-progress-fill {
+  height: 100% !important;
+  background: linear-gradient(90deg, #fb7185, #fcd34d) !important;
+  border-radius: 99px !important;
+  transition: width 0.4s ease !important;
+}
+
+.driver-analytics-charts-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 24px !important;
+  margin-bottom: 32px !important;
+}
+
+.driver-trend-bar-chart-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  height: 120px !important;
+  gap: 12px !important;
+}
+
+.driver-trend-col {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.driver-trend-bar-label {
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  color: #475569 !important;
+}
+
+.driver-trend-bar {
+  width: 100% !important;
+  background: linear-gradient(180deg, #ff754f 0%, #ff3f1a 100%) !important;
+  border-radius: 6px 6px 0 0 !important;
+  margin-top: 6px !important;
+  box-shadow: 0 2px 8px rgba(255, 117, 79, 0.15) !important;
+}
+
+.driver-trend-bar-date {
+  font-size: 0.65rem !important;
+  color: #64748b !important;
+  margin-top: 6px !important;
+  white-space: nowrap !important;
+}
+
+.driver-heatmap-item {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 12px 16px !important;
+  background: rgba(25, 25, 25, 0.02) !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--glass-border) !important;
+}
+
+.driver-heatmap-dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 8px currentColor !important;
+}
+
+.driver-ledger-panel {
+  margin-bottom: 32px !important;
+  padding: 28px !important;
+}
+
+.driver-ledger-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+}
+
+.driver-ledger-desc {
+  color: #64748b !important;
+  font-size: 0.85rem !important;
+  margin: 4px 0 0 0 !important;
+}
+
+.driver-ledger-filter-bar {
+  display: flex !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+}
+
+.driver-ledger-preset-btn-group {
+  display: flex !important;
+  background: rgba(25,25,25,0.03) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 10px !important;
+  padding: 3px !important;
+}
+
+.driver-ledger-category-select {
+  background: white !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 10px !important;
+  padding: 8px 12px !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  outline: none !important;
+  cursor: pointer !important;
+}
+
+.driver-ledger-table {
+  width: 100% !important;
+  border-collapse: collapse !important;
+  text-align: left !important;
+}
+
+.driver-ledger-category-tag {
+  background: rgba(255,117,79,0.06) !important;
+  color: var(--accent-orange) !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  text-transform: uppercase !important;
+}
+
+.driver-ledger-status-badge {
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  padding: 4px 10px !important;
+  border-radius: 20px !important;
+  text-transform: capitalize !important;
+}
+
+.driver-ledger-status-settled {
+  background: #e6f4ea !important;
+  color: #137333 !important;
+}
+
+.driver-ledger-status-pending {
+  background: #fffbeb !important;
+  color: #b06000 !important;
+}
+
+.driver-ledger-pagination {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-top: 20px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+
+
+/* =============================================
+   DRIVER DASHBOARD FINTECH & ANALYTICS STYLES
+   ============================================= */
+
+.driver-quest-card {
+  background: linear-gradient(135deg, #1e1b4b 0%, #311042 100%) !important;
+  color: white !important;
+  border: none !important;
+  box-shadow: 0 8px 32px rgba(49, 16, 66, 0.25) !important;
+  padding: 24px !important;
+}
+
+.driver-quest-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+}
+
+.driver-quest-icon-wrapper {
+  background: rgba(255, 255, 255, 0.1) !important;
+  padding: 12px !important;
+  border-radius: 16px !important;
+}
+
+.driver-quest-title {
+  margin: 0 !important;
+  font-size: 1.25rem !important;
+  font-weight: 800 !important;
+  letter-spacing: -0.5px !important;
+}
+
+.driver-quest-subtitle {
+  margin: 4px 0 0 0 !important;
+  font-size: 0.85rem !important;
+  color: #cbd5e1 !important;
+}
+
+.driver-quest-bonus-tag {
+  background: #fcd34d !important;
+  color: #1e1b4b !important;
+  font-weight: 900 !important;
+  font-size: 0.8rem !important;
+  padding: 6px 12px !important;
+  border-radius: 20px !important;
+  text-transform: uppercase !important;
+}
+
+.driver-quest-progress-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  font-size: 0.8rem !important;
+  margin-bottom: 6px !important;
+  color: #e2e8f0 !important;
+}
+
+.driver-quest-progress-track {
+  width: 100% !important;
+  height: 10px !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 99px !important;
+  overflow: hidden !important;
+}
+
+.driver-quest-progress-fill {
+  height: 100% !important;
+  background: linear-gradient(90deg, #fb7185, #fcd34d) !important;
+  border-radius: 99px !important;
+  transition: width 0.4s ease !important;
+}
+
+.driver-analytics-charts-grid {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)) !important;
+  gap: 24px !important;
+  margin-bottom: 32px !important;
+}
+
+.driver-trend-bar-chart-container {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: flex-end !important;
+  height: 120px !important;
+  gap: 12px !important;
+}
+
+.driver-trend-col {
+  flex: 1 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+}
+
+.driver-trend-bar-label {
+  font-size: 0.65rem !important;
+  font-weight: 700 !important;
+  color: #475569 !important;
+}
+
+.driver-trend-bar {
+  width: 100% !important;
+  background: linear-gradient(180deg, #ff754f 0%, #ff3f1a 100%) !important;
+  border-radius: 6px 6px 0 0 !important;
+  margin-top: 6px !important;
+  box-shadow: 0 2px 8px rgba(255, 117, 79, 0.15) !important;
+}
+
+.driver-trend-bar-date {
+  font-size: 0.65rem !important;
+  color: #64748b !important;
+  margin-top: 6px !important;
+  white-space: nowrap !important;
+}
+
+.driver-heatmap-item {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  padding: 12px 16px !important;
+  background: rgba(25, 25, 25, 0.02) !important;
+  border-radius: 12px !important;
+  border: 1px solid var(--glass-border) !important;
+}
+
+.driver-heatmap-dot {
+  width: 8px !important;
+  height: 8px !important;
+  border-radius: 50% !important;
+  box-shadow: 0 0 8px currentColor !important;
+}
+
+.driver-ledger-header {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  flex-wrap: wrap !important;
+  gap: 16px !important;
+  margin-bottom: 24px !important;
+}
+
+.driver-ledger-desc {
+  color: #64748b !important;
+  font-size: 0.85rem !important;
+  margin: 4px 0 0 0 !important;
+}
+
+.driver-ledger-filter-bar {
+  display: flex !important;
+  gap: 12px !important;
+  flex-wrap: wrap !important;
+}
+
+.driver-ledger-preset-btn-group {
+  display: flex !important;
+  background: rgba(25,25,25,0.03) !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 10px !important;
+  padding: 3px !important;
+}
+
+.driver-ledger-category-select {
+  background: white !important;
+  border: 1px solid var(--glass-border) !important;
+  border-radius: 10px !important;
+  padding: 8px 12px !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  color: #1e293b !important;
+  outline: none !important;
+  cursor: pointer !important;
+}
+
+.driver-ledger-category-tag {
+  background: rgba(255,117,79,0.06) !important;
+  color: var(--accent-orange) !important;
+  font-size: 0.72rem !important;
+  font-weight: 800 !important;
+  padding: 4px 8px !important;
+  border-radius: 6px !important;
+  text-transform: uppercase !important;
+}
+
+.driver-ledger-status-badge {
+  font-size: 0.7rem !important;
+  font-weight: 800 !important;
+  padding: 4px 10px !important;
+  border-radius: 20px !important;
+  text-transform: capitalize !important;
+}
+
+.driver-ledger-status-settled {
+  background: #e6f4ea !important;
+  color: #137333 !important;
+}
+
+.driver-ledger-status-pending {
+  background: #fffbeb !important;
+  color: #b06000 !important;
+}
+
+.driver-ledger-pagination {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-top: 20px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid #e2e8f0 !important;
+}
+

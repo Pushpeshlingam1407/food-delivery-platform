@@ -177,10 +177,10 @@ async function seed() {
       }
 
       // Update wallets with final seeded balance
-      await connection.query(
-        "UPDATE wallets SET balance = ? WHERE id = ?",
-        [runningBalance, driverWalletId],
-      );
+      await connection.query("UPDATE wallets SET balance = ? WHERE id = ?", [
+        runningBalance,
+        driverWalletId,
+      ]);
       console.log(
         `Final wallet balance for driver ${driverId} set to ₹${runningBalance.toFixed(2)}`,
       );

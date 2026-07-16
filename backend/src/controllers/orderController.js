@@ -513,7 +513,8 @@ export async function updateOrderStatus(req, res) {
         }
 
         if (assignedDriverId) {
-          const { computeDriverEarnings } = await import("../utils/earningsEngine.js");
+          const { computeDriverEarnings } =
+            await import("../utils/earningsEngine.js");
           const calculated = await computeDriverEarnings(id, connection);
           if (calculated) {
             const totalEarning = calculated.total;
@@ -525,7 +526,8 @@ export async function updateOrderStatus(req, res) {
                 devEarningId,
                 assignedDriverId,
                 id,
-                calculated.breakdown.base_pay + calculated.breakdown.distance_pay,
+                calculated.breakdown.base_pay +
+                  calculated.breakdown.distance_pay,
                 calculated.breakdown.tip,
                 totalEarning,
               ],
@@ -552,7 +554,9 @@ export async function updateOrderStatus(req, res) {
             );
             let currentBal = parseFloat(driverBalRow[0].balance);
 
-            for (const [category, amount] of Object.entries(calculated.breakdown)) {
+            for (const [category, amount] of Object.entries(
+              calculated.breakdown,
+            )) {
               if (amount > 0) {
                 currentBal += amount;
                 const ledgerTxId = crypto.randomUUID();

@@ -1,9 +1,40 @@
 import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import { Check, Navigation, Power, Truck, Wallet } from "lucide-react";
+import {
+  Check,
+  Navigation,
+  Power,
+  Truck,
+  Wallet,
+  TrendingUp,
+  Clock,
+  Award,
+  ChevronLeft,
+  ChevronRight,
+  Filter,
+  Calendar,
+  AlertCircle,
+  FileText,
+} from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { formatIndianCurrency } from "../../../shared/utils/currency";
+
+const categories = [
+  "base_pay",
+  "distance_pay",
+  "time_pay",
+  "waiting_charges",
+  "pickup_bonus",
+  "peak_hour_bonus",
+  "rain_bonus",
+  "night_bonus",
+  "zone_multiplier_bonus",
+  "surge_incentive",
+  "tip",
+  "penalty",
+  "cancellation_deduction",
+];
 
 interface Order {
   id: string;
@@ -40,6 +71,26 @@ export const Dashboard: React.FC = () => {
   const [completedDeliveriesCount, setCompletedDeliveriesCount] = useState(0);
   const [totalEarningAmt, setTotalEarningAmt] = useState(0);
 
+  // New Earnings & Fintech States
+  const [ledger, setLedger] = useState<any[]>([]);
+  const [ledgerTotal, setLedgerTotal] = useState(0);
+  const [analytics, setAnalytics] = useState<any>({
+    totalEarnings: 0,
+    onlineHours: 0,
+    idleHours: 0,
+    completionRate: 100,
+    cancellationRate: 0,
+    acceptanceRate: 95,
+    breakdown: {},
+    dailyTrend: [],
+    hourlyTrend: [],
+    heatmaps: [],
+  });
+  const [filterPreset, setFilterPreset] = useState("all");
+  const [filterCategory, setFilterCategory] = useState("");
+  const [ledgerPage, setLedgerPage] = useState(1);
+  const [ledgerLoading, setLedgerLoading] = useState(false);
+
   const driverName = localStorage.getItem("userName") || "Driver";
 
   const simulateGPSMovement = (orderId: string) => {
@@ -65,6 +116,34 @@ export const Dashboard: React.FC = () => {
     }, 4000);
   };
 
+  const fetchLedger = async (preset: string = filterPreset, cat: string = filterCategory, pg: number = ledgerPage) => {
+    setLedgerLoading(true);
+    try {
+      const res = await api.get(
+        `/delivery/earnings/ledger?preset=${preset}&category=${cat}&page=${pg}&limit=6`
+      );
+      if (res.data.status === "success") {
+        setLedger(res.data.data.transactions || []);
+        setLedgerTotal(res.data.data.pagination.total || 0);
+      }
+    } catch (err) {
+      console.error("Fetch ledger error:", err);
+    } finally {
+      setLedgerLoading(false);
+    }
+  };
+
+  const fetchAnalytics = async () => {
+    try {
+      const res = await api.get("/delivery/earnings/analytics");
+      if (res.data.status === "success" && res.data.data) {
+        setAnalytics(res.data.data);
+      }
+    } catch (err) {
+      console.error("Fetch analytics error:", err);
+    }
+  };
+
   const fetchDriverStats = async () => {
     try {
       const meRes = await api.get("/auth/me");
@@ -81,6 +160,7 @@ export const Dashboard: React.FC = () => {
         api.get("/wallets"),
         api.get("/orders"),
       ]);
+
       if (walletRes.data.status === "success") {
         setWalletBalance(parseFloat(walletRes.data.data.balance || "0"));
         setTransactions(walletRes.data.data.transactions || []);
@@ -89,27 +169,27 @@ export const Dashboard: React.FC = () => {
         const allOrders = ordersRes.data.data || [];
         setJobs(
           allOrders.filter(
-            (order: Order) => order.status === "ready_for_pickup",
-          ),
+            (order: Order) => order.status === "ready_for_pickup"
+          )
         );
         setActiveJob(
           allOrders.find(
-            (order: Order) => order.status === "out_for_delivery",
-          ) || null,
+            (order: Order) => order.status === "out_for_delivery"
+          ) || null
         );
         if (currentDriverId) {
           const completed = allOrders.filter(
             (order: any) =>
               order.status === "delivered" &&
-              order.delivery_partner_id === currentDriverId,
+              order.delivery_partner_id === currentDriverId
           );
           setCompletedDeliveriesCount(completed.length);
           setTotalEarningAmt(
             completed.reduce(
               (sum: number, order: any) =>
                 sum + parseFloat(order.delivery_charges || "0"),
-              0,
-            ),
+              0
+            )
           );
         }
       }
@@ -120,12 +200,20 @@ export const Dashboard: React.FC = () => {
 
   useEffect(() => {
     fetchDriverStats();
+    fetchAnalytics();
+    fetchLedger(filterPreset, filterCategory, ledgerPage);
+
     const ioSocket = io("http://localhost:5000");
     setSocket(ioSocket);
+
     return () => {
       ioSocket.disconnect();
     };
   }, []);
+
+  useEffect(() => {
+    fetchLedger(filterPreset, filterCategory, ledgerPage);
+  }, [filterPreset, filterCategory, ledgerPage]);
 
   useEffect(() => {
     if (!activeJob) {
@@ -141,7 +229,7 @@ export const Dashboard: React.FC = () => {
 
     const savedStep = localStorage.getItem(`delivery_step_${activeJob.id}`);
     setDeliveryStep(
-      (savedStep as "accepted" | "arrived_store" | "picked_up") || "accepted",
+      (savedStep as "accepted" | "arrived_store" | "picked_up") || "accepted"
     );
   }, [activeJob?.id]);
 
@@ -149,7 +237,7 @@ export const Dashboard: React.FC = () => {
     if (!activeJob || deliveryStep !== "picked_up") return;
     const interval = window.setInterval(
       () => setDeliveryTimer((time) => time - 1),
-      1000,
+      1000
     );
     return () => window.clearInterval(interval);
   }, [activeJob, deliveryStep]);
@@ -169,6 +257,8 @@ export const Dashboard: React.FC = () => {
         } else {
           notify.error("You are now offline.");
         }
+        await fetchDriverStats();
+        await fetchAnalytics();
       }
     } catch {
       notify.error("We couldn't change your status.");
@@ -201,6 +291,8 @@ export const Dashboard: React.FC = () => {
         localStorage.removeItem(`delivery_step_${activeJob.id}`);
         setActiveJob(null);
         await fetchDriverStats();
+        await fetchAnalytics();
+        await fetchLedger();
         notify.success("Delivery complete! Great job.");
       }
     } catch {
@@ -221,12 +313,14 @@ export const Dashboard: React.FC = () => {
       if (response.data.status === "success") {
         setPayoutAmount("");
         await fetchDriverStats();
+        await fetchAnalytics();
+        await fetchLedger();
         notify.success("Payout requested successfully.");
       }
     } catch (error: any) {
       notify.error(
         error.response?.data?.message ||
-          "We couldn't request your payout right now.",
+          "We couldn't request your payout right now."
       );
     } finally {
       setPayoutLoading(false);
@@ -239,12 +333,14 @@ export const Dashboard: React.FC = () => {
       : new Date().getHours() < 18
         ? "afternoon"
         : "evening";
+
   const activeStep =
     deliveryStep === "accepted"
       ? "Head to restaurant"
       : deliveryStep === "arrived_store"
         ? "Collect order"
         : "Deliver order";
+
   const remainingTime = `${Math.max(0, Math.floor(deliveryTimer / 60))
     .toString()
     .padStart(2, "0")}:${Math.max(0, deliveryTimer % 60)
@@ -265,6 +361,11 @@ export const Dashboard: React.FC = () => {
     socket?.emit("joinRoom", { room: `order_${activeJob.id}` });
     simulateGPSMovement(activeJob.id);
   };
+
+  // SVG Chart Helper
+  const maxTrend = analytics.dailyTrend?.length
+    ? Math.max(...analytics.dailyTrend.map((t: any) => t.amount), 100)
+    : 100;
 
   return (
     <div className="app-shell driver-workspace">
@@ -297,27 +398,95 @@ export const Dashboard: React.FC = () => {
         </div>
       </header>
 
+      {/* Quest Incentive Challenge Card */}
+      <section className="driver-quest-card-section">
+        <div className="driver-panel driver-quest-card">
+          <div className="driver-quest-header">
+            <div className="driver-quest-content-flex">
+              <div className="driver-quest-icon-wrapper">
+                <Award size={32} color="#fcd34d" />
+              </div>
+              <div>
+                <h3 className="driver-quest-title">
+                  Streak Incentive Challenge
+                </h3>
+                <p className="driver-quest-subtitle">
+                  Complete 8 orders today to unlock a bonus of ₹250.00
+                </p>
+              </div>
+            </div>
+            <div>
+              <span className="driver-quest-bonus-tag">
+                ₹250 Extra
+              </span>
+            </div>
+          </div>
+          <div className="driver-quest-progress-bar-wrapper">
+            <div className="driver-quest-progress-container">
+              <span>
+                Progress: {completedDeliveriesCount} of 8 completed
+              </span>
+              <span>
+                {Math.min(100, Math.round((completedDeliveriesCount / 8) * 100))}%
+              </span>
+            </div>
+            <div className="driver-quest-progress-track">
+              <div
+                className="driver-quest-progress-fill"
+                style={{
+                  width: `${Math.min(100, (completedDeliveriesCount / 8) * 100)}%`,
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Fintech Stats Grid */}
       <section
         className="driver-stat-grid"
         aria-label="Today’s delivery summary"
       >
         <article>
-          <span>Today’s earnings</span>
-          <strong>{formatIndianCurrency(totalEarningAmt)}</strong>
-          <small>{completedDeliveriesCount} completed</small>
+          <span className="driver-stat-title-flex">
+            <TrendingUp size={14} color="var(--accent-orange)" /> Cumulative Earnings
+          </span>
+          <strong>{formatIndianCurrency(analytics.totalEarnings || totalEarningAmt)}</strong>
+          <small>Incl. bonuses & tips</small>
         </article>
         <article>
-          <span>Available requests</span>
-          <strong>{jobs.length}</strong>
-          <small>{isOnline ? "Ready to accept" : "Go online to accept"}</small>
+          <span className="driver-stat-title-flex">
+            <Clock size={14} color="#6366f1" /> Shift Log Hours
+          </span>
+          <strong>{analytics.onlineHours || 0} hrs</strong>
+          <small>{analytics.idleHours || 0} hrs idle time</small>
         </article>
         <article>
-          <span>Wallet balance</span>
-          <strong>{formatIndianCurrency(walletBalance)}</strong>
-          <small>Available to cash out</small>
+          <span className="driver-stat-title-flex">
+            <Award size={14} color="#10b981" /> Order Operations
+          </span>
+          <div className="driver-stat-ops-flex">
+            <div>
+              <div className="driver-ops-number">
+                {analytics.completionRate}%
+              </div>
+              <div className="driver-ops-label">
+                Completion
+              </div>
+            </div>
+            <div className="driver-ops-divider">
+              <div className="driver-ops-number">
+                {analytics.acceptanceRate}%
+              </div>
+              <div className="driver-ops-label">
+                Acceptance
+              </div>
+            </div>
+          </div>
         </article>
       </section>
 
+      {/* Active Job & Queue grid */}
       <div className="driver-workspace__grid">
         <section
           className="driver-panel driver-current-job"
@@ -382,6 +551,36 @@ export const Dashboard: React.FC = () => {
                   </div>
                 ))}
               </div>
+
+              {/* Map simulation container */}
+              <div className="driver-map-preview">
+                <div className="driver-map-bg">
+                  <div className="driver-map-streets" />
+                  <div className="driver-map-marker marker-restaurant">
+                    <span>Rest.</span>
+                  </div>
+                  <div className="driver-map-marker marker-customer">
+                    <span>Cust.</span>
+                  </div>
+                  <div
+                    className="driver-map-marker marker-driver"
+                    style={{
+                      top: `${130 + (gpsProgress / 100) * 80}px`,
+                      left: `${130 + (gpsProgress / 100) * 110}px`,
+                    }}
+                  >
+                    <Truck size={12} />
+                    <span>You</span>
+                  </div>
+                </div>
+                <div className="driver-map-gps-bar">
+                  <div
+                    className="driver-map-gps-fill"
+                    style={{ width: `${gpsProgress}%` }}
+                  />
+                </div>
+              </div>
+
               <div className="driver-current-job__footer">
                 {deliveryStep === "picked_up" && (
                   <span className="driver-timer">
@@ -428,6 +627,7 @@ export const Dashboard: React.FC = () => {
           )}
         </section>
 
+        {/* Requests Queue */}
         <section className="driver-panel driver-queue">
           <div className="driver-panel__heading">
             <div>
@@ -447,9 +647,7 @@ export const Dashboard: React.FC = () => {
                   <p className="driver-order-id-label">ID: {job.id}</p>
                 </div>
                 <div className="driver-queue-item__action">
-                  <strong>
-                    {formatIndianCurrency(job.delivery_charges)}
-                  </strong>
+                  <strong>{formatIndianCurrency(job.delivery_charges)}</strong>
                   <button
                     type="button"
                     disabled={!isOnline || !!activeJob}
@@ -469,13 +667,245 @@ export const Dashboard: React.FC = () => {
         </section>
       </div>
 
+      {/* Analytics Charts & Heatmaps */}
+      <section className="driver-analytics-charts-grid">
+        {/* SVG Earning Trend Card */}
+        <div className="driver-panel">
+          <h3 className="driver-chart-heading">
+            Earning Trend (Last 7 Days)
+          </h3>
+          {analytics.dailyTrend?.length > 0 ? (
+            <div className="driver-trend-chart-outer">
+              <div className="driver-trend-bar-chart-container">
+                {analytics.dailyTrend.map((t: any, idx: number) => {
+                  const percentHeight = Math.max(10, Math.round((t.amount / maxTrend) * 100));
+                  return (
+                    <div
+                      key={idx}
+                      className="driver-trend-col"
+                    >
+                      <span className="driver-trend-bar-label">
+                        ₹{Math.round(t.amount)}
+                      </span>
+                      <div
+                        className="driver-trend-bar"
+                        style={{
+                          height: `${percentHeight}px`,
+                        }}
+                      />
+                      <span className="driver-trend-bar-date">
+                        {new Date(t.date).toLocaleDateString(undefined, {
+                          weekday: "short",
+                        })}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          ) : (
+            <div className="driver-chart-empty">
+              No earning trends available yet.
+            </div>
+          )}
+        </div>
+
+        {/* Heatmap Zones Card */}
+        <div className="driver-panel">
+          <h3 className="driver-chart-heading">
+            Peak Demand Zones Heatmap
+          </h3>
+          <div className="driver-heatmap-list">
+            {analytics.heatmaps?.length > 0 ? (
+              analytics.heatmaps.map((h: any, idx: number) => (
+                <div
+                  key={idx}
+                  className="driver-heatmap-item"
+                >
+                  <div className="driver-heatmap-left">
+                    <span
+                      className="driver-heatmap-dot"
+                      style={{
+                        background: idx === 0 ? "#ef4444" : idx === 1 ? "#f59e0b" : "#10b981",
+                        color: idx === 0 ? "#ef4444" : idx === 1 ? "#f59e0b" : "#10b981",
+                      }}
+                    />
+                    <strong className="driver-heatmap-zone-name">{h.zone}</strong>
+                  </div>
+                  <div className="driver-heatmap-right">
+                    <div className="driver-heatmap-value">
+                      {formatIndianCurrency(h.earnings)}
+                    </div>
+                    <div className="driver-heatmap-count">
+                      {h.count} deliveries finished
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="driver-chart-empty">
+                No zone coordinates tracked yet.
+              </div>
+            )}
+          </div>
+        </div>
+      </section>
+
+      {/* Ledger Section */}
+      <section id="driver-ledger-section" className="driver-panel driver-ledger-panel">
+        <div className="driver-ledger-header">
+          <div>
+            <h2 className="driver-ledger-title">
+              Earnings Transaction Ledger
+            </h2>
+            <p className="driver-ledger-desc">
+              Individual transaction items generated per coordinate delivery.
+            </p>
+          </div>
+
+          {/* Ledger Filter Toolbar */}
+          <div className="driver-ledger-filter-bar">
+            <div className="driver-ledger-preset-btn-group">
+              {[
+                ["all", "All"],
+                ["today", "Today"],
+                ["week", "Week"],
+                ["month", "Month"],
+              ].map(([key, label]) => (
+                <button
+                  key={key}
+                  onClick={() => {
+                    setFilterPreset(key);
+                    setLedgerPage(1);
+                  }}
+                  className={`driver-ledger-preset-btn ${filterPreset === key ? "active" : ""}`}
+                >
+                  {label}
+                </button>
+              ))}
+            </div>
+
+            <select
+              value={filterCategory}
+              onChange={(e) => {
+                setFilterCategory(e.target.value);
+                setLedgerPage(1);
+              }}
+              className="driver-ledger-category-select"
+            >
+              <option value="">All Categories</option>
+              {categories.map((cat) => (
+                <option key={cat} value={cat}>
+                  {cat.replace(/_/g, " ")}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        {/* Ledger Grid Table */}
+        <div className="table-responsive">
+          <table className="driver-ledger-table">
+            <thead>
+              <tr className="driver-ledger-table-header-row">
+                <th>Tx ID</th>
+                <th>Timestamp</th>
+                <th>Category</th>
+                <th>Amount</th>
+                <th>Balance After</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ledgerLoading ? (
+                <tr>
+                  <td colSpan={6} className="driver-ledger-table-loading">
+                    Loading ledger entries...
+                  </td>
+                </tr>
+              ) : ledger.length > 0 ? (
+                ledger.map((item) => (
+                  <tr key={item.id} className="driver-ledger-table-row">
+                    <td className="driver-ledger-tx-id">
+                      #{item.id.slice(0, 8).toUpperCase()}
+                    </td>
+                    <td className="driver-ledger-time">
+                      {new Date(item.created_at).toLocaleString()}
+                    </td>
+                    <td className="driver-ledger-category-cell">
+                      <span className="driver-ledger-category-tag">
+                        {item.category.replace(/_/g, " ")}
+                      </span>
+                    </td>
+                    <td
+                      className={`driver-ledger-amount ${
+                        item.type === "credit" ? "credit" : "debit"
+                      }`}
+                    >
+                      {item.type === "credit" ? "+" : "-"}
+                      {formatIndianCurrency(item.amount)}
+                    </td>
+                    <td className="driver-ledger-balance-after">
+                      {formatIndianCurrency(item.balance_after)}
+                    </td>
+                    <td className="driver-ledger-status-cell">
+                      <span
+                        className={`driver-ledger-status-badge ${
+                          item.settlement_status === "settled"
+                            ? "driver-ledger-status-settled"
+                            : "driver-ledger-status-pending"
+                        }`}
+                      >
+                        {item.settlement_status}
+                      </span>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} className="driver-ledger-table-empty">
+                    No transactions found in this time range.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Ledger Paging Toolbar */}
+        {ledgerTotal > 6 && (
+          <div className="driver-ledger-pagination">
+            <span className="driver-ledger-pagination-count">
+              Showing {ledger.length} of {ledgerTotal} transactions
+            </span>
+            <div className="driver-ledger-pagination-buttons">
+              <button
+                disabled={ledgerPage === 1 || ledgerLoading}
+                onClick={() => setLedgerPage((p) => Math.max(1, p - 1))}
+                className={`driver-ledger-page-btn prev ${ledgerPage === 1 ? "disabled" : ""}`}
+              >
+                <ChevronLeft size={16} /> Prev
+              </button>
+              <button
+                disabled={ledgerPage * 6 >= ledgerTotal || ledgerLoading}
+                onClick={() => setLedgerPage((p) => p + 1)}
+                className={`driver-ledger-page-btn next ${ledgerPage * 6 >= ledgerTotal ? "disabled" : ""}`}
+              >
+                Next <ChevronRight size={16} />
+              </button>
+            </div>
+          </div>
+        )}
+      </section>
+
+      {/* Wallet Management Section */}
       <section className="driver-wallet" id="driver-wallet-section">
         <div>
           <div className="driver-wallet__icon">
             <Wallet size={19} />
           </div>
           <div>
-            <p>Wallet</p>
+            <p>Wallet Available Balance</p>
             <h2>
               {formatIndianCurrency(walletBalance)} <span>available</span>
             </h2>

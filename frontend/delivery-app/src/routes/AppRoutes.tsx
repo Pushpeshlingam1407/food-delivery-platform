@@ -6,7 +6,7 @@ import { MobileBottomNav } from "../../../shared/components/MobileBottomNav";
 import { ResponsiveFooter } from "../../../shared/components/ResponsiveFooter";
 import type { MobileBottomNavItem } from "../../../shared/components/MobileBottomNav";
 import type { FooterSection } from "../../../shared/components/ResponsiveFooter";
-import { Truck, Wallet, ClipboardList, LogOut } from "lucide-react";
+import { Truck, Wallet, ClipboardList, LogOut, FileText } from "lucide-react";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Dashboard } from "../pages/Dashboard";
@@ -66,6 +66,16 @@ export const AppRoutes: React.FC = () => {
       label: "Job Card",
       onClick: () => {
         document.getElementById("driver-job-section")?.scrollIntoView({
+          behavior: "smooth",
+          block: "start",
+        });
+      },
+    },
+    {
+      icon: <FileText size={22} />,
+      label: "Ledger",
+      onClick: () => {
+        document.getElementById("driver-ledger-section")?.scrollIntoView({
           behavior: "smooth",
           block: "start",
         });

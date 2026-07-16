@@ -60,7 +60,8 @@ export async function getEarningsLedger(req, res) {
     if (preset === "today") {
       countQuery += " AND DATE(l.created_at) = CURDATE()";
     } else if (preset === "yesterday") {
-      countQuery += " AND DATE(l.created_at) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
+      countQuery +=
+        " AND DATE(l.created_at) = DATE_SUB(CURDATE(), INTERVAL 1 DAY)";
     } else if (preset === "week") {
       countQuery += " AND l.created_at >= DATE_SUB(NOW(), INTERVAL 7 DAY)";
     } else if (preset === "month") {
@@ -132,7 +133,9 @@ export async function getEarningsAnalytics(req, res) {
       const end = sess.logout_time ? new Date(sess.logout_time) : new Date();
       totalOnlineMs += end.getTime() - start.getTime();
     });
-    const onlineHours = parseFloat((totalOnlineMs / (1000 * 60 * 60)).toFixed(2));
+    const onlineHours = parseFloat(
+      (totalOnlineMs / (1000 * 60 * 60)).toFixed(2),
+    );
 
     // 3. Stats (AOV, Completion, Cancellations)
     const [orderStats] = await pool.query(
@@ -150,8 +153,14 @@ export async function getEarningsAnalytics(req, res) {
     const completedCount = stats.completed || 0;
     const cancelledCount = stats.cancelled || 0;
 
-    const completionRate = totalAssigned > 0 ? parseFloat(((completedCount / totalAssigned) * 100).toFixed(1)) : 100;
-    const cancellationRate = totalAssigned > 0 ? parseFloat(((cancelledCount / totalAssigned) * 100).toFixed(1)) : 0;
+    const completionRate =
+      totalAssigned > 0
+        ? parseFloat(((completedCount / totalAssigned) * 100).toFixed(1))
+        : 100;
+    const cancellationRate =
+      totalAssigned > 0
+        ? parseFloat(((cancelledCount / totalAssigned) * 100).toFixed(1))
+        : 0;
     const acceptanceRate = 95.0; // Simulated constant for UI display
 
     // 4. Daily earnings trend (last 7 days)
@@ -206,7 +215,9 @@ export async function getEarningsAnalytics(req, res) {
       data: {
         totalEarnings: totalCredits,
         onlineHours,
-        idleHours: parseFloat(Math.max(0, onlineHours - (completedCount * 0.4)).toFixed(2)), // Idle calculation
+        idleHours: parseFloat(
+          Math.max(0, onlineHours - completedCount * 0.4).toFixed(2),
+        ), // Idle calculation
         completionRate,
         cancellationRate,
         acceptanceRate,
