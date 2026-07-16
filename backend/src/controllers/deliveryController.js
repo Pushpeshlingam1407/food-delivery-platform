@@ -1,3 +1,4 @@
+import crypto from "crypto";
 import pool from "../config/db.js";
 
 export async function toggleDriverStatus(req, res) {
@@ -69,6 +70,26 @@ export async function toggleDriverStatus(req, res) {
       await pool.query(
         `UPDATE delivery_partners SET ${updates.join(", ")} WHERE id = ?`,
         params,
+      );
+    }
+
+    // Manage online sessions
+    if (is_online) {
+      const [activeSessions] = await pool.query(
+        "SELECT id FROM driver_online_sessions WHERE driver_id = ? AND logout_time IS NULL",
+        [req.user.userId],
+      );
+      if (activeSessions.length === 0) {
+        const sessionId = crypto.randomUUID();
+        await pool.query(
+          "INSERT INTO driver_online_sessions (id, driver_id, login_time) VALUES (?, ?, NOW())",
+          [sessionId, req.user.userId],
+        );
+      }
+    } else {
+      await pool.query(
+        "UPDATE driver_online_sessions SET logout_time = NOW() WHERE driver_id = ? AND logout_time IS NULL",
+        [req.user.userId],
       );
     }
 
