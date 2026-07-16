@@ -148,7 +148,7 @@ export const ProfilePage: React.FC = () => {
               onClick={handleLogout}
             >
               <LogOut size={16} color="#ef4444" />
-              <span style={{ color: "#ef4444" }}>Sign Out from shift console</span>
+              <span className="driver-profile-logout-text">Sign Out from shift console</span>
             </button>
           </div>
         </section>

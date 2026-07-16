@@ -25,7 +25,7 @@ export const Login: React.FC = () => {
         // Strict role validation
         if (user.role !== "delivery_partner" && user.role !== "admin") {
           notify.error(
-            "Access Denied: You must be a delivery partner to sign in here.",
+            "Access Denied: You must be a delivery partner to sign in here."
           );
           setLoading(false);
           return;
@@ -37,12 +37,12 @@ export const Login: React.FC = () => {
         localStorage.setItem("userId", user.id);
         localStorage.setItem(
           "userName",
-          `${user.first_name} ${user.last_name}`,
+          `${user.first_name} ${user.last_name}`
         );
 
         notify.authSuccess(
           "Ready to hit the road?",
-          "Signing into your driver account.",
+          "Signing into your driver account."
         );
         setTimeout(() => {
           window.location.href = "/";
@@ -57,139 +57,48 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-        padding: "20px",
-      }}
-    >
-      <div
-        style={{
-          background: "var(--glass-bg)",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-squircle)",
-          padding: "48px",
-          width: "100%",
-          maxWidth: "440px",
-          boxShadow: "var(--glass-shadow)",
-          backdropFilter: "var(--glass-blur)",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--font-anthropic)",
-            fontSize: "2rem",
-            color: "var(--text-slate)",
-            marginBottom: "8px",
-            fontWeight: 600,
-          }}
-        >
-          Delivery Sign In
-        </h2>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            fontSize: "0.95rem",
-            marginBottom: "32px",
-          }}
-        >
-          Access your logistics shift and wallet earnings
-        </p>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2 className="auth-title">Delivery Sign In</h2>
+        <p className="auth-subtitle">Access your logistics shift and wallet earnings</p>
 
-        <form
-          onSubmit={handleLogin}
-          style={{ display: "flex", flexDirection: "column", gap: "20px" }}
-        >
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <label
-              style={{
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Email Address
-            </label>
+        <form onSubmit={handleLogin} className="auth-form">
+          <div className="auth-field-group">
+            <label className="auth-label">Email Address</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="driver@delivery.com"
               required
-              style={{
-                padding: "12px 16px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.95rem",
-                outline: "none",
-              }}
+              className="auth-input-style"
             />
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
-            <label
-              style={{
-                fontSize: "0.85rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Password
-            </label>
+          <div className="auth-field-group">
+            <label className="auth-label">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              style={{
-                padding: "12px 16px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.95rem",
-                outline: "none",
-              }}
+              className="auth-input-style"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="btn-premium"
-            style={{
-              padding: "14px",
-              fontSize: "1rem",
-              marginTop: "12px",
-              opacity: loading ? 0.7 : 1,
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
+            className="auth-btn-style"
           >
             {loading ? "Authenticating..." : "Sign In"}
           </button>
         </form>
 
-        <div
-          style={{
-            marginTop: "24px",
-            textAlign: "center",
-            fontSize: "0.9rem",
-            color: "var(--text-muted)",
-          }}
-        >
+        <div className="auth-footer-prompt">
           Don't have an account?{" "}
-          <Link
-            to="/register"
-            style={{
-              color: "var(--accent-orange)",
-              fontWeight: 600,
-              textDecoration: "none",
-            }}
-          >
+          <Link to="/register" className="auth-footer-link">
             Create one
           </Link>
         </div>

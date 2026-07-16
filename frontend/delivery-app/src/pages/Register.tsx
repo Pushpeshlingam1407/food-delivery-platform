@@ -47,235 +47,85 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        minHeight: "100vh",
-        padding: "20px",
-      }}
-    >
-      <div
-        style={{
-          background: "var(--glass-bg)",
-          border: "1px solid var(--glass-border)",
-          borderRadius: "var(--radius-squircle)",
-          padding: "48px",
-          width: "100%",
-          maxWidth: "460px",
-          boxShadow: "var(--glass-shadow)",
-          backdropFilter: "var(--glass-blur)",
-        }}
-      >
-        <h2
-          style={{
-            fontFamily: "var(--font-anthropic)",
-            fontSize: "2rem",
-            color: "var(--text-slate)",
-            marginBottom: "8px",
-            fontWeight: 600,
-          }}
-        >
-          Delivery Registration
-        </h2>
-        <p
-          style={{
-            color: "var(--text-muted)",
-            fontSize: "0.95rem",
-            marginBottom: "32px",
-          }}
-        >
-          Create an account to join the delivery fleet
-        </p>
+    <div className="auth-container">
+      <div className="auth-card">
+        <h2 className="auth-title">Delivery Registration</h2>
+        <p className="auth-subtitle">Create an account to join the delivery fleet</p>
 
-        <form
-          onSubmit={handleRegister}
-          style={{ display: "flex", flexDirection: "column", gap: "16px" }}
-        >
-          <div style={{ display: "flex", gap: "16px" }}>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-                flex: 1,
-              }}
-            >
-              <label
-                style={{
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  color: "var(--text-slate)",
-                }}
-              >
-                First Name
-              </label>
+        <form onSubmit={handleRegister} className="auth-form">
+          <div className="auth-field-group-horizontal">
+            <div className="auth-field-group">
+              <label className="auth-label">First Name</label>
               <input
                 type="text"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder="Amit"
                 required
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: "var(--radius-standard)",
-                  border: "1px solid var(--glass-border)",
-                  fontFamily: "var(--font-apple)",
-                  fontSize: "0.9rem",
-                  outline: "none",
-                }}
+                className="auth-input-style"
               />
             </div>
-            <div
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                gap: "6px",
-                flex: 1,
-              }}
-            >
-              <label
-                style={{
-                  fontSize: "0.8rem",
-                  fontWeight: 600,
-                  color: "var(--text-slate)",
-                }}
-              >
-                Last Name
-              </label>
+            <div className="auth-field-group">
+              <label className="auth-label">Last Name</label>
               <input
                 type="text"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder="Singh"
                 required
-                style={{
-                  padding: "10px 14px",
-                  borderRadius: "var(--radius-standard)",
-                  border: "1px solid var(--glass-border)",
-                  fontFamily: "var(--font-apple)",
-                  fontSize: "0.9rem",
-                  outline: "none",
-                }}
+                className="auth-input-style"
               />
             </div>
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <label
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Email
-            </label>
+          <div className="auth-field-group">
+            <label className="auth-label">Email</label>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="driver@delivery.com"
               required
-              style={{
-                padding: "10px 14px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.9rem",
-                outline: "none",
-              }}
+              className="auth-input-style"
             />
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <label
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Phone Number
-            </label>
+          <div className="auth-field-group">
+            <label className="auth-label">Phone Number</label>
             <input
               type="text"
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
               placeholder="+917654321098"
               required
-              style={{
-                padding: "10px 14px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.9rem",
-                outline: "none",
-              }}
+              className="auth-input-style"
             />
           </div>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-            <label
-              style={{
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                color: "var(--text-slate)",
-              }}
-            >
-              Password
-            </label>
+          <div className="auth-field-group">
+            <label className="auth-label">Password</label>
             <input
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
               required
-              style={{
-                padding: "10px 14px",
-                borderRadius: "var(--radius-standard)",
-                border: "1px solid var(--glass-border)",
-                fontFamily: "var(--font-apple)",
-                fontSize: "0.9rem",
-                outline: "none",
-              }}
+              className="auth-input-style"
             />
           </div>
 
           <button
             type="submit"
             disabled={loading}
-            className="btn-premium"
-            style={{
-              padding: "12px",
-              fontSize: "0.95rem",
-              marginTop: "12px",
-              opacity: loading ? 0.7 : 1,
-              cursor: loading ? "not-allowed" : "pointer",
-            }}
+            className="auth-btn-style"
           >
             {loading ? "Registering..." : "Sign Up"}
           </button>
         </form>
 
-        <div
-          style={{
-            marginTop: "24px",
-            textAlign: "center",
-            fontSize: "0.9rem",
-            color: "var(--text-muted)",
-          }}
-        >
+        <div className="auth-footer-prompt">
           Already have an account?{" "}
-          <Link
-            to="/login"
-            style={{
-              color: "var(--accent-orange)",
-              fontWeight: 600,
-              textDecoration: "none",
-            }}
-          >
+          <Link to="/login" className="auth-footer-link">
             Sign In
           </Link>
         </div>
