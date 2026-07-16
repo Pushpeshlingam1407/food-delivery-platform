@@ -119,7 +119,8 @@ export const CartDrawer: React.FC = () => {
         let discountAmt = 0;
         if (appliedCoupon.discount_type === "percentage") {
           discountAmt =
-            (subtotal * parseFloat(appliedCoupon.discount_value.toString())) / 100;
+            (subtotal * parseFloat(appliedCoupon.discount_value.toString())) /
+            100;
           if (appliedCoupon.max_discount_amount) {
             discountAmt = Math.min(
               discountAmt,
@@ -357,7 +358,8 @@ export const CartDrawer: React.FC = () => {
                         fontSize: "0.75rem",
                         fontWeight: 700,
                         cursor: appliedCouponId ? "not-allowed" : "pointer",
-                        opacity: appliedCouponId && appliedCouponId !== c.id ? 0.5 : 1,
+                        opacity:
+                          appliedCouponId && appliedCouponId !== c.id ? 0.5 : 1,
                         whiteSpace: "nowrap",
                       }}
                     >
@@ -369,7 +371,10 @@ export const CartDrawer: React.FC = () => {
             )}
 
             <div className="cart-drawer-coupon cart-drawer-coupon-pills-container">
-              <div className="cart-drawer-coupon-input-wrapper" style={{ opacity: appliedCouponId ? 0.7 : 1 }}>
+              <div
+                className="cart-drawer-coupon-input-wrapper"
+                style={{ opacity: appliedCouponId ? 0.7 : 1 }}
+              >
                 <Percent size={16} color="var(--text-muted)" />
                 <input
                   type="text"

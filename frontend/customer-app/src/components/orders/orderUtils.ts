@@ -1,3 +1,5 @@
+import { formatIndianCurrency } from "../../../../shared/utils/currency";
+
 export interface OrderItem {
   id: string;
   menu_id: string;
@@ -75,7 +77,7 @@ export const filterOptions: Array<[OrderFilter, string]> = [
 ];
 
 export const formatMoney = (value: number | string | undefined) =>
-  `₹${parseFloat((value || 0).toString()).toFixed(2)}`;
+  formatIndianCurrency(value);
 
 export const formatDate = (value: string) =>
   new Date(value).toLocaleDateString(undefined, {

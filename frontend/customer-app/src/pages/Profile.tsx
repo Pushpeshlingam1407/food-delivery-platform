@@ -100,7 +100,9 @@ export const Profile: React.FC<ProfileProps> = ({
             <Wallet size={32} />
           </div>
           <div className="stat-tile-label">Wallet Balance</div>
-          <div className="stat-tile-value">{formatIndianCurrency(walletBalance)}</div>
+          <div className="stat-tile-value">
+            {formatIndianCurrency(walletBalance)}
+          </div>
           <div className="stat-tile-sub">Tap to add money →</div>
         </div>
       )}
