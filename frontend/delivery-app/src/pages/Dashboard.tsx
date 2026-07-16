@@ -3,6 +3,7 @@ import { io, Socket } from "socket.io-client";
 import { Check, Navigation, Power, Truck, Wallet } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import { formatIndianCurrency } from "../../../shared/utils/currency";
 
 interface Order {
   id: string;
@@ -302,7 +303,7 @@ export const Dashboard: React.FC = () => {
       >
         <article>
           <span>Today’s earnings</span>
-          <strong>${totalEarningAmt.toFixed(2)}</strong>
+          <strong>{formatIndianCurrency(totalEarningAmt)}</strong>
           <small>{completedDeliveriesCount} completed</small>
         </article>
         <article>
@@ -312,7 +313,7 @@ export const Dashboard: React.FC = () => {
         </article>
         <article>
           <span>Wallet balance</span>
-          <strong>${walletBalance.toFixed(2)}</strong>
+          <strong>{formatIndianCurrency(walletBalance)}</strong>
           <small>Available to cash out</small>
         </article>
       </section>
@@ -447,7 +448,7 @@ export const Dashboard: React.FC = () => {
                 </div>
                 <div className="driver-queue-item__action">
                   <strong>
-                    ${parseFloat(job.delivery_charges || "0").toFixed(2)}
+                    {formatIndianCurrency(job.delivery_charges)}
                   </strong>
                   <button
                     type="button"
@@ -476,7 +477,7 @@ export const Dashboard: React.FC = () => {
           <div>
             <p>Wallet</p>
             <h2>
-              ${walletBalance.toFixed(2)} <span>available</span>
+              {formatIndianCurrency(walletBalance)} <span>available</span>
             </h2>
           </div>
         </div>

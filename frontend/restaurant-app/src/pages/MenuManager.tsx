@@ -462,12 +462,12 @@ export const MenuManager: React.FC = () => {
                   }}
                 >
                   <div className="premium-form-group">
-                    <label>Price ($) *</label>
+                    <label>Price (₹) *</label>
                     <input
                       type="number"
                       value={newItemPrice}
                       onChange={(e) => setNewItemPrice(e.target.value)}
-                      placeholder="9.99"
+                      placeholder="199"
                       step="0.01"
                       min="0.01"
                       required

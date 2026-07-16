@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import { formatIndianCurrency } from "../../../shared/utils/currency";
 
 import { PremiumPageHeader } from "../components/ui/PremiumPageHeader";
 import { CredStatCard } from "../components/ui/CredStatCard";
@@ -197,7 +198,7 @@ export const Earnings: React.FC = () => {
       key: "order_total",
       label: "Gross",
       flex: 1.5,
-      render: (val: string) => `$${parseFloat(val).toFixed(2)}`,
+      render: (val: string) => formatIndianCurrency(val),
     },
     {
       key: "commission_amount",
@@ -205,7 +206,7 @@ export const Earnings: React.FC = () => {
       flex: 1.5,
       render: (val: string) => (
         <span style={{ color: "var(--cred-accent)" }}>
-          -${parseFloat(val).toFixed(2)}
+          -{formatIndianCurrency(val)}
         </span>
       ),
     },
@@ -215,7 +216,7 @@ export const Earnings: React.FC = () => {
       flex: 1.5,
       render: (val: string) => (
         <span style={{ color: "var(--cred-success)", fontWeight: 800 }}>
-          +${parseFloat(val).toFixed(2)}
+          +{formatIndianCurrency(val)}
         </span>
       ),
     },
@@ -256,14 +257,14 @@ export const Earnings: React.FC = () => {
         >
           <CredStatCard
             title="Available Balance"
-            value={`$${walletBalance.toFixed(2)}`}
+            value={formatIndianCurrency(walletBalance)}
             subtitle="Ready for Instant Payout"
             icon={<Wallet />}
             theme="success"
           />
           <CredStatCard
             title="Net Earnings"
-            value={`$${parseFloat(summary?.net_earnings?.toString() || "0").toFixed(2)}`}
+            value={formatIndianCurrency(summary?.net_earnings)}
             subtitle="Total platform payouts"
             icon={<TrendingUp />}
           />
@@ -318,7 +319,7 @@ export const Earnings: React.FC = () => {
                   max={walletBalance}
                   required
                 />
-                <label>Amount to Withdraw ($)</label>
+                <label>Amount to Withdraw (₹)</label>
               </div>
 
               <div

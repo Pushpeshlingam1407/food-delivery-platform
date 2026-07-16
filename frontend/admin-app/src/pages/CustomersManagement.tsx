@@ -295,7 +295,7 @@ export const CustomersManagement: React.FC = () => {
               </div>
 
               <div className="premium-form-group">
-                <label>Adjust Wallet Balance ($)</label>
+                <label>Adjust Wallet Balance (₹)</label>
                 <div className="adjust-wallet-flex">
                   <input
                     type="number"
@@ -312,7 +312,7 @@ export const CustomersManagement: React.FC = () => {
                     }}
                     className="premium-badge neutral quick-wallet-btn"
                   >
-                    +$10
+                    +₹10
                   </button>
                   <button
                     type="button"
@@ -322,7 +322,7 @@ export const CustomersManagement: React.FC = () => {
                     }}
                     className="premium-badge neutral quick-wallet-btn"
                   >
-                    +$50
+                    +₹50
                   </button>
                 </div>
               </div>

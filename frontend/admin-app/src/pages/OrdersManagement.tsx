@@ -312,7 +312,7 @@ export const OrdersManagement: React.FC = () => {
               </div>
 
               <div className="premium-form-group">
-                <label>Override Total Payable ($)</label>
+                <label>Override Total Payable (₹)</label>
                 <input
                   type="number"
                   step="0.01"

@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
+import { formatIndianCurrency } from "../../../shared/utils/currency";
 
 import { PremiumPageHeader } from "../components/ui/PremiumPageHeader";
 import { CredStatCard } from "../components/ui/CredStatCard";
@@ -126,7 +127,7 @@ export const Dashboard: React.FC = () => {
       setOrders((prev) => [newOrder, ...prev]);
       playOrderChime();
       notify.success(
-        `New Order Received! Order #${newOrder.order_number} for $${newOrder.item_total} placed.`,
+        `New Order Received! Order #${newOrder.order_number} for ${formatIndianCurrency(newOrder.item_total)} placed.`,
       );
     });
 
@@ -454,7 +455,7 @@ export const Dashboard: React.FC = () => {
           />
           <CredStatCard
             title="Estimated Revenue"
-            value={`$${estimatedRevenue.toFixed(2)}`}
+            value={formatIndianCurrency(estimatedRevenue)}
             subtitle="Gross value of today's sales"
             icon={<TrendingUp />}
             theme="success"
@@ -552,7 +553,7 @@ export const Dashboard: React.FC = () => {
                   }}
                 >
                   <span style={{ fontSize: "1.25rem", fontWeight: 800 }}>
-                    ${parseFloat((o.item_total ?? 0).toString()).toFixed(2)}
+                    {formatIndianCurrency(o.item_total)}
                   </span>
 
                   <div>

@@ -1560,3 +1560,171 @@ textarea {
   display: block !important;
   margin-top: 4px !important;
 }
+
+/* =============================================
+   MOBILE RESPONSIVENESS OVERRIDES
+   ============================================= */
+@media (max-width: 1024px) {
+  /* Layout modifications */
+  .delivery-layout {
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  .delivery-sidebar-shell {
+    display: none !important;
+  }
+
+  .delivery-main-shell {
+    padding-bottom: 80px !important; /* Space for Mobile Bottom Nav */
+    width: 100% !important;
+  }
+
+  /* Header overrides */
+  .driver-workspace {
+    padding: 20px 16px !important;
+    gap: 20px !important;
+  }
+
+  .driver-workspace__header {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 16px !important;
+    padding-bottom: 20px !important;
+  }
+
+  .driver-workspace__header h1 {
+    font-size: 2.2rem !important;
+  }
+
+  .driver-workspace__header > div > p:last-child {
+    margin-top: 10px !important;
+    font-size: 0.9rem !important;
+  }
+
+  /* Stat grid layout */
+  .driver-stat-grid {
+    grid-template-columns: 1fr !important; /* Stack vertically */
+    border-radius: 16px !important;
+  }
+
+  .driver-stat-grid article {
+    padding: 16px 20px !important;
+    text-align: left !important;
+  }
+
+  .driver-stat-grid article + article {
+    border-left: none !important;
+    border-top: 1px solid rgba(255, 138, 101, 0.15) !important;
+  }
+
+  .driver-stat-grid strong {
+    font-size: 1.5rem !important;
+  }
+
+  /* Grid layout overrides */
+  .driver-workspace__grid {
+    grid-template-columns: 1fr !important; /* Single column */
+    gap: 20px !important;
+  }
+
+  .driver-panel {
+    padding: 20px !important;
+    border-radius: 20px !important;
+  }
+
+  .driver-panel__heading h2 {
+    font-size: 1.35rem !important;
+  }
+
+  /* Route details */
+  .driver-route {
+    grid-template-columns: 1fr !important; /* Stack columns */
+    gap: 16px !important;
+    padding: 16px !important;
+  }
+
+  .driver-route div + div {
+    padding-left: 0 !important;
+    padding-top: 16px !important;
+    border-left: none !important;
+    border-top: 1px solid #ded8d0 !important;
+  }
+
+  .driver-route strong {
+    font-size: 0.9rem !important;
+  }
+
+  /* Map simulation container */
+  .driver-map-preview {
+    margin-top: 20px !important;
+    height: 320px !important;
+    border-radius: 16px !important;
+    overflow: hidden !important;
+  }
+
+  .driver-map-bg {
+    height: 100% !important;
+    background-size: 30px 30px !important;
+  }
+
+  /* Table responsiveness */
+  .table-responsive {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    margin-top: 16px !important;
+    border: 1px solid rgba(25, 25, 25, 0.06) !important;
+    border-radius: 12px !important;
+  }
+
+  .table-responsive table {
+    min-width: 500px !important;
+  }
+
+  /* Buttons & Touch targets */
+  .driver-shift-button,
+  .driver-primary-button,
+  .driver-queue-item button,
+  .driver-wallet form button,
+  .input-premium {
+    min-height: 48px !important; /* iOS standard tap target */
+    font-size: 0.95rem !important;
+  }
+
+  /* Wallet adjustment */
+  .driver-wallet {
+    padding: 20px !important;
+    flex-direction: column !important;
+    gap: 16px !important;
+  }
+
+  .driver-wallet form {
+    flex-direction: column !important;
+    width: 100% !important;
+    gap: 12px !important;
+  }
+
+  .driver-wallet form input {
+    width: 100% !important;
+  }
+
+  .driver-wallet form button {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .driver-workspace__header h1 {
+    font-size: 1.8rem !important;
+  }
+
+  .driver-panel {
+    padding: 16px !important;
+  }
+
+  .driver-route strong {
+    font-size: 0.85rem !important;
+  }
+}
