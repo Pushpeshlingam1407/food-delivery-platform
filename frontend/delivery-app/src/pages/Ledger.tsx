@@ -27,11 +27,15 @@ export const Ledger: React.FC = () => {
   const [ledgerPage, setLedgerPage] = useState(1);
   const [ledgerLoading, setLedgerLoading] = useState(false);
 
-  const fetchLedger = async (preset = filterPreset, cat = filterCategory, pg = ledgerPage) => {
+  const fetchLedger = async (
+    preset = filterPreset,
+    cat = filterCategory,
+    pg = ledgerPage,
+  ) => {
     setLedgerLoading(true);
     try {
       const res = await api.get(
-        `/delivery/earnings/ledger?preset=${preset}&category=${cat}&page=${pg}&limit=8`
+        `/delivery/earnings/ledger?preset=${preset}&category=${cat}&page=${pg}&limit=8`,
       );
       if (res.data.status === "success") {
         setLedger(res.data.data.transactions || []);
@@ -54,7 +58,10 @@ export const Ledger: React.FC = () => {
         <div>
           <p className="driver-workspace__eyebrow">Financial Logs</p>
           <h1>Transaction Ledger</h1>
-          <p>Audit individual payout category details per coordinate order delivery.</p>
+          <p>
+            Audit individual payout category details per coordinate order
+            delivery.
+          </p>
         </div>
       </header>
 

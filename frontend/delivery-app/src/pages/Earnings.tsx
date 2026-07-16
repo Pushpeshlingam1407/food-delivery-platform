@@ -35,7 +35,8 @@ export const Earnings: React.FC = () => {
           const driverId = meRes.data.data.id;
           const completed = ordersRes.data.data.filter(
             (order: any) =>
-              order.status === "delivered" && order.delivery_partner_id === driverId
+              order.status === "delivered" &&
+              order.delivery_partner_id === driverId,
           );
           setCompletedDeliveriesCount(completed.length);
         }
@@ -59,7 +60,9 @@ export const Earnings: React.FC = () => {
         <div>
           <p className="driver-workspace__eyebrow">Finance Insights</p>
           <h1>Earnings & Incentive Analytics</h1>
-          <p>Track your cumulative income, weekly challenges, and target goals.</p>
+          <p>
+            Track your cumulative income, weekly challenges, and target goals.
+          </p>
         </div>
       </header>
 
@@ -72,7 +75,9 @@ export const Earnings: React.FC = () => {
                 <Award size={32} color="#fcd34d" />
               </div>
               <div>
-                <h3 className="driver-quest-title">Streak Incentive Challenge</h3>
+                <h3 className="driver-quest-title">
+                  Streak Incentive Challenge
+                </h3>
                 <p className="driver-quest-subtitle">
                   Complete 8 orders today to unlock a bonus of ₹250.00
                 </p>
@@ -85,7 +90,13 @@ export const Earnings: React.FC = () => {
           <div className="driver-quest-progress-bar-wrapper">
             <div className="driver-quest-progress-container">
               <span>Progress: {completedDeliveriesCount} of 8 completed</span>
-              <span>{Math.min(100, Math.round((completedDeliveriesCount / 8) * 100))}%</span>
+              <span>
+                {Math.min(
+                  100,
+                  Math.round((completedDeliveriesCount / 8) * 100),
+                )}
+                %
+              </span>
             </div>
             <div className="driver-quest-progress-track">
               <div
@@ -103,7 +114,8 @@ export const Earnings: React.FC = () => {
       <section className="driver-stat-grid">
         <article>
           <span className="driver-stat-title-flex">
-            <TrendingUp size={14} color="var(--accent-orange)" /> Cumulative Earnings
+            <TrendingUp size={14} color="var(--accent-orange)" /> Cumulative
+            Earnings
           </span>
           <strong>{formatIndianCurrency(analytics.totalEarnings || 0)}</strong>
           <small>Incl. bonuses & tips</small>
@@ -121,11 +133,15 @@ export const Earnings: React.FC = () => {
           </span>
           <div className="driver-stat-ops-flex">
             <div>
-              <div className="driver-ops-number">{analytics.completionRate}%</div>
+              <div className="driver-ops-number">
+                {analytics.completionRate}%
+              </div>
               <div className="driver-ops-label">Completion</div>
             </div>
             <div className="driver-ops-divider">
-              <div className="driver-ops-number">{analytics.acceptanceRate}%</div>
+              <div className="driver-ops-number">
+                {analytics.acceptanceRate}%
+              </div>
               <div className="driver-ops-label">Acceptance</div>
             </div>
           </div>
@@ -141,10 +157,15 @@ export const Earnings: React.FC = () => {
             <div className="driver-trend-chart-outer">
               <div className="driver-trend-bar-chart-container">
                 {analytics.dailyTrend.map((t: any, idx: number) => {
-                  const percentHeight = Math.max(10, Math.round((t.amount / maxTrend) * 100));
+                  const percentHeight = Math.max(
+                    10,
+                    Math.round((t.amount / maxTrend) * 100),
+                  );
                   return (
                     <div key={idx} className="driver-trend-col">
-                      <span className="driver-trend-bar-label">₹{Math.round(t.amount)}</span>
+                      <span className="driver-trend-bar-label">
+                        ₹{Math.round(t.amount)}
+                      </span>
                       <div
                         className="driver-trend-bar"
                         style={{
@@ -162,7 +183,9 @@ export const Earnings: React.FC = () => {
               </div>
             </div>
           ) : (
-            <div className="driver-chart-empty">No earning trends available yet.</div>
+            <div className="driver-chart-empty">
+              No earning trends available yet.
+            </div>
           )}
         </div>
 
@@ -177,20 +200,38 @@ export const Earnings: React.FC = () => {
                     <span
                       className="driver-heatmap-dot"
                       style={{
-                        background: idx === 0 ? "#ef4444" : idx === 1 ? "#f59e0b" : "#10b981",
-                        color: idx === 0 ? "#ef4444" : idx === 1 ? "#f59e0b" : "#10b981",
+                        background:
+                          idx === 0
+                            ? "#ef4444"
+                            : idx === 1
+                              ? "#f59e0b"
+                              : "#10b981",
+                        color:
+                          idx === 0
+                            ? "#ef4444"
+                            : idx === 1
+                              ? "#f59e0b"
+                              : "#10b981",
                       }}
                     />
-                    <strong className="driver-heatmap-zone-name">{h.zone}</strong>
+                    <strong className="driver-heatmap-zone-name">
+                      {h.zone}
+                    </strong>
                   </div>
                   <div className="driver-heatmap-right">
-                    <div className="driver-heatmap-value">{formatIndianCurrency(h.earnings)}</div>
-                    <div className="driver-heatmap-count">{h.count} deliveries finished</div>
+                    <div className="driver-heatmap-value">
+                      {formatIndianCurrency(h.earnings)}
+                    </div>
+                    <div className="driver-heatmap-count">
+                      {h.count} deliveries finished
+                    </div>
                   </div>
                 </div>
               ))
             ) : (
-              <div className="driver-chart-empty">No zone coordinates tracked yet.</div>
+              <div className="driver-chart-empty">
+                No zone coordinates tracked yet.
+              </div>
             )}
           </div>
         </div>

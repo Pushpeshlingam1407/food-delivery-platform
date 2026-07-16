@@ -57,7 +57,11 @@ export const AppRoutes: React.FC = () => {
 
   const bottomNavItems: MobileBottomNavItem[] = [
     { icon: <Truck size={22} />, label: "Jobs", route: "/" },
-    { icon: <ClipboardList size={22} />, label: "Earnings", route: "/earnings" },
+    {
+      icon: <ClipboardList size={22} />,
+      label: "Earnings",
+      route: "/earnings",
+    },
     { icon: <FileText size={22} />, label: "Ledger", route: "/ledger" },
     { icon: <Wallet size={22} />, label: "Wallet", route: "/wallet" },
     { icon: <LogOut size={22} />, label: "Exit", onClick: handleLogout },
@@ -82,22 +86,10 @@ export const AppRoutes: React.FC = () => {
       <div className="delivery-main-shell">
         <Navbar driverName={driverName} onLogout={handleLogout} />
         <Routes>
-          <Route
-            path="/"
-            element={<Dashboard />}
-          />
-          <Route
-            path="/earnings"
-            element={<Earnings />}
-          />
-          <Route
-            path="/ledger"
-            element={<Ledger />}
-          />
-          <Route
-            path="/wallet"
-            element={<WalletPage />}
-          />
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/earnings" element={<Earnings />} />
+          <Route path="/ledger" element={<Ledger />} />
+          <Route path="/wallet" element={<WalletPage />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
         <ResponsiveFooter
@@ -109,14 +101,8 @@ export const AppRoutes: React.FC = () => {
     </div>
   ) : (
     <Routes>
-      <Route
-        path="/login"
-        element={<Login />}
-      />
-      <Route
-        path="/register"
-        element={<Register />}
-      />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
       <Route path="*" element={<Navigate to="/login" />} />
     </Routes>
   );
