@@ -6,7 +6,15 @@ import { MobileBottomNav } from "../../../shared/components/MobileBottomNav";
 import { ResponsiveFooter } from "../../../shared/components/ResponsiveFooter";
 import type { MobileBottomNavItem } from "../../../shared/components/MobileBottomNav";
 import type { FooterSection } from "../../../shared/components/ResponsiveFooter";
-import { Truck, Wallet, ClipboardList, LayoutDashboard, User, FileText, Map } from "lucide-react";
+import {
+  Truck,
+  Wallet,
+  ClipboardList,
+  LayoutDashboard,
+  User,
+  FileText,
+  Map,
+} from "lucide-react";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Dashboard } from "../pages/Dashboard";
@@ -63,7 +71,11 @@ export const AppRoutes: React.FC = () => {
     { icon: <LayoutDashboard size={22} />, label: "Home", route: "/" },
     { icon: <Truck size={22} />, label: "Deliveries", route: "/requests" },
     { icon: <Map size={22} />, label: "Map / Route", route: "/active-orders" },
-    { icon: <ClipboardList size={22} />, label: "Earnings", route: "/earnings" },
+    {
+      icon: <ClipboardList size={22} />,
+      label: "Earnings",
+      route: "/earnings",
+    },
     { icon: <User size={22} />, label: "Profile", route: "/profile" },
   ];
 

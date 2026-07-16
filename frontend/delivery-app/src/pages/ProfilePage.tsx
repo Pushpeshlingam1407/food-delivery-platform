@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Shield,
-  HelpCircle,
-  LogOut,
-  ShoppingBag,
-  Store,
-} from "lucide-react";
+import { Shield, HelpCircle, LogOut, ShoppingBag, Store } from "lucide-react";
 import api from "../../../shared/services/api";
 import { useAppContext } from "../../../shared/context/AppContext";
 
@@ -18,7 +12,8 @@ export const ProfilePage: React.FC = () => {
   });
 
   useEffect(() => {
-    api.get("/auth/me")
+    api
+      .get("/auth/me")
       .then((res) => {
         if (res.data.status === "success" && res.data.data) {
           setDriver(res.data.data);
@@ -26,7 +21,8 @@ export const ProfilePage: React.FC = () => {
       })
       .catch(console.error);
 
-    api.get("/delivery/earnings/analytics")
+    api
+      .get("/delivery/earnings/analytics")
       .then((res) => {
         if (res.data.status === "success" && res.data.data) {
           setAnalytics(res.data.data);
@@ -35,7 +31,8 @@ export const ProfilePage: React.FC = () => {
       .catch(console.error);
   }, []);
 
-  const driverName = driver?.name || localStorage.getItem("userName") || "Driver";
+  const driverName =
+    driver?.name || localStorage.getItem("userName") || "Driver";
   const driverEmail = driver?.email || "driver@bites.logistics.com";
   const driverId = driver?.id || "DRV-9018482";
 
@@ -45,7 +42,10 @@ export const ProfilePage: React.FC = () => {
         <div>
           <p className="driver-workspace__eyebrow">Rider Console</p>
           <h1>Profile & Console Settings</h1>
-          <p>Manage your account, registered vehicle details, and platform support channels.</p>
+          <p>
+            Manage your account, registered vehicle details, and platform
+            support channels.
+          </p>
         </div>
       </header>
 
@@ -79,16 +79,28 @@ export const ProfilePage: React.FC = () => {
           </div>
           <div className="driver-profile-details-grid">
             <div>
-              <strong className="driver-profile-bold-label">Vehicle Type:</strong> Electric Two-Wheeler (EV)
+              <strong className="driver-profile-bold-label">
+                Vehicle Type:
+              </strong>{" "}
+              Electric Two-Wheeler (EV)
             </div>
             <div>
-              <strong className="driver-profile-bold-label">License Plate:</strong> KA-03-EM-8821
+              <strong className="driver-profile-bold-label">
+                License Plate:
+              </strong>{" "}
+              KA-03-EM-8821
             </div>
             <div>
-              <strong className="driver-profile-bold-label">Compliance Verification:</strong> Verified Active
+              <strong className="driver-profile-bold-label">
+                Compliance Verification:
+              </strong>{" "}
+              Verified Active
             </div>
             <div>
-              <strong className="driver-profile-bold-label">Insurance Validity:</strong> Valid until Dec 2026
+              <strong className="driver-profile-bold-label">
+                Insurance Validity:
+              </strong>{" "}
+              Valid until Dec 2026
             </div>
           </div>
         </section>
@@ -103,16 +115,28 @@ export const ProfilePage: React.FC = () => {
           </div>
           <div className="driver-profile-details-grid">
             <div>
-              <strong className="driver-profile-bold-label">Acceptance Rate:</strong> {analytics.acceptanceRate || 95}%
+              <strong className="driver-profile-bold-label">
+                Acceptance Rate:
+              </strong>{" "}
+              {analytics.acceptanceRate || 95}%
             </div>
             <div>
-              <strong className="driver-profile-bold-label">Completion Rate:</strong> {analytics.completionRate || 100}%
+              <strong className="driver-profile-bold-label">
+                Completion Rate:
+              </strong>{" "}
+              {analytics.completionRate || 100}%
             </div>
             <div>
-              <strong className="driver-profile-bold-label">Platform Rating:</strong> 4.9 ★ (Top Rated)
+              <strong className="driver-profile-bold-label">
+                Platform Rating:
+              </strong>{" "}
+              4.9 ★ (Top Rated)
             </div>
             <div>
-              <strong className="driver-profile-bold-label">Weekly Compliance:</strong> 100% Status Good
+              <strong className="driver-profile-bold-label">
+                Weekly Compliance:
+              </strong>{" "}
+              100% Status Good
             </div>
           </div>
         </section>
@@ -148,7 +172,9 @@ export const ProfilePage: React.FC = () => {
               onClick={handleLogout}
             >
               <LogOut size={16} color="#ef4444" />
-              <span className="driver-profile-logout-text">Sign Out from shift console</span>
+              <span className="driver-profile-logout-text">
+                Sign Out from shift console
+              </span>
             </button>
           </div>
         </section>

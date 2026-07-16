@@ -43,7 +43,8 @@ export const WalletPage: React.FC = () => {
       }
     } catch (error: any) {
       notify.error(
-        error.response?.data?.message || "We couldn't request your payout right now."
+        error.response?.data?.message ||
+          "We couldn't request your payout right now.",
       );
     } finally {
       setPayoutLoading(false);
@@ -56,7 +57,10 @@ export const WalletPage: React.FC = () => {
         <div>
           <p className="driver-workspace__eyebrow">Finance Console</p>
           <h1>Driver Payout Wallet</h1>
-          <p>Request instant payouts and review your historical settlement transactions.</p>
+          <p>
+            Request instant payouts and review your historical settlement
+            transactions.
+          </p>
         </div>
       </header>
 
@@ -121,7 +125,9 @@ export const WalletPage: React.FC = () => {
             <tbody>
               {transactions.map((tx) => (
                 <tr key={tx.id} className="driver-ledger-table-row">
-                  <td className="driver-ledger-tx-id">#{tx.id.slice(0, 8).toUpperCase()}</td>
+                  <td className="driver-ledger-tx-id">
+                    #{tx.id.slice(0, 8).toUpperCase()}
+                  </td>
                   <td className="driver-wallet-table-cell">{tx.description}</td>
                   <td className="driver-wallet-table-cell-bold">
                     {formatIndianCurrency(Math.abs(parseFloat(tx.amount)))}

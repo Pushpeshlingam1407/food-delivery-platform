@@ -100,12 +100,15 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
           <LayoutDashboard size={18} />
           {!collapsed && <span>Dashboard / Home</span>}
         </Link>
-        <Link
-          className="delivery-sidebar__link"
-          to="/"
-        >
-          {isOnline ? <ToggleRight size={18} color="#10b981" /> : <ToggleLeft size={18} color="#64748b" />}
-          {!collapsed && <span>Availability: {isOnline ? "Online" : "Offline"}</span>}
+        <Link className="delivery-sidebar__link" to="/">
+          {isOnline ? (
+            <ToggleRight size={18} color="#10b981" />
+          ) : (
+            <ToggleLeft size={18} color="#64748b" />
+          )}
+          {!collapsed && (
+            <span>Availability: {isOnline ? "Online" : "Offline"}</span>
+          )}
         </Link>
         <Link
           className={`delivery-sidebar__link ${isActive("/requests") ? "active" : ""}`}
@@ -219,15 +222,30 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
         {!collapsed ? "Switch Portals" : "•••"}
       </div>
       <nav className="delivery-sidebar__nav" aria-label="Platform portals">
-        <a className="delivery-sidebar__link" href="http://localhost:5173" target="_blank" rel="noreferrer">
+        <a
+          className="delivery-sidebar__link"
+          href="http://localhost:5173"
+          target="_blank"
+          rel="noreferrer"
+        >
           <ShoppingBag size={18} />
           {!collapsed && <span>Customer App</span>}
         </a>
-        <a className="delivery-sidebar__link" href="http://localhost:5174" target="_blank" rel="noreferrer">
+        <a
+          className="delivery-sidebar__link"
+          href="http://localhost:5174"
+          target="_blank"
+          rel="noreferrer"
+        >
           <Store size={18} />
           {!collapsed && <span>Restaurant App</span>}
         </a>
-        <a className="delivery-sidebar__link" href="http://localhost:5175" target="_blank" rel="noreferrer">
+        <a
+          className="delivery-sidebar__link"
+          href="http://localhost:5175"
+          target="_blank"
+          rel="noreferrer"
+        >
           <Shield size={18} />
           {!collapsed && <span>Admin Dashboard</span>}
         </a>

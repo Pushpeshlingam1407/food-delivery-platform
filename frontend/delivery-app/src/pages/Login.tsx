@@ -25,7 +25,7 @@ export const Login: React.FC = () => {
         // Strict role validation
         if (user.role !== "delivery_partner" && user.role !== "admin") {
           notify.error(
-            "Access Denied: You must be a delivery partner to sign in here."
+            "Access Denied: You must be a delivery partner to sign in here.",
           );
           setLoading(false);
           return;
@@ -37,12 +37,12 @@ export const Login: React.FC = () => {
         localStorage.setItem("userId", user.id);
         localStorage.setItem(
           "userName",
-          `${user.first_name} ${user.last_name}`
+          `${user.first_name} ${user.last_name}`,
         );
 
         notify.authSuccess(
           "Ready to hit the road?",
-          "Signing into your driver account."
+          "Signing into your driver account.",
         );
         setTimeout(() => {
           window.location.href = "/";
@@ -60,7 +60,9 @@ export const Login: React.FC = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h2 className="auth-title">Delivery Sign In</h2>
-        <p className="auth-subtitle">Access your logistics shift and wallet earnings</p>
+        <p className="auth-subtitle">
+          Access your logistics shift and wallet earnings
+        </p>
 
         <form onSubmit={handleLogin} className="auth-form">
           <div className="auth-field-group">
@@ -87,11 +89,7 @@ export const Login: React.FC = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="auth-btn-style"
-          >
+          <button type="submit" disabled={loading} className="auth-btn-style">
             {loading ? "Authenticating..." : "Sign In"}
           </button>
         </form>

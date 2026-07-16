@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import {
-  Check,
-  Navigation,
-  Truck,
-} from "lucide-react";
+import { Check, Navigation, Truck } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 
@@ -54,9 +50,10 @@ export const ActiveOrdersPage: React.FC = () => {
     try {
       const ordersRes = await api.get("/orders");
       if (ordersRes.data.status === "success") {
-        const active = ordersRes.data.data?.find(
-          (order: Order) => order.status === "out_for_delivery"
-        ) || null;
+        const active =
+          ordersRes.data.data?.find(
+            (order: Order) => order.status === "out_for_delivery",
+          ) || null;
         setActiveJob(active);
       }
     } catch (error) {
@@ -89,7 +86,7 @@ export const ActiveOrdersPage: React.FC = () => {
 
     const savedStep = localStorage.getItem(`delivery_step_${activeJob.id}`);
     setDeliveryStep(
-      (savedStep as "accepted" | "arrived_store" | "picked_up") || "accepted"
+      (savedStep as "accepted" | "arrived_store" | "picked_up") || "accepted",
     );
   }, [activeJob?.id]);
 
@@ -97,7 +94,7 @@ export const ActiveOrdersPage: React.FC = () => {
     if (!activeJob || deliveryStep !== "picked_up") return;
     const interval = window.setInterval(
       () => setDeliveryTimer((time) => time - 1),
-      1000
+      1000,
     );
     return () => window.clearInterval(interval);
   }, [activeJob, deliveryStep]);
@@ -152,12 +149,18 @@ export const ActiveOrdersPage: React.FC = () => {
         <div>
           <p className="driver-workspace__eyebrow">Assigned Deliveries</p>
           <h1>Active Orders & Navigation</h1>
-          <p>Real-time transit coordinates routing, step tracking, and fulfillment triggers.</p>
+          <p>
+            Real-time transit coordinates routing, step tracking, and
+            fulfillment triggers.
+          </p>
         </div>
       </header>
 
       {/* Active Job Tracker */}
-      <section className="driver-panel driver-current-job" id="driver-job-section">
+      <section
+        className="driver-panel driver-current-job"
+        id="driver-job-section"
+      >
         <div className="driver-panel__heading">
           <div>
             <p>Active Route</p>
@@ -170,9 +173,7 @@ export const ActiveOrdersPage: React.FC = () => {
               <p className="driver-order-id-label">ID: {activeJob.id}</p>
             )}
           </div>
-          {activeJob && (
-            <span className="driver-step-label">{activeStep}</span>
-          )}
+          {activeJob && <span className="driver-step-label">{activeStep}</span>}
         </div>
 
         {activeJob ? (
@@ -285,7 +286,10 @@ export const ActiveOrdersPage: React.FC = () => {
             <Truck size={22} />
             <div>
               <strong>Your active route mapping will appear here.</strong>
-              <p>Go to the Requests screen to accept a pending pickup opportunity.</p>
+              <p>
+                Go to the Requests screen to accept a pending pickup
+                opportunity.
+              </p>
             </div>
           </div>
         )}

@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
-import {
-  Check,
-  Navigation,
-  Truck,
-} from "lucide-react";
+import { Check, Navigation, Truck } from "lucide-react";
 import notify from "../../../shared/utils/toast";
 import api from "../../../shared/services/api";
 import { formatIndianCurrency } from "../../../shared/utils/currency";
@@ -73,13 +69,13 @@ export const DeliveriesPage: React.FC = () => {
         const allOrders = ordersRes.data.data || [];
         setJobs(
           allOrders.filter(
-            (order: Order) => order.status === "ready_for_pickup"
-          )
+            (order: Order) => order.status === "ready_for_pickup",
+          ),
         );
         setActiveJob(
           allOrders.find(
-            (order: Order) => order.status === "out_for_delivery"
-          ) || null
+            (order: Order) => order.status === "out_for_delivery",
+          ) || null,
         );
       }
     } catch (error) {
@@ -112,7 +108,7 @@ export const DeliveriesPage: React.FC = () => {
 
     const savedStep = localStorage.getItem(`delivery_step_${activeJob.id}`);
     setDeliveryStep(
-      (savedStep as "accepted" | "arrived_store" | "picked_up") || "accepted"
+      (savedStep as "accepted" | "arrived_store" | "picked_up") || "accepted",
     );
   }, [activeJob?.id]);
 
@@ -120,7 +116,7 @@ export const DeliveriesPage: React.FC = () => {
     if (!activeJob || deliveryStep !== "picked_up") return;
     const interval = window.setInterval(
       () => setDeliveryTimer((time) => time - 1),
-      1000
+      1000,
     );
     return () => window.clearInterval(interval);
   }, [activeJob, deliveryStep]);

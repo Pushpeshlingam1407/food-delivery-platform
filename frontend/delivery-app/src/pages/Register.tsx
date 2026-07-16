@@ -50,7 +50,9 @@ export const Register: React.FC = () => {
     <div className="auth-container">
       <div className="auth-card">
         <h2 className="auth-title">Delivery Registration</h2>
-        <p className="auth-subtitle">Create an account to join the delivery fleet</p>
+        <p className="auth-subtitle">
+          Create an account to join the delivery fleet
+        </p>
 
         <form onSubmit={handleRegister} className="auth-form">
           <div className="auth-field-group-horizontal">
@@ -114,11 +116,7 @@ export const Register: React.FC = () => {
             />
           </div>
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="auth-btn-style"
-          >
+          <button type="submit" disabled={loading} className="auth-btn-style">
             {loading ? "Registering..." : "Sign Up"}
           </button>
         </form>

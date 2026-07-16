@@ -114,7 +114,8 @@ export const Dashboard: React.FC = () => {
           <div>
             <h2 className="driver-profile-name">Shift Handoff Operations</h2>
             <p className="driver-quest-subtitle">
-              Ready to deliver? View active routes, customer orders, and pickup queues.
+              Ready to deliver? View active routes, customer orders, and pickup
+              queues.
             </p>
           </div>
           <div>
@@ -129,7 +130,8 @@ export const Dashboard: React.FC = () => {
       <section className="driver-stat-grid driver-profile-grid-margin">
         <article>
           <span className="driver-stat-title-flex">
-            <TrendingUp size={14} color="var(--accent-orange)" /> Today’s Earnings
+            <TrendingUp size={14} color="var(--accent-orange)" /> Today’s
+            Earnings
           </span>
           <strong>{formatIndianCurrency(analytics.totalEarnings || 0)}</strong>
           <small>Base + Distance + Tips</small>
@@ -147,11 +149,15 @@ export const Dashboard: React.FC = () => {
           </span>
           <div className="driver-stat-ops-flex">
             <div>
-              <div className="driver-ops-number">{analytics.completionRate}%</div>
+              <div className="driver-ops-number">
+                {analytics.completionRate}%
+              </div>
               <div className="driver-ops-label">Completion</div>
             </div>
             <div className="driver-ops-divider">
-              <div className="driver-ops-number">{analytics.acceptanceRate}%</div>
+              <div className="driver-ops-number">
+                {analytics.acceptanceRate}%
+              </div>
               <div className="driver-ops-label">Acceptance</div>
             </div>
           </div>
@@ -171,11 +177,16 @@ export const Dashboard: React.FC = () => {
           <div className="driver-dashboard-notifications-list">
             <div className="driver-dashboard-alert-blue">
               <strong>Peak Hours Surge Boost active</strong>
-              <p className="driver-dashboard-alert-desc">₹30.00 extra payout per delivery completed in Koramangala zone.</p>
+              <p className="driver-dashboard-alert-desc">
+                ₹30.00 extra payout per delivery completed in Koramangala zone.
+              </p>
             </div>
             <div className="driver-dashboard-alert-green">
               <strong>Fintech wallet auto-settlement complete</strong>
-              <p className="driver-dashboard-alert-desc">All cleared earnings have been successfully moved to your available ledger wallet.</p>
+              <p className="driver-dashboard-alert-desc">
+                All cleared earnings have been successfully moved to your
+                available ledger wallet.
+              </p>
             </div>
           </div>
         </section>
@@ -189,11 +200,16 @@ export const Dashboard: React.FC = () => {
             </div>
           </div>
           <div className="driver-dashboard-alert-desc">
-            <p className="driver-profile-grid-margin">Ensure your smartphone is securely mounted in the vehicle and you wear your helmet during all shifts.</p>
+            <p className="driver-profile-grid-margin">
+              Ensure your smartphone is securely mounted in the vehicle and you
+              wear your helmet during all shifts.
+            </p>
             <div>
               <button
                 className="driver-secondary-button driver-dashboard-sos-btn"
-                onClick={() => alert("SOS Triggered! Dispatching emergency contacts...")}
+                onClick={() =>
+                  alert("SOS Triggered! Dispatching emergency contacts...")
+                }
               >
                 SOS Emergency Assistance
               </button>

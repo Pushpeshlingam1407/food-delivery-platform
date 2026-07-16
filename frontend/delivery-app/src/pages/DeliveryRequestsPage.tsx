@@ -29,10 +29,12 @@ export const DeliveryRequestsPage: React.FC = () => {
       if (ordersRes.data.status === "success") {
         const allOrders = ordersRes.data.data || [];
         setJobs(
-          allOrders.filter((order: Order) => order.status === "ready_for_pickup")
+          allOrders.filter(
+            (order: Order) => order.status === "ready_for_pickup",
+          ),
         );
         setHasActiveJob(
-          allOrders.some((order: Order) => order.status === "out_for_delivery")
+          allOrders.some((order: Order) => order.status === "out_for_delivery"),
         );
       }
     } catch (error) {
@@ -51,7 +53,9 @@ export const DeliveryRequestsPage: React.FC = () => {
       });
       if (response.data.status === "success") {
         localStorage.setItem(`delivery_step_${orderId}`, "accepted");
-        notify.success("Delivery accepted! Go to 'Active Orders' to view route mapping.");
+        notify.success(
+          "Delivery accepted! Go to 'Active Orders' to view route mapping.",
+        );
         fetchRequests();
       }
     } catch {
