@@ -1,20 +1,26 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
-  Bike,
   Wallet,
   ClipboardList,
   LayoutDashboard,
   LogOut,
-  Sparkles,
-  PanelLeftClose,
-  PanelLeftOpen,
   FileText,
   ShoppingBag,
   Store,
   Shield,
   Truck,
   User,
+  Map,
+  MessageSquare,
+  Bell,
+  Settings as SettingsIcon,
+  HelpCircle,
+  ToggleLeft,
+  ToggleRight,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Bike,
 } from "lucide-react";
 
 interface DeliverySidebarProps {
@@ -82,34 +88,73 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
         </div>
       </div>
 
-      <nav className="delivery-sidebar__nav" aria-label="Delivery navigation">
+      {/* OPERATIONS SECTION */}
+      <div className="delivery-sidebar__section-title">
+        {!collapsed ? "Operations" : "OPS"}
+      </div>
+      <nav className="delivery-sidebar__nav" aria-label="Operations navigation">
         <Link
           className={`delivery-sidebar__link ${isActive("/") ? "active" : ""}`}
           to="/"
         >
           <LayoutDashboard size={18} />
-          {!collapsed && <span>Shift overview</span>}
+          {!collapsed && <span>Dashboard / Home</span>}
         </Link>
         <Link
-          className={`delivery-sidebar__link ${isActive("/deliveries") ? "active" : ""}`}
-          to="/deliveries"
+          className="delivery-sidebar__link"
+          to="/"
+        >
+          {isOnline ? <ToggleRight size={18} color="#10b981" /> : <ToggleLeft size={18} color="#64748b" />}
+          {!collapsed && <span>Availability: {isOnline ? "Online" : "Offline"}</span>}
+        </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/requests") ? "active" : ""}`}
+          to="/requests"
         >
           <Truck size={18} />
-          {!collapsed && <span>Deliveries</span>}
+          {!collapsed && <span>Delivery Requests</span>}
         </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/active-orders") ? "active" : ""}`}
+          to="/active-orders"
+        >
+          <Map size={18} />
+          {!collapsed && <span>Active Orders</span>}
+        </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/active-orders") ? "active" : ""}`}
+          to="/active-orders"
+        >
+          <ClipboardList size={18} />
+          {!collapsed && <span>Assigned Deliveries</span>}
+        </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/active-orders") ? "active" : ""}`}
+          to="/active-orders"
+        >
+          <Map size={18} />
+          {!collapsed && <span>Route & Navigation</span>}
+        </Link>
+      </nav>
+
+      {/* FINANCES & PERFORMANCE SECTION */}
+      <div className="delivery-sidebar__section-title">
+        {!collapsed ? "Finance & Stats" : "FIN"}
+      </div>
+      <nav className="delivery-sidebar__nav" aria-label="Finance navigation">
         <Link
           className={`delivery-sidebar__link ${isActive("/earnings") ? "active" : ""}`}
           to="/earnings"
         >
           <ClipboardList size={18} />
-          {!collapsed && <span>Earnings</span>}
+          {!collapsed && <span>Earnings & Payments</span>}
         </Link>
         <Link
-          className={`delivery-sidebar__link ${isActive("/ledger") ? "active" : ""}`}
-          to="/ledger"
+          className={`delivery-sidebar__link ${isActive("/earnings") ? "active" : ""}`}
+          to="/earnings"
         >
           <FileText size={18} />
-          {!collapsed && <span>Ledger</span>}
+          {!collapsed && <span>Performance Analytics</span>}
         </Link>
         <Link
           className={`delivery-sidebar__link ${isActive("/wallet") ? "active" : ""}`}
@@ -119,11 +164,53 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
           {!collapsed && <span>Wallet</span>}
         </Link>
         <Link
+          className={`delivery-sidebar__link ${isActive("/ledger") ? "active" : ""}`}
+          to="/ledger"
+        >
+          <FileText size={18} />
+          {!collapsed && <span>Delivery History</span>}
+        </Link>
+      </nav>
+
+      {/* ACCOUNT & ASSISTANCE SECTION */}
+      <div className="delivery-sidebar__section-title">
+        {!collapsed ? "Support & Settings" : "SUP"}
+      </div>
+      <nav className="delivery-sidebar__nav" aria-label="Support navigation">
+        <Link
+          className={`delivery-sidebar__link ${isActive("/") ? "active" : ""}`}
+          to="/"
+        >
+          <Bell size={18} />
+          {!collapsed && <span>Notifications</span>}
+        </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/active-orders") ? "active" : ""}`}
+          to="/active-orders"
+        >
+          <MessageSquare size={18} />
+          {!collapsed && <span>Customer Communication</span>}
+        </Link>
+        <Link
           className={`delivery-sidebar__link ${isActive("/profile") ? "active" : ""}`}
           to="/profile"
         >
           <User size={18} />
-          {!collapsed && <span>Profile</span>}
+          {!collapsed && <span>Profile & Vehicle Details</span>}
+        </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/profile") ? "active" : ""}`}
+          to="/profile"
+        >
+          <SettingsIcon size={18} />
+          {!collapsed && <span>Settings</span>}
+        </Link>
+        <Link
+          className={`delivery-sidebar__link ${isActive("/profile") ? "active" : ""}`}
+          to="/profile"
+        >
+          <HelpCircle size={18} />
+          {!collapsed && <span>Support / Help Center</span>}
         </Link>
       </nav>
 
@@ -145,19 +232,6 @@ export const DeliverySidebar: React.FC<DeliverySidebarProps> = ({
           {!collapsed && <span>Admin Dashboard</span>}
         </a>
       </nav>
-
-      {!collapsed && (
-        <div className="delivery-sidebar__panel">
-          <Sparkles size={16} />
-          <div>
-            <div className="delivery-sidebar__panel-title">Today’s flow</div>
-            <div className="delivery-sidebar__panel-copy">
-              Keep shift active, move the next handoff, and cash out when you
-              are ready.
-            </div>
-          </div>
-        </div>
-      )}
 
       <div className="delivery-sidebar__footer">
         {onLogout && (

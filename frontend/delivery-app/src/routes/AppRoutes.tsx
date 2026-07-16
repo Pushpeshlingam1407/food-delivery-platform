@@ -6,11 +6,12 @@ import { MobileBottomNav } from "../../../shared/components/MobileBottomNav";
 import { ResponsiveFooter } from "../../../shared/components/ResponsiveFooter";
 import type { MobileBottomNavItem } from "../../../shared/components/MobileBottomNav";
 import type { FooterSection } from "../../../shared/components/ResponsiveFooter";
-import { Truck, Wallet, ClipboardList, LayoutDashboard, User, FileText } from "lucide-react";
+import { Truck, Wallet, ClipboardList, LayoutDashboard, User, FileText, Map } from "lucide-react";
 import { Login } from "../pages/Login";
 import { Register } from "../pages/Register";
 import { Dashboard } from "../pages/Dashboard";
-import { DeliveriesPage } from "../pages/DeliveriesPage";
+import { DeliveryRequestsPage } from "../pages/DeliveryRequestsPage";
+import { ActiveOrdersPage } from "../pages/ActiveOrdersPage";
 import { Earnings } from "../pages/Earnings";
 import { Ledger } from "../pages/Ledger";
 import { WalletPage } from "../pages/WalletPage";
@@ -33,10 +34,11 @@ export const AppRoutes: React.FC = () => {
     {
       title: "Driver Tools",
       links: [
-        { label: "Shift Jobs", to: "/" },
-        { label: "Deliveries Board", to: "/deliveries" },
-        { label: "Finance Ledger", to: "/ledger" },
-        { label: "Earnings Stats", to: "/earnings" },
+        { label: "Shift Overview", to: "/" },
+        { label: "Delivery Requests", to: "/requests" },
+        { label: "Active Orders", to: "/active-orders" },
+        { label: "Delivery History", to: "/ledger" },
+        { label: "Earnings & Payments", to: "/earnings" },
       ],
     },
     {
@@ -59,9 +61,9 @@ export const AppRoutes: React.FC = () => {
 
   const bottomNavItems: MobileBottomNavItem[] = [
     { icon: <LayoutDashboard size={22} />, label: "Home", route: "/" },
-    { icon: <Truck size={22} />, label: "Deliveries", route: "/deliveries" },
+    { icon: <Truck size={22} />, label: "Deliveries", route: "/requests" },
+    { icon: <Map size={22} />, label: "Map / Route", route: "/active-orders" },
     { icon: <ClipboardList size={22} />, label: "Earnings", route: "/earnings" },
-    { icon: <Wallet size={22} />, label: "Wallet", route: "/wallet" },
     { icon: <User size={22} />, label: "Profile", route: "/profile" },
   ];
 
@@ -85,7 +87,8 @@ export const AppRoutes: React.FC = () => {
         <Navbar driverName={driverName} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<Dashboard />} />
-          <Route path="/deliveries" element={<DeliveriesPage />} />
+          <Route path="/requests" element={<DeliveryRequestsPage />} />
+          <Route path="/active-orders" element={<ActiveOrdersPage />} />
           <Route path="/earnings" element={<Earnings />} />
           <Route path="/ledger" element={<Ledger />} />
           <Route path="/wallet" element={<WalletPage />} />
