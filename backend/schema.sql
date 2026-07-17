@@ -546,7 +546,7 @@ CREATE INDEX idx_delivery_earnings_paid ON delivery_earnings(driver_id, is_paid)
 CREATE TABLE otp_verifications (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     phone VARCHAR(20) NOT NULL,
-    otp_code VARCHAR(6) NOT NULL,
+    otp_code VARCHAR(64) NOT NULL,
     purpose ENUM('login', 'register', 'forgot_password') NOT NULL,
     expires_at TIMESTAMP NOT NULL,
     is_used BOOLEAN DEFAULT FALSE,

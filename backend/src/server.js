@@ -17,6 +17,10 @@ process.on("unhandledRejection", (reason, promise) => {
 
 process.on("uncaughtException", (error) => {
   console.error("CRITICAL: Uncaught Exception thrown:", error);
+  // Continuing after an uncaught exception can leave sockets, database state,
+  // or authentication middleware in an unknown condition. Let the process
+  // supervisor restart a clean instance instead.
+  process.exit(1);
 });
 
 const PORT = process.env.PORT || 5000;

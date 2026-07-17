@@ -56,6 +56,10 @@ async function migrate() {
       FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
       FOREIGN KEY (verified_by) REFERENCES users(id) ON DELETE SET NULL
     ) ENGINE=InnoDB`);
+    // OTP values are stored as SHA-256 digests, never as plaintext six-digit codes.
+    await connection.query(
+      "ALTER TABLE otp_verifications MODIFY COLUMN otp_code VARCHAR(64) NOT NULL",
+    );
     await connection.query(`CREATE TABLE IF NOT EXISTS verification_documents (
       id VARCHAR(36) PRIMARY KEY, application_id VARCHAR(36) NOT NULL,
       document_type VARCHAR(64) NOT NULL, document_url VARCHAR(500) NOT NULL,
