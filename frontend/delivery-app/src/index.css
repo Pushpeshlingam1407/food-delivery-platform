@@ -263,7 +263,8 @@ body {
 /* Custom inputs, selection selectors, and layout elements */
 input,
 select,
-textarea {
+textarea,
+button {
   font-family: var(--font-apple);
 }
 
