@@ -49,22 +49,28 @@ export const RestaurantDetails: React.FC = () => {
   useEffect(() => {
     const fetchRestaurantDetails = async () => {
       try {
-        const res = await api.get(`/restaurants/${id}`);
+        const [res, catRes, menuRes, favsRes, ratingsRes] = await Promise.all([
+          api.get(`/restaurants/${id}`),
+          api.get(`/restaurants/${id}/categories`),
+          api.get(`/restaurants/${id}/items`),
+          api.get("/favorites").catch(() => ({ data: { status: "error" } })),
+          api
+            .get(`/ratings/restaurant/${id}`)
+            .catch(() => ({ data: { status: "error" } })),
+        ]);
+
         if (res.data.status === "success") {
           setRestaurant(res.data.data);
         }
 
-        const catRes = await api.get(`/restaurants/${id}/categories`);
         if (catRes.data.status === "success") {
           setCategories(catRes.data.data || []);
         }
 
-        const menuRes = await api.get(`/restaurants/${id}/items`);
         if (menuRes.data.status === "success") {
           setMenuItems(menuRes.data.data);
         }
 
-        const favsRes = await api.get("/favorites");
         if (favsRes.data.status === "success") {
           const isFav = favsRes.data.data.some(
             (f: any) => f.restaurant_id === id,
@@ -72,8 +78,7 @@ export const RestaurantDetails: React.FC = () => {
           setIsFavorite(isFav);
         }
 
-        const ratingsRes = await api.get(`/ratings/restaurant/${id}`);
-        if (ratingsRes.data.status === "success") {
+        if (ratingsRes.data.status === "success" && ratingsRes.data.data) {
           setReviews(ratingsRes.data.data.reviews || []);
           setAvgRating(ratingsRes.data.data.average_rating || 0);
         }

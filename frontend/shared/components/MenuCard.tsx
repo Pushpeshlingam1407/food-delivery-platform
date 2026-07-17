@@ -44,7 +44,15 @@ export const MenuCard: React.FC<MenuCardProps> = ({
     >
       <div className="menu-card-image">
         {item.image_url ? (
-          <img src={item.image_url} alt={item.name} />
+          <img
+            src={item.image_url}
+            alt={item.name}
+            loading="lazy"
+            onError={(e) => {
+              e.currentTarget.src =
+                "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=300&auto=format&fit=crop";
+            }}
+          />
         ) : (
           <div className="menu-card-image-placeholder">No Image</div>
         )}

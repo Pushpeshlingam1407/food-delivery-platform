@@ -198,7 +198,7 @@ INSERT INTO menus (id, restaurant_id, category_id, name, description, price, is_
 INSERT INTO menu_images (id, menu_id, image_url, is_primary) VALUES
 ('mi000000-0000-0000-0000-000000000001', 'm0000000-0000-0000-0000-000000000001', 'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000002', 'm0000000-0000-0000-0000-000000000002', 'https://images.unsplash.com/photo-1631452180519-c014fe946bc7?w=600&auto=format&fit=crop', TRUE),
-('mi000000-0000-0000-0000-000000000003', 'm0000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1601050690597-df056fb4ce78?w=600&auto=format&fit=crop', TRUE),
+('mi000000-0000-0000-0000-000000000003', 'm0000000-0000-0000-0000-000000000003', 'https://images.unsplash.com/photo-1626200419199-391ae4be7a40?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000004', 'm0000000-0000-0000-0000-000000000004', 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000005', 'm0000000-0000-0000-0000-000000000005', 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000006', 'm0000000-0000-0000-0000-000000000006', 'https://images.unsplash.com/photo-1579871494447-9811cf80d66c?w=600&auto=format&fit=crop', TRUE),
@@ -224,7 +224,7 @@ INSERT INTO menu_images (id, menu_id, image_url, is_primary) VALUES
 ('mi000000-0000-0000-0000-000000000026', 'm0000000-0000-0000-0000-000000000026', 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000027', 'm0000000-0000-0000-0000-000000000027', 'https://images.unsplash.com/photo-1540420773420-3366772f4999?w=600&auto=format&fit=crop', TRUE),
 ('mi000000-0000-0000-0000-000000000028', 'm0000000-0000-0000-0000-000000000028', 'https://images.unsplash.com/photo-1626700051175-6518c4793f4f?w=600&auto=format&fit=crop', TRUE),
-('mi000000-0000-0000-0000-000000000029', 'm0000000-0000-0000-0000-000000000029', 'https://images.unsplash.com/photo-1585934589900-54e50592426f?w=600&auto=format&fit=crop', TRUE);
+('mi000000-0000-0000-0000-000000000029', 'm0000000-0000-0000-0000-000000000029', 'https://images.unsplash.com/photo-1626777552726-4a6b54c97e46?w=600&auto=format&fit=crop', TRUE);
 
 
 -- 10. Inventory
