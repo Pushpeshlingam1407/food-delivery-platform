@@ -206,10 +206,14 @@ export const RestaurantDetails: React.FC = () => {
           <div className="menu-list">
             {filteredMenuItems.map((item) => {
               const qty = cartItems[item.id] || 0;
+              const modifiedItem =
+                restaurant.status === "open"
+                  ? item
+                  : { ...item, is_available: false };
               return (
                 <MenuCard
                   key={item.id}
-                  item={item}
+                  item={modifiedItem}
                   qty={qty}
                   onAdd={addToCart}
                   onRemove={removeFromCart}

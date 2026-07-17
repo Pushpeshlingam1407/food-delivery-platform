@@ -92,9 +92,10 @@ export async function addFavoriteRestaurant(req, res) {
     );
 
     if (menuItems.length === 0) {
-      return res
-        .status(404)
-        .json({ status: "error", message: "No menu items found for this restaurant" });
+      return res.status(404).json({
+        status: "error",
+        message: "No menu items found for this restaurant",
+      });
     }
 
     const menuId = menuItems[0].id;
@@ -103,7 +104,9 @@ export async function addFavoriteRestaurant(req, res) {
       [req.user.userId, menuId],
     );
 
-    return res.status(200).json({ status: "success", message: "Restaurant added to favorites" });
+    return res
+      .status(200)
+      .json({ status: "success", message: "Restaurant added to favorites" });
   } catch (error) {
     console.error("Add favorite restaurant error:", error);
     return res
@@ -133,7 +136,10 @@ export async function removeFavoriteRestaurant(req, res) {
       [req.user.userId, restaurant_id],
     );
 
-    return res.status(200).json({ status: "success", message: "Restaurant removed from favorites" });
+    return res.status(200).json({
+      status: "success",
+      message: "Restaurant removed from favorites",
+    });
   } catch (error) {
     console.error("Remove favorite restaurant error:", error);
     return res

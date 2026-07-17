@@ -390,7 +390,7 @@ const Home: React.FC = () => {
             <Link
               to={`/restaurant/${r.id}`}
               key={r.id}
-              className="foodie-restaurant-card"
+              className={`foodie-restaurant-card ${r.status !== "open" ? "is-closed" : ""}`}
             >
               <div className="foodie-card-image-wrapper">
                 {r.banner_image_url ? (
