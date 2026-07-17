@@ -280,7 +280,9 @@ export const DeliveriesPage: React.FC = () => {
                   </div>
                 </div>
                 <div className="driver-map-gps-bar">
-                  <div className={`driver-map-gps-fill driver-map-gps-fill--${gpsProgress}`} />
+                  <div
+                    className={`driver-map-gps-fill driver-map-gps-fill--${gpsProgress}`}
+                  />
                 </div>
               </div>
 

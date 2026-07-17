@@ -9,7 +9,9 @@ interface DeliveryContextValue {
   logout: () => void;
 }
 
-const DeliveryContext = createContext<DeliveryContextValue | undefined>(undefined);
+const DeliveryContext = createContext<DeliveryContextValue | undefined>(
+  undefined,
+);
 
 export const DeliveryProvider = ({ children }: { children: ReactNode }) => {
   const {
@@ -24,7 +26,8 @@ export const DeliveryProvider = ({ children }: { children: ReactNode }) => {
       driverName: localStorage.getItem("userName") || "Driver",
       isOnline: driverOnline,
       sidebarCollapsed: deliverySidebarCollapsed,
-      toggleSidebar: () => setDeliverySidebarCollapsed((collapsed) => !collapsed),
+      toggleSidebar: () =>
+        setDeliverySidebarCollapsed((collapsed) => !collapsed),
       logout: handleLogout,
     }),
     [
@@ -36,7 +39,9 @@ export const DeliveryProvider = ({ children }: { children: ReactNode }) => {
   );
 
   return (
-    <DeliveryContext.Provider value={value}>{children}</DeliveryContext.Provider>
+    <DeliveryContext.Provider value={value}>
+      {children}
+    </DeliveryContext.Provider>
   );
 };
 

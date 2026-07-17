@@ -1,5 +1,13 @@
 import type { LucideIcon } from "lucide-react";
-import { ClipboardList, FileText, LayoutDashboard, Map, Truck, User, Wallet } from "lucide-react";
+import {
+  ClipboardList,
+  FileText,
+  LayoutDashboard,
+  Map,
+  Truck,
+  User,
+  Wallet,
+} from "lucide-react";
 
 export interface DeliveryNavigationItem {
   label: string;

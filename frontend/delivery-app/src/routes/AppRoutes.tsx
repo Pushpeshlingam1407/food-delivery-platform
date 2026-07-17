@@ -72,8 +72,7 @@ export const AppRoutes: React.FC = () => {
       <div
         className={`delivery-sidebar-shell ${sidebarCollapsed ? "is-collapsed" : ""}`}
       >
-        <DeliverySidebar
-        />
+        <DeliverySidebar />
       </div>
 
       <div className="delivery-main-shell">

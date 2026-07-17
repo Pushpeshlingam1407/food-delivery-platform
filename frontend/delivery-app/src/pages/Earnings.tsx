@@ -191,7 +191,9 @@ export const Earnings: React.FC = () => {
               analytics.heatmaps.map((h: any, idx: number) => (
                 <div key={idx} className="driver-heatmap-item">
                   <div className="driver-heatmap-left">
-                    <span className={`driver-heatmap-dot driver-heatmap-dot--${Math.min(idx, 2)}`} />
+                    <span
+                      className={`driver-heatmap-dot driver-heatmap-dot--${Math.min(idx, 2)}`}
+                    />
                     <strong className="driver-heatmap-zone-name">
                       {h.zone}
                     </strong>

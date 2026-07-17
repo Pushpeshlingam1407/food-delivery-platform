@@ -11,7 +11,9 @@ export const Navbar: React.FC = () => {
         variant="driver"
         driverName={driverName}
         onLogout={logout}
-        onOpenMenu={() => window.dispatchEvent(new CustomEvent("open-app-sidebar"))}
+        onOpenMenu={() =>
+          window.dispatchEvent(new CustomEvent("open-app-sidebar"))
+        }
       />
     </>
   );

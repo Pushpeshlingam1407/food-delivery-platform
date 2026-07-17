@@ -943,7 +943,8 @@ textarea {
 
 /* The shared drawer styles target every direct div. Delivery sections are
    direct divs too, so reset them explicitly to preserve a vertical menu. */
-.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section {
+.delivery-navbar__drawer-content--navigation
+  > .delivery-navbar__drawer-section {
   display: grid !important;
   grid-template-columns: minmax(0, 1fr) !important;
   gap: 4px !important;
@@ -953,16 +954,21 @@ textarea {
   color: inherit !important;
 }
 
-.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section:last-of-type {
+.delivery-navbar__drawer-content--navigation
+  > .delivery-navbar__drawer-section:last-of-type {
   border-bottom: 0 !important;
 }
 
-.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section > .delivery-navbar__drawer-title {
+.delivery-navbar__drawer-content--navigation
+  > .delivery-navbar__drawer-section
+  > .delivery-navbar__drawer-title {
   display: block;
   padding: 0 10px 5px;
 }
 
-.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section > a {
+.delivery-navbar__drawer-content--navigation
+  > .delivery-navbar__drawer-section
+  > a {
   display: flex !important;
   width: 100%;
   min-height: 44px;
@@ -977,11 +983,16 @@ textarea {
   white-space: normal;
 }
 
-.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section > a svg {
+.delivery-navbar__drawer-content--navigation
+  > .delivery-navbar__drawer-section
+  > a
+  svg {
   flex: 0 0 auto;
 }
 
-.delivery-navbar__drawer-content--navigation > .delivery-navbar__drawer-section > a.active {
+.delivery-navbar__drawer-content--navigation
+  > .delivery-navbar__drawer-section
+  > a.active {
   border-color: rgba(255, 117, 79, 0.15) !important;
   background: rgba(255, 117, 79, 0.1) !important;
   color: var(--accent-orange) !important;
@@ -1896,7 +1907,10 @@ textarea {
   width: 34px;
   height: 34px;
   border-radius: 10px;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .delivery-sidebar__toggle:hover {
@@ -1910,7 +1924,11 @@ textarea {
   padding: 14px;
   border: 1px solid rgba(255, 117, 79, 0.12);
   border-radius: 16px;
-  background: linear-gradient(135deg, rgba(255, 247, 243, 0.96), rgba(255, 255, 255, 0.8));
+  background: linear-gradient(
+    135deg,
+    rgba(255, 247, 243, 0.96),
+    rgba(255, 255, 255, 0.8)
+  );
 }
 
 .delivery-sidebar__avatar {
@@ -1960,7 +1978,11 @@ textarea {
 
 .delivery-sidebar__link.active {
   border-color: rgba(255, 117, 79, 0.16);
-  background: linear-gradient(90deg, rgba(255, 117, 79, 0.13), rgba(255, 117, 79, 0.035));
+  background: linear-gradient(
+    90deg,
+    rgba(255, 117, 79, 0.13),
+    rgba(255, 117, 79, 0.035)
+  );
   color: #c64b2e;
 }
 
@@ -1998,7 +2020,11 @@ textarea {
   position: relative;
   overflow: hidden;
   border-color: rgba(255, 117, 79, 0.16) !important;
-  background: linear-gradient(125deg, rgba(255, 249, 246, 0.98), rgba(255, 255, 255, 0.9)) !important;
+  background: linear-gradient(
+    125deg,
+    rgba(255, 249, 246, 0.98),
+    rgba(255, 255, 255, 0.9)
+  ) !important;
   box-shadow: 0 14px 34px rgba(67, 45, 30, 0.045);
 }
 
@@ -2009,7 +2035,11 @@ textarea {
   width: 190px;
   height: 190px;
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(255, 117, 79, 0.13), transparent 68%);
+  background: radial-gradient(
+    circle,
+    rgba(255, 117, 79, 0.13),
+    transparent 68%
+  );
   content: "";
   pointer-events: none;
 }
@@ -2067,7 +2097,10 @@ textarea {
   border-color: rgba(69, 55, 45, 0.1) !important;
   border-radius: 12px;
   background: rgba(255, 253, 251, 0.85) !important;
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
 .driver-profile-assistance-btn:hover {
@@ -2855,50 +2888,152 @@ textarea {
 }
 
 /* Data-driven delivery visuals: classes keep rendering files free of CSS. */
-.marker-driver--progress-0 { top: 130px; left: 130px; }
-.marker-driver--progress-10 { top: 138px; left: 141px; }
-.marker-driver--progress-20 { top: 146px; left: 152px; }
-.marker-driver--progress-30 { top: 154px; left: 163px; }
-.marker-driver--progress-40 { top: 162px; left: 174px; }
-.marker-driver--progress-50 { top: 170px; left: 185px; }
-.marker-driver--progress-60 { top: 178px; left: 196px; }
-.marker-driver--progress-70 { top: 186px; left: 207px; }
-.marker-driver--progress-80 { top: 194px; left: 218px; }
-.marker-driver--progress-90 { top: 202px; left: 229px; }
-.marker-driver--progress-100 { top: 210px; left: 240px; }
-.driver-map-gps-fill--0 { width: 0; }
-.driver-map-gps-fill--10 { width: 10%; }
-.driver-map-gps-fill--20 { width: 20%; }
-.driver-map-gps-fill--30 { width: 30%; }
-.driver-map-gps-fill--40 { width: 40%; }
-.driver-map-gps-fill--50 { width: 50%; }
-.driver-map-gps-fill--60 { width: 60%; }
-.driver-map-gps-fill--70 { width: 70%; }
-.driver-map-gps-fill--80 { width: 80%; }
-.driver-map-gps-fill--90 { width: 90%; }
-.driver-map-gps-fill--100 { width: 100%; }
-.driver-quest-progress-fill--0 { width: 0; }
-.driver-quest-progress-fill--12 { width: 12%; }
-.driver-quest-progress-fill--25 { width: 25%; }
-.driver-quest-progress-fill--37 { width: 37%; }
-.driver-quest-progress-fill--50 { width: 50%; }
-.driver-quest-progress-fill--62 { width: 62%; }
-.driver-quest-progress-fill--75 { width: 75%; }
-.driver-quest-progress-fill--87 { width: 87%; }
-.driver-quest-progress-fill--100 { width: 100%; }
-.driver-trend-bar--10 { height: 10px; }
-.driver-trend-bar--20 { height: 20px; }
-.driver-trend-bar--30 { height: 30px; }
-.driver-trend-bar--40 { height: 40px; }
-.driver-trend-bar--50 { height: 50px; }
-.driver-trend-bar--60 { height: 60px; }
-.driver-trend-bar--70 { height: 70px; }
-.driver-trend-bar--80 { height: 80px; }
-.driver-trend-bar--90 { height: 90px; }
-.driver-trend-bar--100 { height: 100px; }
-.driver-heatmap-dot--0 { background: #ef4444; color: #ef4444; }
-.driver-heatmap-dot--1 { background: #f59e0b; color: #f59e0b; }
-.driver-heatmap-dot--2 { background: #10b981; color: #10b981; }
+.marker-driver--progress-0 {
+  top: 130px;
+  left: 130px;
+}
+.marker-driver--progress-10 {
+  top: 138px;
+  left: 141px;
+}
+.marker-driver--progress-20 {
+  top: 146px;
+  left: 152px;
+}
+.marker-driver--progress-30 {
+  top: 154px;
+  left: 163px;
+}
+.marker-driver--progress-40 {
+  top: 162px;
+  left: 174px;
+}
+.marker-driver--progress-50 {
+  top: 170px;
+  left: 185px;
+}
+.marker-driver--progress-60 {
+  top: 178px;
+  left: 196px;
+}
+.marker-driver--progress-70 {
+  top: 186px;
+  left: 207px;
+}
+.marker-driver--progress-80 {
+  top: 194px;
+  left: 218px;
+}
+.marker-driver--progress-90 {
+  top: 202px;
+  left: 229px;
+}
+.marker-driver--progress-100 {
+  top: 210px;
+  left: 240px;
+}
+.driver-map-gps-fill--0 {
+  width: 0;
+}
+.driver-map-gps-fill--10 {
+  width: 10%;
+}
+.driver-map-gps-fill--20 {
+  width: 20%;
+}
+.driver-map-gps-fill--30 {
+  width: 30%;
+}
+.driver-map-gps-fill--40 {
+  width: 40%;
+}
+.driver-map-gps-fill--50 {
+  width: 50%;
+}
+.driver-map-gps-fill--60 {
+  width: 60%;
+}
+.driver-map-gps-fill--70 {
+  width: 70%;
+}
+.driver-map-gps-fill--80 {
+  width: 80%;
+}
+.driver-map-gps-fill--90 {
+  width: 90%;
+}
+.driver-map-gps-fill--100 {
+  width: 100%;
+}
+.driver-quest-progress-fill--0 {
+  width: 0;
+}
+.driver-quest-progress-fill--12 {
+  width: 12%;
+}
+.driver-quest-progress-fill--25 {
+  width: 25%;
+}
+.driver-quest-progress-fill--37 {
+  width: 37%;
+}
+.driver-quest-progress-fill--50 {
+  width: 50%;
+}
+.driver-quest-progress-fill--62 {
+  width: 62%;
+}
+.driver-quest-progress-fill--75 {
+  width: 75%;
+}
+.driver-quest-progress-fill--87 {
+  width: 87%;
+}
+.driver-quest-progress-fill--100 {
+  width: 100%;
+}
+.driver-trend-bar--10 {
+  height: 10px;
+}
+.driver-trend-bar--20 {
+  height: 20px;
+}
+.driver-trend-bar--30 {
+  height: 30px;
+}
+.driver-trend-bar--40 {
+  height: 40px;
+}
+.driver-trend-bar--50 {
+  height: 50px;
+}
+.driver-trend-bar--60 {
+  height: 60px;
+}
+.driver-trend-bar--70 {
+  height: 70px;
+}
+.driver-trend-bar--80 {
+  height: 80px;
+}
+.driver-trend-bar--90 {
+  height: 90px;
+}
+.driver-trend-bar--100 {
+  height: 100px;
+}
+.driver-heatmap-dot--0 {
+  background: #ef4444;
+  color: #ef4444;
+}
+.driver-heatmap-dot--1 {
+  background: #f59e0b;
+  color: #f59e0b;
+}
+.driver-heatmap-dot--2 {
+  background: #10b981;
+  color: #10b981;
+}
 
 /* Earnings trend: reserve independent rows for each datum so labels never
    compete with the chart title or plotting area on narrow screens. */

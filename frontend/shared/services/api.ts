@@ -35,13 +35,15 @@ const refreshAccessToken = async () => {
   if (refreshPromise) return refreshPromise;
 
   const refreshToken = localStorage.getItem("refreshToken");
-  if (!refreshToken) return Promise.reject(new Error("Refresh token is missing"));
+  if (!refreshToken)
+    return Promise.reject(new Error("Refresh token is missing"));
 
   refreshPromise = axios
     .post(`${API_BASE_URL}/auth/refresh`, { token: refreshToken })
     .then((response) => {
       const accessToken = response.data?.data?.accessToken;
-      if (!accessToken) throw new Error("Refresh response did not include an access token");
+      if (!accessToken)
+        throw new Error("Refresh response did not include an access token");
       localStorage.setItem("accessToken", accessToken);
       return accessToken;
     })

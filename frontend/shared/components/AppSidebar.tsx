@@ -291,7 +291,10 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
             className={`admin-sidebar-header ${isCollapsed ? "app-sidebar-header-wrapper-collapsed" : "app-sidebar-header-wrapper-expanded"}`}
           >
             {!isCollapsed ? (
-              <Link to="/" className="admin-sidebar-logo app-sidebar-logo-expanded">
+              <Link
+                to="/"
+                className="admin-sidebar-logo app-sidebar-logo-expanded"
+              >
                 {resolvedRole === "admin"
                   ? "Bites Admin"
                   : resolvedRole === "restaurant_owner"
