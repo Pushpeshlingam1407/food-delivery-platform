@@ -126,6 +126,7 @@ export const BitesNavbar: React.FC<
                 <Menu size={24} />
               </button>
               <Link
+                className={props.variant === "admin" ? "admin-brand" : undefined}
                 to="/"
                 style={{
                   fontSize: "1.2rem",
@@ -145,6 +146,7 @@ export const BitesNavbar: React.FC<
           }
           center={
             <div
+              className={props.variant === "admin" ? "admin-context" : undefined}
               style={{
                 display: "flex",
                 alignItems: "center",
@@ -173,6 +175,7 @@ export const BitesNavbar: React.FC<
             props.onLogout ? (
               <div
                 className="navbar-profile-menu-wrapper"
+                data-admin-account={props.variant === "admin" ? "true" : undefined}
                 style={{ display: "flex", alignItems: "center", gap: "16px" }}
               >
                 <div
@@ -226,12 +229,12 @@ export const BitesNavbar: React.FC<
             )
           }
         />
-        <AppSidebar
+        {props.variant === "restaurant" && <AppSidebar
           userName={name}
-          role={props.variant === "admin" ? "admin" : "restaurant_owner"}
+          role="restaurant_owner"
           isLoggedIn={!!props.onLogout}
           onLogout={props.onLogout}
-        />
+        />}
       </>
     );
   }

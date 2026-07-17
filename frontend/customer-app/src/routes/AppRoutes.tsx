@@ -51,6 +51,9 @@ import { ImagesManagement } from "../../../admin-app/src/pages/ImagesManagement"
 import { Refunds } from "../../../admin-app/src/pages/Refunds";
 import { Settings } from "../../../admin-app/src/pages/Settings";
 import { CMS } from "../../../admin-app/src/pages/CMS";
+import { VerificationCenter } from "../../../admin-app/src/pages/VerificationCenter";
+import { Campaigns } from "../../../admin-app/src/pages/Campaigns";
+import "../../../admin-app/src/AdminShell.css";
 
 // Restaurant Imports
 import { Dashboard as RestaurantDashboard } from "../../../restaurant-app/src/pages/Dashboard";
@@ -468,24 +471,15 @@ const CUSTOMER_FOOTER_SECTIONS: FooterSection[] = [
     links: [
       {
         label: "Merchant Console",
-        onClick: () => {
-          localStorage.setItem("userRole", "restaurant_owner");
-          window.location.href = "/login";
-        },
+        to: "/login",
       },
       {
         label: "Rider Partner Portal",
-        onClick: () => {
-          localStorage.setItem("userRole", "delivery_partner");
-          window.location.href = "/login";
-        },
+        to: "/login",
       },
       {
         label: "Admin Operations Console",
-        onClick: () => {
-          localStorage.setItem("userRole", "admin");
-          window.location.href = "/login";
-        },
+        to: "/login",
       },
     ],
   },
@@ -528,6 +522,7 @@ export const AppRoutes: React.FC = () => {
           { label: "Dashboard", to: "/" },
           { label: "Global Settings", to: "/settings" },
           { label: "CMS Management", to: "/cms" },
+          { label: "Campaigns", to: "/campaigns" },
         ],
       },
       {
@@ -536,19 +531,21 @@ export const AppRoutes: React.FC = () => {
           { label: "Restaurants", to: "/restaurants" },
           { label: "Customers", to: "/customers" },
           { label: "Orders & Refunds", to: "/orders" },
+          { label: "Verification", to: "/verification" },
         ],
       },
     ];
     return (
       <BrowserRouter>
-        <div className="main-layout-wrapper">
+        <div className="admin-layout">
+          <AppSidebar role="admin" userName={localStorage.getItem("userName")} isLoggedIn onLogout={handleLogout} />
           <div className="main-content-area">
             <BitesNavbar
               variant="admin"
               userName={localStorage.getItem("userName")}
               onLogout={handleLogout}
             />
-            <div style={{ minHeight: "calc(100vh - 350px)" }}>
+            <main className="admin-main-content">
               <Routes>
                 <Route path="/" element={<AdminDashboard />} />
                 <Route
@@ -563,9 +560,11 @@ export const AppRoutes: React.FC = () => {
                 <Route path="/refunds" element={<Refunds />} />
                 <Route path="/settings" element={<Settings />} />
                 <Route path="/cms" element={<CMS />} />
+                <Route path="/verification" element={<VerificationCenter />} />
+                <Route path="/campaigns" element={<Campaigns />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
-            </div>
+            </main>
             <ResponsiveFooter
               sections={ADMIN_FOOTER_SECTIONS}
               bottomText={`© ${new Date().getFullYear()} Bites Platform Admin. All rights reserved.`}
