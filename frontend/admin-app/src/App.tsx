@@ -4,7 +4,6 @@ import { Toaster } from "sonner";
 import "./index.css";
 import "./admin.css";
 import "../../shared/themes/variables.css";
-import "./AdminShell.css";
 
 import { AppContextProvider } from "../../shared/context/AppContext";
 

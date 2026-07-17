@@ -53,7 +53,6 @@ import { Settings } from "../../../admin-app/src/pages/Settings";
 import { CMS } from "../../../admin-app/src/pages/CMS";
 import { VerificationCenter } from "../../../admin-app/src/pages/VerificationCenter";
 import { Campaigns } from "../../../admin-app/src/pages/Campaigns";
-import "../../../admin-app/src/AdminShell.css";
 
 // Restaurant Imports
 import { Dashboard as RestaurantDashboard } from "../../../restaurant-app/src/pages/Dashboard";
@@ -537,15 +536,14 @@ export const AppRoutes: React.FC = () => {
     ];
     return (
       <BrowserRouter>
-        <div className="admin-layout">
-          <AppSidebar role="admin" userName={localStorage.getItem("userName")} isLoggedIn onLogout={handleLogout} />
+        <div className="main-layout-wrapper">
           <div className="main-content-area">
             <BitesNavbar
               variant="admin"
               userName={localStorage.getItem("userName")}
               onLogout={handleLogout}
             />
-            <main className="admin-main-content">
+            <div style={{ minHeight: "calc(100vh - 350px)" }}>
               <Routes>
                 <Route path="/" element={<AdminDashboard />} />
                 <Route
@@ -564,7 +562,7 @@ export const AppRoutes: React.FC = () => {
                 <Route path="/campaigns" element={<Campaigns />} />
                 <Route path="*" element={<Navigate to="/" />} />
               </Routes>
-            </main>
+            </div>
             <ResponsiveFooter
               sections={ADMIN_FOOTER_SECTIONS}
               bottomText={`© ${new Date().getFullYear()} Bites Platform Admin. All rights reserved.`}

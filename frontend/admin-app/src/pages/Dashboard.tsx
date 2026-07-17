@@ -5,6 +5,7 @@ import api from "../../../shared/services/api";
 import notify from "../../../shared/utils/toast";
 import "../admin.css";
 import "./Dashboard.css";
+import "../AdminInteractionPolish.css";
 
 type Analytics = { total_users: number; total_restaurants: number; total_orders: number; total_payments_captured: number };
 type QueueItem = { id: string; role: string; status: string; first_name: string; last_name: string; email: string; submitted_at: string; documents_uploaded: number };
