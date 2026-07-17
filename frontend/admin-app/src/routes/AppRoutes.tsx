@@ -14,6 +14,7 @@ import { OrdersManagement } from "../pages/OrdersManagement";
 import { ImagesManagement } from "../pages/ImagesManagement";
 import { OwnersManagement } from "../pages/OwnersManagement";
 import { VerificationCenter } from "../pages/VerificationCenter";
+import { Campaigns } from "../pages/Campaigns";
 
 import { useAppContext } from "../../../shared/context/AppContext";
 
@@ -66,6 +67,10 @@ export const AppRoutes: React.FC = () => {
                 element={
                   userEmail ? <OwnersManagement /> : <Navigate to="/login" />
                 }
+              />
+              <Route
+                path="/campaigns"
+                element={userEmail ? <Campaigns /> : <Navigate to="/login" />}
               />
               <Route
                 path="/verification"

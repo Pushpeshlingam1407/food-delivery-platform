@@ -21,6 +21,7 @@ import {
   Wallet,
   ClipboardList,
   ShieldCheck,
+  Megaphone,
 } from "lucide-react";
 import "./AppSidebar.css";
 import { useAppContext } from "../context/AppContext";
@@ -96,6 +97,7 @@ const adminGroups: NavGroup[] = [
     label: "People & Partners",
     items: [
       { path: "/verification", label: "Verification", icon: ShieldCheck },
+      { path: "/campaigns", label: "Campaigns", icon: Megaphone },
       { path: "/owners", label: "Owners", icon: Briefcase },
       { path: "/customers", label: "Customers", icon: Users },
       { path: "/drivers", label: "Drivers", icon: Bike },
