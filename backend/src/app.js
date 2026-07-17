@@ -22,7 +22,11 @@ import refundRoutes from "./routes/refundRoutes.js";
 import verificationRoutes from "./routes/verificationRoutes.js";
 import pool from "./config/db.js";
 import { authenticateJWT } from "./middlewares/auth.js";
-import { enforceHttps, getClientIp, rateLimit } from "./middlewares/security.js";
+import {
+  enforceHttps,
+  getClientIp,
+  rateLimit,
+} from "./middlewares/security.js";
 
 const app = express();
 
@@ -31,14 +35,39 @@ app.use(
     contentSecurityPolicy: false, // API-only service; CSP belongs to each frontend origin.
     crossOriginEmbedderPolicy: false,
     crossOriginResourcePolicy: { policy: "cross-origin" },
-    hsts: process.env.NODE_ENV === "production" ? { maxAge: 31536000, includeSubDomains: true, preload: true } : false,
+    hsts:
+      process.env.NODE_ENV === "production"
+        ? { maxAge: 31536000, includeSubDomains: true, preload: true }
+        : false,
   }),
 );
 app.set("trust proxy", 1);
-const configuredOrigins = (process.env.CORS_ORIGINS || "http://localhost:5173,http://localhost:5174,http://localhost:5175").split(",").map((origin) => origin.trim());
-app.use(cors({ origin(origin, callback) { if (!origin || configuredOrigins.includes(origin)) return callback(null, true); callback(new Error("CORS origin is not allowed")); }, methods: ["GET", "POST", "PUT", "PATCH", "DELETE"], allowedHeaders: ["Content-Type", "Authorization"], maxAge: 86400 }));
+const configuredOrigins = (
+  process.env.CORS_ORIGINS ||
+  "http://localhost:5173,http://localhost:5174,http://localhost:5175"
+)
+  .split(",")
+  .map((origin) => origin.trim());
+app.use(
+  cors({
+    origin(origin, callback) {
+      if (!origin || configuredOrigins.includes(origin))
+        return callback(null, true);
+      callback(new Error("CORS origin is not allowed"));
+    },
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    maxAge: 86400,
+  }),
+);
 app.use(enforceHttps);
-app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 900, message: "Too many requests. Please try again shortly." }));
+app.use(
+  rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 900,
+    message: "Too many requests. Please try again shortly.",
+  }),
+);
 app.use(express.json({ limit: "6mb" }));
 app.use(express.urlencoded({ limit: "6mb", extended: false }));
 
@@ -51,44 +80,65 @@ if (!fs.existsSync("uploads")) {
 app.use("/uploads", express.static("uploads"));
 
 // Base64 Image Upload Endpoint
-app.post("/api/upload", authenticateJWT, rateLimit({ windowMs: 60 * 1000, max: 20, message: "Too many upload attempts. Please wait a moment." }), (req, res) => {
-  const { image } = req.body;
-  if (!image) {
-    return res
-      .status(400)
-      .json({ status: "error", message: "No image payload provided" });
-  }
-
-  try {
-    const matches = image.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
-    if (!matches || matches.length !== 3) {
+app.post(
+  "/api/upload",
+  authenticateJWT,
+  rateLimit({
+    windowMs: 60 * 1000,
+    max: 20,
+    message: "Too many upload attempts. Please wait a moment.",
+  }),
+  (req, res) => {
+    const { image } = req.body;
+    if (!image) {
       return res
         .status(400)
-        .json({ status: "error", message: "Invalid base64 image encoding" });
+        .json({ status: "error", message: "No image payload provided" });
     }
 
-    const extension = matches[1].toLowerCase();
-    const allowedExtensions = new Set(["jpeg", "jpg", "png", "webp"]);
-    if (!allowedExtensions.has(extension)) return res.status(415).json({ status: "error", message: "Only JPEG, PNG, and WebP images are accepted." });
-    const dataBuffer = Buffer.from(matches[2], "base64");
-    if (!dataBuffer.length || dataBuffer.length > 5 * 1024 * 1024) return res.status(413).json({ status: "error", message: "Image must be smaller than 5 MB." });
-    const safeExtension = extension === "jpeg" ? "jpg" : extension;
-    const filename = `${crypto.randomUUID()}.${safeExtension}`;
-    const filePath = path.join("uploads", filename);
+    try {
+      const matches = image.match(/^data:image\/([A-Za-z-+\/]+);base64,(.+)$/);
+      if (!matches || matches.length !== 3) {
+        return res
+          .status(400)
+          .json({ status: "error", message: "Invalid base64 image encoding" });
+      }
 
-    fs.writeFileSync(filePath, dataBuffer);
+      const extension = matches[1].toLowerCase();
+      const allowedExtensions = new Set(["jpeg", "jpg", "png", "webp"]);
+      if (!allowedExtensions.has(extension))
+        return res
+          .status(415)
+          .json({
+            status: "error",
+            message: "Only JPEG, PNG, and WebP images are accepted.",
+          });
+      const dataBuffer = Buffer.from(matches[2], "base64");
+      if (!dataBuffer.length || dataBuffer.length > 5 * 1024 * 1024)
+        return res
+          .status(413)
+          .json({
+            status: "error",
+            message: "Image must be smaller than 5 MB.",
+          });
+      const safeExtension = extension === "jpeg" ? "jpg" : extension;
+      const filename = `${crypto.randomUUID()}.${safeExtension}`;
+      const filePath = path.join("uploads", filename);
 
-    return res.status(200).json({
-      status: "success",
-      url: `http://localhost:5000/uploads/${filename}`,
-    });
-  } catch (err) {
-    console.error("File upload runtime error:", err);
-    return res
-      .status(500)
-      .json({ status: "error", message: "Failed to upload image file" });
-  }
-});
+      fs.writeFileSync(filePath, dataBuffer);
+
+      return res.status(200).json({
+        status: "success",
+        url: `http://localhost:5000/uploads/${filename}`,
+      });
+    } catch (err) {
+      console.error("File upload runtime error:", err);
+      return res
+        .status(500)
+        .json({ status: "error", message: "Failed to upload image file" });
+    }
+  },
+);
 
 app.use("/api/auth", authRoutes);
 app.use("/api/restaurants", restaurantRoutes);

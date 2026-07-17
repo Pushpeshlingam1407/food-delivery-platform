@@ -1,12 +1,23 @@
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import pool from "../config/db.js";
-import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../utils/jwt.js";
+import {
+  generateAccessToken,
+  generateRefreshToken,
+  verifyRefreshToken,
+} from "../utils/jwt.js";
 
-const hashSecret = (value) => crypto.createHash("sha256").update(value).digest("hex");
+const hashSecret = (value) =>
+  crypto.createHash("sha256").update(value).digest("hex");
 const validEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 const validPhone = (value) => /^\+?[1-9]\d{7,14}$/.test(value);
-const strongPassword = (value) => typeof value === "string" && value.length >= 12 && /[a-z]/.test(value) && /[A-Z]/.test(value) && /\d/.test(value) && /[^A-Za-z0-9]/.test(value);
+const strongPassword = (value) =>
+  typeof value === "string" &&
+  value.length >= 12 &&
+  /[a-z]/.test(value) &&
+  /[A-Z]/.test(value) &&
+  /\d/.test(value) &&
+  /[^A-Za-z0-9]/.test(value);
 
 async function getRoleIdByName(name) {
   const [rows] = await pool.query("SELECT id FROM roles WHERE name = ?", [
@@ -31,8 +42,21 @@ export async function register(req, res) {
       .status(400)
       .json({ status: "error", message: "All fields are required" });
   }
-  if (!validEmail(email) || !validPhone(phone)) return res.status(400).json({ status: "error", message: "Enter a valid email address and international phone number." });
-  if (!strongPassword(password)) return res.status(400).json({ status: "error", message: "Password must be at least 12 characters and include uppercase, lowercase, a number, and a symbol." });
+  if (!validEmail(email) || !validPhone(phone))
+    return res
+      .status(400)
+      .json({
+        status: "error",
+        message: "Enter a valid email address and international phone number.",
+      });
+  if (!strongPassword(password))
+    return res
+      .status(400)
+      .json({
+        status: "error",
+        message:
+          "Password must be at least 12 characters and include uppercase, lowercase, a number, and a symbol.",
+      });
 
   try {
     const roleId = await getRoleIdByName(role);
@@ -133,7 +157,9 @@ export async function login(req, res) {
 
     const users = rows;
     if (users.length === 0) {
-      return res.status(401).json({ status: "error", message: "Invalid email or password" });
+      return res
+        .status(401)
+        .json({ status: "error", message: "Invalid email or password" });
     }
 
     const user = users[0];
@@ -199,7 +225,11 @@ export async function login(req, res) {
 export async function sendOTP(req, res) {
   const { phone, purpose = "login" } = req.body;
 
-  if (!phone) {
+  if (
+    !phone ||
+    !validPhone(phone) ||
+    !["login", "register", "forgot_password"].includes(purpose)
+  ) {
     return res
       .status(400)
       .json({ status: "error", message: "Phone number is required" });
@@ -229,7 +259,7 @@ export async function sendOTP(req, res) {
 export async function verifyOTP(req, res) {
   const { phone, code } = req.body;
 
-  if (!phone || !code) {
+  if (!phone || !code || !validPhone(phone) || !/^\d{6}$/.test(code)) {
     return res
       .status(400)
       .json({ status: "error", message: "Phone and OTP code are required" });
@@ -324,7 +354,7 @@ export async function verifyOTP(req, res) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     await pool.query(
       "INSERT INTO refresh_tokens (id, user_id, token, expires_at) VALUES (?, ?, ?, ?)",
-      [tokenId, user.id, refreshToken, expiresAt],
+      [tokenId, user.id, hashSecret(refreshToken), expiresAt],
     );
 
     return res.status(200).json({
@@ -361,7 +391,13 @@ export async function refreshToken(req, res) {
   }
 
   try {
-    try { verifyRefreshToken(token); } catch { return res.status(403).json({ status: "error", message: "Invalid or expired refresh token" }); }
+    try {
+      verifyRefreshToken(token);
+    } catch {
+      return res
+        .status(403)
+        .json({ status: "error", message: "Invalid or expired refresh token" });
+    }
     const [rows] = await pool.query(
       `SELECT rt.*, u.email, r.name as role_name FROM refresh_tokens rt
        JOIN users u ON rt.user_id = u.id

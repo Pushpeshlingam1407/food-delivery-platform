@@ -6,7 +6,12 @@ import type {
 } from "axios";
 import notify from "../utils/toast";
 
-const API_BASE_URL = "http://localhost:5000/api";
+const API_BASE_URL =
+  import.meta.env.VITE_API_BASE_URL || "http://localhost:5000/api";
+
+if (import.meta.env.PROD && !API_BASE_URL.startsWith("https://")) {
+  throw new Error("VITE_API_BASE_URL must use HTTPS in production.");
+}
 
 const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,

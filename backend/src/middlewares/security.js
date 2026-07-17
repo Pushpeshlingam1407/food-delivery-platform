@@ -2,7 +2,9 @@
 const buckets = new Map();
 
 export function getClientIp(req) {
-  return String(req.headers["x-forwarded-for"] || req.ip || "unknown").split(",")[0].trim();
+  return String(req.headers["x-forwarded-for"] || req.ip || "unknown")
+    .split(",")[0]
+    .trim();
 }
 
 export function rateLimit({ windowMs, max, message }) {
@@ -24,6 +26,13 @@ export function rateLimit({ windowMs, max, message }) {
 }
 
 export function enforceHttps(req, res, next) {
-  if (process.env.NODE_ENV !== "production" || req.secure || req.headers["x-forwarded-proto"] === "https") return next();
-  return res.status(426).json({ status: "error", message: "HTTPS is required for this service." });
+  if (
+    process.env.NODE_ENV !== "production" ||
+    req.secure ||
+    req.headers["x-forwarded-proto"] === "https"
+  )
+    return next();
+  return res
+    .status(426)
+    .json({ status: "error", message: "HTTPS is required for this service." });
 }

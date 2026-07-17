@@ -1,4 +1,6 @@
 import http from "http";
+import https from "https";
+import fs from "fs";
 import app from "./app.js";
 import pool from "./config/db.js";
 import { initSocket } from "./config/socket.js";
@@ -25,12 +27,18 @@ async function startServer() {
     console.log("Successfully connected to the MySQL Database.");
     connection.release();
 
-    const server = http.createServer(app);
+    const useTls = process.env.TLS_ENABLED === "true";
+    if (process.env.NODE_ENV === "production" && !useTls && process.env.TRUSTED_TLS_PROXY !== "true") {
+      throw new Error("Production requires TLS_ENABLED=true or TRUSTED_TLS_PROXY=true.");
+    }
+    const server = useTls
+      ? https.createServer({ key: fs.readFileSync(process.env.TLS_KEY_PATH), cert: fs.readFileSync(process.env.TLS_CERT_PATH), ...(process.env.TLS_CA_PATH ? { ca: fs.readFileSync(process.env.TLS_CA_PATH) } : {}) }, app)
+      : http.createServer(app);
     initSocket(server);
 
     server.listen(PORT, () => {
       console.log(
-        `Server is running on port ${PORT} in ${process.env.NODE_ENV || "development"} mode with Socket.IO enabled.`,
+        `${useTls ? "HTTPS" : "HTTP"} server is running on port ${PORT} in ${process.env.NODE_ENV || "development"} mode with Socket.IO enabled.`,
       );
     });
   } catch (error) {

@@ -47,12 +47,10 @@ async function notify(connection, userId, title, message, type) {
 export async function submitApplication(req, res) {
   const { role, payload = {}, documents = [] } = req.body;
   if (!ROLES.includes(role) || req.user?.role !== role)
-    return res
-      .status(403)
-      .json({
-        status: "error",
-        message: "You can only submit your own verification application.",
-      });
+    return res.status(403).json({
+      status: "error",
+      message: "You can only submit your own verification application.",
+    });
   if (!Array.isArray(documents))
     return res
       .status(400)
@@ -64,12 +62,10 @@ export async function submitApplication(req, res) {
   const provided = new Set(documents.map((d) => d.type));
   const missing = required.filter((type) => !provided.has(type));
   if (missing.length)
-    return res
-      .status(400)
-      .json({
-        status: "error",
-        message: `Missing required documents: ${missing.join(", ")}.`,
-      });
+    return res.status(400).json({
+      status: "error",
+      message: `Missing required documents: ${missing.join(", ")}.`,
+    });
 
   const connection = await pool.getConnection();
   try {
@@ -80,12 +76,10 @@ export async function submitApplication(req, res) {
     );
     let applicationId;
     if (existing[0]?.status === "approved")
-      return res
-        .status(409)
-        .json({
-          status: "error",
-          message: "This account is already verified.",
-        });
+      return res.status(409).json({
+        status: "error",
+        message: "This account is already verified.",
+      });
     if (existing[0]) {
       applicationId = existing[0].id;
       await connection.query(
@@ -131,21 +125,17 @@ export async function submitApplication(req, res) {
       "verification_pending",
     );
     await connection.commit();
-    return res
-      .status(201)
-      .json({
-        status: "success",
-        message: "Application submitted for review.",
-        data: { id: applicationId, verificationStatus: "pending" },
-      });
+    return res.status(201).json({
+      status: "success",
+      message: "Application submitted for review.",
+      data: { id: applicationId, verificationStatus: "pending" },
+    });
   } catch (error) {
     await connection.rollback();
-    return res
-      .status(400)
-      .json({
-        status: "error",
-        message: error.message || "Unable to submit application.",
-      });
+    return res.status(400).json({
+      status: "error",
+      message: error.message || "Unable to submit application.",
+    });
   } finally {
     connection.release();
   }
@@ -221,12 +211,10 @@ export async function updateApplicationStatus(req, res) {
       .status(400)
       .json({ status: "error", message: "Invalid verification status." });
   if (status === "rejected" && !rejectionReason?.trim())
-    return res
-      .status(400)
-      .json({
-        status: "error",
-        message: "A constructive rejection reason is required.",
-      });
+    return res.status(400).json({
+      status: "error",
+      message: "A constructive rejection reason is required.",
+    });
   const connection = await pool.getConnection();
   try {
     await connection.beginTransaction();
@@ -311,13 +299,11 @@ export async function requireApprovedVerification(req, res, next) {
     [req.user.userId, req.user.role],
   );
   if (rows[0]?.status !== "approved")
-    return res
-      .status(403)
-      .json({
-        status: "error",
-        code: "VERIFICATION_REQUIRED",
-        message:
-          "Your verification must be approved before this action is available.",
-      });
+    return res.status(403).json({
+      status: "error",
+      code: "VERIFICATION_REQUIRED",
+      message:
+        "Your verification must be approved before this action is available.",
+    });
   next();
 }
