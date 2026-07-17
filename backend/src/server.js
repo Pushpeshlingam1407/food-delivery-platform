@@ -28,11 +28,26 @@ async function startServer() {
     connection.release();
 
     const useTls = process.env.TLS_ENABLED === "true";
-    if (process.env.NODE_ENV === "production" && !useTls && process.env.TRUSTED_TLS_PROXY !== "true") {
-      throw new Error("Production requires TLS_ENABLED=true or TRUSTED_TLS_PROXY=true.");
+    if (
+      process.env.NODE_ENV === "production" &&
+      !useTls &&
+      process.env.TRUSTED_TLS_PROXY !== "true"
+    ) {
+      throw new Error(
+        "Production requires TLS_ENABLED=true or TRUSTED_TLS_PROXY=true.",
+      );
     }
     const server = useTls
-      ? https.createServer({ key: fs.readFileSync(process.env.TLS_KEY_PATH), cert: fs.readFileSync(process.env.TLS_CERT_PATH), ...(process.env.TLS_CA_PATH ? { ca: fs.readFileSync(process.env.TLS_CA_PATH) } : {}) }, app)
+      ? https.createServer(
+          {
+            key: fs.readFileSync(process.env.TLS_KEY_PATH),
+            cert: fs.readFileSync(process.env.TLS_CERT_PATH),
+            ...(process.env.TLS_CA_PATH
+              ? { ca: fs.readFileSync(process.env.TLS_CA_PATH) }
+              : {}),
+          },
+          app,
+        )
       : http.createServer(app);
     initSocket(server);
 

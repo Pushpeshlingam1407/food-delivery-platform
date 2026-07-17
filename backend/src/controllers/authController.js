@@ -43,20 +43,16 @@ export async function register(req, res) {
       .json({ status: "error", message: "All fields are required" });
   }
   if (!validEmail(email) || !validPhone(phone))
-    return res
-      .status(400)
-      .json({
-        status: "error",
-        message: "Enter a valid email address and international phone number.",
-      });
+    return res.status(400).json({
+      status: "error",
+      message: "Enter a valid email address and international phone number.",
+    });
   if (!strongPassword(password))
-    return res
-      .status(400)
-      .json({
-        status: "error",
-        message:
-          "Password must be at least 12 characters and include uppercase, lowercase, a number, and a symbol.",
-      });
+    return res.status(400).json({
+      status: "error",
+      message:
+        "Password must be at least 12 characters and include uppercase, lowercase, a number, and a symbol.",
+    });
 
   try {
     const roleId = await getRoleIdByName(role);

@@ -107,20 +107,16 @@ app.post(
       const extension = matches[1].toLowerCase();
       const allowedExtensions = new Set(["jpeg", "jpg", "png", "webp"]);
       if (!allowedExtensions.has(extension))
-        return res
-          .status(415)
-          .json({
-            status: "error",
-            message: "Only JPEG, PNG, and WebP images are accepted.",
-          });
+        return res.status(415).json({
+          status: "error",
+          message: "Only JPEG, PNG, and WebP images are accepted.",
+        });
       const dataBuffer = Buffer.from(matches[2], "base64");
       if (!dataBuffer.length || dataBuffer.length > 5 * 1024 * 1024)
-        return res
-          .status(413)
-          .json({
-            status: "error",
-            message: "Image must be smaller than 5 MB.",
-          });
+        return res.status(413).json({
+          status: "error",
+          message: "Image must be smaller than 5 MB.",
+        });
       const safeExtension = extension === "jpeg" ? "jpg" : extension;
       const filename = `${crypto.randomUUID()}.${safeExtension}`;
       const filePath = path.join("uploads", filename);
