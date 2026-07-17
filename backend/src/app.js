@@ -19,6 +19,7 @@ import notificationRoutes from "./routes/notificationRoutes.js";
 import deliveryRoutes from "./routes/deliveryRoutes.js";
 import cmsRoutes from "./routes/cmsRoutes.js";
 import refundRoutes from "./routes/refundRoutes.js";
+import verificationRoutes from "./routes/verificationRoutes.js";
 import pool from "./config/db.js";
 
 const app = express();
@@ -94,6 +95,7 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/api/delivery", deliveryRoutes);
 app.use("/api/cms", cmsRoutes);
 app.use("/api/admin/refunds", refundRoutes);
+app.use("/api/verification", verificationRoutes);
 
 app.get("/", (req, res) => {
   res.status(200).json({

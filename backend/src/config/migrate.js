@@ -44,6 +44,33 @@ async function migrate() {
       ) ENGINE=InnoDB;
     `);
 
+    // 3. Verification workflow, submitted documents, and immutable admin audit log.
+    await connection.query(`CREATE TABLE IF NOT EXISTS verification_applications (
+      id VARCHAR(36) PRIMARY KEY, user_id VARCHAR(36) NOT NULL,
+      role ENUM('restaurant_owner', 'delivery_partner') NOT NULL,
+      status ENUM('pending', 'approved', 'rejected', 'suspended') NOT NULL DEFAULT 'pending',
+      payload JSON NOT NULL, submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      verified_at TIMESTAMP NULL, verified_by VARCHAR(36) NULL,
+      rejection_reason TEXT NULL, remarks TEXT NULL, updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+      INDEX idx_verification_queue (status, role, submitted_at),
+      FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+      FOREIGN KEY (verified_by) REFERENCES users(id) ON DELETE SET NULL
+    ) ENGINE=InnoDB`);
+    await connection.query(`CREATE TABLE IF NOT EXISTS verification_documents (
+      id VARCHAR(36) PRIMARY KEY, application_id VARCHAR(36) NOT NULL,
+      document_type VARCHAR(64) NOT NULL, document_url VARCHAR(500) NOT NULL,
+      metadata JSON NULL, verified_at TIMESTAMP NULL, created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+      INDEX idx_verification_documents (application_id),
+      FOREIGN KEY (application_id) REFERENCES verification_applications(id) ON DELETE CASCADE
+    ) ENGINE=InnoDB`);
+    await connection.query(`CREATE TABLE IF NOT EXISTS verification_audit_logs (
+      id VARCHAR(36) PRIMARY KEY, application_id VARCHAR(36) NOT NULL, admin_id VARCHAR(36) NULL,
+      action VARCHAR(100) NOT NULL, previous_value JSON NULL, new_value JSON NULL, ip_address VARCHAR(64) NULL,
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP, INDEX idx_verification_audit (application_id, created_at),
+      FOREIGN KEY (application_id) REFERENCES verification_applications(id) ON DELETE CASCADE,
+      FOREIGN KEY (admin_id) REFERENCES users(id) ON DELETE SET NULL
+    ) ENGINE=InnoDB`);
+
     // 2. Create driver_online_sessions table
     console.log("Creating driver_online_sessions table...");
     await connection.query(`

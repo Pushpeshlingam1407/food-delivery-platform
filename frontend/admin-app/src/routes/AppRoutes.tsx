@@ -13,6 +13,7 @@ import { DriversManagement } from "../pages/DriversManagement";
 import { OrdersManagement } from "../pages/OrdersManagement";
 import { ImagesManagement } from "../pages/ImagesManagement";
 import { OwnersManagement } from "../pages/OwnersManagement";
+import { VerificationCenter } from "../pages/VerificationCenter";
 
 import { useAppContext } from "../../../shared/context/AppContext";
 
@@ -65,6 +66,10 @@ export const AppRoutes: React.FC = () => {
                 element={
                   userEmail ? <OwnersManagement /> : <Navigate to="/login" />
                 }
+              />
+              <Route
+                path="/verification"
+                element={userEmail ? <VerificationCenter /> : <Navigate to="/login" />}
               />
               <Route
                 path="/drivers"

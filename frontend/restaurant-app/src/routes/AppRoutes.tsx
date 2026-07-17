@@ -8,6 +8,8 @@ import { MenuManager } from "../pages/MenuManager";
 import { Earnings } from "../pages/Earnings";
 
 import { useAppContext } from "../../../shared/context/AppContext";
+import { VerificationGate } from "../../../shared/components/VerificationGate";
+import "../../../shared/components/VerificationGate.css";
 
 export const AppRoutes: React.FC = () => {
   const { userEmail, handleLogout } = useAppContext();
@@ -21,15 +23,15 @@ export const AppRoutes: React.FC = () => {
       <Routes>
         <Route
           path="/"
-          element={userEmail ? <Dashboard /> : <Navigate to="/login" />}
+          element={userEmail ? <VerificationGate role="restaurant_owner"><Dashboard /></VerificationGate> : <Navigate to="/login" />}
         />
         <Route
           path="/menu"
-          element={userEmail ? <MenuManager /> : <Navigate to="/login" />}
+          element={userEmail ? <VerificationGate role="restaurant_owner"><MenuManager /></VerificationGate> : <Navigate to="/login" />}
         />
         <Route
           path="/earnings"
-          element={userEmail ? <Earnings /> : <Navigate to="/login" />}
+          element={userEmail ? <VerificationGate role="restaurant_owner"><Earnings /></VerificationGate> : <Navigate to="/login" />}
         />
         <Route
           path="/login"

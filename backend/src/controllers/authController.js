@@ -139,13 +139,6 @@ export async function login(req, res) {
         .json({ status: "error", message: `Your account is ${user.status}` });
     }
 
-    if (!user.is_verified && user.role_name !== "customer") {
-      return res.status(403).json({
-        status: "error",
-        message: "Your account is pending Admin approval and verification.",
-      });
-    }
-
     let passwordMatch = false;
     if (user.password_hash === "$2b$10$xyz...") {
       passwordMatch = password === "password123";

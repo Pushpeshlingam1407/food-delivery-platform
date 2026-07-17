@@ -20,6 +20,8 @@ import { ProfilePage } from "../pages/ProfilePage";
 
 import { useAppContext } from "../../../shared/context/AppContext";
 import { useDelivery } from "../hooks/useDelivery";
+import { VerificationGate } from "../../../shared/components/VerificationGate";
+import "../../../shared/components/VerificationGate.css";
 
 export const AppRoutes: React.FC = () => {
   const { userEmail } = useAppContext();
@@ -68,7 +70,7 @@ export const AppRoutes: React.FC = () => {
   ];
 
   return userEmail ? (
-    <div className="delivery-layout">
+    <VerificationGate role="delivery_partner"><div className="delivery-layout">
       <div
         className={`delivery-sidebar-shell ${sidebarCollapsed ? "is-collapsed" : ""}`}
       >
@@ -103,7 +105,7 @@ export const AppRoutes: React.FC = () => {
           className="delivery-mobile-bottom-nav"
         />
       </div>
-    </div>
+    </div></VerificationGate>
   ) : (
     <Routes>
       <Route path="/login" element={<Login />} />
