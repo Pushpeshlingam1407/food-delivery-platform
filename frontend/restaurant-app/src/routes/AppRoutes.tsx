@@ -23,15 +23,39 @@ export const AppRoutes: React.FC = () => {
       <Routes>
         <Route
           path="/"
-          element={userEmail ? <VerificationGate role="restaurant_owner"><Dashboard /></VerificationGate> : <Navigate to="/login" />}
+          element={
+            userEmail ? (
+              <VerificationGate role="restaurant_owner">
+                <Dashboard />
+              </VerificationGate>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/menu"
-          element={userEmail ? <VerificationGate role="restaurant_owner"><MenuManager /></VerificationGate> : <Navigate to="/login" />}
+          element={
+            userEmail ? (
+              <VerificationGate role="restaurant_owner">
+                <MenuManager />
+              </VerificationGate>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/earnings"
-          element={userEmail ? <VerificationGate role="restaurant_owner"><Earnings /></VerificationGate> : <Navigate to="/login" />}
+          element={
+            userEmail ? (
+              <VerificationGate role="restaurant_owner">
+                <Earnings />
+              </VerificationGate>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
         />
         <Route
           path="/login"

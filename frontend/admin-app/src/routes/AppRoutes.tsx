@@ -69,7 +69,9 @@ export const AppRoutes: React.FC = () => {
               />
               <Route
                 path="/verification"
-                element={userEmail ? <VerificationCenter /> : <Navigate to="/login" />}
+                element={
+                  userEmail ? <VerificationCenter /> : <Navigate to="/login" />
+                }
               />
               <Route
                 path="/drivers"

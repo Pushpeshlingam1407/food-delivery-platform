@@ -1,19 +1,188 @@
 import React, { useEffect, useState } from "react";
-import { CheckCircle2, Clock3, FileUp, RefreshCw, ShieldAlert } from "lucide-react";
+import {
+  CheckCircle2,
+  Clock3,
+  FileUp,
+  RefreshCw,
+  ShieldAlert,
+} from "lucide-react";
 import api from "../services/api";
 import notify from "../utils/toast";
 
 type Role = "restaurant_owner" | "delivery_partner";
-const docsByRole: Record<Role, string[]> = { restaurant_owner: ["identity_proof", "business_document", "fssai_license"], delivery_partner: ["government_id", "driving_license", "vehicle_details", "profile_photo"] };
-export const VerificationGate: React.FC<{ role: Role; children: React.ReactNode }> = ({ role, children }) => {
-  const [application, setApplication] = useState<any>(undefined); const [saving, setSaving] = useState(false);
-  const [details, setDetails] = useState<Record<string, string>>({}); const [urls, setUrls] = useState<Record<string, string>>({});
-  const load = async () => { try { const { data } = await api.get("/verification/applications/me"); setApplication(data.data); } catch { setApplication(null); } };
-  useEffect(() => { load(); }, []);
-  if (application === undefined) return <div className="verification-gate"><Clock3 size={26}/><p>Checking verification status…</p></div>;
+const docsByRole: Record<Role, string[]> = {
+  restaurant_owner: ["identity_proof", "business_document", "fssai_license"],
+  delivery_partner: [
+    "government_id",
+    "driving_license",
+    "vehicle_details",
+    "profile_photo",
+  ],
+};
+export const VerificationGate: React.FC<{
+  role: Role;
+  children: React.ReactNode;
+}> = ({ role, children }) => {
+  const [application, setApplication] = useState<any>(undefined);
+  const [saving, setSaving] = useState(false);
+  const [details, setDetails] = useState<Record<string, string>>({});
+  const [urls, setUrls] = useState<Record<string, string>>({});
+  const load = async () => {
+    try {
+      const { data } = await api.get("/verification/applications/me");
+      setApplication(data.data);
+    } catch {
+      setApplication(null);
+    }
+  };
+  useEffect(() => {
+    load();
+  }, []);
+  if (application === undefined)
+    return (
+      <div className="verification-gate">
+        <Clock3 size={26} />
+        <p>Checking verification status…</p>
+      </div>
+    );
   if (application?.status === "approved") return <>{children}</>;
-  const submit = async (e: React.FormEvent) => { e.preventDefault(); if (!Object.values(urls).every(Boolean)) return notify.warning("Please upload every required document to continue."); setSaving(true); try { await api.post("/verification/applications", { role, payload: details, documents: docsByRole[role].map((type) => ({ type, url: urls[type] })) }); notify.success("Your application has been submitted successfully.", { description: "We'll notify you once it has been reviewed." }); load(); } catch (err: any) { notify.error(err.response?.data?.message || "We couldn't submit your application."); } finally { setSaving(false); } };
-  if (application?.status === "pending") return <div className="verification-gate"><div className="verification-gate-icon"><Clock3/></div><h1>Your application is under review.</h1><p>Our verification team is reviewing your documents. This usually takes less than 24 hours.</p><div className="verification-gate-actions"><a href="mailto:support@bites.example">Contact Support</a><button onClick={load}><RefreshCw size={16}/> Refresh Status</button></div></div>;
-  if (application?.status === "rejected" || application?.status === "suspended") return <div className="verification-gate"><div className="verification-gate-icon danger"><ShieldAlert/></div><h1>{application.status === "rejected" ? "Your application needs an update." : "Your account is suspended."}</h1><p>{application.rejection_reason || "Please contact support for guidance on the next step."}</p>{application.status === "rejected" && <button onClick={() => setApplication(null)}>Update and resubmit</button>}</div>;
-  return <div className="verification-gate verification-form"><div className="verification-gate-icon"><FileUp/></div><h1>Complete your verification</h1><p>Submit your information and documents securely. You can edit an application while it is pending.</p><form onSubmit={submit}><div className="verification-inputs">{role === "restaurant_owner" && <><input required placeholder="Restaurant name" onChange={(e) => setDetails({ ...details, restaurantName: e.target.value })}/><input required placeholder="Business address" onChange={(e) => setDetails({ ...details, address: e.target.value })}/><input required placeholder="Cuisine" onChange={(e) => setDetails({ ...details, cuisine: e.target.value })}/></>} {role === "delivery_partner" && <><input required placeholder="Vehicle make and model" onChange={(e) => setDetails({ ...details, vehicle: e.target.value })}/><input placeholder="Emergency contact" onChange={(e) => setDetails({ ...details, emergencyContact: e.target.value })}/></>}</div>{docsByRole[role].map((doc) => <label className="verification-document-input" key={doc}><span>{doc.replaceAll("_", " ")}</span><input type="url" required placeholder="Secure document URL" value={urls[doc] || ""} onChange={(e) => setUrls({ ...urls, [doc]: e.target.value })}/></label>)}<button type="submit" disabled={saving}>{saving ? "Submitting…" : "Submit for verification"}</button></form></div>;
+  const submit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!Object.values(urls).every(Boolean))
+      return notify.warning(
+        "Please upload every required document to continue.",
+      );
+    setSaving(true);
+    try {
+      await api.post("/verification/applications", {
+        role,
+        payload: details,
+        documents: docsByRole[role].map((type) => ({ type, url: urls[type] })),
+      });
+      notify.success("Your application has been submitted successfully.", {
+        description: "We'll notify you once it has been reviewed.",
+      });
+      load();
+    } catch (err: any) {
+      notify.error(
+        err.response?.data?.message || "We couldn't submit your application.",
+      );
+    } finally {
+      setSaving(false);
+    }
+  };
+  if (application?.status === "pending")
+    return (
+      <div className="verification-gate">
+        <div className="verification-gate-icon">
+          <Clock3 />
+        </div>
+        <h1>Your application is under review.</h1>
+        <p>
+          Our verification team is reviewing your documents. This usually takes
+          less than 24 hours.
+        </p>
+        <div className="verification-gate-actions">
+          <a href="mailto:support@bites.example">Contact Support</a>
+          <button onClick={load}>
+            <RefreshCw size={16} /> Refresh Status
+          </button>
+        </div>
+      </div>
+    );
+  if (application?.status === "rejected" || application?.status === "suspended")
+    return (
+      <div className="verification-gate">
+        <div className="verification-gate-icon danger">
+          <ShieldAlert />
+        </div>
+        <h1>
+          {application.status === "rejected"
+            ? "Your application needs an update."
+            : "Your account is suspended."}
+        </h1>
+        <p>
+          {application.rejection_reason ||
+            "Please contact support for guidance on the next step."}
+        </p>
+        {application.status === "rejected" && (
+          <button onClick={() => setApplication(null)}>
+            Update and resubmit
+          </button>
+        )}
+      </div>
+    );
+  return (
+    <div className="verification-gate verification-form">
+      <div className="verification-gate-icon">
+        <FileUp />
+      </div>
+      <h1>Complete your verification</h1>
+      <p>
+        Submit your information and documents securely. You can edit an
+        application while it is pending.
+      </p>
+      <form onSubmit={submit}>
+        <div className="verification-inputs">
+          {role === "restaurant_owner" && (
+            <>
+              <input
+                required
+                placeholder="Restaurant name"
+                onChange={(e) =>
+                  setDetails({ ...details, restaurantName: e.target.value })
+                }
+              />
+              <input
+                required
+                placeholder="Business address"
+                onChange={(e) =>
+                  setDetails({ ...details, address: e.target.value })
+                }
+              />
+              <input
+                required
+                placeholder="Cuisine"
+                onChange={(e) =>
+                  setDetails({ ...details, cuisine: e.target.value })
+                }
+              />
+            </>
+          )}{" "}
+          {role === "delivery_partner" && (
+            <>
+              <input
+                required
+                placeholder="Vehicle make and model"
+                onChange={(e) =>
+                  setDetails({ ...details, vehicle: e.target.value })
+                }
+              />
+              <input
+                placeholder="Emergency contact"
+                onChange={(e) =>
+                  setDetails({ ...details, emergencyContact: e.target.value })
+                }
+              />
+            </>
+          )}
+        </div>
+        {docsByRole[role].map((doc) => (
+          <label className="verification-document-input" key={doc}>
+            <span>{doc.replaceAll("_", " ")}</span>
+            <input
+              type="url"
+              required
+              placeholder="Secure document URL"
+              value={urls[doc] || ""}
+              onChange={(e) => setUrls({ ...urls, [doc]: e.target.value })}
+            />
+          </label>
+        ))}
+        <button type="submit" disabled={saving}>
+          {saving ? "Submitting…" : "Submit for verification"}
+        </button>
+      </form>
+    </div>
+  );
 };

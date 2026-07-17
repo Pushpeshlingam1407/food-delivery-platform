@@ -70,42 +70,44 @@ export const AppRoutes: React.FC = () => {
   ];
 
   return userEmail ? (
-    <VerificationGate role="delivery_partner"><div className="delivery-layout">
-      <div
-        className={`delivery-sidebar-shell ${sidebarCollapsed ? "is-collapsed" : ""}`}
-      >
-        <DeliverySidebar />
-      </div>
+    <VerificationGate role="delivery_partner">
+      <div className="delivery-layout">
+        <div
+          className={`delivery-sidebar-shell ${sidebarCollapsed ? "is-collapsed" : ""}`}
+        >
+          <DeliverySidebar />
+        </div>
 
-      <div className="delivery-main-shell">
-        <Navbar />
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/requests" element={<DeliveryRequestsPage />} />
-          <Route path="/deliveries" element={<DeliveriesPage />} />
-          <Route path="/active-orders" element={<ActiveOrdersPage />} />
-          <Route path="/assigned-jobs" element={<ActiveOrdersPage />} />
-          <Route path="/route" element={<ActiveOrdersPage />} />
-          <Route path="/earnings" element={<Earnings />} />
-          <Route path="/performance" element={<Earnings />} />
-          <Route path="/ledger" element={<Ledger />} />
-          <Route path="/wallet" element={<WalletPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-          <Route path="/notifications" element={<Dashboard />} />
-          <Route path="/support" element={<ProfilePage />} />
-          <Route path="/settings" element={<ProfilePage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-        <ResponsiveFooter
-          sections={footerSections}
-          bottomText={`© ${new Date().getFullYear()} Bites Logistics Private Limited. All rights reserved.`}
-        />
-        <MobileBottomNav
-          items={bottomNavItems}
-          className="delivery-mobile-bottom-nav"
-        />
+        <div className="delivery-main-shell">
+          <Navbar />
+          <Routes>
+            <Route path="/" element={<Dashboard />} />
+            <Route path="/requests" element={<DeliveryRequestsPage />} />
+            <Route path="/deliveries" element={<DeliveriesPage />} />
+            <Route path="/active-orders" element={<ActiveOrdersPage />} />
+            <Route path="/assigned-jobs" element={<ActiveOrdersPage />} />
+            <Route path="/route" element={<ActiveOrdersPage />} />
+            <Route path="/earnings" element={<Earnings />} />
+            <Route path="/performance" element={<Earnings />} />
+            <Route path="/ledger" element={<Ledger />} />
+            <Route path="/wallet" element={<WalletPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/notifications" element={<Dashboard />} />
+            <Route path="/support" element={<ProfilePage />} />
+            <Route path="/settings" element={<ProfilePage />} />
+            <Route path="*" element={<Navigate to="/" />} />
+          </Routes>
+          <ResponsiveFooter
+            sections={footerSections}
+            bottomText={`© ${new Date().getFullYear()} Bites Logistics Private Limited. All rights reserved.`}
+          />
+          <MobileBottomNav
+            items={bottomNavItems}
+            className="delivery-mobile-bottom-nav"
+          />
+        </div>
       </div>
-    </div></VerificationGate>
+    </VerificationGate>
   ) : (
     <Routes>
       <Route path="/login" element={<Login />} />

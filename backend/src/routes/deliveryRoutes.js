@@ -12,7 +12,12 @@ import { requireApprovedVerification } from "../controllers/verificationControll
 
 const router = Router();
 
-router.put("/status", authenticateJWT, requireApprovedVerification, toggleDriverStatus);
+router.put(
+  "/status",
+  authenticateJWT,
+  requireApprovedVerification,
+  toggleDriverStatus,
+);
 router.post("/location", authenticateJWT, logDriverLocation);
 router.get("/earnings/ledger", authenticateJWT, getEarningsLedger);
 router.get("/earnings/analytics", authenticateJWT, getEarningsAnalytics);

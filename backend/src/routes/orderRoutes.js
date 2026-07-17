@@ -13,6 +13,11 @@ const router = Router();
 router.post("/", authenticateJWT, placeOrder);
 router.get("/", authenticateJWT, getOrders);
 router.get("/:id", authenticateJWT, getOrderById);
-router.put("/:id/status", authenticateJWT, requireApprovedVerification, updateOrderStatus);
+router.put(
+  "/:id/status",
+  authenticateJWT,
+  requireApprovedVerification,
+  updateOrderStatus,
+);
 
 export default router;
