@@ -51,9 +51,16 @@ const configuredOrigins = (
 app.use(
   cors({
     origin(origin, callback) {
-      if (!origin || configuredOrigins.includes(origin))
+      if (
+        !origin ||
+        configuredOrigins.includes(origin) ||
+        origin.startsWith("http://localhost:") ||
+        origin.startsWith("http://127.0.0.1:")
+      ) {
         return callback(null, true);
-      callback(new Error("CORS origin is not allowed"));
+      }
+      console.warn(`Rejected CORS origin: ${origin}`);
+      callback(new Error(`CORS origin is not allowed: ${origin}`));
     },
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],

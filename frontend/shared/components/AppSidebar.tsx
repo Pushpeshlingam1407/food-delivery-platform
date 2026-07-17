@@ -287,7 +287,7 @@ export const AppSidebar: React.FC<AppSidebarProps> = ({
       <aside
         className={`admin-sidebar ${isMobileOpen ? "open" : ""} ${isCollapsed ? "collapsed" : ""} ${persistentOnDesktop ? "app-sidebar--persistent" : ""}`}
       >
-        <div>
+        <div className="app-sidebar-top-section">
           {/* Logo */}
           <div
             className={`admin-sidebar-header ${isCollapsed ? "app-sidebar-header-wrapper-collapsed" : "app-sidebar-header-wrapper-expanded"}`}
