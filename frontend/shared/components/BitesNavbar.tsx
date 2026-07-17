@@ -145,7 +145,9 @@ export const BitesNavbar: React.FC<
           }
           center={
             <div
-              className={props.variant === "admin" ? "admin-context" : undefined}
+              className={
+                props.variant === "admin" ? "admin-context" : undefined
+              }
               style={{
                 display: "flex",
                 alignItems: "center",
