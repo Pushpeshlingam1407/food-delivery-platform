@@ -1,7 +1,12 @@
 import bcrypt from "bcryptjs";
 import crypto from "crypto";
 import pool from "../config/db.js";
-import { generateAccessToken, generateRefreshToken } from "../utils/jwt.js";
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken } from "../utils/jwt.js";
+
+const hashSecret = (value) => crypto.createHash("sha256").update(value).digest("hex");
+const validEmail = (value) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+const validPhone = (value) => /^\+?[1-9]\d{7,14}$/.test(value);
+const strongPassword = (value) => typeof value === "string" && value.length >= 12 && /[a-z]/.test(value) && /[A-Z]/.test(value) && /\d/.test(value) && /[^A-Za-z0-9]/.test(value);
 
 async function getRoleIdByName(name) {
   const [rows] = await pool.query("SELECT id FROM roles WHERE name = ?", [
@@ -26,6 +31,8 @@ export async function register(req, res) {
       .status(400)
       .json({ status: "error", message: "All fields are required" });
   }
+  if (!validEmail(email) || !validPhone(phone)) return res.status(400).json({ status: "error", message: "Enter a valid email address and international phone number." });
+  if (!strongPassword(password)) return res.status(400).json({ status: "error", message: "Password must be at least 12 characters and include uppercase, lowercase, a number, and a symbol." });
 
   try {
     const roleId = await getRoleIdByName(role);
@@ -126,9 +133,7 @@ export async function login(req, res) {
 
     const users = rows;
     if (users.length === 0) {
-      return res
-        .status(404)
-        .json({ status: "error", message: "User does not exist" });
+      return res.status(401).json({ status: "error", message: "Invalid email or password" });
     }
 
     const user = users[0];
@@ -164,7 +169,7 @@ export async function login(req, res) {
     const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
     await pool.query(
       "INSERT INTO refresh_tokens (id, user_id, token, expires_at) VALUES (?, ?, ?, ?)",
-      [tokenId, user.id, refreshToken, expiresAt],
+      [tokenId, user.id, hashSecret(refreshToken), expiresAt],
     );
 
     return res.status(200).json({
@@ -201,22 +206,17 @@ export async function sendOTP(req, res) {
   }
 
   try {
-    const code = Math.floor(100000 + Math.random() * 900000).toString();
+    const code = crypto.randomInt(100000, 1000000).toString();
     const expiresAt = new Date(Date.now() + 5 * 60 * 1000);
 
     await pool.query(
       "INSERT INTO otp_verifications (phone, otp_code, purpose, expires_at) VALUES (?, ?, ?, ?)",
-      [phone, code, purpose, expiresAt],
-    );
-
-    console.log(
-      `[SMS Gateway Mock] Dispatched OTP ${code} to ${phone} for purpose: ${purpose}`,
+      [phone, hashSecret(code), purpose, expiresAt],
     );
 
     return res.status(200).json({
       status: "success",
-      message: "OTP sent successfully (Simulated)",
-      code: process.env.NODE_ENV === "development" ? code : undefined,
+      message: "OTP sent successfully",
     });
   } catch (error) {
     console.error("Send OTP error:", error);
@@ -240,7 +240,7 @@ export async function verifyOTP(req, res) {
       `SELECT * FROM otp_verifications 
        WHERE phone = ? AND otp_code = ? AND is_used = FALSE AND expires_at > NOW()
        ORDER BY created_at DESC LIMIT 1`,
-      [phone, code],
+      [phone, hashSecret(code)],
     );
 
     const otps = rows;
@@ -361,12 +361,13 @@ export async function refreshToken(req, res) {
   }
 
   try {
+    try { verifyRefreshToken(token); } catch { return res.status(403).json({ status: "error", message: "Invalid or expired refresh token" }); }
     const [rows] = await pool.query(
       `SELECT rt.*, u.email, r.name as role_name FROM refresh_tokens rt
        JOIN users u ON rt.user_id = u.id
        JOIN roles r ON u.role_id = r.id
        WHERE rt.token = ? AND rt.is_revoked = FALSE AND rt.expires_at > NOW()`,
-      [token],
+      [hashSecret(token)],
     );
 
     const tokens = rows;
@@ -409,7 +410,7 @@ export async function logout(req, res) {
   try {
     await pool.query(
       "UPDATE refresh_tokens SET is_revoked = TRUE WHERE token = ?",
-      [token],
+      [hashSecret(token)],
     );
     return res
       .status(200)
