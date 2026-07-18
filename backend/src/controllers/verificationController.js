@@ -295,10 +295,10 @@ export async function requireApprovedVerification(req, res, next) {
   if (req.user?.role === "admin" || !ROLES.includes(req.user?.role))
     return next();
   const [rows] = await pool.query(
-    "SELECT status FROM verification_applications WHERE user_id = ? AND role = ? ORDER BY submitted_at DESC LIMIT 1",
-    [req.user.userId, req.user.role],
+    "SELECT is_verified FROM users WHERE id = ?",
+    [req.user.userId],
   );
-  if (rows[0]?.status !== "approved")
+  if (!rows[0] || !rows[0].is_verified)
     return res.status(403).json({
       status: "error",
       code: "VERIFICATION_REQUIRED",
