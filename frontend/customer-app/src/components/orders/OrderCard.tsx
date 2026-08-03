@@ -29,6 +29,7 @@ interface OrderCardProps {
   onReorder: (order: Order) => void;
   onRate: (order: Order) => void;
   onHelp: (order: Order) => void;
+  onCancel?: (order: Order) => void;
 }
 
 const stopAndRun =
@@ -45,6 +46,7 @@ export const OrderCard: React.FC<OrderCardProps> = ({
   onReorder,
   onRate,
   onHelp,
+  onCancel,
 }) => {
   const active = isActive(order.status);
   const items = order.items || [];
@@ -140,6 +142,17 @@ export const OrderCard: React.FC<OrderCardProps> = ({
             className="order-action-button order-action-button--primary"
           >
             Track live <ChevronRight size={16} />
+          </button>
+        )}
+
+        {order.status === "placed" && onCancel && (
+          <button
+            type="button"
+            onClick={stopAndRun(() => onCancel(order))}
+            className="order-action-button order-action-button--primary"
+            style={{ background: "var(--accent-red, #ef4444)", color: "white", borderColor: "transparent" }}
+          >
+            Cancel
           </button>
         )}
 

@@ -168,21 +168,40 @@ export const AppContextProvider: React.FC<{ children: React.ReactNode }> = ({
     const existing = cart[item.id];
     const newQty = existing ? existing.qty + 1 : 1;
 
-    setCart((prev) => ({
-      ...prev,
-      [item.id]: {
-        name: item.name,
-        price: item.price != null ? parseFloat(item.price.toString()) : 0,
-        qty: newQty,
-      },
-    }));
-
     try {
       if (localStorage.getItem("accessToken")) {
         await api.post("/cart/items", { menuId: item.id, quantity: 1 });
       }
-    } catch (err) {
-      console.error("Sync add to cart failed:", err);
+
+      setCart((prev) => ({
+        ...prev,
+        [item.id]: {
+          name: item.name,
+          price: item.price != null ? parseFloat(item.price.toString()) : 0,
+          qty: newQty,
+        },
+      }));
+    } catch (err: any) {
+      if (err.response && err.response.status === 409) {
+        const replace = window.confirm(
+          "Your cart contains items from another restaurant. Would you like to clear your cart and start a new order?"
+        );
+        if (replace) {
+          await clearCart();
+          if (localStorage.getItem("accessToken")) {
+            await api.post("/cart/items", { menuId: item.id, quantity: 1 });
+          }
+          setCart({
+            [item.id]: {
+              name: item.name,
+              price: item.price != null ? parseFloat(item.price.toString()) : 0,
+              qty: 1,
+            }
+          });
+        }
+      } else {
+        console.error("Sync add to cart failed:", err);
+      }
     }
   };
 
