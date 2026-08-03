@@ -16,3 +16,15 @@ check_status.js
 test_api_toggle.js
 test_restaurant_toggle.js
 test_toggles.js
+
+# General ignored files for all apps
+**/node_modules/
+**/dist/
+**/.env*
+**/coverage/
+coverage/
+.env.local
+.env.*.local
+npm-debug.log*
+yarn-error.log*
+.eslintcache
