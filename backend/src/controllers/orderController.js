@@ -444,6 +444,15 @@ export async function updateOrderStatus(req, res) {
         'UPDATE delivery_partners SET status = "idle" WHERE id = ?',
         [req.user.userId],
       );
+    } else if (status === "cancelled") {
+      if (order.status !== "placed") {
+        return res
+          .status(400)
+          .json({ status: "error", message: "Only placed orders can be cancelled" });
+      }
+      if (req.user.role === "customer" && order.user_id !== req.user.userId) {
+        return res.status(403).json({ status: "error", message: "Forbidden: Access denied" });
+      }
     }
 
     const connection = await pool.getConnection();
@@ -456,6 +465,48 @@ export async function updateOrderStatus(req, res) {
          WHERE id = ?`,
         [status, acceptedAt, deliveredAt, assignedDriverId, id],
       );
+
+      if (status === "cancelled") {
+        const [paymentRows] = await connection.query(
+          "SELECT payment_method, amount FROM payments WHERE order_id = ?",
+          [id]
+        );
+        if (paymentRows.length > 0 && paymentRows[0].payment_method === 'wallet') {
+          const refundAmount = parseFloat(paymentRows[0].amount);
+          const [userWalletRows] = await connection.query(
+            "SELECT id FROM wallets WHERE user_id = ?",
+            [order.user_id]
+          );
+          if (userWalletRows.length > 0) {
+            const walletId = userWalletRows[0].id;
+            await connection.query(
+              "UPDATE wallets SET balance = balance + ? WHERE id = ?",
+              [refundAmount, walletId]
+            );
+            const refundTxId = crypto.randomUUID();
+            await connection.query(
+              `INSERT INTO wallet_transactions (id, wallet_id, amount, type, description, reference_type, reference_id) 
+               VALUES (?, ?, ?, 'credit', 'Refund for Cancelled Order', 'order_refund', ?)`,
+              [refundTxId, walletId, refundAmount, id]
+            );
+          }
+          await connection.query(
+            "UPDATE payments SET payment_status = 'refunded' WHERE order_id = ?",
+            [id]
+          );
+        }
+
+        const [itemRows] = await connection.query(
+          "SELECT menu_id, quantity FROM order_items WHERE order_id = ?",
+          [id]
+        );
+        for (const item of itemRows) {
+          await connection.query(
+            "UPDATE inventory SET available_quantity = available_quantity + ? WHERE menu_id = ? AND unlimited = FALSE",
+            [item.quantity, item.menu_id]
+          );
+        }
+      }
 
       if (status === "delivered") {
         const commRate = parseFloat(order.commission_rate);

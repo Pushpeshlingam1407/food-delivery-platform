@@ -96,6 +96,23 @@ export const OrderTracking: React.FC = () => {
     };
   }, [orderId]);
 
+  const handleCancelOrder = async () => {
+    const confirmCancel = window.confirm("Are you sure you want to cancel this order? If paid by wallet, you will be refunded.");
+    if (!confirmCancel) return;
+
+    try {
+      const res = await api.put(`/orders/${orderId}/status`, { status: "cancelled" });
+      if (res.data.status === "success") {
+        notify.success("Order cancelled successfully");
+        setStatus("cancelled" as any);
+        navigate("/orders");
+      }
+    } catch (err) {
+      console.error("Failed to cancel order:", err);
+      notify.error("Failed to cancel order. It might already be prepared.");
+    }
+  };
+
   const steps = [
     { key: "placed", label: "Placed", icon: <ShieldCheck size={20} /> },
     { key: "preparing", label: "Preparing", icon: <CookingPot size={20} /> },
@@ -391,6 +408,24 @@ export const OrderTracking: React.FC = () => {
           }}
         >
           🌟 Rate Your Experience
+        </button>
+      )}
+
+      {status === "placed" && (
+        <button
+          onClick={handleCancelOrder}
+          className="btn-premium"
+          style={{
+            width: "100%",
+            marginTop: "16px",
+            padding: "14px",
+            textAlign: "center",
+            background: "var(--accent-red, #ef4444)",
+            color: "white",
+            border: "none",
+          }}
+        >
+          ❌ Cancel Order
         </button>
       )}
 

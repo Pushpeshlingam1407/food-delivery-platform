@@ -181,6 +181,22 @@ export const Orders: React.FC = () => {
     }
   };
 
+  const handleCancelOrder = async (order: Order) => {
+    const confirmCancel = window.confirm("Are you sure you want to cancel this order? If paid by wallet, you will be refunded.");
+    if (!confirmCancel) return;
+
+    try {
+      const res = await api.put(`/orders/${order.id}/status`, { status: "cancelled" });
+      if (res.data.status === "success") {
+        notify.success("Order cancelled successfully");
+        setOrders(orders.map(o => o.id === order.id ? { ...o, status: "cancelled" as any } : o));
+      }
+    } catch (err) {
+      console.error("Failed to cancel order:", err);
+      notify.error("Failed to cancel order. It might already be prepared.");
+    }
+  };
+
   const handleHelp = (order: Order) => {
     notify.info("Support is ready to help.", {
       description: formatOrderNumber(order.order_number),
@@ -251,6 +267,7 @@ export const Orders: React.FC = () => {
             onReorder={handleReorder}
             onRate={(rateOrder) => setFeedbackOrderId(rateOrder.id)}
             onHelp={handleHelp}
+            onCancel={handleCancelOrder}
           />
         ))}
 

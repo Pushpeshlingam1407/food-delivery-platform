@@ -28,3 +28,12 @@ coverage/
 npm-debug.log*
 yarn-error.log*
 .eslintcache
+
+# Testing
+*.test.tsx
+*.test.ts
+vitest.config.ts
+vitest.workspace.ts
+setupTests.ts
+shared/test/
+__tests__/
